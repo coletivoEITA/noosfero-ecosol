@@ -83,6 +83,7 @@ pt-BR: &pt-BR
         supplier: "%{terms.supplier.singular.capitalize}"
         total_parcel_value: "Valor total usando estoque"
         total_selled_value: "Valor total vendido"
+        total_price_without_margin: "Valor total sem a margem"
         total_value: "total pago"
         un: un.
         value: Valor

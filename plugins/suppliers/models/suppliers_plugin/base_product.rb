@@ -2,7 +2,10 @@
 # cycle.products will go to an infinite loop
 class SuppliersPlugin::BaseProduct < Product
 
-  attr_accessible :default_margin_percentage, :margin_percentage, :default_unit, :unit_detail
+  attr_accessible :default_margin_percentage, :margin_percentage, :default_unit, :unit_detail,
+    :supplier_product_attributes
+
+  accepts_nested_attributes_for :supplier_product
 
   default_scope include: [
     # from_products is required for products.available
@@ -147,6 +150,11 @@ SQL
     price
   end
 
+  def price_without_margins
+    self[:price] / (1 + self.margin_percentage/100)
+  end
+
+  # FIXME: move to core
   # just in case the from_products is nil
   def product_category_with_default
     self.product_category_without_default or self.class.default_product_category(self.environment)
@@ -156,11 +164,14 @@ SQL
   end
   alias_method_chain :product_category, :default
   alias_method_chain :product_category_id, :default
+
+  # FIXME: move to core
   def unit_with_default
     self.unit_without_default or self.class.default_unit
   end
   alias_method_chain :unit, :default
 
+  # FIXME: move to core
   def archive
     self.update_attributes! archived: true
   end

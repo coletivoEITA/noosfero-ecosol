@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0-690-gcb6e853\n"
 "POT-Creation-Date: 2015-03-05 12:10-0300\n"
-"PO-Revision-Date: 2015-07-18 22:17-0300\n"
+"PO-Revision-Date: 2015-08-26 23:28-0300\n"
 "Last-Translator: daniel <dtygel@eita.org.br>\n"
 "Language-Team: Portuguese "
 "<https://hosted.weblate.org/projects/noosfero/noosfero/pt/>\n"
@@ -8974,12 +8974,24 @@ msgid "Editing"
 msgstr "Editando"
 
 #: app/views/manage_products/_edit_info.html.erb:13
-msgid "Price (%s)"
-msgstr "Preço (%s)"
+msgid "Price"
+msgstr "Preço"
+
+#: app/views/manage_products/_edit_info.html.erb:13
+msgid "Price sold"
+msgstr "Preço comercializado"
+
+#: app/views/manage_products/_edit_info.html.erb:13
+msgid "Supplier's price"
+msgstr "Preço do fornecedor"
 
 #: app/views/manage_products/_edit_info.html.erb:17
-msgid "Discount (%s)"
-msgstr "Desconto (%s)"
+msgid "Discount"
+msgstr "Desconto"
+
+#: app/views/manage_products/_edit_info.html.erb:17
+msgid "Margin"
+msgstr "Margem"
 
 #: app/views/manage_products/_edit_info.html.erb:18
 msgid "If your product is on sale, fill this field with the discount value"
@@ -9141,10 +9153,6 @@ msgstr "Clique aqui para adicionar preço e a quantidade"
 #: app/views/manage_products/index.html.erb:1
 msgid "Listing products and services"
 msgstr "Listando produtos e serviços"
-
-#: app/views/manage_products/index.html.erb:6
-msgid "Price"
-msgstr "Preço"
 
 #: app/views/manage_products/index.html.erb:11
 msgid "(no product registered yet)"

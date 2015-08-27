@@ -16,12 +16,18 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   # for products in cycle, these are the products of the suppliers
   # p in cycle -> p distributed -> p from supplier
   has_many :suppliers, through: :sources_from_2x_products, order: 'id ASC', uniq: true
-  has_many :sources_supplier_products, through: :sources_from_products, source: :sources_from_products
+  has_one  :supplier, through: :sources_from_2x_product, order: 'id ASC'
+  has_many :sources_supplier_products, through: :sources_from_2x_products, source: :sources_from_products
+  has_one  :sources_supplier_product, through: :sources_from_2x_product, source: :sources_from_product
   has_many :supplier_products, through: :sources_from_2x_products, source: :from_product
+  has_one  :supplier_product, through: :sources_from_2x_product, source: :from_product
 
   instance_exec &OrdersPlugin::Item::DefineTotals
   extend CurrencyHelper::ClassMethods
   has_currency :buy_price
+
+  # test this before use!
+  #validates_presence_of :cycle
 
   def self.create_from_distributed cycle, product
     op = self.new
@@ -30,7 +36,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     op.type = self.name
     op.freeze_default_attributes product
     op.from_products << product
-    cycle.products << op
+    cycle.products << op if cycle
     op
   end
 

@@ -44,6 +44,25 @@ suppliers = {
     },
   },
 
+  // core uses (future product plugin)
+  product: {
+
+    pmsync: function (to_price) {
+      var margin_input = $('#product_margin_percentage')
+      var price_input = $('#product_price')
+      var base_price_input = $('#product_supplier_product_attributes_price')
+
+      if (to_price)
+        suppliers.price.calculate(price_input, margin_input, base_price_input)
+      else
+        suppliers.margin.calculate(margin_input, price_input, base_price_input)
+    },
+
+    updateBasePrice: function () {
+      this.pmsync(this)
+    },
+  },
+
   our_product: {
 
     toggle_edit: function () {

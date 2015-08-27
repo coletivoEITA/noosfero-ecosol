@@ -164,11 +164,11 @@ class OrdersPlugin::Order < ActiveRecord::Base
   #         / Items
   #        /       \ OfferedProduct (column product_id)
   # Order /         \ SourceProduct from DistributedProduct (quantity=1, always)
-  #                  \ SourceProduct from Product* (quantity be more than 1 if DistributedProduct is an agregate product)
+  #                  \ SourceProduct from Product* (multiple for each if is an aggregate product)
   # for order outside cycle we have
   #         / Items
   #        /       \ SourceProduct from DistributedProduct (quantity=1, always)
-  # Order /         \ SourceProduct from Product* (quantity be more than 1 if DistributedProduct is an agregate product)
+  # Order /         \ SourceProduct from Product* (multiple for each if is an aggregate product)
   #
   # *suppliers usually don't distribute using cycles, so they only have Product
   #
