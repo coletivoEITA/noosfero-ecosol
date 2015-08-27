@@ -16,8 +16,11 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   # for products in cycle, these are the products of the suppliers
   # p in cycle -> p distributed -> p from supplier
   has_many :suppliers, through: :sources_from_2x_products, order: 'id ASC', uniq: true
-  has_many :sources_supplier_products, through: :sources_from_products, source: :sources_from_products
+  has_one  :supplier, through: :sources_from_2x_product, order: 'id ASC'
+  has_many :sources_supplier_products, through: :sources_from_2x_products, source: :sources_from_products
+  has_one  :sources_supplier_product, through: :sources_from_2x_product, source: :sources_from_product
   has_many :supplier_products, through: :sources_from_2x_products, source: :from_product
+  has_one  :supplier_product, through: :sources_from_2x_product, source: :from_product
 
   instance_exec &OrdersPlugin::Item::DefineTotals
   extend CurrencyHelper::ClassMethods
