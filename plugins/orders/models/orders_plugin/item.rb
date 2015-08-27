@@ -48,20 +48,19 @@ class OrdersPlugin::Item < ActiveRecord::Base
   # FIXME: don't work because of load order
   #if defined? SuppliersPlugin
     has_many :from_products, through: :product
+    has_one :from_product, through: :product
     has_many :to_products, through: :product
+    has_one :to_product, through: :product
     has_many :sources_supplier_products, through: :product
+    has_one :sources_supplier_product, through: :product
     has_many :supplier_products, through: :product
+    has_one :supplier_product, through: :product
     has_many :suppliers, through: :product
+    has_one :supplier, through: :product
   #end
-  def from_product
-    self.from_products.first
-  end
-  def supplier_product
-    self.supplier_products.first
-  end
 
-  scope :ordered, conditions: ['orders_plugin_orders.status = ?', 'ordered'], joins: [:order]
-  scope :for_product, lambda{ |product| {conditions: {product_id: product.id}} }
+  scope :ordered, -> { joins(:order).where 'orders_plugin_orders.status = ?', 'ordered' }
+  scope :for_product, -> (product) { where product_id: product.id }
 
   default_scope include: [:product]
 
