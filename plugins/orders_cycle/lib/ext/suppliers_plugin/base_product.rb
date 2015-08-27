@@ -1,7 +1,7 @@
-require_dependency 'product'
+require_dependency 'suppliers_plugin/base_product'
 
-class Product
+class SuppliersPlugin::BaseProduct
 
-  scope :in_cycle, -> { where type: 'OrdersCyclePlugin::OfferedProduct' }
+  scope :in_cycle, conditions: ["products.type = 'OrdersCyclePlugin::OfferedProduct'"]
 
 end

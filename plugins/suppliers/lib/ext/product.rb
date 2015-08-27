@@ -39,34 +39,25 @@ class Product
   attr_accessible :from_products, :supplier_id, :supplier
 
   has_many :sources_from_products, foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct', dependent: :destroy
-  has_one  :sources_from_product, foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct'
   has_many :sources_to_products, foreign_key: :from_product_id, class_name: 'SuppliersPlugin::SourceProduct', dependent: :destroy
-  has_one  :sources_to_product, foreign_key: :from_product_id, class_name: 'SuppliersPlugin::SourceProduct'
   has_many :to_products, through: :sources_to_products, order: 'id ASC'
-  has_one  :to_product, autosave: true, through: :sources_to_product, order: 'id ASC'
   has_many :from_products, through: :sources_from_products, order: 'id ASC'
-  has_one  :from_product, autosave: true, through: :sources_from_product, order: 'id ASC'
+  def from_product
+    self.from_products.first
+  end
 
   # defined just as *from_products above
   # may be overriden in different subclasses
   has_many :sources_supplier_products, foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct'
-  has_one  :sources_supplier_product, foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct'
   has_many :supplier_products, through: :sources_from_products, source: :from_product, order: 'id ASC'
-  has_one  :supplier_product, autosave: true, through: :sources_from_product, source: :from_product, order: 'id ASC'
 
   has_many :sources_from_2x_products, through: :sources_from_products, source: :sources_from_products
-  has_one  :sources_from_2x_product,  through: :sources_from_product,  source: :sources_from_product
-  has_many :sources_to_2x_products,   through: :sources_to_products,   source: :sources_to_products
-  has_one  :sources_to_2x_product,    through: :sources_to_product,    source: :sources_to_product
-  has_many :from_2x_products, through: :sources_from_2x_products, source: :from_products
-  has_one  :from_2x_product,  through: :sources_from_2x_product,  source: :from_product
-  has_many :to_2x_products,   through: :sources_to_2x_products,   source: :to_products
-  has_one  :to_2x_product,    through: :sources_to_2x_product,    source: :to_product
+  has_many :sources_to_2x_products, through: :sources_to_product, source: :sources_to_products
+  has_many :from_2x_products, through: :sources_from_2x_products, source: :from_product
+  has_many :to_2x_products, through: :sources_to_2x_products, source: :to_product
 
   has_many :suppliers, through: :sources_from_products, uniq: true, order: 'id ASC'
-  has_one  :supplier,  through: :sources_from_product, order: 'id ASC'
   has_many :consumers, through: :to_products, source: :profile, uniq: true, order: 'id ASC'
-  has_one  :consumer,  through: :to_product, source: :profile, order: 'id ASC'
 
   # prefer distributed_products has_many to use DistributedProduct scopes and eager loading
   scope :distributed, -> { where type: 'SuppliersPlugin::DistributedProduct'}
@@ -93,6 +84,15 @@ class Product
   end
   def supplied?
     self.own? or self.distributed?
+  end
+
+  def sources_supplier_product
+    self.supplier_products.load_target unless self.supplier_products.loaded?
+    self.sources_supplier_products.first
+  end
+  def supplier_product
+    self.supplier_products.load_target unless self.supplier_products.loaded?
+    self.supplier_products.first
   end
 
   def supplier
