@@ -22,6 +22,9 @@
         .col-lg-8.col-md-8.col-sm-7
           = input_group_addon environment.currency_unit
             = ff.number_field :price, step: 'any', class: 'form-control', onkeyup: 'suppliers.product.updateBasePrice()', oninput: 'this.onkeyup()'
+    javascript:
+      // cover the case the price is nil, i.e., the same as the supplier
+      suppliers.product.pmsync(true)
   - else
     .form-group
       = f.label :price, _('Price'), class: 'control-label col-lg-3 col-md-3 col-sm-4'
