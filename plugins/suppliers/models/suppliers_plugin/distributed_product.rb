@@ -5,22 +5,6 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
   # missed from lib/ext/product.rb because of STI
   attr_accessible :external_id, :price_details
 
-  # overhide original
-  scope :available, -> {
-    where 'products.available = ? AND suppliers_plugin_suppliers.active = ?', true, true
-  }
-  scope :unavailable, -> {
-    where 'products.available <> ? OR suppliers_plugin_suppliers.active <> ?', true, true
-  }
-  scope :with_available, -> (available) {
-    op = if available then '=' else '<>' end
-    cond = if available then 'AND' else 'OR' end
-    where "products.available #{op} ? #{cond} suppliers_plugin_suppliers.active #{op} ?", true, true
-  }
-
-  scope :name_like, lambda { |name| where "from_products_products.name ILIKE ?", "%#{name}%" }
-  scope :with_product_category_id, lambda { |id| where 'from_products_products.product_category_id = ?', id }
-
   validates_presence_of :supplier
 
   def supplier_price

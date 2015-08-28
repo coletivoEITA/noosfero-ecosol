@@ -97,7 +97,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
 
   def add_missing_products
     @cycle = OrdersCyclePlugin::Cycle.find params[:id]
-    @cycle.add_distributed_products
+    @cycle.add_products
     render partial: 'suppliers_plugin/shared/pagereload'
   end
 
