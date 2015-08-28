@@ -1,8 +1,5 @@
-/ this view combines supplier and delivery data.
-/ the data is already the user filled delivery data
-- data = order.delivery_data :consumer
-
-- if order.supplier_delivery.present? and data.present?
+/ read as: selectable or visualizable
+- if order.delivery_methods.size > 0 or order.supplier_delivery_data.present?
   .delivery-box.order-section
     h3= _'Delivery or pickup method'
 
