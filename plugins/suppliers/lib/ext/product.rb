@@ -47,11 +47,6 @@ class Product
   has_many :from_products, through: :sources_from_products, order: 'id ASC'
   has_one  :from_product,  through: :sources_from_product,  order: 'id ASC', autosave: true
 
-  # semantic alias for supplier_from_product(s)
-  # may be overriden in different subclasses
-  has_many :sources_supplier_products, foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct'
-  has_one  :sources_supplier_product,  foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct'
-
   has_many :sources_from_2x_products, through: :from_products, source: :sources_from_products
   has_one  :sources_from_2x_product,  through: :from_product,  source: :sources_from_product
   has_many :sources_to_2x_products,   through: :to_products,   source: :sources_to_products
@@ -61,11 +56,14 @@ class Product
   has_many :to_2x_products,   through: :sources_to_2x_products,   source: :to_product
   has_one  :to_2x_product,    through: :sources_to_2x_product,    source: :to_product
 
+  # semantic alias for supplier_from_product(s)
+  has_many :sources_supplier_products, foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct'
+  has_one  :sources_supplier_product,  foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct'
   has_many :supplier_products, through: :sources_supplier_products, source: :from_product, order: 'id ASC'
   has_one  :supplier_product,  through: :sources_supplier_product,  source: :from_product, order: 'id ASC', autosave: true
-
   has_many :suppliers, through: :sources_supplier_products, uniq: true, order: 'id ASC'
   has_one  :supplier,  through: :sources_supplier_product, order: 'id ASC'
+
   has_many :consumers, through: :to_products, source: :profile, uniq: true, order: 'id ASC'
   has_one  :consumer,  through: :to_product,  source: :profile, order: 'id ASC'
 

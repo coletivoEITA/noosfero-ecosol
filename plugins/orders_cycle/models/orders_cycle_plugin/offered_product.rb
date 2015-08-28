@@ -9,7 +9,7 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   has_many :cycle_products, foreign_key: :product_id, class_name: 'OrdersCyclePlugin::CycleProduct'
   has_one  :cycle_product,  foreign_key: :product_id, class_name: 'OrdersCyclePlugin::CycleProduct'
   has_many :cycles, through: :cycle_products
-  has_one  :cycle,  through: :cycle_products
+  has_one  :cycle,  through: :cycle_product
 
   # OVERRIDE suppliers/lib/ext/product.rb
   # for products in cycle, these are the products of the suppliers:
@@ -17,6 +17,12 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   # So, sources_supplier_products is the same as sources_from_2x_products
   has_many :sources_supplier_products, through: :from_products, source: :sources_from_products
   has_one  :sources_supplier_product,  through: :from_product,  source: :sources_from_product
+  # necessary only due to the override of sources_supplier_products, as rails somehow caches the old reference
+  # copied from suppliers/lib/ext/product
+  has_many :supplier_products, through: :sources_supplier_products, source: :from_product, order: 'id ASC'
+  has_one  :supplier_product,  through: :sources_supplier_product,  source: :from_product, order: 'id ASC', autosave: true
+  has_many :suppliers, through: :sources_supplier_products, uniq: true, order: 'id ASC'
+  has_one  :supplier,  through: :sources_supplier_product, order: 'id ASC'
 
   instance_exec &OrdersPlugin::Item::DefineTotals
   extend CurrencyHelper::ClassMethods
