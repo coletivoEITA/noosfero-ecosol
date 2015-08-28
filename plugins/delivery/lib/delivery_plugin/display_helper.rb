@@ -22,7 +22,7 @@ module DeliveryPlugin::DisplayHelper
     # BLACK OR WHITE: do not mix existing delivery data with user's location
     if order.consumer_delivery_data.present?
       order.consumer_delivery_data[field]
-    elsif respond_to? :user and user
+    elsif user
       user.send field
     end
   end
