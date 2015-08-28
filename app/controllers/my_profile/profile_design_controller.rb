@@ -51,7 +51,7 @@ class ProfileDesignController < BoxOrganizerController
       blocks << BlogArchivesBlock
     end
 
-    if user.is_admin?(profile.environment)
+    if @user_is_admin
       blocks << RawHTMLBlock
     end
 

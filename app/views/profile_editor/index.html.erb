@@ -24,7 +24,7 @@
 
   <%= control_panel_button(_('Edit Appearance'), 'design-editor', :controller => 'profile_themes', :action => 'index') %>
 
-  <%= control_panel_button(_('Edit Header and Footer'), 'header-and-footer', :controller => 'profile_editor', :action => 'header_footer') if user.is_admin?(environment) || (!profile.enterprise? && !environment.enabled?('disable_header_and_footer'))  %>
+  <%= control_panel_button _('Edit Header and Footer'), 'header-and-footer', controller: 'profile_editor', action: 'header_footer' if @user_is_admin or not environment.enabled? 'disable_header_and_footer' %>
 
   <%= control_panel_button(_('Manage Content'), 'cms', :controller => 'cms') %>
 
@@ -56,7 +56,7 @@
     <% end %>
   <% end %>
 
-  <% if profile.enterprise? and user.is_admin? environment %>
+  <% if profile.enterprise? and @user_is_admin %>
     <% if profile.enabled? %>
       <%= control_panel_button(_('Disable'), 'disable', :action => 'disable') %>
     <% else %>
