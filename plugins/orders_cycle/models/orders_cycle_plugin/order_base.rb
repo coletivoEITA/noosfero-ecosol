@@ -4,6 +4,8 @@ module OrdersCyclePlugin::OrderBase
   extend ActiveSupport::Concern
   included do
 
+    attr_accessible :cycle
+
     has_many :cycle_sales, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :sale_id, dependent: :destroy
     has_one  :cycle_sale,  class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :sale_id
     has_many :cycle_purchases, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :purchase_id, dependent: :destroy
