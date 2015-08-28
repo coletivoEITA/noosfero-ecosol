@@ -15,7 +15,7 @@ div.order-delivery-select id='order-#{order.id}'
       div class='help-block instructions' = h(consumer_delivery_field_value order, :description)
 
   / do not render on confirmation email (@view) if supplier_delivery is not a delivery
-  - unless @view and order.supplier_delivery and order.supplier_delivery.pickup?
+  - if not @view and (order.delivery_methods.size > 0 or order.supplier_delivery_data[:delivery_type] == 'delivery')
     div.consumer-delivery-data
       = f.fields_for :consumer_delivery_data, order.consumer_delivery_data do |ff|
         = labelled_form_field _('Address (street and number)'),
