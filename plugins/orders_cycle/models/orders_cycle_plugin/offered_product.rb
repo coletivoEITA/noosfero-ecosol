@@ -25,14 +25,17 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   # test this before use!
   #validates_presence_of :cycle
 
-  def self.create_from_distributed cycle, product
+  def self.create_from product, cycle
     op = self.new
+
     product.attributes.except('id').each{ |a,v| op.send "#{a}=", v }
+    op.freeze_default_attributes product
     op.profile = product.profile
     op.type = self.name
-    op.freeze_default_attributes product
+
     op.from_products << product
     cycle.products << op if cycle
+
     op
   end
 
@@ -65,8 +68,8 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
 
   FROOZEN_DEFAULT_ATTRIBUTES = DEFAULT_ATTRIBUTES
   def freeze_default_attributes from_product
-    FROOZEN_DEFAULT_ATTRIBUTES.each do |a|
-      self[a.to_s] = from_product.send a
+    FROOZEN_DEFAULT_ATTRIBUTES.each do |attr|
+      self[attr] = from_product.send(attr) if from_product[attr] or from_product.respond_to? attr
     end
   end
 

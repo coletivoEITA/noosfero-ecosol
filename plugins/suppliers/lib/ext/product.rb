@@ -69,6 +69,23 @@ class Product
   has_many :consumers, through: :to_products, source: :profile, uniq: true, order: 'id ASC'
   has_one  :consumer,  through: :to_product,  source: :profile, order: 'id ASC'
 
+  # overhide original
+  scope :available, -> {
+    joins(:suppliers).
+    where 'products.available = ? AND suppliers_plugin_suppliers.active = ?', true, true
+  }
+  scope :unavailable, -> {
+    where 'products.available <> ? OR suppliers_plugin_suppliers.active <> ?', true, true
+  }
+  scope :with_available, -> (available) {
+    op = if available then '=' else '<>' end
+    cond = if available then 'AND' else 'OR' end
+    where "products.available #{op} ? #{cond} suppliers_plugin_suppliers.active #{op} ?", true, true
+  }
+
+  scope :name_like, lambda { |name| where "from_products_products.name ILIKE ?", "%#{name}%" }
+  scope :with_product_category_id, lambda { |id| where 'from_products_products.product_category_id = ?', id }
+
   # prefer distributed_products has_many to use DistributedProduct scopes and eager loading
   scope :distributed, -> { where type: 'SuppliersPlugin::DistributedProduct'}
   scope :own, -> { where type: nil }
