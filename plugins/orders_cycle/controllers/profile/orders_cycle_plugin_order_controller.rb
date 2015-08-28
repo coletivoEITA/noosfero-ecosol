@@ -106,7 +106,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
 
       @consumer = @order.consumer
       @admin_edit = (user and user.in?(profile.admins) and user != @consumer)
-      return render_access_denied unless @admin_edit or user == @consumer
+      return render_access_denied unless @user_is_admin or @admin_edit or user == @consumer
 
       @consumer_orders = @cycle.sales.for_consumer @consumer
     end

@@ -11,7 +11,7 @@ div.order-delivery-select id='order-#{order.id}'
           onchange: 'delivery.order.select.onChange(this)', onkeyup: 'delivery.order.select.onChange(this)') + content_tag('div', '', class: 'help-block instructions')
     - elsif (name = consumer_delivery_field_value order, :name).present?
       = labelled_form_field _('Option'),
-        ff.text_field(:address, value: name, readonly: true)
+        f.text_field(:address, value: name, readonly: true)
       div class='help-block instructions' = h(consumer_delivery_field_value order, :description)
 
   / do not render on confirmation email (@view) if supplier_delivery is pickup
