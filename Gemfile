@@ -22,8 +22,6 @@ gem 'will-paginate-i18n'
 gem 'utf8-cleaner'
 gem 'premailer-rails'
 gem 'slim'
-gem 'delayed_job'
-gem 'delayed_job_active_record'
 
 gem 'message_bus'
 
@@ -81,22 +79,6 @@ gem 'actionpack-action_caching'
 gem 'activerecord-session_store'
 gem 'activerecord-deprecated_finders', require: 'active_record/deprecated_finders'
 
-
-# FIXME list here all actual dependencies (i.e. the ones in debian/control),
-# with their GEM names (not the Debian package names)
-
-# gems to enable rails3 behaviour
-gem 'protected_attributes'
-gem 'rails-observers'
-gem 'actionpack-page_caching'
-gem 'actionpack-action_caching'
-gem 'activerecord-session_store'
-gem 'activerecord-deprecated_finders', require: 'active_record/deprecated_finders'
-
-
-# FIXME list here all actual dependencies (i.e. the ones in debian/control),
-# with their GEM names (not the Debian package names)
-
 group :production do
   gem 'newrelic_rpm'
   gem 'redis-rails'
@@ -109,7 +91,6 @@ group :test do
   gem 'rspec',                  '~> 2.14.0'
   gem 'rspec-rails',            '~> 2.14.1'
   gem 'mocha',                  '~> 1.1.0', :require => false
-  gem 'spring'
   gem 'test-unit' if RUBY_VERSION >= '2.2.0'
   gem 'minitest'
   gem 'minitest-reporters'
