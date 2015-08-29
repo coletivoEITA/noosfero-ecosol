@@ -36,7 +36,7 @@ class FbesPlugin::EnterprisesController < PublicController
 
   # inherit routes from core skipping use_relative_controller!
   def url_for options
-    options[:controller] = "/#{options[:controller]}" if options.is_a? Hash
+    options[:controller] = "/#{options[:controller]}" if options.is_a? Hash and options[:controller]
     super options
   end
   helper_method :url_for
