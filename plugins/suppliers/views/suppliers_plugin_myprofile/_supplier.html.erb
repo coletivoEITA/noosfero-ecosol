@@ -20,8 +20,8 @@
     <div class='supplier-products-count subtitle'>
       <% products = supplier.consumer.distributed_products.unarchived.from_supplier_id(supplier.id) %>
       <% if products.size > 0 %>
-        <%= link_to t('views.supplier._supplier.products', :count => products.size),
-          {:controller => :manage_products, :action => :index, :profile => supplier.identifier}, :target => '_blank' %>
+        <%= link_to t('views.supplier._supplier.products', count: products.size),
+          {controller: 'suppliers_plugin/product', action: :index, supplier_id: supplier.id}, target: '_blank' %>
 
         <%= t('views.supplier._supplier.among_them') %>
 
@@ -31,7 +31,7 @@
         <% else %>
           <% msg = products.size.to_s + t('views.supplier._supplier.products_distributed') %>
         <% end %>
-        <%= link_to msg, {:controller => :manage_products, :action => :index, :profile => supplier.identifier}, :target => '_blank', :class => 'supplier-distributed-products-count' %>
+        <%= link_to msg, {controller: 'suppliers_plugin/product', action: :index, supplier_id: supplier.id}, target: '_blank', class: 'supplier-distributed-products-count' %>
       <% else %>
         <%= t('views.supplier._supplier.any_registered_produc') %>
       <% end %>
@@ -48,7 +48,8 @@
     <div><%= link_to_remote t('views.supplier._supplier.disassociate'), :url => {:action => :destroy, :id => supplier.id},
       :confirm => t('views.supplier._supplier.by_removing_this_supp'), :class => 'supplier-remove' %></div>
 
-    <div><%= link_to t('views.supplier._supplier.manage_products'), {:controller => :manage_products, :action => :index, :profile => supplier.profile.identifier}, :target => '_blank' %></div>
+    <div><%= link_to t('views.supplier._supplier.manage_products'), {controller: 'suppliers_plugin/product', action: :index, supplier_id: supplier.id}, target: '_blank' %></div>
+    <div><%= link_to t('views.supplier._supplier.add_product'), {controller: :manage_products, profile: supplier.profile.identifier, action: :new}, target: '_blank' %></div>
   </div>
 </div>
 

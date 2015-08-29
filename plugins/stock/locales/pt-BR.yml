@@ -1,0 +1,41 @@
+pt-BR: &pt-BR
+
+  stock_plugin:
+    lib:
+      plugin:
+        name: "Estoque de produtos"
+        description: "Faça a gestão de estoques de produtos"
+        control_panel:
+          manage: "Gerenciar Estoque"
+        manage_products:
+          stock_tab: "Estoque"
+
+    models:
+      place:
+        name: "Nome do lugar"
+        description: "Descrição"
+      associate_enterprise:
+        title: "Associação %{terms.supplier.of.singular} %{terms.profile.singular.capitalize}"
+        task_finished_message: "%{enterprise} aceitou seu pedido para se associar com %{network}."
+        task_cancelled_message: "%{enterprise} rejeitou seu pedido para se associar com %{network}."
+        task_notification_message: "%{enterprise} quer se associar a %{network}."
+    views:
+      myprofile:
+        index:
+          help: "Aqui você pode colocar seus produtos nos lugares que você possui. O estoque é automaticamente conectado ao pagamento dos pedidos."
+          first_place: "Crie o seu primeiro lugar de estoque"
+        edit:
+          save: "Salvar"
+      products:
+        any: "Nenhum produto cadastrado, %{manage_products}."
+        click_to_manage_products: "clique para gerenciar produtos"
+        product: "Produto"
+        allocations: "Lugares e quantidades"
+        _place:
+          none: "nenhum"
+
+pt_BR:
+  <<: *pt-BR
+pt:
+  <<: *pt-BR
+

@@ -1,0 +1,96 @@
+pt-BR: &pt-BR
+
+  networks_plugin:
+    lib:
+      plugin:
+        name: Redes
+        description: "Cria a gerencia redes."
+
+    models:
+      network:
+        settings_button: "Informações e configurações da Rede"
+      associate_enterprise:
+        title: "Pedido de associação %{terms.supplier.from.singular}"
+        information: "%{enterprise} disse que faz parte da rede %{linked_subject}."
+        task_notification_message: "%{enterprise} disse que faz parte da rede %{network}."
+        task_cancelled_message: "%{network} não aceitou o pedido de associação do %{terms.supplier.of_article.singular} %{enterprise}."
+        task_finished_message: "%{network} confirmou a associação %{terms.supplier.of_article.singular} %{enterprise}!"
+
+    controllers:
+      node:
+        edit: "Configurações do nó salvas"
+
+    views:
+      control_panel:
+        structure: "Gerenciar estrutura da rede"
+      profile_editor:
+        help: "Se %{terms.supplier.your.singular} participa %{terms.profile.of_another.singular}, %{search}, acesse %{terms.profile.article.singular}, e solicite a entrada clicando no botão 'Fazemos parte %{terms.profile.of_this.singular}'."
+        search: "procure a rede"
+        networks_i_participate: "%{terms.profile.plural.capitalize} de que faço parte"
+        none: "Nenhuma"
+        disassociate: "Desassociar"
+        disassociate_confirm: "Ao desassociar %{terms.supplier.your.singular} %{terms.profile.from_article.singular}, os seus produtos distribuídos %{terms.profile.to_it.singular} serão excluídos e você não distribuirá produtos %{terms.profile.to_it.singular}. Por favor confirme sua escolha."
+      blocks:
+        profile_info_actions:
+          button: "Fazemos parte %{terms.profile.of_this.singular}"
+        location:
+          title: "Mapa dos Empreendimentos de %{profile}"
+      admin:
+        index:
+          title: "Gerenciar Redes"
+          network_template: "Editar modelo de Redes"
+          network_node_template: "Editar modelo de Nós"
+          new: "Criar rede"
+          new_button: "Criar"
+          registered_networks: "Redes cadastradas"
+          no_network: "Nenhuma rede registrada."
+      supplier:
+        _supplier:
+          by_removing_this_supp: "Ao remover %{terms.supplier.article.singular}, todos os seus produtos ficarão indisponíveis. Por favor, confirme sua opção"
+      network:
+        join:
+          request_sent: "%{terms.profile.article.singular.capitalize} irá receber uma mensagem para aprovar seu pedido de associação."
+          confirm: "%{terms.supplier.article.singular.capitalize} %{enterprise} faz parte %{terms.profile.of_article.singular} %{network}?"
+          submit_yes: "Sim"
+          submit_no: "Não"
+          choose: "Qual %{terms.supplier.of_article.plural} abaixo faz parte %{terms.profile.of_article.singular} %{network}?"
+        structure:
+          pathway: "Você está em: "
+          none: "Nenhum"
+          title: "Estrutura da rede"
+          structure: "Estrutura"
+          add_enterprise_to_network: "Adicionar %{terms.supplier.singular} à %{terms.profile.singular}"
+          add_enterprise_to_node: "Adicionar %{terms.supplier.singular} a este nó"
+          add_node: "Criar nó"
+          edit_node_template: "Editar tema visual dos nós"
+          confirm_node_remove: "Ao excluir este nó, %{terms.supplier.article.plural} e nós associados a ele serão associados ao nó '%{parent}'. Por favor confirme a remoção do nó '%{node}'."
+          confirm_supplier_desassociate: "Por favor confirme que quer desassociar %{terms.supplier.article.singular} '%{supplier}'."
+          edit: "Editar"
+          config: "Configurar"
+          remove: "Remover"
+          desassociate: "Desassociar"
+          nodes: "Nós"
+          enterprises: "%{terms.supplier.plural.capitalize}"
+      node:
+        create:
+          new_button: "Criar"
+          context: "Criar novo nó dentro de '%{name}'"
+        edit:
+          title: "Configurações do nó %{node}"
+          back: "Voltar para a estrutura da rede"
+          node_info: "Informações do nó"
+          presentation_text: "Texto de apresentação:"
+          orders_management: "Gestão de pedidos"
+        _orders_management:
+          forward_explanation: "Quando um pedido é confirmado através do cesto de compras, um email contendo o detalhamento do pedido e as instruções de como proceder é enviado ao usuário final (comprador), aos administradores %{terms.supplier.from_article.plural} e aos administradores %{terms.profile.from_article.singular}. Você pode designar representantes desse nó para que eles recebam os pedidos de seus produtos em lugar dos administradores %{terms.profile.from_article.singular}."
+          network_forward: "enviar os pedidos para a rede"
+          managers_forward: "enviar os pedidos para os representantes:"
+      enterprise:
+        edit:
+          title: "Configurações do empreendimento %{enterprise}"
+
+pt_BR:
+  <<: *pt-BR
+pt:
+  <<: *pt-BR
+

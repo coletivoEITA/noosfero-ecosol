@@ -22,10 +22,10 @@ class ProfileTest < ActiveSupport::TestCase
     prof = fast_create(Person, :region_id => city.id)
     prof.add_category(cat, true)
 
-    facet = Profile.facet_by_id(:solr_plugin_f_region)
-    assert_equal [[prof.region.id.to_s, 'Tabajara, XZ', 1]], facet[:proc].call(facet, [[prof.send(:solr_plugin_f_region), 1]])
+    facet = Profile.facet_by_id(:solr_f_region)
+    assert_equal [[prof.region.id.to_s, 'Tabajara, XZ', 1]], facet[:proc].call(facet, [[prof.send(:solr_f_region), 1]])
 
-    assert_equal "solr_plugin_category_filter:#{cat.id}", Person.facet_category_query.call(cat)
+    assert_equal "solr_category_filter:#{cat.id}", Person.solr_facet_category_query.call(cat)
   end
 
   should 'act as searchable' do
@@ -41,8 +41,8 @@ class ProfileTest < ActiveSupport::TestCase
     assert_includes Profile.find_by_contents('Hiro')[:results].docs, p
     assert_includes Profile.find_by_contents('Protagonist')[:results].docs, p
     # filters
-    assert_includes Profile.find_by_contents('Hiro', {}, { :filter_queries => ["solr_plugin_public:true"]})[:results].docs, p
-    assert_not_includes Profile.find_by_contents('Hiro', {}, { :filter_queries => ["solr_plugin_public:false"]})[:results].docs, p
+    assert_includes Profile.find_by_contents('Hiro', {}, { :filter_queries => ["solr_public:true"]})[:results].docs, p
+    assert_not_includes Profile.find_by_contents('Hiro', {}, { :filter_queries => ["solr_public:false"]})[:results].docs, p
     assert_includes Profile.find_by_contents('Hiro', {}, { :filter_queries => ["environment_id:\"#{Environment.default.id}\""]})[:results].docs, p
     # includes
     assert_includes Profile.find_by_contents("Inglewood")[:results].docs, p
@@ -62,25 +62,25 @@ class ProfileTest < ActiveSupport::TestCase
   should 'be able to add extra data for index' do
     klass = Class.new(Profile)
     klass.any_instance.expects(:random_method)
-    klass.solr_plugin_extra_data_for_index :random_method
+    klass.solr_extra_data_for_index :random_method
 
-    klass.new.solr_plugin_extra_data_for_index
+    klass.new.solr_extra_data_for_index
   end
 
   should 'be able to add a block as extra data for index' do
     klass = Class.new(Profile)
     result = Object.new
-    klass.solr_plugin_extra_data_for_index do |obj|
+    klass.solr_extra_data_for_index do |obj|
       result
     end
 
-    assert_includes klass.new.solr_plugin_extra_data_for_index, result
+    assert_includes klass.new.solr_extra_data_for_index, result
   end
 
-  should 'actually index by results of solr_plugin_extra_data_for_index' do
+  should 'actually index by results of solr_extra_data_for_index' do
     TestSolr.enable
     class ExtraDataForIndex < Profile
-      solr_plugin_extra_data_for_index do |obj|
+      solr_extra_data_for_index do |obj|
         'sample indexed text'
       end
     end

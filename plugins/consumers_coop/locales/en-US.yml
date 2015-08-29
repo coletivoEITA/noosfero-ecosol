@@ -1,0 +1,59 @@
+en-US: &en-US
+
+  consumers_coop_plugin:
+    lib:
+      plugin:
+        name: "Consumers' Coop"
+        description: "Make an organization a consumers cooperative"
+      layout_helper:
+        orders: Orders
+        start: Start
+        products: Products
+        administration: Administration
+        volunteering: Volunteering
+    controllers:
+      myprofile:
+        distribution_settings: "Distribution settings saved."
+
+    models:
+      header_image:
+        fn_of_uploaded_file_w: "%{fn} of uploaded file was larger than the maximum size of 2.0 MB"
+    views:
+      layouts:
+        _admin_submenu:
+          members: Consumers
+          orders_cycles: "Orders' Cycles"
+          products: Products
+          suppliers: "%{terms.supplier.plural.capitalize}"
+          settings: "Settings"
+      profile:
+        index:
+          dashboard: Dashboard
+        settings:
+          abbreviated_name_of_t: "Abbreviated name of the %{terms.profile.singular}"
+          activated: Activated
+          black: black
+          cancel: cancel
+          collective_consumptio: "Collective Consumption Mode"
+          disabled: Disabled
+          general: "General"
+          header: "Header"
+          volunteers: "Volunteers"
+          volunteers_enabled: "Manage volunteers' period on orders' cycles"
+          header_background_col: "Header background color"
+          header_s_image: "Header's image"
+          header_type: "Header Type"
+          image_collective_name: "Image + %{terms.profile.singular} name"
+          only_the_image: "Only the image"
+          image_help: "This image will be used on the %{terms.profile.singular}'s page, must be 1040x90px, it will be automatically cropped to this size."
+          pure_color_collective: "pure color + %{terms.profile.singular} name"
+          save: Save
+          text_color: "Text color"
+          this_name_will_be_use: "This name will be used to avoid always use the full name of the %{terms.profile.singular}. How the %{terms.profile.singular} is generally called by the people?"
+          white: white
+
+en_US:
+  <<: *en-US
+en:
+  <<: *en-US
+

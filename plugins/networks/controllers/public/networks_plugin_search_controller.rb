@@ -9,7 +9,7 @@ class NetworksPluginSearchController < SearchController
   helper NetworksPlugin::SearchHelper
 
   def index
-    redirect_to :controller => :search, :action => :enterprises, :facet => {:solr_plugin_f_profile_type => NetworksPlugin::Network.to_s}
+    redirect_to controller: :search, action: :enterprises, facet: {solr_f_profile_type: NetworksPlugin::Network.to_s}
   end
 
   protected

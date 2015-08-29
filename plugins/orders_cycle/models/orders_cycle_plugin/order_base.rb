@@ -4,13 +4,17 @@ module OrdersCyclePlugin::OrderBase
   extend ActiveSupport::Concern
   included do
 
+    attr_accessible :cycle
+
     has_many :cycle_sales, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :sale_id, dependent: :destroy
+    has_one  :cycle_sale,  class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :sale_id
     has_many :cycle_purchases, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :purchase_id, dependent: :destroy
+    has_one  :cycle_purchase,  class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :purchase_id
     def all_cycles
       self.cycle_sales.includes(:cycle).map(&:cycle) + self.cycle_purchases.includes(:cycle).map(&:cycle)
     end
 
-    attr_accessible :cycle
+    # TODO: test if the has_one defined on Sale/Purchase works and these are not needed
     def cycle
       self.cycles.first
     end

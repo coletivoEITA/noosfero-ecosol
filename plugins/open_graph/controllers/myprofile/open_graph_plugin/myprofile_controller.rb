@@ -45,6 +45,5 @@ class OpenGraphPlugin::MyprofileController < MyProfileController
   end
   helper_method :url_for
 
-
 end
 

@@ -20,6 +20,7 @@ end
 ([Profile] + Profile.descendants).each do |subclass|
 subclass.class_eval do
 
+  # use profile.products.supplied to include own products
   has_many :distributed_products, class_name: 'SuppliersPlugin::DistributedProduct', foreign_key: :profile_id
 
   has_many :from_products, through: :products
@@ -41,6 +42,10 @@ class Profile
 
   def dummy?
     !self.visible
+  end
+
+  def orgs_consumers
+    @orgs_consumers ||= self.consumers.except_people.except_self
   end
 
   def self_supplier

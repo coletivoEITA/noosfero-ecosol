@@ -1,5 +1,7 @@
 require_dependency 'category'
 
+ActiveSupport.run_load_hooks :solr_category
+
 class Category
 
   after_save_reindex [:articles, :profiles], with: :delayed_job
@@ -12,7 +14,7 @@ class Category
     # filtered fields
     :parent_id,
     # ordered/query-boosted fields
-    {solr_plugin_name_sortable: :string},
+    {solr_name_sortable: :string},
   ]
 
   # we don't need this with NRT from solr 5
@@ -22,7 +24,7 @@ class Category
 
   private
 
-  def solr_plugin_name_sortable
+  def solr_name_sortable
     name
   end
 

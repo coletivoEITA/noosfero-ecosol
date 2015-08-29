@@ -11,13 +11,15 @@ class ApplicationController < ActionController::Base
   before_filter :login_from_cookie
   before_filter :login_required, :if => :private_environment?
 
+  before_filter :check_admin
+
   before_filter :verify_members_whitelist, :if => [:private_environment?, :user]
   before_filter :redirect_to_current_user
   before_filter :authorize_profiler if defined? Rack::MiniProfiler
   around_filter :set_time_zone
 
   def verify_members_whitelist
-    render_access_denied unless user.is_admin? || environment.in_whitelist?(user)
+    render_access_denied unless @user_is_admin || environment.in_whitelist?(user)
   end
 
   after_filter :set_csrf_cookie
@@ -35,6 +37,10 @@ class ApplicationController < ActionController::Base
     Time.use_zone("Etc/GMT#{gmt_offset}"){ yield }
   rescue ArgumentError
     yield
+  end
+
+  def check_admin
+    @user_is_admin = user and user.is_admin?
   end
 
   def allow_cross_domain_access
@@ -198,7 +204,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize_profiler
-    Rack::MiniProfiler.authorize_request if user and user.is_admin?
+    Rack::MiniProfiler.authorize_request if @user_is_admin
   end
 
   include SearchTermHelper

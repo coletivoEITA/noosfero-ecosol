@@ -1,12 +1,14 @@
 require_dependency 'comment'
 
+ActiveSupport.run_load_hooks :solr_comment
+
 class Comment
 
-  after_save :solr_plugin_notify_article
-  after_destroy :solr_plugin_notify_article
+  after_save :solr_notify_article
+  after_destroy :solr_notify_article
 
-  def solr_plugin_notify_article
-    article.solr_plugin_comments_updated if article.kind_of?(Article)
+  def solr_notify_article
+    article.solr_comments_updated if article.kind_of?(Article)
   end
 
   acts_as_searchable fields: SEARCHABLE_FIELDS.map{ |field, options|

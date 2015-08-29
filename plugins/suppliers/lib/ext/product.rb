@@ -41,29 +41,63 @@ class Product
   attr_accessible :from_products, :supplier_id, :supplier
 
   has_many :sources_from_products, foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct', dependent: :destroy
+  has_one  :sources_from_product,  foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct'
   has_many :sources_to_products, foreign_key: :from_product_id, class_name: 'SuppliersPlugin::SourceProduct', dependent: :destroy
+  has_one  :sources_to_product,  foreign_key: :from_product_id, class_name: 'SuppliersPlugin::SourceProduct'
   has_many :to_products, -> { order 'id ASC' }, through: :sources_to_products
+  has_one  :to_product, -> { order 'id ASC' },  through: :sources_to_product,  autosave: true
   has_many :from_products, -> { order 'id ASC' }, through: :sources_from_products
-  def from_product
-    self.from_products.first
-  end
+  has_one  :from_product, -> { order 'id ASC' },  through: :sources_from_product, autosave: true
 
-  # defined just as *from_products above
-  # may be overriden in different subclasses
-  has_many :sources_supplier_products, foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct'
-  has_many :supplier_products, -> { order 'id ASC' }, through: :sources_from_products, source: :from_product
-
-  has_many :sources_from_2x_products, through: :sources_from_products, source: :sources_from_products
-  has_many :sources_to_2x_products, through: :sources_to_product, source: :sources_to_products
+  has_many :sources_from_2x_products, through: :from_products, source: :sources_from_products
+  has_one  :sources_from_2x_product,  through: :from_product,  source: :sources_from_product
+  has_many :sources_to_2x_products,   through: :to_products,   source: :sources_to_products
+  has_one  :sources_to_2x_product,    through: :to_product,    source: :sources_to_product
   has_many :from_2x_products, through: :sources_from_2x_products, source: :from_product
-  has_many :to_2x_products, through: :sources_to_2x_products, source: :to_product
+  has_one  :from_2x_product,  through: :sources_from_2x_product,  source: :from_product
+  has_many :to_2x_products,   through: :sources_to_2x_products,   source: :to_product
+  has_one  :to_2x_product,    through: :sources_to_2x_product,    source: :to_product
 
-  has_many :suppliers, -> { uniq.order 'id ASC' }, through: :sources_from_products
-  has_many :consumers, -> { uniq.order 'id ASC' }, through: :to_products, source: :profile
+  # semantic alias for supplier_from_product(s)
+  has_many :sources_supplier_products, foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct'
+  has_one  :sources_supplier_product,  foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct'
+  has_many :supplier_products, -> { order 'id ASC' }, through: :sources_supplier_products, source: :from_product
+  has_one  :supplier_product, -> { order 'id ASC' },  through: :sources_supplier_product,  source: :from_product, autosave: true
+  has_many :suppliers, -> { distinct.order 'id ASC' }, through: :sources_supplier_products
+  has_one  :supplier, -> { order 'id ASC' },  through: :sources_supplier_product
+
+  has_many :consumers, -> { distinct.order 'id ASC' }, through: :to_products, source: :profile
+  has_one  :consumer, -> { order 'id ASC' },  through: :to_product,  source: :profile
+
+  # overhide original
+  scope :available, -> {
+    joins(:suppliers).
+    where 'products.available = ? AND suppliers_plugin_suppliers.active = ?', true, true
+  }
+  scope :unavailable, -> {
+    where 'products.available <> ? OR suppliers_plugin_suppliers.active <> ?', true, true
+  }
+  scope :with_available, -> (available) {
+    op = if available then '=' else '<>' end
+    cond = if available then 'AND' else 'OR' end
+    where "products.available #{op} ? #{cond} suppliers_plugin_suppliers.active #{op} ?", true, true
+  }
+
+  scope :name_like, lambda { |name| where "from_products_products.name ILIKE ?", "%#{name}%" }
+  scope :with_product_category_id, lambda { |id| where 'from_products_products.product_category_id = ?', id }
 
   # prefer distributed_products has_many to use DistributedProduct scopes and eager loading
-  scope :distributed, -> { where "products.type = 'SuppliersPlugin::DistributedProduct'" }
-  scope :own, -> { where "products.type = 'Product'" }
+  scope :distributed, -> { where type: 'SuppliersPlugin::DistributedProduct'}
+  scope :own, -> { where type: nil }
+  scope :supplied, -> {
+    # this remove duplicates and allow sorting on the fields, unlike distinct
+    group('products.id').
+    where type: [nil, 'SuppliersPlugin::DistributedProduct']
+  }
+  scope :supplied_for_count, -> {
+    distinct.
+    where type: [nil, 'SuppliersPlugin::DistributedProduct']
+  }
 
   scope :from_supplier, -> (supplier) { joins(:suppliers).where 'suppliers_plugin_suppliers.id = ?', supplier.id }
   scope :from_supplier_id, -> (supplier_id) { joins(:suppliers).where 'suppliers_plugin_suppliers.id = ?', supplier_id }
@@ -76,14 +110,8 @@ class Product
   def distributed?
     self.class == SuppliersPlugin::DistributedProduct
   end
-
-  def sources_supplier_product
-    self.supplier_products.load_target unless self.supplier_products.loaded?
-    self.sources_supplier_products.first
-  end
-  def supplier_product
-    self.supplier_products.load_target unless self.supplier_products.loaded?
-    self.supplier_products.first
+  def supplied?
+    self.own? or self.distributed?
   end
 
   def supplier
@@ -125,6 +153,15 @@ class Product
       self.destroy_dependent
       super
     end
+  end
+
+  def diff from = self.from_product
+    return @changed_attrs if @changed_attrs
+    @changed_attrs = []
+    SuppliersPlugin::BaseProduct::CORE_DEFAULT_ATTRIBUTES.each do |attr|
+      @changed_attrs << attr if self[attr].present? and self[attr] != from[attr]
+    end
+    @changed_attrs
   end
 
   protected

@@ -74,8 +74,6 @@ class Product < ActiveRecord::Base
 
   belongs_to :unit
 
-  include FloatHelper
-
   include WhiteListFilter
   filter_iframes :description
 
@@ -132,22 +130,6 @@ class Product < ActiveRecord::Base
 
   def price_with_discount
     discount ? (price - discount) : price
-  end
-
-  def price=(value)
-    if value.is_a?(String)
-      super(decimal_to_float(value))
-    else
-      super(value)
-    end
-  end
-
-  def discount=(value)
-    if value.is_a?(String)
-      super(decimal_to_float(value))
-    else
-      super(value)
-    end
   end
 
   def inputs_prices?
@@ -262,7 +244,7 @@ class Product < ActiveRecord::Base
   protected
 
   def validate_uniqueness_of_column_name?
-    true
+    false
   end
 
   def is_trackable?

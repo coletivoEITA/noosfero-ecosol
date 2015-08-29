@@ -4,7 +4,7 @@
   <%= hidden_field_tag(:content_type, params[:content_type]) %>
   <%= hidden_field_tag(:content_id, params[:content_id]) %>
 
-  <% unless user.is_admin? %>
+  <% unless @user_is_admin %>
     <p>
       <%= render 'shared/captcha' %>
     </p>

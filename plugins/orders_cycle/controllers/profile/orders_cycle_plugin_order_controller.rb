@@ -71,6 +71,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
       status = params[:order][:status]
       if status == 'ordered'
         if @order.items.size > 0
+          @order.to_yaml # most strange workaround to avoid a crash in the next line
           @order.update_attributes! params[:order]
           session[:notice] = t('orders_plugin.controllers.profile.consumer.order_confirmed')
         else
@@ -105,7 +106,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
 
       @consumer = @order.consumer
       @admin_edit = (user and user.in?(profile.admins) and user != @consumer)
-      return render_access_denied unless @admin_edit or user == @consumer
+      return render_access_denied unless @user_is_admin or @admin_edit or user == @consumer
 
       @consumer_orders = @cycle.sales.for_consumer @consumer
     end

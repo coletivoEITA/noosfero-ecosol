@@ -1,5 +1,7 @@
 class SuppliersPlugin::Supplier < ActiveRecord::Base
 
+  attr_accessor :distribute_products_on_create, :dont_destroy_dummy, :identifier_from_name
+
   attr_accessible :profile_id, :profile, :consumer, :consumer_id, :name, :name_abbreviation, :description
 
   belongs_to :profile
@@ -12,7 +14,10 @@ class SuppliersPlugin::Supplier < ActiveRecord::Base
   validates_presence_of :consumer
   validates_uniqueness_of :consumer_id, scope: :profile_id, if: :profile_id
 
+  scope :alphabetical, -> { order 'name ASC' }
+
   scope :active, -> { where active: true }
+  scope :dummy, -> { joins(:profile).where profiles: {visible: false} }
 
   scope :of_profile, -> (p) { where profile_id: p.id }
   scope :of_profile_id, -> (id) { where profile_id: id }
@@ -30,9 +35,6 @@ class SuppliersPlugin::Supplier < ActiveRecord::Base
   after_create :add_admins, if: :dummy?
   after_create :save_profile, if: :dummy?
   after_create :distribute_products_to_consumer
-
-  attr_accessor :distribute_products_on_create, :dont_destroy_dummy, :identifier_from_name
-
   before_validation :fill_identifier, if: :dummy?
   before_destroy :destroy_consumer_products
 
@@ -56,7 +58,7 @@ class SuppliersPlugin::Supplier < ActiveRecord::Base
   end
 
   def self?
-    profile == consumer
+    self.profile_id == self.consumer_id
   end
   def person?
     self.consumer.person?

@@ -9,15 +9,15 @@ module SolrPlugin::SearchHelper
   SortOptions = {
     catalog: {
       relevance: {option: ['Relevance', ''], solr_opts: {},
-                  empty_solr_opts: {sort: 'solr_plugin_available_sortable desc, solr_plugin_highlighted_sortable desc, score desc, solr_plugin_name_sortable asc'}},
-      name: {option: ['Name', 'name'], solr_opts: {sort: 'solr_plugin_available_sortable desc, solr_plugin_name_sortable asc'}},
-      price: {option: ['Lowest price', 'price'], solr_opts: {sort: 'solr_plugin_available_sortable desc, solr_plugin_price_sortable asc'}},
-      newest: {option: ['Newest', 'newest'], solr_opts: {sort: 'solr_plugin_available_sortable desc, created_at desc'}},
-      updated: {option: ['Last updated', 'updated'], solr_opts: {sort: 'solr_plugin_available_sortable desc, updated_at desc'}},
+                  empty_solr_opts: {sort: 'solr_available_sortable desc, solr_highlighted_sortable desc, score desc, solr_name_sortable asc'}},
+      name: {option: ['Name', 'name'], solr_opts: {sort: 'solr_available_sortable desc, solr_name_sortable asc'}},
+      price: {option: ['Lowest price', 'price'], solr_opts: {sort: 'solr_available_sortable desc, solr_price_sortable asc'}},
+      newest: {option: ['Newest', 'newest'], solr_opts: {sort: 'solr_available_sortable desc, created_at desc'}},
+      updated: {option: ['Last updated', 'updated'], solr_opts: {sort: 'solr_available_sortable desc, updated_at desc'}},
     },
     products: {
       relevance: {label: _('Relevance')},
-      name: {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
+      name: {label: _('Name'), solr_opts: {sort: 'solr_name_sortable asc'}},
       more_recent: {label: c_('More recent'), solr_opts: {sort: 'created_at desc, score desc'}},
       #more_recent: {label: c_('More recent'), solr_opts: {boost_functions: ['recip(ms(NOW/HOUR,updated_at),1.3e-10,1,1)']}},
       closest: {label: _('Closest to me'), if: proc{ logged_in? && (profile=current_user.person).lat && profile.lng },
@@ -26,27 +26,27 @@ module SolrPlugin::SearchHelper
     },
     events: {
       none: {label: _('Relevance')},
-      name: {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
+      name: {label: _('Name'), solr_opts: {sort: 'solr_name_sortable asc'}},
       more_recent: {label: c_('More recent'), solr_opts: {sort: 'created_at desc, score desc'}},
     },
     articles: {
       none: {label: _('Relevance')},
-      name: {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
+      name: {label: _('Name'), solr_opts: {sort: 'solr_name_sortable asc'}},
       more_recent: {label: c_('More recent'), solr_opts: {sort: 'created_at desc, score desc'}},
     },
     enterprises: {
       none: {label: _('Relevance')},
-      name: {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
+      name: {label: _('Name'), solr_opts: {sort: 'solr_name_sortable asc'}},
       more_recent: {label: c_('More recent'), solr_opts: {sort: 'created_at desc, score desc'}},
     },
     people: {
       none: {label: _('Relevance')},
-      name: {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
+      name: {label: _('Name'), solr_opts: {sort: 'solr_name_sortable asc'}},
       more_recent: {label: c_('More recent'), solr_opts: {sort: 'created_at desc, score desc'}},
     },
     communities: {
       none: {label: _('Relevance')},
-      name: {label: _('Name'), solr_opts: {sort: 'solr_plugin_name_sortable asc'}},
+      name: {label: _('Name'), solr_opts: {sort: 'solr_name_sortable asc'}},
       more_recent: {label: c_('More recent'), solr_opts: {sort: 'created_at desc, score desc'}},
     },
   }
@@ -70,13 +70,13 @@ module SolrPlugin::SearchHelper
   def solr_filters_queries asset, environment
     case asset
     when :products
-      ['solr_plugin_public:true', 'enabled:true']
+      ['solr_public:true', 'enabled:true']
     when :catalog, :events, :categories, :product_categories
       []
     when :profiles, :people, :organizations, :communities, :enterprises
-      ['solr_plugin_public:true', 'environment_id:%s' % environment.id]
+      ['solr_public:true', 'environment_id:%s' % environment.id]
     else
-      ['solr_plugin_public:true']
+      ['solr_public:true']
     end
   end
 

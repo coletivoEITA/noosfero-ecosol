@@ -1,11 +1,4 @@
-#TODO: remove refences split into different plugins
-
-"en-US": &en-US
-
-  number:
-    currency:
-      format:
-        xlsx_currency: "[$$-409]* #.##0,00;[RED]-[$$-409]* #.##0,00"
+en-US: &en-US
 
   suppliers_plugin:
     lib:
@@ -13,6 +6,8 @@
         name: "Suppliers"
         description: "Suppliers and its distributed products registry"
         distribution_tab: "Distribuição"
+        compare_tab: "Compare with the supplier"
+        basket_tab: "Cesta"
       import:
         keys:
           # ordered by most specific
@@ -139,7 +134,16 @@
         supplier_created: "%{terms.supplier.singular.capitalize} created"
       product:
         import_in_progress: "The products are being imported. Wait a while and reload the page to view them."
+
     models:
+      base_product:
+        default_attributes:
+          name: 'Name'
+          description: 'Description'
+          price: 'Price'
+          unit_id: 'Unit'
+          product_category_id: 'Category'
+          image_id: 'Image'
       distributed_product:
         greater: " > "
       product:
@@ -152,6 +156,22 @@
         filter: Filter
         filter_it: Filter
       actions:
+
+      manage_products:
+        compare_tab:
+          see_supplier: 'See original product at the page of the supplier "%{supplier}".'
+          see: 'See original product.'
+          no_diff: 'Este produto não tem nenhuma diferença com o que está na página do fornecedor".'
+          diff_count: "This product has <b>%{n}</b> differences compared to the same product on the supplier's page:"
+        distribution_tab:
+          title: "This product is distributed for the following consumers:"
+          no_consumers: "This profile isn't a suppliers of the network."
+          save: "Save"
+        basket_tab:
+          make_a_basket: 'Make this product a basket by adding another product!'
+          search: 'find and add your products'
+          component: 'Component'
+          quantity: 'Quantity'
 
       control_panel:
         suppliers: "Manage suppliers"
@@ -170,6 +190,7 @@
         index:
           redistribution_situation: "Product distribution"
           name: "Name"
+
       product:
         import:
           action: "Import spreadsheet"
@@ -223,9 +244,13 @@
           unit: Unit
           showing_pcount_produc: "Total: %{count} products"
           we_don_t_have_product: "We don't have products to show."
+        add:
+          title: "Create product"
+          own_product: "Create own product"
+          or_from_a_supplier: 'or from a managed supplier:'
         index:
           active: active
-          add_product: "Add product"
+          add_product: "Create product"
           all_the_categories: "all the categories"
           all_the_suppliers: "all %{terms.supplier.article.plural}"
           situation: "distribution situation"
@@ -298,6 +323,7 @@
             one: "1 product"
             other: "%{count} products"
           manage_products: "manage products"
+          add_product: "add product"
           registered_supplier_i: "Registered %{terms.supplier.singular} in the network"
           disassociate: "disassociate %{terms.profile.from_article.singular}"
           supplier_profile_product: " registered products"
@@ -313,275 +339,12 @@
           name: Name
           suppliers: "%{terms.supplier.plural.capitalize}"
           this_is_the_list_of_s: "This is the list of %{terms.supplier.plural} associated %{terms.profile.to_article.singular}. It is possible to associate with existent %{terms.supplier.plural} or register %{terms.supplier.one}."
-      manage_products:
-        distribution_tab:
-          title: "This product is distributed for the following consumers:"
-          no_consumers: "This profile isn't a suppliers of the network."
-          save: "Save"
 
   orders_cycle_plugin:
     terms:
       <<: *suppliers_terms
-    lib:
-      plugin:
-        name: "Orders' Cycle"
-        description: "Create and manage orders' cycle"
-      ext:
-        orders_plugin:
-          order:
-            cyclecode_ordercode: "%{cyclecode}.%{ordercode}"
-      mailer:
-        profile_subject: "[%{profile}] %{subject}"
-        order_was_changed: "[%{profile}] Your order was modificado"
-      order_block:
-        distribution_orders_c: "Distribution orders' cycles for consumers"
-        offer_cycles_for_you_: "Offer cycles for you consumers to make orders"
-        orders_cycles: "Orders' cycles"
-    controllers:
-      myprofile:
-        message_controller:
-          message_sent: "Message sent"
-        product_controller:
-          product_removed_from_: "Product removed from cycle"
-          product_removed_succe: "Product removed successfully"
-          the_product_was_not_r: "The product was not removed"
-        cycle_controller:
-          cycle_created: "Cycle created"
-          cycle_n_n: "Cycle n.%{n}"
-          new_open_cycle: "New open cycle: "
-    models:
-      cycle:
-        code_name: "%{code}. %{name}"
-        delivery_period_befor: "Delivery' period before orders' period"
-        invalid_delivery_peri: "Invalid delivery' period"
-        invalid_orders_period: "Invalid orders' period"
-        statuses:
-          edition: Edition
-          orders: Orders
-          purchases: Purchases
-          receipts: Receipts
-          separation: Separation
-          delivery: Delivery
-          closing: Closing
-    views:
-      gadgets:
-        _cycle:
-          happening: Happening
-          orders_open_b_cycle: "Orders open: <b>%{cycle}</b>"
-          place_an_order: "place an order"
-          see_orders_cycle: "see orders' cycle"
-        cycles:
-          all_cycles: "all cycles"
-      mailer:
-        open_cycle:
-          a_new_cycle_is_open_c: "A new cycle is open called "
-          hello_member_of_name: "Hello consumer of %{name},"
-          the_administrator_let: "The administrator let a message about this cycle"
-          the_cycle_description: "The cycle description is.."
-      profile:
-      order:
-        _consumer_orders:
-          caution: "<strong>Caution</strong>, you are editing the orders of \"%{consumer}\". It is preferable to make small editions through the cycle's administration, this way the person will be properly warned of the updates. We recommend using this page only if you're doing the order for another person."
-          show_cancelled_orders: "show cancelled orders"
-          hide_cancelled_orders: "hide cancelled orders"
-          administration_of_thi: "Administration of this cycle"
-          before_the_closing: "(before the closing)"
-          change_order: "reopen order"
-          edit_your_orders: "Edit your orders"
-          login: login
-          new_order: "New order"
-          repeat_order: "Repetir order"
-          orders_from_another_m: "Orders from another consumer"
-          orders_from_consumer_: "Orders from \"%{consumer}\" on this cycle"
-          send_message_to_the_m: "send message to the managers"
-          sign_up: "sign up"
-          this_cycle_is_already: "This cycle is already closed."
-          this_cycle_is_not_ope: "This cycle is not open yet."
-          the_time_for_orders_is: "The orders' period for this cycle is from %{start} to %{finish}"
-          to_place_an_order_you: "To place an order you need to be logged in and registered %{terms.profile.at_article.singular}. Please %{login} or %{signup}."
-          you_haven_t_placed_an: "You haven't placed any order on this cycle yet."
-          you_still_can: "You still can:"
-          your_order_is_confirm: "Your order is confirmed and registered. Please follow the guidelines of the delivery method below, so that it happens without problems."
-          your_order_was_cancel: "Your order was cancelled."
-          your_order_wasn_t_con: "Your order wasn't confirmed and the cycle orders period already ended."
-          your_orders_on_this_c: "Your orders on this cycle"
-          associate_to_order: "Associate to make orders"
-        _filter_products:
-          active: active
-          all_the_categories: "all the categories"
-          all_the_suppliers: "all %{terms.supplier.article.plural}"
-          and_being: "and being"
-          anyone: anyone
-          bigger_than_the_stock: "bigger than the stock"
-          filter: Filter
-          in_any_state: "In any state"
-          inactive: inactive
-          product_name: "Product Name"
-          supplier: "%{terms.supplier.singular.capitalize}"
-          whose_qty_available_i: "whose qty. available is"
-        _status:
-          code_status_message: "%{code} %{status_message}"
-          open_it: "open it"
-        index:
-          code: "%{code}."
-          orders_cycles: "Orders' cycles"
-          place_an_order: "Place an order"
-          place_another_order: "Place another order"
-          there_s_no_open_sessi: "There's no open cycle"
-          your_orders: "Your orders:"
-      product:
-        _order_edit:
-          add: Add
-          cancel: cancel
-          change: Change
-          city: City
-          city_state: "%{city}/%{state}"
-          include: include
-          more_about_the_produc: "More about the producer \"%{supplier}\""
-          no_description: "No description"
-          opening_new_order_for: "Opening new order for your product inclusion"
-          opening_order_code_fo: "Opening order %{code} for your product inclusion"
-          price_percent_price_w: "%{price} + %{percent}% = %{price_with_margin}"
-          price_s_descriptive: "price's descriptive"
-          product_image: "Product Image"
-        _order_search:
-          order_qty: "Order qty"
-          category: Category
-          producer: Producer
-          price: Price
-          product: Product
-          this_search_hasn_t_re: "This search hasn't returned any product"
-        _cycle_edit:
-          all_ordered_products: "All ordered products from this product will also be removed; you should first warn consumers that ordered this products"
-          buy_price: "Buy price"
-          buy_unit: "Buy unit"
-          cancel_updates: "cancel updates"
-          default_margin: "Default margin"
-          default_sell_price: "Default sell price"
-          edit_product: "edit product"
-          margin: Margin
-          qty_in_stock: "Qty. in stock"
-          qty_offered: "Qty. offered"
-          remove_from_cycle: "remove from cycle"
-          save: Save
-          sell_price: "Sell price"
-          sell_unit: "Sell unit"
-      cycle:
-        _brief:
-          confirmed_orders:
-            zero: "(no confirmed orders)"
-            one: "(1 confirmed order)"
-            other: "(%{count} confirmed orders)"
-          code: "%{code}."
-          delivery: Delivery
-          orders: Orders
-        _closed:
-          cycle_already_finishe: "Cycle already finished"
-        _edit_fields:
-          add_method: "Add method"
-          available_delivery_me: "Available delivery methods"
-          cancel_changes: "cancel changes"
-          remove: "remove"
-          confirm_remove: "Are you sure you want to remove this cycle?"
-          create_new_cycle: "Create new cycle"
-          deliveries_interval: "Deliveries Interval"
-          description: Description
-          general_settings: "General settings"
-          name: Name
-          notify_members_of_ope: "Notify consumer of open orders"
-          opening_message: "Opening Message"
-          orders_interval: "Orders Interval"
-          save: Save
-          save_and_open_orders: Save and open orders
-          create_and_open_orders: Create and open orders
-          this_message_will_be_: "This message will be sent by mail for the consumers %{terms.profile.from_article.singular} "
-        _edit_popin:
-          close: Close
-          cycle_editing: "Cycle editing"
-          cycle_saved: "Cycle saved."
-        _edition:
-          info: 'The edition time is gone and the cycle is already public. Actually, the cycle is in a supply call period.<br/><br/> It is still possible to edit some Cycle parameters through this page, however, beware of the risk. Some operations have different implications depending on the fase you are. When needed, you will be notified by a notification window of the consequences of the changes made.'
-          add_product: "Add product"
-          it_was_automatically_: "It was automatically created from the active products. See the list below and check for needed changes."
-          the_following_list_of: "The following list of products are available in this cycle."
-          the_products: "The products"
-        _products_loading: "The products are being loaded into the cycle."
-        _orders:
-          header_help: "In this phase the orders %{terms.consumer.from_article.plural} are received, and it is possible supervise them if by chance there is some more severe error."
-          the_orders_period_is_: "The orders period is still on, take care to edit the orders already open, it may confuse the users"
-          already_closed: "The orders period was already closed, It's not possible to edit the originals orders. In the redistribution phase it is possible to edit the order, before the delivery it also possible to edit this order."
-        _purchases:
-          header_help: "In this phase, using the received orders, the purchases for each supplier are done to supply the demand of all orders."
-        _receipts:
-          header_help: "In this phase are registered the receipts of the purchases e are edited any errors that may exist."
-        _separation:
-          header_help: "In this phase each order é separated acording to the availability of the products purchased that arrived."
-        _delivery:
-          header_help: "In this phase are registered the deliveries %{terms.consumer.to_article.plural}. This is the moment to register the changes in relation to what was separated."
-        _product_lines:
-          category: Category
-          price: Price
-          product: Product
-          qty_avail: "Qty. avail."
-          showing_pcount_produc: "Showing %{pcount} products of %{allpcount}"
-          supplier: "%{terms.supplier.singular.capitalize}"
-        _results:
-          no_cycles_to_show: "No cycles to show"
-        _timeline:
-          are_you_sure_you_want_to_reopen: "Are you sure you want to reopen the orders cycle?"
-          are_you_sure_you_want_to_close: "Are you sure you want to close the orders cycle?"
-          call: Call
-          close: Close
-          close_status: "Close %{status}"
-          finish_cycle_editing: "Open orders for cycle"
-          reopen_orders_period: "Reopen orders period"
-        _title:
-          new_cycle: "New cycle"
-          order_cycle: "Order Cycle: "
-        _view_dates:
-          delivery: "Delivery: "
-          happening: Happening
-          orders: "Orders: "
-        _view_header:
-          ? ", "
-          : ", "
-          all_orders_cycles: "all orders cycles"
-          orders_cycle_cycle: "Orders' cycle: %{cycle}"
-          other_open_cycles_lis: "Other open cycles: %{list}. See also %{all}"
-          see_also_all: "See also %{all}"
-        _view_products:
-          the_products: "The products"
-        add_products:
-          add_all_missing_produ: "add all missing products %{terms.profile.to_article.singular}"
-          add_product_to_cycle_: "Add product to cycle's products"
-          cancel: cancel
-          close: close
-          or: or
-          search_for_a_product_: "Search for a product in our products"
-          send: Send
-          type_in_a_name: "Type in a name"
-          you_already_have_all_: "You already have all your distributed products added"
-        index:
-          and_are_from_the_mont: "and are from the month of"
-          closed_cycles: "Closed Cycles"
-          filter: Filter
-          new_cycle: "New cycle"
-          no_cycles_to_show: "No cycles to show"
-          open_cycles: "Open Cycles"
-          orders_cycles: "Orders' Cycles"
-          show_cycles_from_year: "Show cycles from year"
 
   consumers_coop_plugin:
-    lib:
-      plugin:
-        name: "Consumers' Coop"
-        description: "Make an organization a consumers cooperative"
-      layout_helper:
-        orders: Orders
-        start: Start
-        products: Products
-        administration: Administration
-        volunteering: Volunteering
     terms:
       <<: *suppliers_terms
       profile: &consumers_coop_term_profile
@@ -626,51 +389,8 @@
           singular: "this consumers' coop"
         with_which:
           singular: "with which the consumers' coop"
-    controllers:
-      myprofile:
-        distribution_settings: "Distribution settings saved."
-    models:
-      header_image:
-        fn_of_uploaded_file_w: "%{fn} of uploaded file was larger than the maximum size of 2.0 MB"
-    views:
-      layouts:
-        _admin_submenu:
-          members: Consumers
-          orders_cycles: "Orders' Cycles"
-          products: Products
-          suppliers: "%{terms.supplier.plural.capitalize}"
-          settings: "Settings"
-      profile:
-        index:
-          dashboard: Dashboard
-        settings:
-          abbreviated_name_of_t: "Abbreviated name of the %{terms.profile.singular}"
-          activated: Activated
-          black: black
-          cancel: cancel
-          collective_consumptio: "Collective Consumption Mode"
-          disabled: Disabled
-          general: "General"
-          header: "Header"
-          volunteers: "Volunteers"
-          volunteers_enabled: "Manage volunteers' period on orders' cycles"
-          header_background_col: "Header background color"
-          header_s_image: "Header's image"
-          header_type: "Header Type"
-          image_collective_name: "Image + %{terms.profile.singular} name"
-          only_the_image: "Only the image"
-          image_help: "This image will be used on the %{terms.profile.singular}'s page, must be 1040x90px, it will be automatically cropped to this size."
-          pure_color_collective: "pure color + %{terms.profile.singular} name"
-          save: Save
-          text_color: "Text color"
-          this_name_will_be_use: "This name will be used to avoid always use the full name of the %{terms.profile.singular}. How the %{terms.profile.singular} is generally called by the people?"
-          white: white
 
   networks_plugin:
-    lib:
-      plugin:
-        name: Networks
-        description: "Create and manage networks."
     terms:
       <<: *suppliers_terms
       profile: &networks_term_profile
@@ -763,122 +483,9 @@
           singular: "any enterprise"
         this:
           singular: "this enterprise"
-    models:
-      network:
-        settings_button: "Network's informations and settings"
-      associate_enterprise:
-        title: "Association request %{terms.supplier.from.singular}"
-        information: "%{requestor} said it is part of the network %{linked_subject}."
-        task_notification_message: "%{enterprise} said it is part of the network %{network}."
-        task_cancelled_message: "%{network} didn't accept the association request of the %{terms.supplier.of_article.singular} %{enterprise}."
-        task_finished_message: "%{network} confirmed the association %{terms.supplier.of_article.singular} %{enterprise}!"
-    controllers:
-      node:
-        edit: "Node settings saved"
-    views:
-      control_panel:
-        structure: "Manage network's structure"
-      profile_editor:
-        help: "If %{terms.supplier.your.singular} participate %{terms.profile.of_another.singular}, %{search}, access %{terms.profile.article.singular}, and ask to join by clicking the button 'We are part %{terms.profile.of_this.singular}"
-        search: "procure a rede"
-        networks_i_participate: "%{terms.profile.plural.capitalize} I participate"
-        none: "None"
-        disassociate: "Disassociate"
-        disassociate_confirm: "By disassociating %{terms.supplier.your.singular} %{terms.profile.from_article.singular}, your distributed products %{terms.profile.to_it.singular} will be deleted and you won't distributed more products %{terms.profile.to_it.singular}. Please confirm your choice."
-      blocks:
-        profile_info_actions:
-          button: "We are part %{terms.profile.of_this.singular}"
-        location:
-          title: "Map of Enterprises from %{profile}"
-      admin:
-        index:
-          title: "Manage networks"
-          network_template: "Edit Networks' template"
-          network_node_template: "Edit Nodes' template"
-          new: "Create network"
-          new_button: "Criar"
-          registered_networks: "Registered networks"
-          no_network: "Any registered network."
-      supplier:
-        _supplier:
-          by_removing_this_supp: "By removing %{terms.supplier.article.singular} all its products won't be available. Please confirm you choice"
-      network:
-        join:
-          request_sent: "%{terms.profile.article.singular.capitalize} will receive a message to approve your association request."
-          confirm: "%{terms.supplier.article.singular.capitalize} %{enterprise} is part %{terms.profile.of_article.singular} %{network}?"
-          yes: "Yes"
-          no: "No"
-          choose: "Which %{terms.supplier.of_article.plural} bellow are parte of %{terms.profile.of_article.singular} %{network}?"
-        structure:
-          pathway: "You're at: "
-          none: "None"
-          title: "Network's structure"
-          structure: "Structure"
-          add_enterprise_to_network: "Add %{terms.supplier.singular} %{terms.profile.to_article.singular}"
-          add_enterprise_to_node: "Add %{terms.supplier.singular} to this node"
-          add_node: "Create node"
-          edit_node_template: "Edit nodes' visual theme"
-          confirm_node_remove: "By removing this node, %{terms.supplier.article.plural} and nodes associated to it will be associated to the node '%{parent}'. Please confirm the removal of the node '%{node}'."
-          confirm_supplier_desassociate: "Plese confirm that you want to desassociate %{terms.supplier.article.singular} '%{supplier}'."
-          edit: "Edit"
-          config: "Setup"
-          remove: "Remove"
-          desassociate: "Desassociate"
-          nodes: "Nodes"
-          enterprises: "%{terms.supplier.plural.capitalize}"
-      node:
-        create:
-          new_button: "Create"
-          context: "Create new node inside '%{name}'"
-        edit:
-          title: "Settings of the node %{node}"
-          back: "Back to network's structure"
-          node_info: "Node's informations"
-          presentation_text: "Presentation's text:"
-          orders_management: "Orders' management"
-        _orders_management:
-          forward_explanation: "When an order is confirmed through the shopping basket, an email with the order's details and the instructions of how to proceed is sent to the final user (buyer), to the administrators %{terms.supplier.from_article.plural} and to the administrators %{terms.profile.from_article.singular}. You can assign representatives of this node so that they can receive the orders of your products in place of %{terms.profile.from_article.singular}."
-          network_forward: "send the orders %{terms.profile.to_article.singular}"
-          managers_forward: "send the orders to the representatives:"
-      enterprise:
-        edit:
-          title: "Settings of the enterprise %{enterprise}"
 
-  stock_plugin:
-    lib:
-      plugin:
-        name: "Products' Stock"
-        description: "Manage stocks of products"
-        control_panel:
-          manage: "Manage Stock"
-        manage_products:
-          stock_tab: "Stock"
-    models:
-      place:
-        name: "Place's name"
-        description: "Description"
-      associate_enterprise:
-        title: "Association %{terms.supplier.of.singular} %{terms.profile.singular.capitalize}"
-        task_finished_message: "%{enterprise} accepted your request to associate it with %{network}."
-        task_cancelled_message: "%{enterprise} rejected your request to associate it with %{network}."
-        task_notification_message: "%{enterprise} wants to associate with %{network}."
-    views:
-      myprofile:
-        index:
-          help: "Here you can put your products on the places you have. The stock is automatically connected to the payment of the orders."
-          first_place: "Create your first place for stock"
-        edit:
-          save: "Save"
-      products:
-        any: "Any product registered, %{manage_products}."
-        click_to_manage_products: "click to manage products"
-        product: "Product"
-        allocations: "Places and quantities"
-        _place:
-          none: "none"
-
-'en_US':
+en_US:
   <<: *en-US
-'en':
+en:
   <<: *en-US
 

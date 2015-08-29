@@ -42,7 +42,7 @@ class SuppliersPluginMyprofileController < MyProfileController
       profile.save
       profile.supplier_products_default_margins if params[:apply_to_all]
 
-      render partial: 'suppliers_plugin_shared/pagereload'
+      render partial: 'suppliers_plugin/shared/pagereload'
     end
   end
 

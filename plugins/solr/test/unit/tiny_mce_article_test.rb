@@ -18,7 +18,7 @@ class TinyMceArticleTest < ActiveSupport::TestCase
 
   should 'define type facet' do
 	  a = TinyMceArticle.new
-    assert_equal [[a.send(:solr_plugin_f_type), TextArticle.type_name, 1]],
-      TinyMceArticle.send(:solr_plugin_f_type_proc, TinyMceArticle.facet_by_id(:solr_plugin_f_type), [[a.send(:solr_plugin_f_type), 1]])
+    assert_equal [[a.send(:solr_f_type), TextArticle.type_name, 1]],
+      TinyMceArticle.send(:solr_f_type_proc, TinyMceArticle.facet_by_id(:solr_f_type), [[a.send(:solr_f_type), 1]])
   end
 end

@@ -44,6 +44,25 @@ suppliers = {
     },
   },
 
+  // core uses (future product plugin)
+  product: {
+
+    pmsync: function (to_price) {
+      var margin_input = $('#product_margin_percentage')
+      var price_input = $('#product_price')
+      var base_price_input = $('#product_supplier_product_attributes_price')
+
+      if (to_price)
+        suppliers.price.calculate(price_input, margin_input, base_price_input)
+      else
+        suppliers.margin.calculate(margin_input, price_input, base_price_input)
+    },
+
+    updateBasePrice: function () {
+      this.pmsync(this)
+    },
+  },
+
   our_product: {
 
     toggle_edit: function () {
@@ -96,6 +115,51 @@ suppliers = {
         if (checkbox.checked && !confirm(text))
           checkbox.checked = false
       },
+    },
+  },
+
+  basket: {
+    searchUrl: null,
+    addUrl: null,
+    removeUrl: null,
+
+    remove: function (id) {
+      var self = this
+      $.ajax(self.removeUrl, {method: 'DELETE',
+       data: {aggregate_id: id},
+       success: function(data) {
+        self.reload(data)
+       },
+      })
+    },
+
+    reload: function (data) {
+      $('#product-basket').html(data)
+      $('#basket-add').focus()
+    },
+
+    load: function () {
+      var self = this
+      var input = $('#basket-add')
+
+      self.source = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: this.searchUrl+'?query=%QUERY',
+      })
+      self.source.initialize()
+
+      input.typeahead({
+        minLength: 2, highlight: true,
+      }, {
+        displayKey: 'label',
+        source: this.source.ttAdapter(),
+      }).on('typeahead:selected', function(e, item) {
+        input.val('')
+        $.post(self.addUrl, {aggregate_id: item.value}, function(data) {
+          self.reload(data)
+        })
+      })
     },
   },
 
