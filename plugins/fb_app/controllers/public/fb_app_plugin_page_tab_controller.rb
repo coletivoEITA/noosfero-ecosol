@@ -65,7 +65,7 @@ class FbAppPluginPageTabController < FbAppPluginController
     return redirect_to '/plugin/fb_app/myprofile_config' if params[:page_id].blank? and params[:signed_request].blank?
     return unless load_page_tabs
 
-    if request.put? and @page_id.present?
+    if request.patch? and @page_id.present?
       create_page_tabs if @page_tab.nil?
 
       @page_tab.update_attributes! params[:page_tab]
