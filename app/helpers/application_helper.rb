@@ -6,11 +6,11 @@ require 'redcloth'
 # application.
 module ApplicationHelper
 
-  include UrlHelper
-
   include PermissionNameHelper
 
   include PaginationHelper
+
+  include UrlHelper
 
   include ModalHelper
 
@@ -906,7 +906,7 @@ module ApplicationHelper
   end
 
   def base_url
-    environment.top_url(request.scheme)
+    profile ? profile.top_url(request.scheme) : environment.top_url(request.scheme)
   end
   alias :top_url :base_url
 

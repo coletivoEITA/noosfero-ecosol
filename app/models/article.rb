@@ -10,7 +10,8 @@ class Article < ActiveRecord::Base
                   :external_feed_builder, :display_versions, :external_link,
                   :image_builder, :show_to_followers,
                   :published_at,
-                  :author, :created_by, :last_changed_by
+                  :author, :created_by, :last_changed_by,
+                  :display_preview
 
   acts_as_having_image
 
@@ -642,6 +643,20 @@ class Article < ActiveRecord::Base
     can_display_hits? && display_hits
   end
 
+  def display_media_panel?
+    can_display_media_panel? && environment.enabled?('media_panel')
+  end
+
+  def can_display_media_panel?
+    false
+  end
+
+  settings_items :display_preview, :type => :boolean, :default => false
+
+  def display_preview?
+    false
+  end
+
   def image?
     false
   end
@@ -791,7 +806,7 @@ class Article < ActiveRecord::Base
   end
 
   def activity
-    ActionTracker::Record.find_by_target_type_and_target_id 'Article', self.id
+    ActionTracker::Record.where(target_type: 'Article', target_id: self.id).first
   end
 
   def create_activity

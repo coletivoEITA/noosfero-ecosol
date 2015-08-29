@@ -16,18 +16,18 @@
           query: 'Vitrine de produtos ou serviços escolhidos por busca livre'
     views:
       myprofile:
-        checking_auth: 'Verificando autorização de acesso' 
-        different_login: 'Mas você está logado no facebook como:' 
-        current_login: 'Você está logado no facebook como:' 
-        connect: 'Quero instalar o App Cirandas no Face' 
-        logged_connect: 'Quero conectar esta conta do Facebook com meu usuário %{profile} no Cirandas' 
-        disconnect: 'Desconectar' 
-        connect_to_another: 'Conectar a outra conta do Facebook' 
-        reconnect: 'Reconectar' 
+        checking_auth: 'Verificando autorização de acesso'
+        different_login: 'Mas você está logado no facebook como:'
+        current_login: 'Você está logado no facebook como:'
+        connect: 'Quero instalar o App Cirandas no Face'
+        logged_connect: 'Quero conectar esta conta do Facebook com meu usuário %{profile} no Cirandas'
+        disconnect: 'Desconectar'
+        connect_to_another: 'Conectar a outra conta do Facebook'
+        reconnect: 'Reconectar'
 
         timeline:
           heading: 'Postar ações do Cirandas no facebook automaticamente:'
-          add: 'Salvar configuração de postagens na timeline' 
+          add: 'Salvar configuração de postagens na timeline'
           explanation_title: 'Aguarde!'
           explanation_text: 'Em breve, este aplicativo poderá postar automaticamente no seu face as ações que você fizer no cirandas! Por exemplo: quando você postar novos conteúdos no seu blog, enviar uma imagem, etc.'
           organization_redirect: '%{redirect_link} para postar atualizações %{type}, conecte o seu perfil pessoal do cirandas ao facebook.'
@@ -55,7 +55,7 @@
 
         catalog:
           see_page: 'Ver página no facebook'
-        
+
         error:
           empty_title: 'Por favor, coloque um título para a sua vitrine.'
           empty_settings: 'Por favor, selecione os empreendimentos solidários ou os termos de busca para sua vitrine.'

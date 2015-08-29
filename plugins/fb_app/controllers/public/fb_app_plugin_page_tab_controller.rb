@@ -150,7 +150,11 @@ class FbAppPluginPageTabController < FbAppPluginController
   def get_layout
     return nil if request.format == :js or request.xhr?
 
+<<<<<<< HEAD
     return "#{Rails.root}/public/designs/themes/cirandas-responsive/layouts/cirandas-responsive"
+=======
+    return 'application-responsive'
+>>>>>>> rails4
   end
 
   def disable_cache

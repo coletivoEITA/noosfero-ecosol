@@ -44,4 +44,8 @@ module UrlHelper
     {protocol: '//'}
   end
 
+  def back_url
+    'javascript:history.back()'
+  end
+
 end

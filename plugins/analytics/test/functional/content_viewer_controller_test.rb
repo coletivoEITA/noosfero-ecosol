@@ -34,6 +34,8 @@ class ContentViewerControllerTest < ActionController::TestCase
 
     first_page_view = @community.page_views.order(:id).first
     assert_equal @request.referer, first_page_view.referer_url
+    assert_equal @user, first_page_view.user
+    assert first_page_view.request_duration > 0 and first_page_view.request_duration < 1
 
     @request.env['HTTP_REFERER'] = first_url
     get :view_page, profile: @community.identifier, page: @community.articles.last.path.split('/')

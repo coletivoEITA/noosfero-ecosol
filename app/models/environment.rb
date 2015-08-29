@@ -13,7 +13,7 @@ class Environment < ActiveRecord::Base
                   :reports_lower_bound, :noreply_email,
                   :signup_welcome_screen_body, :members_whitelist_enabled,
                   :members_whitelist, :highlighted_news_amount,
-                  :portal_news_amount, :date_format
+                  :portal_news_amount, :date_format, :signup_intro
 
   has_many :users
 
@@ -981,7 +981,7 @@ class Environment < ActiveRecord::Base
   end
 
   def highlighted_products_with_image(options = {})
-    self.products.where(highlighted: true).joins(:image)
+    self.products.where(highlighted: true).joins(:image).order('created_at ASC')
   end
 
   settings_items :home_cache_in_minutes, :type => :integer, :default => 5

@@ -1,8 +1,6 @@
 <%= error_messages_for 'article' %>
 
-<% show_media_panel = environment.enabled?('media_panel') && [TinyMceArticle, TextileArticle, Event, EnterpriseHomepage].any?{|klass| @article.kind_of?(klass)} %>
-
-<div class='<%= (show_media_panel ? 'col-lg-8 col-md-6 col-sm-6 with_media_panel' : 'col-lg-12 col-md-12 col-sm-12 no_media_panel') %>'>
+<div class='<%= if @article.display_media_panel? then 'col-lg-8 col-md-6 col-sm-6 with_media_panel' else 'col-lg-12 col-md-12 col-sm-12 no_media_panel' end %>'>
 <%= labelled_form_for 'article', :html => { :multipart => true, :class => @type } do |f| %>
 
   <%= hidden_field_tag("type", @type) if @type %>
@@ -68,7 +66,7 @@
 <% end %>
 </div>
 
-<% if show_media_panel %>
+<% if @article.display_media_panel? %>
   <%= render :partial => 'text_editor_sidebar' %>
 <% end %>
 

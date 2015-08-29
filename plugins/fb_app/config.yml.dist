@@ -4,8 +4,8 @@ timeline:
   use_test_app: true
 
 test_users:
-  - brauliobo
-  - dtygel
+  - identifier1
+  - identifier1
 
 app:
   id: xxx
@@ -13,7 +13,7 @@ app:
   domain: domainconfigured.net
 
   open_graph:
-    namespace: app_cirandas
+    namespace: app_name
     objects:
       blog_post: article
       community: community
@@ -23,7 +23,7 @@ app:
       event: event
       friend: friend
       gallery_image: picture
-      person: user_in_cirandas
+      person: user
       product: sse_product
       uploaded_file: document
     actions:

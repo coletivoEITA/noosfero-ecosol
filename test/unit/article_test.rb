@@ -1095,12 +1095,13 @@ class ArticleTest < ActiveSupport::TestCase
     ActionTracker::Record.destroy_all
 
     community = fast_create(Community)
-    member_1 = create_user.person
+    User.current = create_user
+    member_1 = User.current.person
     community.add_member(member_1)
 
     article = create TinyMceArticle, :name => 'Tracked Article 1', :profile_id => community.id
     first_activity = article.activity
-    assert_equal [first_activity], ActionTracker::Record.find_all_by_verb('create_article')
+    assert_equal [first_activity], ActionTracker::Record.where(verb: 'create_article')
 
     process_delayed_job_queue
     assert_equal 2, ActionTrackerNotification.find_all_by_action_tracker_id(first_activity.id).count
@@ -2196,6 +2197,34 @@ class ArticleTest < ActiveSupport::TestCase
     article = create(Article, :name => 'Test', :profile => profile, :last_changed_by => nil)
     profile.vote(article, 5)
     article.destroy
+  end
+
+  should 'have can_display_media_panel with default false' do
+    a = Article.new
+    assert !a.can_display_media_panel?
+  end
+
+  should 'display media panel when allowed by the environment' do
+    a = Article.new
+    a.expects(:can_display_media_panel?).returns(true)
+    environment = mock
+    a.expects(:environment).returns(environment)
+    environment.expects(:enabled?).with('media_panel').returns(true)
+    assert a.display_media_panel?
+  end
+
+  should 'not display media panel when not allowed by the environment' do
+    a = Article.new
+    a.expects(:can_display_media_panel?).returns(true)
+    environment = mock
+    a.expects(:environment).returns(environment)
+    environment.expects(:enabled?).with('media_panel').returns(false)
+    assert !a.display_media_panel?
+  end
+
+  should 'have display_preview' do
+    a = Article.new(:display_preview => false)
+    assert !a.display_preview?
   end
 
 end

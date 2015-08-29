@@ -87,7 +87,7 @@ module LayoutHelper
   end
 
   def theme_stylesheet_path
-    "#{theme_path[1..-1]}/style.css"
+    "#{theme_path}/style.css".gsub(%r{^/}, '')
   end
 
   def layout_template
