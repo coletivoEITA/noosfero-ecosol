@@ -14,5 +14,9 @@ class ApplicationMailer < ActionMailer::Base
     options
   end
 
+  def user
+    nil
+  end
+
 end
 
