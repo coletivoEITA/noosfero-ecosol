@@ -162,7 +162,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   end
 
   def supplier_balloon
-    @supplier = SuppliersPlugin::Supplier.find params[:id]
+    @supplier = profile.suppliers.find params[:id]
   end
   def product_balloon
     @product = OrdersCyclePlugin::OfferedProduct.find params[:id]
@@ -174,7 +174,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     scope = @cycle.products_for_order
     page, per_page = params[:page].to_i, 20
     page = 1 if page < 1
-    @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).paginate page: page, per_page: per_page
+    @products = OrdersCyclePlugin::OfferedProduct.search_scope(scope, params).paginate page: page, per_page: per_page
   end
 
   extend HMVC::ClassMethods

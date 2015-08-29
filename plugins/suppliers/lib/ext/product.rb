@@ -16,10 +16,10 @@ class Product
 
   scope :with_available, -> (available) { where available: available }
   scope :with_price, -> { where 'products.price > 0' }
-  scope :with_product_category_id, -> (id) { where product_category_id: id }
 
   # FIXME: transliterate input and name column
-  scope :name_like, -> (name) { where "LOWER(products.name) LIKE ?", "%#{name}%" }
+  scope :name_like, -> (name) { where "name ILIKE ?", "%#{name}%" }
+  scope :with_product_category_id, -> (id) { where product_category_id: id }
 
   scope :by_profile, -> (profile) { where profile_id: profile.id }
   scope :by_profile_id, -> (profile_id) { where profile_id: profile_id }
@@ -38,7 +38,7 @@ end
 
 class Product
 
-  attr_accessible :from_products, :supplier_id, :supplier
+  attr_accessible :from_products, :from_product, :supplier_id, :supplier
 
   has_many :sources_from_products, foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct', dependent: :destroy
   has_one  :sources_from_product,  foreign_key: :to_product_id, class_name: 'SuppliersPlugin::SourceProduct'
@@ -69,7 +69,7 @@ class Product
   has_many :consumers, -> { distinct.order 'id ASC' }, through: :to_products, source: :profile
   has_one  :consumer, -> { order 'id ASC' },  through: :to_product,  source: :profile
 
-  # overhide original
+  # overhide original, FIXME: rename to available_and_supplier_active
   scope :available, -> {
     joins(:suppliers).
     where 'products.available = ? AND suppliers_plugin_suppliers.active = ?', true, true
@@ -83,8 +83,8 @@ class Product
     where "products.available #{op} ? #{cond} suppliers_plugin_suppliers.active #{op} ?", true, true
   }
 
-  scope :name_like, lambda { |name| where "from_products_products.name ILIKE ?", "%#{name}%" }
-  scope :with_product_category_id, lambda { |id| where 'from_products_products.product_category_id = ?', id }
+  scope :fp_name_like, -> (name) { where "from_products_products.name ILIKE ?", "%#{name}%" }
+  scope :fp_with_product_category_id, -> (id) { where 'from_products_products.product_category_id = ?', id }
 
   # prefer distributed_products has_many to use DistributedProduct scopes and eager loading
   scope :distributed, -> { where type: 'SuppliersPlugin::DistributedProduct'}
@@ -135,7 +135,7 @@ class Product
 
   def distribute_to_consumer consumer, attrs = {}
     distributed_product = consumer.distributed_products.where(profile_id: consumer.id, from_products_products: {id: self.id}).first
-    distributed_product ||= SuppliersPlugin::DistributedProduct.create! profile: consumer, from_products: [self]
+    distributed_product ||= SuppliersPlugin::DistributedProduct.create! profile: consumer, from_product: self
     distributed_product.update_attributes! attrs if attrs.present?
     distributed_product
   end

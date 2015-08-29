@@ -45,12 +45,11 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
 
   has_many :cycle_products, foreign_key: :cycle_id, class_name: 'OrdersCyclePlugin::CycleProduct', dependent: :destroy
   has_many :products, -> {
-    includes(:from_2x_products, :from_products, {profile: :domains}).
-    order('products.name ASC')
-  }, through: :cycle_products, source: :product
+    includes(:from_2x_products, :from_products, {profile: :domains})
+  }, through: :cycle_products, class_name: 'OrdersCyclePlugin::OfferedProduct', source: :product
 
   has_many :consumers, -> { distinct.reorder 'name ASC' }, through: :sales, source: :consumer
-  has_many :suppliers, -> { distinct.reorder 'suppliers_plugin_suppliers.name ASC' }, through: :products
+  has_many :suppliers, -> { group 'suppliers_plugin_suppliers.id' }, through: :products
   has_many :orders_suppliers, -> { reorder 'name ASC' }, through: :sales, source: :profile
 
   has_many :from_products, -> { distinct.reorder 'name ASC' }, through: :products
