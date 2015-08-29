@@ -120,7 +120,7 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   validate :validate_orders_dates, if: :not_new?
   validate :validate_delivery_dates, if: :not_new?
 
-  before_validation :step_new
+  before_save :step_new
   before_validation :update_orders_status
   before_save :add_products_on_edition_state
   after_create :delay_purge_profile_defuncts
@@ -257,13 +257,14 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   end
 
   def step_new
-    return if new_record?
+    return if self.new_record?
     self.step if self.new?
   end
 
+  # step orders to next_status on status change
   def update_orders_status
-    # step orders to next_status on status change
-    return if self.new? or self.status_was == "new" or self.status_was == self.status
+    return if self.new? or self.status_was == "new"
+    return if self.status_was == self.status
 
     # Don't rewind confirmed sales
     unless self.status_was == 'orders' and self.status == 'edition'
