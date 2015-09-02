@@ -22,7 +22,7 @@ class OrdersPlugin::Sale < OrdersPlugin::Order
   has_currency :purchase_price_total
 
   def supplier_delivery
-    super || (self.profile.delivery_methods.first rescue nil)
+    super || (self.delivery_methods.first rescue nil)
   end
   def supplier_delivery_id
     self[:supplier_delivery_id] || (self.supplier_delivery.id rescue nil)
