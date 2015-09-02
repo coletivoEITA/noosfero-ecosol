@@ -62,3 +62,7 @@ module BoxesHelper
 
 end
 
+# WORKAROUND
+require_dependency 'application_helper'
+ApplicationHelper.include BoxesHelper
+

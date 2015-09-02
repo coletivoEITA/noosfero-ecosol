@@ -25,7 +25,9 @@ module ChatHelper
   include ResponsiveChecks
   prepend ResponsiveMethods
 
-  protected
-
 end
+
+# WORKAROUND
+require_dependency 'application_helper'
+ApplicationHelper.include ChatHelper
 
