@@ -16,9 +16,9 @@ module UrlHelper
     # the request params (see #url_options below)
     host = options[:host]
     if host.blank? or host == environment.default_hostname
-      controller_path = options[:controller].to_s.gsub %r{^/}, '' if options[:controller]
-      controller_path ||= self.controller_path
-      controller = UrlHelper.controller_path_class[controller_path] ||= "#{controller_path}_controller".camelize.constantize
+      path = options[:controller].to_s.gsub %r{^/}, '' if options[:controller]
+      path ||= self.controller_path
+      controller = UrlHelper.controller_path_class[path] ||= "#{path}_controller".camelize.constantize
       profile_needed = controller.profile_needed if controller.respond_to? :profile_needed, true
       if profile_needed and options[:profile].blank? and params[:profile].present?
         options[:profile] = params[:profile]
