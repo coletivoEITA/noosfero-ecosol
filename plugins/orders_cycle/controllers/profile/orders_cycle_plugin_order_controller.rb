@@ -38,7 +38,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
       @order.consumer = @consumer
       @order.cycle = @cycle
       @order.save!
-      redirect_to params.merge(action: :edit, id: @order.id)
+      redirect_to url_for(params.merge action: :edit, id: @order.id)
     end
   end
 
@@ -55,7 +55,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
       end
       @repeat_order.supplier_delivery = @order.supplier_delivery
       @repeat_order.save!
-      redirect_to params.merge(action: :edit, id: @repeat_order.id)
+      redirect_to url_for(params.merge action: :edit, id: @repeat_order.id)
     else
       @orders = @cycle.consumer_previous_orders(@consumer).last(5).reverse
       @orders.each{ |o| o.enable_product_diff }

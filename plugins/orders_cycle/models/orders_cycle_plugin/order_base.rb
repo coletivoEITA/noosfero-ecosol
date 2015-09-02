@@ -14,14 +14,6 @@ module OrdersCyclePlugin::OrderBase
       self.cycle_sales.includes(:cycle).map(&:cycle) + self.cycle_purchases.includes(:cycle).map(&:cycle)
     end
 
-    # TODO: test if the has_one defined on Sale/Purchase works and these are not needed
-    def cycle
-      self.cycles.first
-    end
-    def cycle= cycle
-      self.cycles = [cycle]
-    end
-
     scope :for_cycle, -> (cycle) {
       where('orders_cycle_plugin_cycles.id = ?', cycle.id).
       joins(:cycles)

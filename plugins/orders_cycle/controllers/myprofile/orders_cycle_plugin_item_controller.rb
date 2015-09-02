@@ -36,7 +36,7 @@ class OrdersCyclePluginItemController < OrdersPluginItemController
   end
 
   def edit
-    return redirect_to params.merge(action: :admin_edit) if @admin_edit
+    return redirect_to url_for(params.merge action: :admin_edit) if @admin_edit
     super
     @offered_product = @item.product
     @cycle = @order.cycle
