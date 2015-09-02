@@ -74,7 +74,7 @@ class Profile
 
     self.products.own.map do |p|
       next if p.to_products.from_supplier_id(self.id).present?
-      SuppliersPlugin::DistributedProduct.create! profile: self, from_products: [p]
+      SuppliersPlugin::DistributedProduct.create! profile: self, from_product: p
     end
   end
 
