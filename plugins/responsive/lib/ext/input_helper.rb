@@ -10,9 +10,6 @@ module InputHelper
 
 end
 
-module ApplicationHelper
-
-  include InputHelper
-
-end
+require_dependency 'application_helper'
+ApplicationHelper.include InputHelper
 
