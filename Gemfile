@@ -82,7 +82,8 @@ gem 'activerecord-deprecated_finders', require: 'active_record/deprecated_finder
 group :production do
   gem 'newrelic_rpm'
   gem 'redis-rails'
-  gem 'rack-cache'
+  # not in active development :(
+  #gem 'rack-cache'
 end
 
 group :test do
