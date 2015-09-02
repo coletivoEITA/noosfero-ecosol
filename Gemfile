@@ -86,8 +86,6 @@ group :production do
 end
 
 group :test do
-  gem 'spring'
-  gem 'spring-commands-testunit'
   gem 'rspec',                  '~> 2.14.0'
   gem 'rspec-rails',            '~> 2.14.1'
   gem 'mocha',                  '~> 1.1.0', :require => false
@@ -103,6 +101,11 @@ group :cucumber do
   gem 'cucumber-rails',         '~> 1.4.2', :require => false
   gem 'database_cleaner',       '~> 1.2.0'
   gem 'selenium-webdriver'
+end
+
+group :development, :test do
+  gem 'spring'
+  gem 'spring-commands-testunit'
 end
 
 group :development do
