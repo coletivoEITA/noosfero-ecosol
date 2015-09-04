@@ -71,16 +71,22 @@ class CommentController < ApplicationController
       return
     end
 
-    if @comment.save
+    @saved = @comment.save
+    comment_to_render = @comment.comment_root
+    comment_html = render_to_string partial: 'comment', locals: {comment: comment_to_render, display_link: true}
+
+    if @saved
       @plugins.dispatch(:process_extra_comment_params, [@comment,params])
+
+      url = "#{url_for only_path: true, controller: :content_viewer, action: :view_page, profile: profile.identifier, page: @page.path.split('/')}/new_comment"
+      MessageBus.publish url, comment_html
     end
 
     respond_to do |format|
       format.js do
-        comment_to_render = @comment.comment_root
         render :json => {
             :render_target => comment_to_render.anchor,
-            :html => render_to_string(:partial => 'comment', :locals => {:comment => comment_to_render, :display_link => true}),
+            html: comment_html,
             :msg => _('Comment successfully created.')
          }
       end

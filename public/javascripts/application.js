@@ -14,13 +14,13 @@
 *= require jquery.cookie.js
 *= require jquery.ba-bbq.min.js
 *= require jquery.tokeninput.js
-* select-or-die/_src/selectordie
 *= require jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.js
 *= require inputosaurus.js
 *= require reflection.js
 *= require rails.js
 *= require rails-extended.js
 *= require jrails.js
+*= require message-bus.js
 * noosfero libraries
 *= require_self
 *= require modal.js
@@ -40,9 +40,11 @@ _.templateSettings = {
   interpolate: /\{\{(.+?)\}\}/g,
 };
 
+MessageBus.start()
+MessageBus.callbackInterval = 500;
+
 // scope for noosfero stuff
-noosfero = {
-};
+noosfero = {}
 
 function noosfero_init() {
   // focus_first_field(); it is moving the page view when de form is down.

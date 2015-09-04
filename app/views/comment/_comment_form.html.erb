@@ -3,7 +3,6 @@
 
 <% focus_on = logged_in? ? 'title' : 'name' %>
 
-
 <% if !edition_mode && !pass_without_comment_captcha? %>
   <div id="recaptcha-container" style="display: none">
     <h3><%= _('Please type the two words below') %></h3>
@@ -87,11 +86,11 @@ function check_captcha(button, confirm_action) {
   <%= @plugins.dispatch(:comment_form_extra_contents, local_assigns.merge(:comment => @comment)).collect { |content| instance_exec(&content) }.join("") %>
 
   <% button_bar do %>
-    <%= submit_button('add', _('Post comment'), :onclick => "if(check_captcha(this)) { save_comment(this) } else { check_captcha(this, save_comment)};return false;") %>
+    <%= submit_button('add', _('Post comment'), onclick: "if(check_captcha(this)) { noosfero.comments.save(this) } else { check_captcha(this, save_comment)};return false;") %>
     <% if !edition_mode %>
-      <%= button :cancel, _('Cancel'), '', :id => 'cancel-comment' %>
+      <%= button :cancel, _('Cancel'), '', id: 'cancel-comment' %>
     <% else %>
-      <%= button :cancel, _('Cancel'), '#', :onclick => "noosfero.modal.close();" %>
+      <%= button :cancel, _('Cancel'), '#', onclick: "noosfero.modal.close()" %>
     <% end %>
   <% end %>
 <% end %>
@@ -100,4 +99,5 @@ function check_captcha(button, confirm_action) {
 </div><!-- end class="post_comment_box" -->
 </div><!-- end class="page-comment-form" -->
 
-<%= javascript_include_tag 'comment_form'%>
+<%= javascript_include_tag 'comments' %>
+

@@ -4,16 +4,16 @@ pagination = {
 
   showMore: function(newPagination, appendFunction) {
     if (newPagination) {
-      jQuery('.pagination').replaceWith(newPagination);
-      jQuery('.pagination').addClass('infinite-scroll');
+      $('.pagination').replaceWith(newPagination);
+      $('.pagination').addClass('infinite-scroll');
     } else
-      jQuery('.pagination').remove();
+      $('.pagination').remove();
 
     appendFunction();
   },
 
   click: function(callback) {
-    jQuery(document).on('click', '.pagination a', function(e) {
+    $(document).on('click', '.pagination a', function(e) {
       e.preventDefault();
       if (callback)
         callback(e, this)
@@ -27,20 +27,20 @@ pagination = {
   infiniteScroll: function(text, options) {
     options = options || {};
 
-    jQuery(function() {
-      jQuery('.pagination').addClass('infinite-scroll');
+    $(function() {
+      $('.pagination').addClass('infinite-scroll');
     });
 
-    jQuery(window).scroll(function () {
+    $(window).scroll(function () {
       // Bail out right away if we're busy loading the next chunk.
       if (pagination.loading)
         return;
 
-      var url = jQuery('.pagination .next_page').attr('href')
-      if (url && jQuery(window).scrollTop() > (jQuery('.pagination').offset().top - jQuery(window).height() - 50)) {
+      var url = $('.pagination .next_page').attr('href')
+      if (url && $(window).scrollTop() > ($('.pagination').offset().top - $(window).height() - 50)) {
 
-        jQuery('.pagination').html(
-          jQuery('<div class=loading>').text(text)
+        $('.pagination').html(
+          $('<div class=loading>').text(text)
         );
 
         pagination.loading = true
@@ -49,7 +49,7 @@ pagination = {
           // don't forget to set pagination.loading to false!
           options.load(url)
         else
-          jQuery.getScript(url).always(function() {
+          $.getScript(url).always(function() {
             pagination.loading = false
           });
       }

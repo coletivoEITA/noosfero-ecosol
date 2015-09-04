@@ -1,0 +1,28 @@
+#comments_list.comments
+  h3 class="#{'no-comments-yet' if @comments_count == 0}"
+    = display_number_of_comments @comments_count
+
+  - if @comments.present? and @comments.count > 1
+    = hidden_field_tag :page_url, url_for(controller: :content_viewer, action: :view_page, profile: profile.identifier, page: @page.path.split('/'))
+    .comment-order
+      = form_tag({controller: 'content_viewer', action: 'view_page'}, {method: 'get', id: 'form_order'}) do
+        = select_tag 'comment_order', options_for_select({_('Newest first') => 'newest', _('Oldest first') => 'oldest'}, @comment_order)
+    javascript:
+      $(document).ready(noosfero.comments.order.load)
+
+  - if @comment_order == 'newest' and @page.accept_comments?
+    #page-comment-form.page-comment-form
+      = render 'comment/comment_form', url: {controller: :comment, action: :create}, display_link: true, cancel_triggers_hide: true
+
+  ul.article-comments-list
+    - if @comments.present?
+      = render partial: 'comment/comment', collection: @comments
+      = pagination_links @comments, param_name: 'comment_page'
+
+  - if @comment_order == 'oldest' and @page.accept_comments?
+    #page-comment-form.page-comment-form
+      = render 'comment/comment_form', url: {controller: :comment, action: :create}, display_link: true, cancel_triggers_hide: true
+
+javascript:
+  noosfero.comments.pagination.load()
+

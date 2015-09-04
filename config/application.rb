@@ -82,6 +82,11 @@ module Noosfero
       # no precedence over core
       Dir.glob("app/assets/designs/{icons,themes,user_themes}/*")
 
+    # rack lock is nothing but trouble, get rid of it
+    # for some reason still seeing it in Rails 4
+    # needed for message_bus: https://github.com/SamSaffron/message_bus/issues/17
+    config.middleware.delete Rack::Lock
+
     # disable strong_parameters before migration from protected_attributes
     config.action_controller.permit_all_parameters = true
     # Version of your assets, change this if you want to expire all your assets
