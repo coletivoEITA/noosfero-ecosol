@@ -7,8 +7,6 @@ module ChatHelper
   module ResponsiveMethods
 
     def responsive_chat_user_status_menu icon_class, status
-      return super unless theme_responsive?
-
       links = [
         ['icon-menu-online', _('Online'), 'chat-connect'],
         ['icon-menu-busy', _('Busy'), 'chat-busy'],
