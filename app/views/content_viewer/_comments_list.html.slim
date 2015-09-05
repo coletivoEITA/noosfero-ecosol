@@ -7,8 +7,6 @@
     .comment-order
       = form_tag({controller: 'content_viewer', action: 'view_page'}, {method: 'get', id: 'form_order'}) do
         = select_tag 'comment_order', options_for_select({_('Newest first') => 'newest', _('Oldest first') => 'oldest'}, @comment_order)
-    javascript:
-      $(document).ready(noosfero.comments.order.load)
 
   - if @comment_order == 'newest' and @page.accept_comments?
     #page-comment-form.page-comment-form
@@ -24,5 +22,6 @@
       = render 'comment/comment_form', url: {controller: :comment, action: :create}, display_link: true, cancel_triggers_hide: true
 
 javascript:
+  $(document).ready(noosfero.comments.order.load)
   noosfero.comments.pagination.load()
 

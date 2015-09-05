@@ -6,10 +6,7 @@ noosfero.comments = {
 
     var url = $("#page_url").val()
     MessageBus.subscribe(url+'/new_comment', function (data) {
-      if ($("#comment_order").val() == 'newest')
-        $('.article-comments-list').prepend(data);
-      else
-        $('.article-comments-list').append(data);
+      noosfero.comments.receiveComment(data)
     })
 
     $('.display-comment-form').unbind()
@@ -42,59 +39,74 @@ noosfero.comments = {
     }
   },
 
+  button: $(),
+  receiveComment: function (data) {
+    data = JSON.parse(data)
+    var self = noosfero.comments
+    var form = self.button.parents("form")
+    var post_comment_box = self.button.parents('.post_comment_box')
+    var page_comment_form = self.button.parents('.page-comment-form')
+    var comment_div = $('#comments_list.comments')
+
+    if (data.render_target === null) {
+      //Comment for approval
+      form.find("input[type='text']").add('textarea').each(function() {
+        this.value = ''
+      })
+      page_comment_form.find('.errorExplanation').remove()
+    } else if (data.render_target == 'form') {
+      //Comment with errors
+      $.scrollTo(page_comment_form)
+      page_comment_form.html(data.html)
+      $('.display-comment-form').hide()
+    } else if ($('#' + data.render_target).size() > 0) {
+      //Comment of reply
+      $('#'+ data.render_target).replaceWith(data.html)
+      $('#' + data.render_target).effect("highlight", {}, 3000)
+      noosfero.modal.close()
+      noosfero.comments.incrementCommentCount(comment_div)
+    } else {
+      if ($("#comment_order").val() == 'newest')
+        $('.article-comments-list').prepend(data)
+      else
+        $('.article-comments-list').append(data)
+
+      form.find("input[type='text']").add('textarea').each(function() {
+        this.value = ''
+      })
+
+      page_comment_form.find('.errorExplanation').remove()
+      noosfero.modal.close()
+      noosfero.comments.incrementCommentCount(comment_div)
+    }
+
+    if ($('#recaptcha_response_field').val()) {
+      Recaptcha.reload()
+    }
+
+    if (data.msg !== null)
+      display_notice(data.msg)
+
+    if (self.button.length) {
+      close_loading()
+      noosfero.comments.toggleBox(self.button.closest('.post_comment_box'))
+      noosfero.comments.showDisplayCommentbutton()
+      self.button.removeClass('comment-button-loading')
+      self.button.enable()
+      self.button = $();
+    }
+  },
+
   save: function (button) {
-    var $button = $(button);
-    var form = $button.parents("form");
-    var post_comment_box = $button.parents('.post_comment_box');
-    var comment_div = $button.parents('.comments');
-    var page_comment_form = $button.parents('.page-comment-form');
-
+    button = $(button);
+    this.button = button
+    button.addClass('comment-button-loading');
     open_loading(DEFAULT_LOADING_MESSAGE);
-    $button.addClass('comment-button-loading');
+
+    var form = button.parents("form")
     $.post(form.attr("action"), form.serialize(), function(data) {
-
-      if(data.render_target == null) {
-        //Comment for approval
-        form.find("input[type='text']").add('textarea').each(function() {
-          this.value = '';
-        });
-        page_comment_form.find('.errorExplanation').remove();
-      } else if(data.render_target == 'form') {
-        //Comment with errors
-        $.scrollTo(page_comment_form);
-        page_comment_form.html(data.html);
-        $('.display-comment-form').hide();
-      } else if($('#' + data.render_target).size() > 0) {
-        //Comment of reply
-        $('#'+ data.render_target).replaceWith(data.html);
-        $('#' + data.render_target).effect("highlight", {}, 3000);
-        noosfero.modal.close();
-        noosfero.comments.incrementCommentCount(comment_div);
-      } else {
-        //New comment of article comes via message_bus
-
-        form.find("input[type='text']").add('textarea').each(function() {
-          this.value = '';
-        });
-
-        page_comment_form.find('.errorExplanation').remove();
-        noosfero.modal.close();
-        noosfero.comments.incrementCommentCount(comment_div);
-      }
-
-      if($('#recaptcha_response_field').val()){
-        Recaptcha.reload();
-      }
-
-      if(data.msg != null) {
-         display_notice(data.msg);
-      }
-      close_loading();
-      noosfero.comments.toggleBox($button.closest('.post_comment_box'));
-      noosfero.comments.showDisplayCommentbutton();
-      $button.removeClass('comment-button-loading');
-      $button.enable();
-    }, 'json');
+      //done via message bus
+    }, 'json')
   },
 
   incrementCommentCount: function (comment_div) {
