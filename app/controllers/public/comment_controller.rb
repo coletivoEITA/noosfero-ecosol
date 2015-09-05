@@ -88,11 +88,12 @@ class CommentController < ApplicationController
     MessageBus.client_filter url do |user_id, message|
       current_user_id = message.data['user_id']
       this_user = user_id == current_user_id
-      break if not message.data['saved'] and not this_user
-      message.data.delete 'msg' if user_id != current_user_id
-      message.data['this_user'] = this_user
-      message.data = message.data.to_json
-      message.dup
+      if message.data['saved'] and this_user
+        message.data.delete 'msg' if user_id != current_user_id
+        message.data['this_user'] = this_user
+        message.data = message.data.to_json
+        message.dup
+      end
     end
 
     render nothing: true
