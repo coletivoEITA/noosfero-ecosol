@@ -67,9 +67,9 @@ noosfero.comments = {
       noosfero.comments.incrementCommentCount(comment_div)
     } else {
       if ($("#comment_order").val() == 'newest')
-        $('.article-comments-list').prepend(data)
+        $('.article-comments-list').prepend(data.html)
       else
-        $('.article-comments-list').append(data)
+        $('.article-comments-list').append(data.html)
 
       form.find("input[type='text']").add('textarea').each(function() {
         this.value = ''
