@@ -32,3 +32,7 @@ module ChatHelper
 
 end
 
+# WORKAROUND
+require_dependency 'application_helper'
+ApplicationHelper.include ChatHelper
+
