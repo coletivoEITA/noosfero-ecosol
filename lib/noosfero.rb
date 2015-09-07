@@ -13,33 +13,28 @@ module Noosfero
     Regexp.new(pattern)
   end
 
+  mattr_accessor :locales
+  self.locales = {
+    'en_US' => 'English',
+    'pt_BR' => 'Português',
+    'fr_FR' => 'Français',
+    'hy_AM' => 'հայերեն լեզու',
+    'de_DE' => 'Deutsch',
+    'ru_RU' => 'русский язык',
+    'es_ES' => 'Español',
+    #'eo' => 'Esperanto',
+    'it_IT' => 'Italiano'
+  }
+
+  mattr_accessor :available_locales
+  self.available_locales = self.locales.keys
+  I18n.available_locales = self.available_locales
+
+  mattr_accessor :default_locale
+  self.default_locale = I18n.default_locale = FastGettext.default_locale = 'en_US'
+
   class << self
-    def locales
-      @locales ||= {
-        'en_US' => 'English',
-        'pt_BR' => 'Português',
-        'fr_FR' => 'Français',
-        'hy_AM' => 'հայերեն լեզու',
-        'de_DE' => 'Deutsch',
-        'ru_RU' => 'русский язык',
-        'es_ES' => 'Español',
-        #'eo' => 'Esperanto',
-        'it_IT' => 'Italiano'
-      }
-    end
-    attr_writer :locales
-    attr_accessor :default_locale
-    def available_locales
-      @available_locales ||=
-        begin
-          locales_list = locales.keys
-          # move English to the beginning
-          if locales_list.include?('en')
-            locales_list = ['en'] + (locales_list - ['en']).sort
-          end
-          locales_list
-        end
-    end
+
     def each_locale
       locales.keys.sort.each do |key|
         yield(key, locales[key])

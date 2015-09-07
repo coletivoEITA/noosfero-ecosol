@@ -105,8 +105,6 @@ module Noosfero
     # timezone varies for each request, see ApplicationController#set_time_zone
     config.active_record.default_timezone = :utc
 
-    config.i18n.fallbacks = [:en_US, :en]
-
     config.paths['db/migrate'].concat Dir.glob("#{Rails.root}/{baseplugins,config/plugins}/*/db/migrate")
     config.i18n.load_path.concat Dir.glob("#{Rails.root}/{baseplugins,config/plugins}/*/locales/*.{rb,yml}")
 
