@@ -19,15 +19,25 @@ Dir.glob(Rails.root.join(plugins_root, '*', 'controllers')) do |controllers_dir|
     controllers.each do |controller|
       controller_name = controller.gsub /#{plugin_name}_plugin[_\/]/, ''
       if %w[profile myprofile].include?(folder.to_s)
-        match "#{prefixes_by_folder[folder]}/#{plugin_name}/#{controller_name}(/:action(/:id))", controller: controller, profile: /#{Noosfero.identifier_format_in_url}/i, via: :all
+        match "#{prefixes_by_folder[folder]}/#{plugin_name}/#{controller_name}(/:action(/:id))", controller: controller,
+          profile: /#{Noosfero.identifier_format_in_url}/i, via: :all, as: controller.tr('/','_')
       else
-        match "#{prefixes_by_folder[folder]}/#{plugin_name}/#{controller_name}(/:action(/:id))", controller: controller, via: :all
+        match "#{prefixes_by_folder[folder]}/#{plugin_name}/#{controller_name}(/:action(/:id))", controller: controller,
+          via: :all, as: controller.tr('/','_')
       end
     end
   end
 
-  match 'plugin/' + plugin_name + '(/:action(/:id))', controller: plugin_name + '_plugin', via: :all
-  match "profile(/:profile)/plugin/#{plugin_name}(/:action(/:id))", controller: "#{plugin_name}_plugin_profile", profile: /#{Noosfero.identifier_format_in_url}/i, via: :all
-  match "myprofile(/:profile)/plugin/#{plugin_name}(/:action(/:id))", controller: "#{plugin_name}_plugin_myprofile", profile: /#{Noosfero.identifier_format_in_url}/i, via: :all
-  match 'admin/plugin/' + plugin_name + '(/:action(/:id))', controller: plugin_name + '_plugin_admin', via: :all
+  # DEPRECATED
+  begin
+    match 'plugin/' + plugin_name + '(/:action(/:id))', controller: "#{plugin_name}_plugin", via: :all, as: "#{plugin_name}_plugin"
+    match "profile(/:profile)/plugin/#{plugin_name}(/:action(/:id))", controller: "#{plugin_name}_plugin_profile",
+      profile: /#{Noosfero.identifier_format_in_url}/i, via: :all, as: "#{plugin_name}_plugin_profile"
+    match "myprofile(/:profile)/plugin/#{plugin_name}(/:action(/:id))", controller: "#{plugin_name}_plugin_myprofile",
+      profile: /#{Noosfero.identifier_format_in_url}/i, via: :all, as: "#{plugin_name}_plugin_myprofile"
+    match 'admin/plugin/' + plugin_name + '(/:action(/:id))', controller: "#{plugin_name}_plugin_admin",
+      via: :all, as: "#{plugin_name}_plugin_admin"
+  rescue ArgumentError
+    # duplicate route name (as:)
+  end
 end

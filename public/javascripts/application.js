@@ -21,6 +21,10 @@
 *= require rails-extended.js
 *= require jrails.js
 *= require message-bus.js
+*= require riot
+*= require riot_rails
+*= require i18n
+*= require js-routes
 * noosfero libraries
 *= require_self
 *= require modal.js

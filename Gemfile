@@ -22,8 +22,15 @@ gem 'will-paginate-i18n'
 gem 'utf8-cleaner'
 gem 'premailer-rails'
 gem 'slim'
-
 gem 'message_bus'
+
+# for fast js template compilations
+gem 'therubyracer'
+gem 'riot_js-rails'
+gem 'sprockets-es6'
+
+gem 'i18n-js', ">= 3.0.0.rc11"
+gem 'js-routes'
 
 platform :ruby do
   gem 'pg',                       '~> 0.18.1'

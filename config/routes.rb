@@ -47,13 +47,12 @@ Noosfero::Application.routes.draw do
   match 'enterprise_registration(/:action)', controller: 'enterprise_registration', via: :all
 
   # tags
-  match 'tag', controller: 'search', action: 'tags', via: :all
-  match 'tag/:tag', controller: 'search', action: 'tag', tag: /.*/, via: :all
+  match 'tag(/:tag)', controller: 'search', action: 'tag', tag: /.*/, via: :all, as: :tag
 
   # categories index
   match 'cat/*category_path', to: 'search#category_index', as: :category, via: :all
   # search
-  match 'search(/:action(/*category_path))', controller: 'search', via: :all
+  match 'search(/:action(/*category_path))', controller: :search, via: :all, as: :search
 
   ######################################################
   # plugin routes
@@ -86,7 +85,8 @@ Noosfero::Application.routes.draw do
   match 'profile(/:profile)/tags(/:id)', controller: 'profile', action: 'tags', profile: /#{Noosfero.identifier_format_in_url}/i, via: :all
 
   # profile search
-  match 'profile(/:profile)/search', controller: 'profile_search', action: 'index', profile: /#{Noosfero.identifier_format_in_url}/i, via: :all
+  match 'profile(/:profile)/search', controller: 'profile_search', action: 'index', profile: /#{Noosfero.identifier_format_in_url}/i,
+    via: :all, as: :profile_search
 
   # comments
   match 'profile(/:profile)/comment/:action/:id', controller: 'comment', profile: /#{Noosfero.identifier_format_in_url}/i, via: :all
@@ -111,7 +111,6 @@ Noosfero::Application.routes.draw do
   match 'myprofile(/:profile)/:controller(/:action(/:id))', controller: Noosfero.pattern_for_controllers_in_directory('my_profile'), profile: /#{Noosfero.identifier_format_in_url}/i, as: :myprofile, via: :all
   match 'myprofile(/:profile)', controller: 'profile_editor', action: 'index', profile: /#{Noosfero.identifier_format_in_url}/i, via: :all
 
-
   ######################################################
   ## Controllers that are used by environment admin
   ######################################################
@@ -119,14 +118,6 @@ Noosfero::Application.routes.draw do
   match 'admin', controller: 'admin_panel', action: :index, via: :all
   match 'admin/:controller(/:action((.:format)/:id))', controller: Noosfero.pattern_for_controllers_in_directory('admin'), via: :all
   match 'admin/:controller(/:action(/:id))', controller: Noosfero.pattern_for_controllers_in_directory('admin'), via: :all
-
-
-  ######################################################
-  ## Controllers that are used by system admin
-  ######################################################
-  # administrative tasks for a environment
-  match 'system', controller: 'system', via: :all
-  match 'system/:controller(/:action(/:id))', controller: Noosfero.pattern_for_controllers_in_directory('system'), via: :all
 
   # cache stuff - hack
   match 'public/:action/:id', controller: 'public', via: :all
@@ -138,10 +129,9 @@ Noosfero::Application.routes.draw do
   match '*page/versions_diff', controller: 'content_viewer', action: 'versions_diff', via: :all
 
   # match requests for profiles that don't have a custom domain
-  match ':profile(/*page)', controller: 'content_viewer', action: 'view_page', profile: /#{Noosfero.identifier_format_in_url}/i, constraints: EnvironmentDomainConstraint.new, via: :all
+  match ':profile(/*page)', controller: 'content_viewer', action: 'view_page', profile: /#{Noosfero.identifier_format_in_url}/i, constraints: EnvironmentDomainConstraint.new, via: :all, as: :page
 
   # match requests for content in domains hosted for profiles
   match '/(*page)', controller: 'content_viewer', action: 'view_page', via: :all
-
 
 end
