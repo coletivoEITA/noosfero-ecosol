@@ -5,12 +5,17 @@
 div.order-delivery-select id='order-#{order.id}'
 
   div.supplier-delivery-data
-    = labelled_form_field _('Option'),
-      f.select(:supplier_delivery_id, supplier_delivery_options(methods: methods, selected: order.supplier_delivery_id), {}, disabled: readonly,
-        onchange: 'delivery.order.select.onChange(this)', onkeyup: 'delivery.order.select.onChange(this)') + content_tag('div', '', class: 'help-block instructions')
+    - if order.delivery_methods.size > 0
+      = labelled_form_field _('Option'),
+        f.select(:supplier_delivery_id, supplier_delivery_options(methods: methods, selected: order.supplier_delivery_id), {}, disabled: readonly,
+          onchange: 'delivery.order.select.onChange(this)', onkeyup: 'delivery.order.select.onChange(this)') + content_tag('div', '', class: 'help-block instructions')
+    - elsif (name = consumer_delivery_field_value order, :name).present?
+      = labelled_form_field _('Option'),
+        f.text_field(:address, value: name, readonly: true)
+      div class='help-block instructions' = h(consumer_delivery_field_value order, :description)
 
-  / do not render on confirmation email (@view) if supplier_delivery is not a delivery
-  - unless @view and order.supplier_delivery and order.supplier_delivery.pickup?
+  / do not render on confirmation email (@view) if supplier_delivery is pickup
+  - unless @view and order.supplier_delivery_data[:delivery_type] == 'pickup'
     div.consumer-delivery-data
       = f.fields_for :consumer_delivery_data, order.consumer_delivery_data do |ff|
         = labelled_form_field _('Address (street and number)'),

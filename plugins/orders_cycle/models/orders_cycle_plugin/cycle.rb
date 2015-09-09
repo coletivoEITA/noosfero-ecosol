@@ -43,11 +43,11 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   has_many :purchases, through: :cycle_orders, source: :purchase
 
   has_many :cycle_products, foreign_key: :cycle_id, class_name: 'OrdersCyclePlugin::CycleProduct', dependent: :destroy
-  has_many :products, through: :cycle_products, order: 'products.name ASC',
+  has_many :products, through: :cycle_products, source: :product, order: 'products.name ASC',
     include: [ :from_2x_products, :from_products, {profile: :domains}, ]
 
   has_many :consumers, through: :sales, source: :consumer, order: 'name ASC', uniq: true
-  has_many :suppliers, through: :products, order: 'suppliers_plugin_suppliers.name ASC', uniq: true
+  has_many :suppliers, through: :products, source: :suppliers, order: 'suppliers_plugin_suppliers.name ASC', uniq: true
   has_many :orders_suppliers, through: :sales, source: :profile, order: 'name ASC'
 
   has_many :from_products, through: :products, order: 'name ASC', uniq: true
@@ -235,17 +235,17 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
     self.generate_purchases sales
   end
 
-  def add_distributed_products
+  def add_products
     return if self.products.count > 0
     ActiveRecord::Base.transaction do
-      self.profile.distributed_products.unarchived.available.find_each(batch_size: 20) do |product|
-        self.add_distributed_product product
+      self.profile.products.supplied.unarchived.available.find_each batch_size: 20 do |product|
+        self.add_product product
       end
     end
   end
 
-  def add_distributed_product product
-    OrdersCyclePlugin::OfferedProduct.create_from_distributed self, product
+  def add_product product
+    OrdersCyclePlugin::OfferedProduct.create_from product, self
   end
 
   def add_products_job
@@ -256,7 +256,7 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
 
   def add_products_on_edition_state
     return unless self.status_was == 'new'
-    job = self.delay.add_distributed_products
+    job = self.delay.add_products
     self.data[:add_products_job_id] = job.id
   end
 

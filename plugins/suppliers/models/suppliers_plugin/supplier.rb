@@ -58,7 +58,7 @@ class SuppliersPlugin::Supplier < ActiveRecord::Base
   end
 
   def self?
-    profile == consumer
+    self.profile_id == self.consumer_id
   end
   def person?
     self.consumer.person?

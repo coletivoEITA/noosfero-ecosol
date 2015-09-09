@@ -38,7 +38,7 @@ class OrdersCyclePluginItemController < OrdersPluginItemController
   def edit
     return redirect_to params.merge(action: :admin_edit) if @admin_edit
     super
-    @offered_product = @item.offered_product
+    @offered_product = @item.product
     @cycle = @order.cycle
   end
 

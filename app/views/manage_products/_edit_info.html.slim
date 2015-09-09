@@ -1,0 +1,83 @@
+= render_dialog_error_messages 'product' if errors
+
+= form_for @product, as: :product, remote: true,
+  loading: "small_loading('product-info-form')",
+  url: {controller: 'manage_products', action: 'edit', id: @product, field: 'info'},
+  html: {id: 'product-info-form', method: 'post', class: 'form-horizontal', data: {type: 'html', update: '#product-info'}} do |f|
+
+  - if defined? SuppliersPlugin and @product.is_a? SuppliersPlugin::DistributedProduct
+    .form-group
+      = f.label :price, _('Price sold'), class: 'col-lg-4 col-md-4 col-sm-5'
+      .col-lg-8.col-md-8.col-sm-7
+        = input_group_addon environment.currency_unit
+          = f.number_field :price, step: 'any', class: 'form-control', onkeyup: 'suppliers.product.pmsync(false)', oninput: 'this.onkeyup()'
+    .form-group
+      = f.label :margin_percentage, _('Margin'), class: 'col-lg-4 col-md-4 col-sm-5'
+      .col-lg-8.col-md-8.col-sm-7
+        = input_group_addon '%'
+          = f.number_field :margin_percentage, step: 'any', class: 'form-control', onkeyup: 'suppliers.product.pmsync(true)', oninput: 'this.onkeyup()'
+    .form-group
+      = f.fields_for :supplier_product, @product.supplier_product do |ff|
+        = ff.label :price, _("Supplier's price"), class: 'col-lg-4 col-md-4 col-sm-5'
+        .col-lg-8.col-md-8.col-sm-7
+          = input_group_addon environment.currency_unit
+            = ff.number_field :price, step: 'any', class: 'form-control', onkeyup: 'suppliers.product.updateBasePrice()', oninput: 'this.onkeyup()'
+    javascript:
+      // cover the case the price is nil, i.e., the same as the supplier
+      suppliers.product.pmsync(true)
+  - else
+    .form-group
+      = f.label :price, _('Price'), class: 'control-label col-lg-3 col-md-3 col-sm-4'
+      .col-lg-9.col-md-9.col-sm-8
+        = input_group_addon environment.currency_unit
+          = f.number_field :price, step: 'any', class: 'form-control'
+
+    .form-group
+      = f.label :discount, _('Discount'), class: 'control-label col-lg-3 col-md-3 col-sm-4'
+      .col-lg-9.col-md-9.col-sm-8
+        = input_group_addon environment.currency_unit
+          = f.number_field :discount, step: 'any', class: 'form-control', title: _('If your product is on sale, fill this field with the discount value')
+
+  .form-group
+    = f.label :available, _('Available'), class: 'control-label col-lg-3 col-md-3 col-sm-4'
+    .col-lg-9.col-md-9.col-sm-8
+      = labelled_radio_button  _('Yes'), 'product[available]', true, @product.available, id: 'product_available') + labelled_radio_button( _('No'), 'product[available]', false, !@product.available
+
+  .form-group
+    = f.label :highlighted, _('Highlight this product?'), class: 'control-label col-lg-3 col-md-3 col-sm-4'
+    .col-lg-9.col-md-9.col-sm-8
+      = f.check_box :highlighted
+
+  - if !environment.qualifiers.empty?
+    table#product-qualifiers-list
+      tr
+        th= _'Qualifier'
+        th= _'Certifier'
+        th
+      - @product.qualifiers.each_with_index do |qualifier, index|
+        tr
+          td= select_qualifiers @product, qualifier.id
+          td id="certifier-area-#{index}" = select_certifiers qualifier, @product
+          td= remove_qualifier_button
+    = button_to_function :add, _('Add new qualifier'), "new_qualifier_row('#product-qualifiers-list')"
+
+    = hidden_field_tag "product[qualifiers_list][nil]"
+
+  = hidden_field_tag 'info-bar-update-url', @product.price_composition_bar_display_url, class: 'bar-update-url'
+
+  - button_bar do
+    = submit_button :save, _('Save')
+    = cancel_edit_product_link @product, 'info'
+
+#new-qualifier-select style="display: none"
+  = select_qualifiers @product
+#new-qualifier-certifier style="display: none"
+  = select_tag :certifier
+#new-qualifier-remove style="display: none"
+  = remove_qualifier_button
+
+javascript:
+  currency_format = {
+    separator: '#{environment.currency_separator}', delimiter: '#{environment.currency_delimiter}', unit: '#{environment.currency_unit}'
+  }
+

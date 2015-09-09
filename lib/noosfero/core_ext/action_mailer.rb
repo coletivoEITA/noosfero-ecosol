@@ -23,4 +23,10 @@ class ActionMailer::Base
 
   helper Noosfero::ActionMailer::UrlHelper
 
+  protected
+
+  def user
+    nil
+  end
+
 end

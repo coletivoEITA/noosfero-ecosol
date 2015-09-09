@@ -1,19 +1,15 @@
 module InputHelper
 
-  extend ActiveSupport::Concern
   protected
 
   def input_group_addon addon, options = {}, &block
-    content_tag :div,
-      content_tag(:span, addon, class: 'input-group-addon') + yield,
-    class: 'input-group'
+    content_tag :div, class: 'input-group' do
+      content_tag(:span, addon, class: 'input-group-addon') + capture(&block)
+    end
   end
 
 end
 
-module ApplicationHelper
-
-  include InputHelper
-
-end
+require_dependency 'application_helper'
+ApplicationHelper.include InputHelper
 

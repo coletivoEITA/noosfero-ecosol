@@ -7,17 +7,22 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   end
 
   has_many :cycle_products, foreign_key: :product_id, class_name: 'OrdersCyclePlugin::CycleProduct'
-  has_many :cycles, through: :cycle_products, order: 'name ASC'
-  def cycle
-    self.cycles.first
-  end
+  has_one  :cycle_product,  foreign_key: :product_id, class_name: 'OrdersCyclePlugin::CycleProduct'
+  has_many :cycles, through: :cycle_products
+  has_one  :cycle,  through: :cycle_product
 
   # OVERRIDE suppliers/lib/ext/product.rb
-  # for products in cycle, these are the products of the suppliers
-  # p in cycle -> p distributed -> p from supplier
-  has_many :suppliers, through: :sources_from_2x_products, order: 'id ASC', uniq: true
-  has_many :sources_supplier_products, through: :sources_from_products, source: :sources_from_products
-  has_many :supplier_products, through: :sources_from_2x_products, source: :from_product
+  # for products in cycle, these are the products of the suppliers:
+  #   p in cycle -> p distributed -> p from supplier
+  # So, sources_supplier_products is the same as sources_from_2x_products
+  has_many :sources_supplier_products, through: :from_products, source: :sources_from_products
+  has_one  :sources_supplier_product,  through: :from_product,  source: :sources_from_product
+  # necessary only due to the override of sources_supplier_products, as rails somehow caches the old reference
+  # copied from suppliers/lib/ext/product
+  has_many :supplier_products, through: :sources_supplier_products, source: :from_product, order: 'id ASC'
+  has_one  :supplier_product,  through: :sources_supplier_product,  source: :from_product, order: 'id ASC', autosave: true
+  has_many :suppliers, through: :sources_supplier_products, uniq: true, order: 'id ASC'
+  has_one  :supplier,  through: :sources_supplier_product, order: 'id ASC'
 
   instance_exec &OrdersPlugin::Item::DefineTotals
   extend CurrencyHelper::ClassMethods
@@ -26,14 +31,17 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
   # test this before use!
   #validates_presence_of :cycle
 
-  def self.create_from_distributed cycle, product
+  def self.create_from product, cycle
     op = self.new
+
     product.attributes.except('id').each{ |a,v| op.send "#{a}=", v }
+    op.freeze_default_attributes product
     op.profile = product.profile
     op.type = self.name
-    op.freeze_default_attributes product
+
     op.from_products << product
     cycle.products << op if cycle
+
     op
   end
 
@@ -66,8 +74,8 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
 
   FROOZEN_DEFAULT_ATTRIBUTES = DEFAULT_ATTRIBUTES
   def freeze_default_attributes from_product
-    FROOZEN_DEFAULT_ATTRIBUTES.each do |a|
-      self[a.to_s] = from_product.send a
+    FROOZEN_DEFAULT_ATTRIBUTES.each do |attr|
+      self[attr] = from_product.send(attr) if from_product[attr] or from_product.respond_to? attr
     end
   end
 

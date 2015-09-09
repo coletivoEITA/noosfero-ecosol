@@ -2,7 +2,7 @@
 <% extra_content_list = [] %>
 
 <div id="product-catalog">
-  <% if user.present? and (user.is_admin?(profile.environment) or user.is_admin?(profile)) %>
+  <% if user.present? and (@user_is_admin or user.is_admin?(profile)) %>
     <div class="product-catalog-ctrl">
       <%= button :add, _('Add product or service'), controller: :manage_products, action: :new, profile: profile.identifier %>
     </div>
