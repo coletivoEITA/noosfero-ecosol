@@ -25,11 +25,6 @@
       end.join("\n")
     %>
 
-    <script type="text/javascript">
-      DEFAULT_LOADING_MESSAGE = <%="'#{ _('loading...') }'" %>;
-      noosfero.profile = <%= (@profile.identifier if @profile).to_json %>
-    </script>
-
   </head>
   <body class="<%= h body_classes %>">
     <a href="#content" id="link-go-content"><span><%= _("Go to the content") %></span></a>
