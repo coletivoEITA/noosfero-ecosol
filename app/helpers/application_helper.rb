@@ -12,6 +12,8 @@ module ApplicationHelper
 
   include UrlHelper
 
+  include TranslationsHelper
+
   include ModalHelper
 
   include BoxesHelper
@@ -51,6 +53,8 @@ module ApplicationHelper
   include CaptchaHelper
 
   include ChatHelper
+
+  include JavascriptsHelper
 
   def locale
     (@page && !@page.language.blank?) ? @page.language : FastGettext.locale
