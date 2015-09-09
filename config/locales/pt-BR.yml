@@ -236,3 +236,6 @@ pt-BR: &pt-BR
 
 pt:
   <<: *pt-BR
+pt_BR:
+  <<: *pt-BR
+
