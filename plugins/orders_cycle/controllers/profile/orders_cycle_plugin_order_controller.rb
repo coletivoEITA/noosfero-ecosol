@@ -174,7 +174,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     scope = @cycle.products_for_order
     page, per_page = params[:page].to_i, 20
     page = 1 if page < 1
-    @products = SuppliersPlugin::BaseProduct.search_scope(scope, params).paginate page: page, per_page: per_page
+    @products = OrdersCyclePlugin::OfferedProduct.search_scope(scope, params).paginate page: page, per_page: per_page
   end
 
   extend HMVC::ClassMethods
