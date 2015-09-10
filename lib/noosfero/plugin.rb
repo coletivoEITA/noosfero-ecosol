@@ -80,6 +80,7 @@ class Noosfero::Plugin
         end
         [ config.autoload_paths, $:].each do |path|
           path << File.join(dir, 'models')
+          path << File.join(dir, 'serializers')
           path << File.join(dir, 'lib')
           # load vendor/plugins
           Dir.glob(File.join(dir, '/vendor/plugins/*')).each do |vendor_plugin|

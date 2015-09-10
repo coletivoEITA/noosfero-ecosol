@@ -29,6 +29,8 @@ gem 'therubyracer'
 gem 'riot_js-rails'
 gem 'sprockets-es6'
 
+# js
+gem 'active_model_serializers'
 gem 'i18n-js', github: 'coletivoEITA/i18n-js'
 gem 'js-routes'
 
