@@ -261,7 +261,20 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
     self.step if self.new?
   end
 
-  # step orders to next_status on status change
+  def update_sales_status from, to
+    sales = self.sales.where(status: from.to_s)
+    sales.each do |sale|
+      sale.update_attributes status: to.to_s
+    end
+  end
+
+  def update_purchases_status from, to
+    purchases = self.purchases.where(status: from.to_s)
+    purchases.each do |purchase|
+      purchase.update_attributes status: to.to_s
+    end
+  end
+
   def update_orders_status
     return if self.new? or self.status_was == "new"
     return if self.status_was == self.status
@@ -270,20 +283,14 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
     unless self.status_was == 'orders' and self.status == 'edition'
       sale_status_was = SaleStatusMap[self.status_was]
       new_sale_status = SaleStatusMap[self.status]
-      sales = self.sales.where(status: sale_status_was.to_s)
-      sales.each do |sale|
-        sale.update_attributes status: new_sale_status.to_s
-      end
+      self.delay.update_sales_status sale_status_was, new_sale_status unless sale_status_was == new_sale_status
     end
 
     # Don't rewind confirmed purchases
     unless self.status_was == 'receipts' and self.status == 'purchases'
       purchase_status_was = PurchaseStatusMap[self.status_was]
       new_purchase_status = PurchaseStatusMap[self.status]
-      purchases = self.purchases.where(status: purchase_status_was.to_s)
-      purchases.each do |purchase|
-        purchase.update_attributes status: new_purchase_status.to_s
-      end
+      self.delay.update_purchases_status purchase_status_was, new_purchase_status unless purchase_status_was == new_purchase_status
     end
   end
 
