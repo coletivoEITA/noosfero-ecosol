@@ -29,7 +29,7 @@ gem 'therubyracer'
 gem 'riot_js-rails'
 gem 'sprockets-es6'
 
-gem 'i18n-js', ">= 3.0.0.rc11"
+gem 'i18n-js', github: 'coletivoEITA/i18n-js'
 gem 'js-routes'
 
 platform :ruby do
