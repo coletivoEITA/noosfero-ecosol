@@ -18,7 +18,7 @@ class EnterpriseRegistrationController < ApplicationController
         @create_enterprise.target = Profile.find(params[:create_enterprise][:target_id])
       end
     elsif @validation == :admin || @validation == :none
-        @create_enterprise.target = environment
+      @create_enterprise.target = environment
     end
     @create_enterprise.requestor = user
     the_action =
