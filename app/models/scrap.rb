@@ -18,15 +18,15 @@ class Scrap < ActiveRecord::Base
   after_create :create_activity
   after_update :update_activity
 
-  scope :all_scraps, -> (profile) { limit(30).where("receiver_id = ? OR sender_id = ?", profile, profile) }
+  scope :all_scraps, -> profile { limit(30).where("receiver_id = ? OR sender_id = ?", profile, profile) }
 
   scope :not_replies, -> { where scrap_id: nil }
 
-  track_actions :leave_scrap, :after_create, :keep_params => ['sender.name', 'content', 'receiver.name', 'receiver.url'], :if => Proc.new{|s| s.sender != s.receiver && s.sender != s.top_root.receiver}, :custom_target => :action_tracker_target
+  track_actions :leave_scrap, :after_create, :keep_params => ['sender.name', 'content', 'receiver.name', 'receiver.url'], :if => Proc.new{|s| s.sender != s.receiver && s.sender != s.top_root.receiver}, :custom_target => :action_tracker_target, :custom_user => :sender
 
-  track_actions :leave_scrap_to_self, :after_create, :keep_params => ['sender.name', 'content'], :if => Proc.new{|s| s.sender == s.receiver}
+  track_actions :leave_scrap_to_self, :after_create, :keep_params => ['sender.name', 'content'], :if => Proc.new{|s| s.sender == s.receiver}, :custom_user => :sender
 
-  track_actions :reply_scrap_on_self, :after_create, :keep_params => ['sender.name', 'content'], :if => Proc.new{|s| s.sender != s.receiver && s.sender == s.top_root.receiver}
+  track_actions :reply_scrap_on_self, :after_create, :keep_params => ['sender.name', 'content'], :if => Proc.new{|s| s.sender != s.receiver && s.sender == s.top_root.receiver}, :custom_user => :sender
 
   after_create :send_notification
 

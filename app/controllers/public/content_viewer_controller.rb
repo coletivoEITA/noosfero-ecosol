@@ -8,6 +8,7 @@ class ContentViewerController < ApplicationController
   helper TagsHelper
 
   def view_page
+
     path = get_path(params[:page], params[:format])
 
     @version = params[:version].to_i
@@ -38,7 +39,7 @@ class ContentViewerController < ApplicationController
     end
 
     # At this point the page will be showed
-    @page.hit unless user_is_a_bot?
+    @page.hit unless user_is_a_bot? || already_visited?(@page)
 
     @page = FilePresenter.for @page
 
@@ -267,6 +268,20 @@ class ContentViewerController < ApplicationController
     @comments = @comments.reverse if @comment_order == 'oldest'
     @comments = @comments.without_reply.paginate(:per_page => per_page, :page => params[:comment_page] )
     @comment_order = params[:comment_order] || 'newest'
+  end
+
+  private
+
+  def already_visited?(element)
+    user_id = if user.nil? then -1 else current_user.id end
+    user_id = "#{user_id}_#{element.id}_#{element.class}"
+
+    if cookies.signed[:visited] == user_id
+      return true
+    else
+      cookies.permanent.signed[:visited] = user_id
+      return false
+    end
   end
 
 end

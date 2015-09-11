@@ -129,11 +129,13 @@ class Article < ActiveRecord::Base
 
   xss_terminate :only => [ :name ], :on => 'validation', :with => 'white_list'
 
-  scope :in_category, -> (category) {
+  scope :in_category, -> category {
     includes('categories_including_virtual').where('categories.id' => category.id)
   }
 
-  scope :by_range, -> (range) {
+  include TimeScopes
+
+  scope :by_range, -> range {
     where 'articles.published_at BETWEEN :start_date AND :end_date', { start_date: range.first, end_date: range.last }
   }
 
@@ -257,7 +259,7 @@ class Article < ActiveRecord::Base
 
   # retrieves all articles belonging to the given +profile+ that are not
   # sub-articles of any other article.
-  scope :top_level_for, -> (profile) {
+  scope :top_level_for, -> profile {
     where 'parent_id is null and profile_id = ?', profile.id
   }
 
@@ -491,14 +493,14 @@ class Article < ActiveRecord::Base
   end
 
   scope :published, -> { where 'articles.published = ?', true }
-  scope :folders, -> (profile) { where 'articles.type IN (?)', profile.folder_types }
-  scope :no_folders, -> (profile) { where 'articles.type NOT IN (?)', profile.folder_types }
+  scope :folders, -> profile { where 'articles.type IN (?)', profile.folder_types }
+  scope :no_folders, -> profile { where 'articles.type NOT IN (?)', profile.folder_types }
   scope :galleries, -> { where "articles.type IN ('Gallery')" }
   scope :images, -> { where :is_image => true }
   scope :no_images, -> { where :is_image => false }
   scope :text_articles, -> { where 'articles.type IN (?)', text_article_types }
   scope :files, -> { where :type => 'UploadedFile' }
-  scope :with_types, -> (types) { where 'articles.type IN (?)', types }
+  scope :with_types, -> types { where 'articles.type IN (?)', types }
 
   scope :no_feeds, -> { where "type != 'RssFeed'" }
   scope :latest, -> { order "updated_at DESC" }
@@ -635,6 +637,11 @@ class Article < ActiveRecord::Base
     self.hits += 1
   end
 
+  def self.hit(articles)
+    Article.where(:id => articles.map(&:id)).update_all('hits = hits + 1')
+    articles.each { |a| a.hits += 1 }
+  end
+
   def can_display_hits?
     true
   end
@@ -724,6 +731,11 @@ class Article < ActiveRecord::Base
   def author_id(version_number = nil)
     person = author_by_version(version_number)
     person ? person.id : nil
+  end
+
+  #FIXME make this test
+  def author_custom_image(size = :icon)
+    author ? author.profile_custom_image(size) : nil
   end
 
   def version_license(version_number = nil)

@@ -26,7 +26,7 @@ class CustomFormsPlugin::Form < ActiveRecord::Base
     tasks.each {|task| task.cancel}
   end
 
-  scope :from_profile, -> (profile) { where profile_id: profile.id }
+  scope :from_profile, -> profile { where profile_id: profile.id }
   scope :on_memberships, -> { where on_membership: true, for_admission: false }
   scope :for_admissions, -> { where for_admission: true }
 =begin

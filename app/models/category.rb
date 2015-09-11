@@ -17,11 +17,11 @@ class Category < ActiveRecord::Base
   scope :alphabetical, order: 'name ASC'
 
   # Finds all top level categories for a given environment.
-  scope :top_level_for, -> (environment) {
+  scope :top_level_for, -> environment {
     where 'parent_id is null and environment_id = ?', environment.id
   }
 
-  scope :on_level, -> (parent) { where :parent_id => parent }
+  scope :on_level, -> parent { where :parent_id => parent }
 
   acts_as_filesystem
 
@@ -48,7 +48,7 @@ class Category < ActiveRecord::Base
     display_color = nil if display_color.blank?
   end
 
-  scope :from_types, -> (types) {
+  scope :from_types, -> types {
     if types.select{ |t| t.blank? }.empty? then
       where(type: types) else
       where("type IN (?) OR type IS NULL", types.reject{ |t| t.blank? }) end

@@ -233,6 +233,10 @@ body, th, td, input {
   border-left: 0px;
 }
 
+.menu-submenu-list>li{
+  width: 100%;
+}
+
 #navigation .menu-submenu ul{
   border: 1px solid #888a85;
   border-top: 0px;
@@ -301,10 +305,9 @@ body, th, td, input {
   //border-color: #babdb6;
   //border-width: 1px;
   //border-radius: 10px;
-
   //box-shadow: 1px 1px 2px #888888;
-
   //padding: 10px 20px;
+  //position: relative;
 }
 
 #content .main-block h1, #not-found h1, #access-denied h1 {
@@ -2067,4 +2070,8 @@ div.with_media_panel .formfield input[type="checkbox"] {
   margin-top: 20px;
   width: 494px;
   padding-left: 2px;
+}
+
+.profile-members-title-sort {
+  clear: both;
 }

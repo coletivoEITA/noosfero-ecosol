@@ -6,6 +6,7 @@ gem 'rails_autolink',           '~> 1.1.5'
 gem 'RedCloth',                 '~> 4.2.9'
 gem 'ruby-feedparser',          '~> 0.7'
 gem 'daemons',                  '~> 1.1.5'
+gem 'unicorn'
 gem 'nokogiri',                 '~> 1.6.0'
 gem 'will_paginate'
 gem 'pothoven-attachment_fu',   '~> 3.2.16'
@@ -37,7 +38,6 @@ gem 'js-routes'
 platform :ruby do
   gem 'pg',                       '~> 0.18.1'
   gem 'rmagick',                '~> 2.13.1'
-  gem 'thin',                   '~> 1.3.1'
 
   gem 'unicode'
 
@@ -56,8 +56,6 @@ platform :ruby do
   end
 
   group :production do
-    gem 'unicorn'
-    #gem 'rainbows'
     gem 'unicorn-worker-killer'
   end
 end
@@ -72,10 +70,16 @@ group :performance do
   #gem 'rack-mini-profiler'
 end
 
+# API dependencies
+gem 'grape',                    '~> 0.12'
+gem 'grape-entity'
+gem 'grape_logging'
+gem 'rack-cors'
+gem 'rack-contrib'
+
 group :assets do
   gem 'assets_live_compile'
   gem 'uglifier', '>= 1.0.3'
-  #gem 'coffee-rails'
   gem 'sass'
   gem 'sass-rails'
 end
@@ -93,6 +97,14 @@ group :production do
   gem 'redis-rails'
   # not in active development :(
   #gem 'rack-cache'
+end
+
+group :development do
+end
+
+group :development, :test do
+  gem 'spring'
+  gem 'spring-commands-testunit'
 end
 
 group :test do
