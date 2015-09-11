@@ -55,6 +55,7 @@ module LayoutHelper
     output << stylesheet_link_tag('application')
     output << stylesheet_link_tag(template_stylesheet_path)
     output << stylesheet_link_tag(*icon_theme_stylesheet_path)
+    output << stylesheet_link_tag('designs/icons/awesome/scss/font-awesome') unless theme_responsive?
     output << stylesheet_link_tag(jquery_ui_theme_stylesheet_path)
     unless plugins_stylesheets.empty?
       # FIXME: caching does not work with asset pipeline
