@@ -54,8 +54,6 @@ module ApplicationHelper
 
   include ChatHelper
 
-  include JavascriptsHelper
-
   def locale
     (@page && !@page.language.blank?) ? @page.language : FastGettext.locale
   end
