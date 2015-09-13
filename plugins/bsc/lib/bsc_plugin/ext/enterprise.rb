@@ -10,5 +10,4 @@ class Enterprise
 
   scope :validated, -> { where validated: true }
   scope :not_validated, -> { where validated: false }
-
 end
