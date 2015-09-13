@@ -31,9 +31,11 @@ gem 'riot_js-rails'
 gem 'sprockets-es6'
 
 # js
-gem 'active_model_serializers'
+gem 'active_model_serializers', '>= 0.10.0rc1'
+# while https://github.com/fnando/i18n-js/pull/354 is not released
 gem 'i18n-js', github: 'coletivoEITA/i18n-js'
-gem 'js-routes'
+# while https://github.com/railsware/js-routes/pull/163 is not released
+gem 'js-routes', github: 'coletivoEITA/js-routes'
 
 platform :ruby do
   gem 'pg',                       '~> 0.18.1'
@@ -123,11 +125,6 @@ group :cucumber do
   gem 'cucumber-rails',         '~> 1.4.2', :require => false
   gem 'database_cleaner',       '~> 1.2.0'
   gem 'selenium-webdriver'
-end
-
-group :development, :test do
-  gem 'spring'
-  gem 'spring-commands-testunit'
 end
 
 group :development do
