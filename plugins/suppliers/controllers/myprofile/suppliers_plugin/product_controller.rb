@@ -32,7 +32,7 @@ class SuppliersPlugin::ProductController < MyProfileController
 
   def edit
     @product = profile.products.supplied.find params[:id]
-    @product.update_attributes params["product_#{@product.id}"]
+    @product.update params["product_#{@product.id}"]
   end
 
   def import

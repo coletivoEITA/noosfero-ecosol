@@ -80,7 +80,7 @@ def update_enterprise data, enterprise
   begin
     enterprise.articles.destroy_all
     enterprise.apply_template $environment.inactive_enterprise_template
-    enterprise.update_attributes! data
+    enterprise.update! data
   rescue => e
     puts "Erro '#{e.message}' ao atualizar #{enterprise.inspect}, usando identificador '#{data[:identifier]}'."
   end

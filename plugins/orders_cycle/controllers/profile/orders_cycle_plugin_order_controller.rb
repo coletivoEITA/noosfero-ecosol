@@ -72,7 +72,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
       if status == 'ordered'
         if @order.items.size > 0
           @order.to_yaml # most strange workaround to avoid a crash in the next line
-          @order.update_attributes! params[:order]
+          @order.update! params[:order]
           session[:notice] = t('orders_plugin.controllers.profile.consumer.order_confirmed')
         else
           session[:notice] = t('orders_plugin.controllers.profile.consumer.can_not_confirm_your_')
@@ -117,12 +117,12 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   end
 
   def reopen
-    @order.update_attributes! status: 'draft'
+    @order.update! status: 'draft'
     render 'edit'
   end
 
   def cancel
-    @order.update_attributes! status: 'cancelled'
+    @order.update! status: 'cancelled'
     session[:notice] = t('orders_plugin.controllers.profile.consumer.order_cancelled')
     render 'edit'
   end

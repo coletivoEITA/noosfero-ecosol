@@ -48,12 +48,12 @@ class OrdersCyclePlugin::ProfileTest < ActiveRecord::TestCase
   ###
 
   should "default products's margins when asked" do
-    profile.update_attributes! :margin_percentage => 10
+    profile.update! :margin_percentage => 10
     product = create(SuppliersPlugin::DistributedProduct, :profile => profile, :supplier => profile.self_supplier,
                      :price => 10, :default_margin_percentage => false)
     cycle = create(OrdersCyclePlugin::Cycle, :profile => profile)
     sproduct = cycle.products.first
-    sproduct.update_attributes! :margin_percentage => 5
+    sproduct.update! :margin_percentage => 5
     cycleclosed = create(OrdersCyclePlugin::Cycle, :profile => profile, :status => 'closed')
 
     profile.orders_cycles_products_default_margins

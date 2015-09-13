@@ -27,7 +27,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
       @cycle = OrdersCyclePlugin::Cycle.find params[:id]
 
       params[:cycle][:status] = 'orders' if @open = params[:open] == '1'
-      @success = @cycle.update_attributes params[:cycle]
+      @success = @cycle.update params[:cycle]
 
       if @success
         session[:notice] = t('controllers.myprofile.cycle_controller.cycle_created')
@@ -55,7 +55,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
     if request.xhr?
       if params[:commit]
         params[:cycle][:status] = 'orders' if @open = params[:open] == '1'
-        @success = @cycle.update_attributes params[:cycle]
+        @success = @cycle.update params[:cycle]
 
         if params[:sendmail]
           OrdersCyclePlugin::Mailer.delay(run_at: @cycle.start).open_cycle(@cycle.profile,

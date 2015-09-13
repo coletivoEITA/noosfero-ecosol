@@ -264,14 +264,14 @@ class OrdersCyclePlugin::Cycle < ActiveRecord::Base
   def update_sales_status from, to
     sales = self.sales.where(status: from.to_s)
     sales.each do |sale|
-      sale.update_attributes status: to.to_s
+      sale.update status: to.to_s
     end
   end
 
   def update_purchases_status from, to
     purchases = self.purchases.where(status: from.to_s)
     purchases.each do |purchase|
-      purchase.update_attributes status: to.to_s
+      purchase.update status: to.to_s
     end
   end
 

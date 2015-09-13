@@ -21,7 +21,7 @@ class SuppliersPluginMyprofileController < MyProfileController
   end
 
   def new
-    @new_supplier.update_attributes! params[:supplier]
+    @new_supplier.update! params[:supplier]
     @supplier = @new_supplier
     session[:notice] = t('controllers.myprofile.supplier_created')
   end
@@ -33,7 +33,7 @@ class SuppliersPluginMyprofileController < MyProfileController
 
   def edit
     @supplier = profile.suppliers.find params[:id]
-    @supplier.update_attributes params[:supplier]
+    @supplier.update params[:supplier]
   end
 
   def margin_change

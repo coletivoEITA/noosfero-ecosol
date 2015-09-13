@@ -178,7 +178,7 @@ task :sies_update_enterprises do
     puts "Atualizando empreendimento '#{e.identifier}'"
 
     e.data.merge! data.delete(:data)
-    e.update_attributes! data
+    e.update! data
 
     data[:record] = e
   end

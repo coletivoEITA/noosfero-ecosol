@@ -100,7 +100,7 @@ SQL
   def self.archive_orphans
     self.where(id: self.orphans_ids).find_each batch_size: 50 do |product|
       # need full save to trigger search index
-      product.update_attributes archived: true
+      product.update archived: true
     end
   end
 
@@ -175,10 +175,10 @@ SQL
 
   # FIXME: move to core
   def archive
-    self.update_attributes! archived: true
+    self.update! archived: true
   end
   def unarchive
-    self.update_attributes! archived: false
+    self.update! archived: false
   end
 
   protected

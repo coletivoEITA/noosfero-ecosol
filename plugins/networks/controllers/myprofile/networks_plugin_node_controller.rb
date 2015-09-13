@@ -20,8 +20,8 @@ class NetworksPluginNodeController < MyProfileController
     @node = NetworksPlugin::Node.find params[:id]
 
     if request.patch?
-      @node.update_attributes params[:profile_data]
-      @node.home_page.update_attributes params[:home_page]
+      @node.update params[:profile_data]
+      @node.home_page.update params[:home_page]
       session[:notice] = t('controllers.node.edit')
       redirect_to :controller => :networks_plugin_network, :action => :structure, :node_id => @node.parent.id
     end

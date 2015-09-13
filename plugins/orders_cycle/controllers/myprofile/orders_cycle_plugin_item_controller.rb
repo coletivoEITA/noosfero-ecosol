@@ -31,7 +31,7 @@ class OrdersCyclePluginItemController < OrdersPluginItemController
     @item.sale = @order
     @item.product = @offered_product
     if set_quantity_consumer_ordered(params[:quantity_consumer_ordered] || 1)
-      @item.update_attributes! quantity_consumer_ordered: @quantity_consumer_ordered
+      @item.update! quantity_consumer_ordered: @quantity_consumer_ordered
     end
   end
 
@@ -50,7 +50,7 @@ class OrdersCyclePluginItemController < OrdersPluginItemController
     #update on association for total
     @order.items.each{ |i| i.attributes = params[:item] if i.id == @item.id }
 
-    @item.update_attributes = params[:item]
+    @item.update params[:item]
   end
 
   def destroy

@@ -136,7 +136,7 @@ class Product
   def distribute_to_consumer consumer, attrs = {}
     distributed_product = consumer.distributed_products.where(profile_id: consumer.id, from_products_products: {id: self.id}).first
     distributed_product ||= SuppliersPlugin::DistributedProduct.create! profile: consumer, from_product: self
-    distributed_product.update_attributes! attrs if attrs.present?
+    distributed_product.update! attrs if attrs.present?
     distributed_product
   end
 
