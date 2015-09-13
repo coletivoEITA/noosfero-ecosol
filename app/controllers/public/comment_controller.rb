@@ -130,7 +130,7 @@ class CommentController < ApplicationController
   end
 
   def update
-    if @comment.update_attributes(params[:comment])
+    if @comment.update(params[:comment])
       @plugins.dispatch(:process_extra_comment_params, [@comment,params])
 
       respond_to do |format|
