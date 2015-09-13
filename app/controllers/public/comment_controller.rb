@@ -78,25 +78,29 @@ class CommentController < ApplicationController
 
     @plugins.dispatch(:process_extra_comment_params, [@comment,params]) if @saved
 
-    MessageBus.publish url, {
+    comment_json = {
       user_id: current_user.id,
       saved: @saved,
       render_target: comment_to_render.anchor,
       html: comment_html,
-      msg: _('Comment successfully created.')
     }
-    MessageBus.client_filter url do |user_id, message|
-      current_user_id = message.data['user_id']
-      this_user = user_id == current_user_id
-      if message.data['saved'] and this_user
-        message.data.delete 'msg' if user_id != current_user_id
-        message.data['this_user'] = this_user
-        message.data = message.data.to_json
-        message.dup
+
+    if @saved
+      MessageBus.publish url, comment_json
+      MessageBus.client_filter url do |user_id, message|
+        data = message.data
+        this_user = user_id == data['user_id']
+        unless this_user
+          data = data.dup
+          json['this_user'] = false
+          message.data = data
+        end
       end
     end
 
-    render nothing: true
+    comment_json[:this_user] = true
+    comment_json[:msg] = _('Comment successfully created.')
+    render json: comment_json
   end
 
   def destroy

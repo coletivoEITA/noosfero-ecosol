@@ -6,6 +6,7 @@ noosfero.comments = {
 
     var url = $("#page_url").val()
     MessageBus.subscribe(url+'/new_comment', function (data) {
+      data = JSON.parse(data)
       noosfero.comments.receiveComment(data)
     })
 
@@ -41,7 +42,6 @@ noosfero.comments = {
 
   button: $(),
   receiveComment: function (data) {
-    data = JSON.parse(data)
     var self = noosfero.comments
     var form = self.button.parents("form")
     var post_comment_box = self.button.parents('.post_comment_box')
@@ -105,7 +105,7 @@ noosfero.comments = {
 
     var form = button.parents("form")
     $.post(form.attr("action"), form.serialize(), function(data) {
-      //done via message bus
+      noosfero.comments.receiveComment(data)
     }, 'json')
   },
 
