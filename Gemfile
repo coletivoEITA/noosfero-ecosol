@@ -31,7 +31,8 @@ gem 'riot_js-rails'
 gem 'sprockets-es6'
 
 # js
-gem 'active_model_serializers', '>= 0.10.0rc1'
+# while https://github.com/rails-api/active_model_serializers/issues/1143 is not released
+gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
 # while https://github.com/fnando/i18n-js/pull/354 is not released
 gem 'i18n-js', github: 'coletivoEITA/i18n-js'
 # while https://github.com/railsware/js-routes/pull/163 is not released
