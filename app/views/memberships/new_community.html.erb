@@ -44,7 +44,7 @@
     </div>
   </div>
 
-  <%= template_options(:communities, 'community')%>
+  <%= template_options(:communities, 'community') if @user_is_admin %>
 
   <%= hidden_field_tag('back_to', @back_to) %>
 
