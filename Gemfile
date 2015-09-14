@@ -35,8 +35,7 @@ gem 'sprockets-es6'
 gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
 # while https://github.com/fnando/i18n-js/pull/354 is not released
 gem 'i18n-js', github: 'coletivoEITA/i18n-js'
-# while https://github.com/railsware/js-routes/pull/163 is not released
-gem 'js-routes', github: 'coletivoEITA/js-routes'
+gem 'js-routes', '>= 1.1.2'
 
 platform :ruby do
   gem 'pg',                       '~> 0.18.1'
