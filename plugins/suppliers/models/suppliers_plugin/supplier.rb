@@ -91,7 +91,7 @@ class SuppliersPlugin::Supplier < ActiveRecord::Base
   end
 
   def destroy_with_dummy
-    if not self.self? and not self.dont_destroy_dummy and self.supplier.dummy?
+    if not self.self? and not self.dont_destroy_dummy and self.supplier and self.supplier.dummy?
       self.supplier.destroy
     end
     self.destroy_without_dummy
