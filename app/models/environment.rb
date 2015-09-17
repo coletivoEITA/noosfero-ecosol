@@ -751,7 +751,7 @@ class Environment < ActiveRecord::Base
 
   has_many :articles, :through => :profiles
   def recent_documents(limit = 10, options = {}, pagination = true)
-    self.articles.recent(limit, options, pagination)
+    self.articles.is_public.recent(limit, options, pagination)
   end
 
   has_many :events, :through => :profiles, :source => :articles, :class_name => 'Event'
