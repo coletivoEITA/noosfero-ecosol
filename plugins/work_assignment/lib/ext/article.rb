@@ -1,6 +1,7 @@
 require_dependency 'article'
 
 class Article
+
   before_validation :work_assignment_save_into_author_folder
   after_validation :work_assignment_change_visibility
 
@@ -17,4 +18,13 @@ class Article
       self.published = self.parent.published
     end
   end
+
+  settings_items :work_assignment_read_by_ids, type: Array, default: []
+  def work_assignment_read_by
+    @work_assignment_read_by ||= Person.where(id: self.work_assignment_read_by_ids).all
+  end
+  def work_assignment_read_by_names
+    self.work_assignment_read_by.map(&:name)
+  end
+
 end

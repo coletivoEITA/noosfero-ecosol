@@ -1,0 +1,21 @@
+submissions
+  table.table
+    thead
+      th
+        |{wa.t('views.submissions.work')}
+      th
+        |{wa.t('views.submissions.date')}
+      th
+    tbody
+      tr riot-tag='submission' each='{submission in submissions}' data='{submission}'
+
+  javascript:
+    this.wa = window.work_assignment
+    this.submissions = opts.submissions
+
+    remove(submission) {
+      this.submissions = _.reject(this.submissions, function (s) {
+        return s.id == submission.id
+      })
+      this.update()
+    }

@@ -1,0 +1,32 @@
+= render 'shared/bootstrap_table'
+
+- extend WorkAssignmentPlugin::Helper
+
+- unless @page.body.blank?
+  div= @page.body
+  hr
+
+#toolbar
+- if @page.submissions.present?
+  table#authors-submissions
+    thead
+      tr
+        th style="width: 50%" = c_'Author'
+        th= _'Submission date'
+        th style="text-align: center" = _'Versions'
+        th
+    tbody
+      - @page.folders.each do |author_folder|
+        tr data-id="#{author_folder.id}"
+          td= link_to_last_submission author_folder, user
+          td= time_format author_folder.children.last.created_at
+          td style='text-align: center' = author_folder.children.count
+          td= display_privacy_button author_folder, user
+
+= js_translations_include
+= js_translations_include plugin: :work_assignment
+= javascript_include_tag 'plugins/work_assignment/javascripts/work_assignment'
+javascript:
+  work_assignment.folder.table.submissions = #{@page.submissions_as_json(user).to_json}
+  work_assignment.folder.load()
+
