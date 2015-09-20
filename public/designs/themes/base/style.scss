@@ -386,15 +386,6 @@ div#notice {
 .block a {
   color: #555753;
 }
-.block a:visited {
-  color: #888a85;
-  font-weight: normal;
-}
-.block a:hover {
-  color: #2e3436;
-  text-decoration: underline;
-}
-
 
 #content .block {
   padding: 0px;
@@ -1018,10 +1009,6 @@ div#notice {
 }
 
 /* ==> article.css <== */
-
-#article a {
-  text-decoration: underline;
-}
 
 hr.pre-posts, hr.sep-posts {
   display: none;

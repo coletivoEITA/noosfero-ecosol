@@ -1,5 +1,6 @@
 @import url(../profile-base/style.css);
 
+
 /************************** user bar ***************************/
 
 #user a,
@@ -21,15 +22,6 @@
 
 .block a {
   color: #A40000;
-}
-
-.block a:visited {
-  color: #CC0000;
-}
-
-.control-panel a,
-.control-panel a:visited {
-  color: #000;
 }
 
 .controller-profile_editor .control-panel a:hover {
