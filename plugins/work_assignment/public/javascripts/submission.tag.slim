@@ -7,7 +7,7 @@ submission
   td
     a.btn.btn-default.btn-xs.w-a-icon.fa.fa-trash-o if='{submission.may_delete}' href="{Routes.work_assignment_plugin_myprofile_path({profile: noosfero.profile, action: 'destroy', id: submission.id})}" onclick='{delete}'
     |&emsp;
-    a class="btn btn-default btn-xs w-a-icon fa {'fa-square-o': !submission.user_read, 'fa-check-square-o': submission.user_read}" data-toggle="tooltip" data-original-title="{submission.read_by_names.join('<br/>')}" onclick='{toggleRead}' href="{Routes.work_assignment_plugin_myprofile_path({profile: noosfero.profile, action: 'toggle_read', id: submission.id})}"
+    a class="btn btn-default btn-xs w-a-icon fa {'fa-square-o': !submission.user_read, 'fa-check-square-o': submission.user_read}" data-toggle="tooltip" data-original-title="{submission.read_by_names.join('<br/>')}" data-html='true' onclick='{toggleRead}' href="{Routes.work_assignment_plugin_myprofile_path({profile: noosfero.profile, action: 'toggle_read', id: submission.id})}"
       |&emsp;{wa.t('views.submissions.'+ (submissions.user_has_read ? 'unmark_as_read' : 'mark_as_read'))}
 
   javascript:
