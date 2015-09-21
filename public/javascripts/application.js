@@ -129,7 +129,7 @@ function updateUrlField(name_field, id) {
 
    url_field.val(new_url_value);
 
-  if (old_name_value && !/^\s*$/.test(old_url_value) && old_url_value != new_url_value) {
+  if (old_url_value && !/^\s*$/.test(old_url_value) && old_url_value != new_url_value) {
     warn_value_change(url_field);
   }
 }
