@@ -28,7 +28,7 @@ module WhiteListFilter
         before_validation do |obj|
           content = obj.send field
           content = obj.check_iframe_on_content content, obj.instance_eval(&white_list_method)
-          obj[field.to_s] = content
+          obj.send "#{field}=".freeze, content
         end
       end
     end
