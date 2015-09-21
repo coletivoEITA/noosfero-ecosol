@@ -21,7 +21,7 @@
 *= require rails-extended.js
 *= require jrails.js
 *= require message-bus.js
-*= require vendor/riot
+*= require riot
 *= require riot_rails
 *= require i18n
 *= require js-routes
