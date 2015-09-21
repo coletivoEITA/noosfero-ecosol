@@ -1,8 +1,16 @@
-# only test on specific branches
+# noosfero-ecosol: only test on specific branches
 branches:
   except:
     - master
     - next
+
+notifications:
+  irc:
+    channels:
+      - "chat.freenode.net#noosfero"
+      - "chat.freenode.net#noosfero-br"
+    template:
+      - "%{repository_slug} %{branch} %{commit} %{commit_subject} - %{result} %{build_url}"
 
 language: ruby
 rvm:

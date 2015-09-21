@@ -3,9 +3,9 @@ module TinymceHelper
 
   def tinymce_js
     output = ''
-    output += javascript_include_tag '/javascripts/tinymce/js/tinymce/tinymce.min.js'
-    output += javascript_include_tag '/javascripts/tinymce/js/tinymce/jquery.tinymce.min.js'
-    output += javascript_include_tag '/javascripts/tinymce.js'
+    output += javascript_include_tag 'tinymce/js/tinymce/tinymce.js'
+    output += javascript_include_tag 'tinymce/js/tinymce/jquery.tinymce.min.js'
+    output += javascript_include_tag 'tinymce.js'
     output += include_macro_js_files.to_s
     output
   end
