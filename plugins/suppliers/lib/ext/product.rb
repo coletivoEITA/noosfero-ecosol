@@ -142,7 +142,7 @@ class Product
 
   def destroy_dependent
     self.to_products.each do |to_product|
-      to_product.destroy if to_product.dependent?
+      to_product.destroy if to_product.respond_to? :dependent? and to_product.dependent?
     end
   end
 

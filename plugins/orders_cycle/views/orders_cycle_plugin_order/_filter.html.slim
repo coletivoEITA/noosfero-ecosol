@@ -22,6 +22,7 @@
       .box-field.price-with-unit= t'orders_cycle_plugin.views.product._order_search.price'
     .table-content
       - products_for_order.each do |offered_product|
+        - next if offered_product.supplier.nil?
         div class=("order-cycle-product value-row #{'editable' if editable}") id="cycle-product-#{offered_product.id}" onclick="orders_cycle.order.product.click(event, #{offered_product.id.to_json});" supplier-id="#{offered_product.supplier.id}" toggle-ignore=""
           - item = if order.blank? then nil else order.items.find{ |op| offered_product.id == op.product_id } end
           = render 'orders_cycle_plugin_product/order_edit', editable: editable,
