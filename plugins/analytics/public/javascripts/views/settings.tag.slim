@@ -1,11 +1,11 @@
 analytics-settings
   .checkbox
     label name='enabled'
-      input type='checkbox' name='enabled]' value='1' checked='{settings.enabled}' onchange='{toggleEnabled}'
+      input type='checkbox' name='enabled' value='1' checked='{settings.enabled}' onchange='{toggleEnabled}'
       |{anl.t('views.stats.enable', {profile: noosfero.profile})}
 
   .checkbox if='{settings.enabled}'
-    label name='anonymous]'
+    label name='anonymous'
       input type='checkbox' name='anonymous' value='1' checked='{settings.anonymous}' onchange='{toggleAnonymous}'
       |{anl.t('views.stats.anonymous')}
 
