@@ -2,9 +2,18 @@ class AnalyticsPlugin::StatsController < MyProfileController
 
   no_design_blocks
 
+  protect 'edit_profile', :profile
   before_filter :skip_page_view
 
   def index
+  end
+
+  def edit
+    params[:analytics_settings][:enabled] = params[:analytics_settings][:enabled] == 'true'
+    params[:analytics_settings][:anonymous] = params[:analytics_settings][:anonymous] == 'true'
+    @settings = profile.analytics_settings params[:analytics_settings] || {}
+    @settings.save!
+    render nothing: true
   end
 
   protected

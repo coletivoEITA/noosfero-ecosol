@@ -3,6 +3,7 @@ class AnalyticsPlugin::Base < Noosfero::Plugin
 
   def body_ending
     return unless profile and profile.analytics_enabled?
+    return if @analytics_skip_page_view
     lambda do
       render 'analytics_plugin/body_ending'
     end
@@ -39,6 +40,7 @@ class AnalyticsPlugin::Base < Noosfero::Plugin
   end
 
   def control_panel_buttons
+    return unless user.is_admin? environment
     {
       title: I18n.t('analytics_plugin.lib.plugin.panel_button'),
       icon: 'analytics-access',

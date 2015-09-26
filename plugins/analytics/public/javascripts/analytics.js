@@ -1,4 +1,9 @@
 analytics = {
+
+  t: function (key, options) {
+    return I18n.t(key, $.extend(options, {scope: 'analytics_plugin'}))
+  },
+
   requestId: '',
 
   timeOnPage: {

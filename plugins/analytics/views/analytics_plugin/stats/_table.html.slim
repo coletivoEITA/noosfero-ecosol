@@ -9,7 +9,7 @@ table#analytics-stats.table data-toggle='table' data-striped='true' data-sortabl
   tbody
     - profile.visits.each do |visit|
       tr
-        td= link_to visit.user.name, visit.user.url
+        td= link_to visit.user.name, visit.user.url if visit.user
         td
           div data-toggle="tooltip" data-title='#{l visit.initial_time}'
             = time_ago_in_words(visit.initial_time)
