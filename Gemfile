@@ -25,17 +25,14 @@ gem 'premailer-rails'
 gem 'slim'
 gem 'message_bus'
 
-# for fast js template compilations
-gem 'therubyracer'
-gem 'riot_js-rails'
-gem 'sprockets-es6'
-
 # js
 # while https://github.com/rails-api/active_model_serializers/issues/1143 is not released
 gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
 # while https://github.com/fnando/i18n-js/pull/354 is not released
 gem 'i18n-js', github: 'coletivoEITA/i18n-js'
 gem 'js-routes', '>= 1.1.2'
+gem 'riot_js-rails'#, path: '../../others/riot_js-rails'
+gem 'sprockets-es6'
 
 platform :ruby do
   gem 'pg',                       '~> 0.18.1'
@@ -81,6 +78,7 @@ gem 'rack-contrib'
 
 group :assets do
   gem 'assets_live_compile'
+  gem 'therubyracer' # for fast js template compilations
   gem 'uglifier', '>= 1.0.3'
   gem 'sass'
   gem 'sass-rails'
@@ -129,7 +127,7 @@ end
 
 group :development do
   gem 'wirble'
-  gem 'byebug', platform: :mri
+  #gem 'byebug', platform: :mri
   gem 'html2haml', require: false
   gem 'haml2slim', require: false
 end
