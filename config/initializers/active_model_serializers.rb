@@ -6,4 +6,6 @@ class ActiveModel::Serializer
     ActiveModel::SerializableResource.new(self.object, serializer: self.class).serializable_hash
   end
 
+  alias_method :to_hash, :serializable_hash
+
 end
