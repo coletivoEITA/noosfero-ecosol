@@ -1,0 +1,47 @@
+teams-context
+  h1
+    a href='#' onclick='{list}'
+      |{tm.t('views.teams.title')}
+
+  .teams.col-lg-12
+
+    button.btn.btn-default.btn-success onclick='{add}'
+      |{tm.t('views.teams.add')}
+
+    .row
+      team-view each='{team in teams}' data='{team}'
+
+  team-edit
+
+  .clear
+
+  javascript:
+    this.tm = window.teams
+    this.teams = opts.teams
+    this.context = opts.context
+
+    add () {
+      var self = this
+      var createUrl = Routes.teams_plugin_teams_path({profile: noosfero.profile, action: 'create'})
+      $.post(createUrl, {context: this.context}, function (team) {
+        self.teams.push(team)
+        self.update()
+      })
+    }
+
+    edit (team) {
+      var edit = this.tags['team-edit']
+      edit.team = team
+      edit.update()
+      this.toggle()
+    }
+
+    toggle () {
+      $(this.root).find('.teams, team-edit').toggle()
+    }
+    list () {
+      $(this.root).find('.teams, team-edit').hide()
+      $(this.root).find('.teams').show()
+      return false
+    }
+

@@ -1,0 +1,22 @@
+team-view.col-lg-6.panel.panel-default
+  .panel-body
+    h2
+      a href='#' onclick='{edit}'
+        |{team.name}
+
+  .panel-footer
+    span.team-member each='{member in team.members}' data='{member}'
+      img src='{member.image_url}' title='{member.name}' data-toggle='tooltip'
+
+  javascript:
+    this.team = opts.team
+
+    edit () {
+      this.parent.edit(this.team)
+      return false
+    }
+
+    this.on('mount', function () {
+      $(this.root).find('[data-toggle=tooltip]').tooltip()
+    })
+
