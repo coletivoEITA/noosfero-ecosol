@@ -18,6 +18,12 @@ class TeamsPlugin::TeamsController < MyProfileController
     render nothing: true
   end
 
+  def destroy
+    @team = @context.teams.find params[:id]
+    @team.destroy
+    render nothing: true
+  end
+
   protected
 
   def load_context

@@ -6,6 +6,10 @@
   div= @page.body
   hr
 
+- if defined? TeamsPlugin and @article.persisted?
+  h4 = t('teams_plugin.views.teams.title')
+  = modal_button :edit, _('Edit'), controller: 'teams_plugin/teams', action: :index, context: {id: @article.id, type: 'Article'}
+
 #toolbar
 - if @page.submissions.present?
   table#authors-submissions

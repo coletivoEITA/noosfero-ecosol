@@ -2,7 +2,7 @@ team-edit.col-lg-12
 
   input.name.form-control type='text' required='' value='{team.name}' onchange='{updateName}'
 
-  .members-title
+  .members-title.row
     h4.col-md-6
       |{tm.t('views.member.title')}
     .col-md-6.pull-right
@@ -12,15 +12,18 @@ team-edit.col-lg-12
 
   table.team-members-list
     tr.team-member each='{member in team.members}' data='{member}'
-      td
+      td.image
         img src='{member.image_url}'
       td
         span
         |{member.name}
       td
-        button.btn.btn-default.btn-danger onclick='{removeMember}'
+        button.btn.btn-default.btn-danger.pull-right onclick='{removeMember}'
           |{tm.t('views.member.remove')}
       .clear
+
+  button.btn.btn-default.btn-danger onclick='{delete}'
+    |{tm.t('views.teams.delete')}
 
   javascript:
     this.tm = window.teams
@@ -49,6 +52,20 @@ team-edit.col-lg-12
           var index = self.team.members.indexOf(member)
           self.team.members.splice(index, 1)
           self.update()
+        },
+      })
+    }
+
+    delete () {
+      if (!confirm(this.tm.t('views.teams.confirm_delete', {team: this.team.name}))) return
+
+      var destroyUrl = Routes.teams_plugin_teams_path({profile: noosfero.profile, action: 'destroy', id: this.team.id})
+      var self = this
+      $.ajax({url: destroyUrl, type: 'DELETE', data: {context: this.context, id: this.team.id},
+        success: function () {
+          var index = self.parent.teams.indexOf(self.team)
+          self.parent.teams.splice(index, 1)
+          self.parent.list()
         },
       })
     }
@@ -94,4 +111,13 @@ team-edit.col-lg-12
       })
     }
 
+  scss:
+    team-edit {
+
+      .team-member {
+        td.image {
+          width: 60px;
+        }
+      }
+    }
 

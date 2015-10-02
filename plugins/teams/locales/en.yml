@@ -15,6 +15,8 @@ en: &en
         title: 'Teams'
         add: 'Add team'
         saved: 'Team saved'
+        delete: 'Delete team'
+        confirm_delete: "Please confirm to delete the team '%{team}'"
       team:
         add_member: 'Add a person'
       member:

@@ -7,8 +7,8 @@ class TeamsPlugin::MemberSerializer < ActiveModel::Serializer
   end
 
   def image_url
-    return "/images/icons-app/person-#{:icon}.png" unless self.profile.image
-    self.profile.image.public_filename :icon
+    return "/images/icons-app/person-#{:minor}.png" unless self.profile.image
+    self.profile.image.public_filename :minor
   end
 
   protected
