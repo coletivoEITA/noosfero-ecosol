@@ -10,10 +10,8 @@ module ForumHelper
   end
 
   def list_forum_posts(articles)
-    pagination = will_paginate(articles, {
-      :param_name => 'npage',
-      :previous_label => _('&laquo; Newer posts'),
-      :next_label => _('Older posts &raquo;')
+    pagination = pagination_links(articles, {
+      :param_name => 'npage'
     })
     content = [content_tag('tr',_('Answers'))]
     content = [content_tag('tr',

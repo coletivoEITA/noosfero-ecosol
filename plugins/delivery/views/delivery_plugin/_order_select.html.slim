@@ -34,7 +34,5 @@ div.order-delivery-select id='order-#{order.id}'
           ff.text_field(:zip_code, value: consumer_delivery_field_value(order, :zip_code), readonly: readonly)
 
 javascript:
-  console.log('here')
   delivery.order.select.onChange($('.order-delivery-select#order-#{order.id} #order_supplier_delivery_id'))
-
 

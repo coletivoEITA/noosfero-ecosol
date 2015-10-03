@@ -37,7 +37,7 @@ class MoveShoppingCartPurchaseOrderToOrdersPluginOrder < ActiveRecord::Migration
   def self.up
     OrdersPlugin::Order.record_timestamps = false
 
-    ShoppingCartPlugin:urchaseOrder.all(order: 'created_at ASC').each do |purchase_order|
+    ShoppingCartPlugin::PurchaseOrder.order('created_at ASC').find_each do |purchase_order|
       data = purchase_order.data
 
       order = OrdersPlugin::Order.new profile_id: purchase_order.seller_id, consumer_id: purchase_order.customer_id

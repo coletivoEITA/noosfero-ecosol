@@ -208,7 +208,6 @@ module OrdersPlugin::Report
 
       ["A#{sbs}:B#{sbs}", "D#{sbs}:F{sbs}"].each{ |c| sheet.merge_cells c }
 
-
       sheet.column_widths 15,30,30,9,8,10,11
     end # closes spreadsheet
 

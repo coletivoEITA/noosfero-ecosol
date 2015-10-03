@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   before_filter :allow_cross_domain_access
 
   include AuthenticatedSystem
-  before_filter :login_required, :if => :private_environment?
+  before_filter :require_login_for_environment, :if => :private_environment?
 
   before_filter :check_admin
 
@@ -17,6 +17,10 @@ class ApplicationController < ActionController::Base
   before_filter :redirect_to_current_user
   before_filter :authorize_profiler if defined? Rack::MiniProfiler
   around_filter :set_time_zone
+
+  def require_login_for_environment
+    login_required
+  end
 
   def verify_members_whitelist
     render_access_denied unless @user_is_admin || environment.in_whitelist?(user)
