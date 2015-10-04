@@ -38,14 +38,18 @@ class WorkAssignmentPlugin::WorkAssignment < Folder
     end
   end
 
-  def find_or_create_author_folder(author)
-    children.find_by_slug(author.name.to_slug) || Folder.create!({
-      name: author.name,
-      parent: self,
-      profile: profile,
-      author: author,
-      published: publish_submissions,
-    }, without_protection: true)
+  def find_or_create_author_folder author
+    if defined? TeamsPlugin and team = self.teams.joins(:profiles).where(profiles: {id: author.id}).first
+      slug = "team-#{team.id}"
+      klass = TeamsPlugin::TeamFolder
+      attributes = {team: team}
+    else
+      slug = author.name.to_slug
+      klass = Folder
+      attributes = {name: author.name}
+    end
+    folder = self.children.where(slug: slug).first
+    folder ||= klass.create! attributes.merge(parent: self, profile: profile, author: author, published: publish_submissions), without_protection: true
   end
 
   def folders

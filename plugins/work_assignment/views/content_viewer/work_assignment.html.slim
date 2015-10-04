@@ -6,9 +6,9 @@
   div= @page.body
   hr
 
-- if defined? TeamsPlugin and @article.persisted?
+- if defined? TeamsPlugin
   h4 = t('teams_plugin.views.teams.title')
-  = modal_button :edit, _('Edit'), controller: 'teams_plugin/teams', action: :index, context: {id: @article.id, type: 'Article'}
+  = modal_button :edit, _('Edit'), controller: 'teams_plugin/teams', action: :index, context: {id: @page.id, type: 'Article'}
 
 #toolbar
 - if @page.submissions.present?
