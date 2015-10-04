@@ -7,7 +7,7 @@ team-view.col-md-6
 
     .panel-footer
       span.team-member each='{member in team.members}' data='{member}'
-        img src='{member.image_url}' title='{member.name}' data-toggle='tooltip'
+        img src='{member.image_url}' data-original-title='{member.name}' data-toggle='tooltip'
 
   javascript:
     this.team = opts.team
@@ -17,7 +17,7 @@ team-view.col-md-6
       return false
     }
 
-    this.on('mount', function () {
+    this.on('mount update', function () {
       $(this.root).find('[data-toggle=tooltip]').tooltip()
     })
 
@@ -37,6 +37,7 @@ team-view.col-md-6
 
       .team-member {
         padding: 3px;
+        border-radius: 5px;
       }
     }
 

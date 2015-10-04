@@ -7,6 +7,8 @@ class TeamsPlugin::Team < ActiveRecord::Base
   has_many :members, class_name: 'TeamsPlugin::Member', dependent: :destroy
   has_many :profiles, through: :members
 
+  has_many :works, class_name: 'TeamsPlugin::Work'
+
   validates_presence_of :context
 
   scope :by_context, -> context {
@@ -18,6 +20,11 @@ class TeamsPlugin::Team < ActiveRecord::Base
 
   # must come after code_numbering
   before_create :fill_name
+
+  def destroy
+    raise "Can't delete as there is associated works" if self.works.present?
+    super
+  end
 
   protected
 
