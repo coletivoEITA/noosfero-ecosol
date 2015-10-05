@@ -1,4 +1,4 @@
-ActiveModel::Serializer.config.adapter = :attributes
+ActiveModel::Serializer.config.adapter = ActiveModel::Serializer::Adapter::Attributes
 
 class ActiveModel::Serializer
 
