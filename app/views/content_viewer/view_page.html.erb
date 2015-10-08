@@ -28,7 +28,7 @@
   <%= render :partial => 'addthis' %>
 <% end %>
 
-<% cache(@page.cache_key(params, user, language)) do %>
+<% cache_if @page.cacheable?, @page.cache_key(params, user, language) do %>
   <div class="<%="article-body article-body-" + @page.css_class_name %>">
     <% options = @page.image? ? {:gallery_view => true} : {} %>
     <% if @page.image.present? && !@page.event? %>

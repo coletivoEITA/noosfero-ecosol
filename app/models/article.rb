@@ -743,6 +743,10 @@ class Article < ActiveRecord::Base
     profile.environment.licenses.find_by_id(get_version(version_number).license_id)
   end
 
+  def cacheable?
+    true
+  end
+
   alias :active_record_cache_key :cache_key
   def cache_key(params = {}, the_profile = nil, language = 'en')
     active_record_cache_key+'-'+language +
