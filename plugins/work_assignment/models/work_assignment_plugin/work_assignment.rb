@@ -69,9 +69,8 @@ class WorkAssignmentPlugin::WorkAssignment < Folder
     h
   end
 
-  def cache_key_with_person(params = {}, user = nil, language = 'en')
-    cache_key_without_person + (user && profile.members.include?(user) ? "-#{user.identifier}" : '')
+  def cacheable?
+    false
   end
-  alias_method_chain :cache_key, :person
 
 end
