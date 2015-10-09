@@ -70,6 +70,8 @@ class Person < Profile
 
   # for eager loading
   has_many :memberships, through: :role_assignments, source: :resource, source_type: 'Profile'
+  has_many :adminships, -> p { where role_assignments: {role_id: Profile::Roles.admin(p.environment_id)}},
+    through: :role_assignments, source: :resource, source_type: 'Profile'
 
   def memberships
     scopes = []
