@@ -1,0 +1,19 @@
+
+en: &en
+  elearning_secretary_plugin:
+    lib:
+      plugin:
+        name: 'E-learning Secretary'
+        description: "Students' Monitoring, grades e document emission"
+
+    views:
+      control_panel: 'E-learning Secretary'
+      sub_orgs:
+        all: 'All students'
+      students:
+        name: 'Name'
+        actions: 'Actions'
+
+en_US:
+  <<: *en
+
