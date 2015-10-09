@@ -15,6 +15,7 @@ module Noosfero
 
   mattr_accessor :locales
   self.locales = {
+    'en' => 'English', # used by Rails and enforce_available_locales!
     'en_US' => 'English',
     'pt_BR' => 'Português',
     'fr_FR' => 'Français',
