@@ -1,6 +1,6 @@
 /**
  * @author zhixin wen <wenzhixin2010@gmail.com>
- * version: 1.8.1
+ * version: 1.9.0
  * https://github.com/wenzhixin/bootstrap-table/
  */
 
@@ -212,13 +212,17 @@
     };
 
     var getItemField = function (item, field) {
-        var props = field.split('.');
         var value = item;
+
+        if (typeof field !== 'string' || item.hasOwnProperty(field)) {
+            return item[field];
+        }
+        var props = field.split('.');
         for (var p in props) {
             value = value[props[p]];
         }
         return value;
-    }
+    };
 
     // BOOTSTRAP TABLE CLASS DEFINITION
     // ======================
@@ -688,7 +692,8 @@
                 halign = sprintf('text-align: %s; ', column.halign ? column.halign : column.align);
                 align = sprintf('text-align: %s; ', column.align);
                 style = sprintf('vertical-align: %s; ', column.valign);
-                style += sprintf('width: %s%s; ', column.checkbox || column.radio ? 36 : width, unitWidth);
+                style += sprintf('width: %s; ', (column.checkbox || column.radio) && !width ?
+                    '36px' : (width ? width + unitWidth : undefined));
 
                 if (typeof column.fieldIndex !== 'undefined') {
                     that.header.fields[column.fieldIndex] = column.field;
@@ -1497,6 +1502,7 @@
                         sprintf(' disabled="%s"', !column.checkboxEnabled ||
                         (value && value.disabled) ? 'disabled' : undefined) +
                         ' />',
+                        that.header.formatters[j] && typeof value === 'string' ? value : '',
                         that.options.cardView ? '</div>' : '</td>'
                     ].join('');
 
@@ -1552,7 +1558,7 @@
                 item = that.data[$tr.data('index')],
                 index = $td[0].cellIndex,
                 field = that.header.fields[that.options.detailView && !that.options.cardView ? index - 1 : index],
-                colomn = that.columns[getFieldIndex(that.columns, field)],
+                column = that.columns[getFieldIndex(that.columns, field)],
                 value = getItemField(item, field);
 
             if ($td.find('.detail-icon').length) {
@@ -1563,7 +1569,7 @@
             that.trigger(e.type === 'click' ? 'click-row' : 'dbl-click-row', item, $tr);
 
             // if click to select - then trigger the checkbox/radio click
-            if (e.type === 'click' && that.options.clickToSelect && colomn.clickToSelect) {
+            if (e.type === 'click' && that.options.clickToSelect && column.clickToSelect) {
                 var $selectItem = $tr.find(sprintf('[name="%s"]', that.options.selectItemName));
                 if ($selectItem.length) {
                     $selectItem[0].click(); // #144: .trigger('click') bug
@@ -1596,8 +1602,15 @@
         this.$selectItem.off('click').on('click', function (event) {
             event.stopImmediatePropagation();
 
-            var checked = $(this).prop('checked'),
-                row = that.data[$(this).data('index')];
+            var $this = $(this),
+                checked = $this.prop('checked'),
+                row = that.data[$this.data('index')];
+
+            if (that.options.maintainSelected && $(this).is(':radio')) {
+                $.each(that.options.data, function (i, row) {
+                    row[that.header.stateField] = false;
+                });
+            }
 
             row[that.header.stateField] = checked;
 
@@ -1609,7 +1622,7 @@
             }
 
             that.updateSelected();
-            that.trigger(checked ? 'check' : 'uncheck', row);
+            that.trigger(checked ? 'check' : 'uncheck', row, $this);
         });
 
         $.each(this.header.events, function (i, events) {
@@ -1979,12 +1992,15 @@
         }
     };
 
-    BootstrapTable.prototype.toggleRow = function (index, isIdField, visible) {
+    BootstrapTable.prototype.toggleRow = function (index, uniqueId, visible) {
         if (index === -1) {
             return;
         }
 
-        $(this.$body[0]).children().filter(sprintf(isIdField ? '[data-uniqueid="%s"]' : '[data-index="%s"]', index))[visible ? 'show' : 'hide']();
+        this.$body.find(typeof index !== 'undefined' ?
+            sprintf('tr[data-index="%s"]', index) :
+            sprintf('tr[data-uniqueid="%s"]', uniqueId))
+            [visible ? 'show' : 'hide']();
     };
 
     BootstrapTable.prototype.getVisibleFields = function () {
@@ -2198,19 +2214,17 @@
     };
 
     BootstrapTable.prototype.showRow = function (params) {
-        if (!params.hasOwnProperty('index')) {
+        if (!params.hasOwnProperty('index') || !params.hasOwnProperty('uniqueId')) {
             return;
         }
-
-        this.toggleRow(params.index, params.isIdField === undefined ? false : true, true);
+        this.toggleRow(params.index, params.uniqueId, true);
     };
 
     BootstrapTable.prototype.hideRow = function (params) {
-        if (!params.hasOwnProperty('index')) {
+        if (!params.hasOwnProperty('index') || !params.hasOwnProperty('uniqueId')) {
             return;
         }
-
-        this.toggleRow(params.index, params.isIdField === undefined ? false : true, false);
+        this.toggleRow(params.index, params.uniqueId, false);
     };
 
     BootstrapTable.prototype.getRowsHidden = function (show) {
@@ -2253,10 +2267,12 @@
     };
 
     BootstrapTable.prototype.updateCell = function (params) {
-        if (!params.hasOwnProperty('rowIndex') || !params.hasOwnProperty('fieldName') || !params.hasOwnProperty('fieldValue')) {
+        if (!params.hasOwnProperty('index') ||
+            !params.hasOwnProperty('field') ||
+            !params.hasOwnProperty('value')) {
             return;
         }
-        this.data[params.rowIndex][params.fieldName] = params.fieldValue;
+        this.data[params.index][params.field] = params.value;
         this.initSort();
         this.initBody(true);
     };
@@ -2338,7 +2354,8 @@
                 return false;
             }
             if ($.inArray(row[obj.field], obj.values) !== -1) {
-                that.$selectItem.filter(sprintf('[data-index="%s"]', index)).prop('checked', checked);
+                that.$selectItem.filter(':enabled')
+                    .filter(sprintf('[data-index="%s"]', index)).prop('checked', checked);
                 row[that.header.stateField] = checked;
                 rows.push(row);
                 that.trigger(checked ? 'check' : 'uncheck', row);
@@ -2478,17 +2495,67 @@
         this.onSearch({currentTarget: $search});
     };
 
-    BootstrapTable.prototype.expandRow = function (index) {
+    BootstrapTable.prototype.expandRow_ = function (expand, index) {
         var $tr = this.$body.find(sprintf('> tr[data-index="%s"]', index));
-        if (!$tr.next().is('tr.detail-view')) {
+        if ($tr.next().is('tr.detail-view') === (expand ? false : true)) {
             $tr.find('> td > .detail-icon').click();
         }
     };
 
+    BootstrapTable.prototype.expandRow = function (index) {
+        this.expandRow_(true, index);
+    };
+
     BootstrapTable.prototype.collapseRow = function (index) {
-        var $tr = this.$body.find(sprintf('> tr[data-index="%s"]', index));
-        if ($tr.next().is('tr.detail-view')) {
-            $tr.find('> td > .detail-icon').click();
+        this.expandRow_(false, index);
+    };
+
+    BootstrapTable.prototype.expandAllRows = function (isSubTable) {
+        if (isSubTable) {
+            var $tr = this.$body.find(sprintf('> tr[data-index="%s"]', 0)),
+                that = this,
+                detailIcon = null,
+                executeInterval = false,
+                idInterval = -1;
+
+            if (!$tr.next().is('tr.detail-view')) {
+                $tr.find('> td > .detail-icon').click();
+                executeInterval = true;
+            } else if (!$tr.next().next().is('tr.detail-view')) {
+                $tr.next().find(".detail-icon").click();
+                executeInterval = true;
+            }
+
+            if (executeInterval) {
+                try {
+                    idInterval = setInterval(function () {
+                        detailIcon = that.$body.find("tr.detail-view").last().find(".detail-icon");
+                        if (detailIcon.length > 0) {
+                            detailIcon.click();
+                        } else {
+                            clearInterval(idInterval);
+                        }
+                    }, 1);
+                } catch (ex) {
+                    clearInterval(idInterval);
+                }
+            }
+        } else {
+            var trs = this.$body.children();
+            for (var i = 0; i < trs.length; i++) {
+                this.expandRow_(true, $(trs[i]).data("index"));
+            }
+        }
+    };
+
+    BootstrapTable.prototype.collapseAllRows = function (isSubTable) {
+        if (isSubTable) {
+            this.expandRow_(false, 0);
+        } else {
+            var trs = this.$body.children();
+            for (var i = 0; i < trs.length; i++) {
+                this.expandRow_(false, $(trs[i]).data("index"));
+            }
         }
     };
 
@@ -2519,7 +2586,7 @@
         'toggleView',
         'refreshOptions',
         'resetSearch',
-        'expandRow', 'collapseRow'
+        'expandRow', 'collapseRow', 'expandAllRows', 'collapseAllRows'
     ];
 
     $.fn.bootstrapTable = function (option) {
