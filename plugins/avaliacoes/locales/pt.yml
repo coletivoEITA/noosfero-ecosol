@@ -1,0 +1,10 @@
+pt: &pt
+  avaliacoes_plugin:
+    lib:
+      plugin:
+        name: 'Avalicoes'
+        description: 'https://github.com/blogoosfero/avaliacoes'
+
+pt_BR:
+  <<: *pt
+
