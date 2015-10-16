@@ -23,7 +23,7 @@
       - @page.folders.each do |author_folder|
         tr data-id="#{author_folder.id}"
           td= link_to_last_submission author_folder, user
-          td= time_format author_folder.children.last.created_at
+          td= time_format author_folder.children.last.created_at if author_folder.children.last
           td style='text-align: center' = author_folder.children.count
           td= display_privacy_button author_folder, user
 
