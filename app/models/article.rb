@@ -102,6 +102,8 @@ class Article < ActiveRecord::Base
 
   acts_as_voteable
 
+  after_save :invalidate_parent_cache
+
   before_create do |article|
     article.published_at ||= Time.now
     if article.reference_article && !article.parent
@@ -755,7 +757,11 @@ class Article < ActiveRecord::Base
       (params[:year] ? "-year-#{params[:year]}" : '') +
       (params[:month] ? "-month-#{params[:month]}" : '') +
       (params[:version] ? "-version-#{params[:version]}" : '')
+  end
 
+  def invalidate_parent_cache
+    self.parent.touch if self.parent
+    self.environment.touch if self.profile == self.environment.portal_community
   end
 
   def automatic_abstract
