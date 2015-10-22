@@ -358,6 +358,7 @@ class ProfileController < PublicController
   end
 
   def send_mail
+    params[:mailing][:recipient_ids] = params[:mailing][:recipient_ids].split ', ' rescue []
     @mailing = profile.mailings.build(params[:mailing])
     if request.post?
       @mailing.locale = locale

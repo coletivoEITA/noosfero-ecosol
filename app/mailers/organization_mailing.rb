@@ -1,19 +1,31 @@
 class OrganizationMailing < Mailing
 
+  attr_accessible :recipient_ids
+
+  settings_items :recipient_ids, type: Array
+
   def generate_from
     "#{person.name} <#{source.environment.noreply_email}>"
   end
 
-  def recipients(offset=0, limit=100)
-    source.members.order(:id).offset(offset).limit(limit)
+  def members_scope
+    source.members.order(:id)
       .joins("LEFT OUTER JOIN mailing_sents m ON (m.mailing_id = #{id} AND m.person_id = profiles.id)")
       .where("m.person_id" => nil)
+  end
+
+  def recipients
+    if self.recipient_ids
+      members_scope.where id: self.recipient_ids
+    else
+      members_scope
+    end
   end
 
   def each_recipient
     offset = 0
     limit = 50
-    while !(people = recipients(offset, limit)).empty?
+    while (people = recipients.offset(offset).limit(limit)).present?
       people.each do |person|
         yield person
       end
