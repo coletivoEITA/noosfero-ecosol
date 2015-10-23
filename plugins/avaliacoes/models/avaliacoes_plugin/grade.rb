@@ -4,6 +4,7 @@ class AvaliacoesPlugin::Grade < AvaliacoesPlugin::ActiveRecord
 
   alias_attribute :learning_unit_id, :CodCurso
   alias_attribute :grade, :Nota
+  alias_attribute :answered, :Frequencia
 
   belongs_to :student, foreign_key: :CodAluno
 

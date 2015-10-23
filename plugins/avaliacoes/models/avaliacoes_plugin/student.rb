@@ -10,12 +10,15 @@ class AvaliacoesPlugin::Student < AvaliacoesPlugin::ActiveRecord
 
   # prefer the has_many :through
   has_many :direct_grades, foreign_key: :CodAluno, class_name: 'Grade'
-
   has_many :discipline_units, through: :direct_grades
+
   has_many :activities, through: :discipline_units
   has_many :questions, through: :activities
 
-  has_many :grades, -> s { distinct.includes(:question).where notas_frequencia: {CodAluno: s.id} }, through: :questions
+  has_many :grades, -> s {
+    distinct.eager_load(:question).
+    where notas_frequencia: {CodAluno: s.id}
+  }, through: :questions
 
   has_many :answers, through: :questions
 

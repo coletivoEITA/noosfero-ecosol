@@ -5,6 +5,9 @@ pt: &pt
         name: 'Avalicoes'
         description: 'https://github.com/blogoosfero/avaliacoes'
 
+    views:
+
+
 pt_BR:
   <<: *pt
 

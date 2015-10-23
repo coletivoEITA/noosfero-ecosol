@@ -15,11 +15,16 @@ class AvaliacoesPlugin::LearningUnit < AvaliacoesPlugin::ActiveRecord
 
   def essay_grades
     return [] unless self.student
-    self.student.grades.select{ |g| g.question.learning_unit_id == self.id and g.question.essay? }
+    self.student.grades.select do |g|
+      g.grade.nonzero? and
+      g.question.learning_unit_id == self.id and g.question.essay?
+    end.sort_by{ |g| g.question.index }
   end
   def multiple_choice_grades
     return [] unless self.student
-    self.student.grades.select{ |g| g.question.learning_unit_id == self.id and g.question.multiple_choice? }
+    self.student.grades.select do |g|
+      g.question.learning_unit_id == self.id and g.question.multiple_choice?
+    end.sort_by{ |g| g.question.index }
   end
 
 end
