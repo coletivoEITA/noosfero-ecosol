@@ -4,4 +4,7 @@ class AvaliacoesPlugin::Activity < AvaliacoesPlugin::ActiveRecord
 
   belongs_to :learning_unit, foreign_key: :CodCurso
 
+  has_many :questions, foreign_key: :CodAula
+  has_many :answers, through: :questions
+
 end
