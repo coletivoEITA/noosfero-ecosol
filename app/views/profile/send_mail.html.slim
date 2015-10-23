@@ -14,8 +14,8 @@ h2= _('Send e-mail to members')
   .checkbox
     label#all_members name="all_members"
       input checked="true" onchange="send_mail.toggleAllMembers(this)" type="checkbox" value="1" /
-      = _('All members')
-  = labelled_form_field(_('Recipients:'), text_field_tag('mailing[recipient_ids]', nil))
+      = _('Send to all members')
+  = labelled_form_field(_('To:'), text_field_tag('mailing[recipient_ids]', nil))
 
   = labelled_form_field(_('Subject:'), f.text_field(:subject))
 
