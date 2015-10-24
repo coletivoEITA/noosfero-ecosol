@@ -10,7 +10,7 @@ class AvaliacoesPlugin::Discipline
   attr_accessor :student
   attr_accessor :learning_units
 
-  def self.map student
+  def self.map_one student
     student.discipline_units.includes(:learning_unit).distinct.group_by(&:name).map do |name, discipline_units|
       d = self.new
       d.name = name
@@ -18,6 +18,12 @@ class AvaliacoesPlugin::Discipline
       d.learning_units = discipline_units.map(&:learning_unit)
       d.learning_units.each{ |u| u.student = student }
       d
+    end
+  end
+
+  def self.map_many students
+    students.each do |student|
+      self.map_one
     end
   end
 

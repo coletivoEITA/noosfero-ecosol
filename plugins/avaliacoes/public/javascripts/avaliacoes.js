@@ -5,4 +5,8 @@
 
 avaliacoes = {
 
+  n: function (n) {
+    return I18n.toNumber(n, {precision: 2})
+  },
+
 }

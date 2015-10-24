@@ -25,17 +25,17 @@ avaliacoes-student-learning-unit
           |Média
       tr
         td each='{grade in essay_grades}'
-          |{grade.grade}
+          |{a.n(grade.grade)}
         td if='{essay_grades.length}'
-          |{essayAverage}
+          |{a.n(essayAverage)}
         td each='{grade in multiple_choice_grades}'
-          |{grade.grade}
+          |{a.n(grade.grade)}
         td if='{multiple_choice_grades.length}'
-          |{mcAverage}
+          |{a.n(mcAverage)}
         td
-          |{grade}
+          |{a.n(grade)}
         td
-          |{frequency}%
+          |{a.n(frequency)}%
 
   javascript:
     this.a = window.avaliacoes
