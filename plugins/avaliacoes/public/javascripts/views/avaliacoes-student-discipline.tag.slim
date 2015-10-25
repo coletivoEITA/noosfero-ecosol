@@ -1,25 +1,24 @@
 avaliacoes-student-discipline
-  tr colspan='3'
-    td
-      div
-        |{discipline.name}
-      label
-        |Peso de dissertativas
-        |&nbsp;
-        input type='number' min='0' max='1' step='0.1' value='{essayWeight}' onkeyup='{essayWeightChanged}' oninput='{essayWeightChanged}'
-      |&emsp;
-      label
-        |Peso de multipla escolhas
-        |&nbsp;
-        input type='number' min='0' max='1' step='0.1' value='{mcWeight}' onkeyup='{mcWeightChanged}' oninput='{mcWeightChanged}'
+  div
+    h2
+      |{discipline.name}
+    label
+      |Peso de dissertativas
+      |&nbsp;
+      input type='number' min='0' max='1' step='0.1' value='{essayWeight}' onkeyup='{essayWeightChanged}' oninput='{essayWeightChanged}'
+    |&emsp;
+    label
+      |Peso de multipla escolhas
+      |&nbsp;
+      input type='number' min='0' max='1' step='0.1' value='{mcWeight}' onkeyup='{mcWeightChanged}' oninput='{mcWeightChanged}'
 
-  tr colspan='3' riot-tag='avaliacoes-student-learning-unit' each='{learning_unit in learning_units}' data='{learning_unit}'
+  div colspan='3' riot-tag='avaliacoes-student-learning-unit' each='{learning_unit in learning_units}' data='{learning_unit}'
 
-  tr
+  div
     strong
       |Nota:&emsp;
     |{a.n(grade)}
-  tr
+  div
     strong
       |Frequência:&emsp;
     |{a.n(frequency)}%

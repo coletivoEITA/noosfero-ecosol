@@ -7,8 +7,4 @@ class AvaliacoesPlugin::Answer < AvaliacoesPlugin::ActiveRecord
   belongs_to :learning_unit, foreign_key: :CodCurso
   belongs_to :activity, foreign_key: :CodAula
 
-  scope :from_student, -> student {
-
-  }
-
 end
