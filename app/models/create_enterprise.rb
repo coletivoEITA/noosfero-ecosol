@@ -168,6 +168,9 @@ class CreateEnterprise < Task
   end
 
   def task_created_message
+    # CIRANDAS: disable it
+    return super
+
     _('Your request for registering enterprise "%{enterprise}" at %{environment} was just received. It will be reviewed by the validator organization of your choice, according to its methods and criteria.
 
       You will be notified as soon as the validator organization has a position about your request.') % { :enterprise => self.name, :environment => self.environment }
@@ -182,6 +185,9 @@ class CreateEnterprise < Task
   end
 
   def target_notification_message
+    # CIRANDAS: disable it
+    return nil
+
     msg = ""
     msg << _("Enterprise \"%{enterprise}\" just requested to enter %{environment}. You have to approve or reject it through the \"Pending Validations\" section in your control panel.\n") % { :enterprise => self.name, :environment => self.environment }
     msg << "\n"
