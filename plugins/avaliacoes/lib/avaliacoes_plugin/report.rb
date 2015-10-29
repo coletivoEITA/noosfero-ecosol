@@ -19,6 +19,11 @@ module AvaliacoesPlugin::Report
     Grade = Default.merge alignment: {horizontal: :center}, format_code: "0.##"
     FinalGrade = Grade.merge b: true
   end
+  module Widths
+    Student = 30
+    Grade = 7
+    FinalGrade = 10
+  end
 
   def self.grades profiles
     p = Axlsx::Package.new
@@ -53,7 +58,7 @@ module AvaliacoesPlugin::Report
         sheet.merge_cells range(ccol+1..ccol+1+d_size, crow..crow)
         sheet.merge_cells range(ccol+d_size+2..ccol+d_size+2, crow..crow+3)
         sheet.merge_cells range(ccol+d_size+3..ccol+d_size+3, crow..crow+3)
-        widths << 30
+        widths << Widths::Student
 
         crow += 1; ccol = 2; row = [nil]*(ccol-1)
         units = []
@@ -106,21 +111,25 @@ module AvaliacoesPlugin::Report
             grades << "=AVERAGE(#{(0..v.size-1).step(2).to_a.map{ |c| cell ccol-v.size+c,crow }.join ','})"
             essay_avg = ccol; ccol += 1
             grades_style.concat [grade_style]*(learning_unit.essay_max*2+1)
+            widths.concat [Widths::Grade]*(learning_unit.essay_max*2+1)
 
             v = learning_unit.multiple_choice_grades.map &:grade
             grades << if v.blank? then 0 else "=AVERAGE(#{v.join ','})" end
             mc_avg = ccol; ccol += 1
             grades_style.concat [grade_style]
+            widths.concat [Widths::Grade]
 
             units_grade_cells << [ccol,crow]
             grades << "=#{cell essay_avg,crow}*#{EssayWeight} + #{cell mc_avg,crow}*#{MCWeight}"; ccol += 1
             grades << "=IF(#{cell ccol-1,crow} > 0, 100, 0)"; ccol += 1
             grades_style.concat [final_grade_style]*2
+            widths.concat [Widths::FinalGrade]*2
           end
 
           grades << "=AVERAGE(#{units_grade_cells.map{ |c,r| cell c,r }.join ','})"; ccol += 1
           grades << "=AVERAGE(#{units_grade_cells.map{ |c,r| cell c+1,r }.join ','})"; ccol += 1
           grades_style.concat [final_grade_style]*2
+          widths.concat [Widths::FinalGrade]*2
           sheet.add_row row+grades, style: grades_style; crow += 1
         end
 
