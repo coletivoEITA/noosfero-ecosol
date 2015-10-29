@@ -3,6 +3,7 @@ class AvaliacoesPlugin::Student < AvaliacoesPlugin::ActiveRecord
   self.table_name = :usuarios
 
   alias_attribute :name, :Nome
+  alias_attribute :identifier, :ID
 
   attr_accessor :units
 

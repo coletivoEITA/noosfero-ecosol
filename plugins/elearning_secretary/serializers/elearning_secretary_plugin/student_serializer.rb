@@ -1,6 +1,6 @@
 class ElearningSecretaryPlugin::StudentSerializer < ActiveModel::Serializer
 
-  attributes :id, :name, :org_ids
+  attributes :id, :identifier, :name, :org_ids
 
   #has_many :participations, serializer: ElearningSecretaryPlugin::ParticipationSerializer
 

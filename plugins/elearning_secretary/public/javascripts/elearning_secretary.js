@@ -7,6 +7,9 @@ elearning_secretary = {
     return I18n.t(key, $.extend(options, {scope: 'elearning_secretary_plugin'}))
   },
 
+  routes: {
+    manage: Routes.elearning_secretary_plugin_manage_path,
+  }
 
 }
 

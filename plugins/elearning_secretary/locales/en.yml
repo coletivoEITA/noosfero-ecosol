@@ -13,6 +13,7 @@ en: &en
       students:
         name: 'Name'
         actions: 'Actions'
+        grades_export: 'Export grades'
 
 en_US:
   <<: *en

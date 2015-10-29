@@ -4,6 +4,12 @@ class ElearningSecretaryPlugin::ManageController < MyProfileController
 
   end
 
+  def grades_export
+    @profiles = environment.people.find params[:student_ids].split(',')
+    @file = AvaliacoesPlugin::Report.grades @profiles
+    send_file @file, type: 'application/xlsx', disposition: 'attachment', filename: 'test.xlsx'
+  end
+
   protected
 
   # inherit routes from core skipping use_relative_controller!

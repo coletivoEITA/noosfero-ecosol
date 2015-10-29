@@ -13,6 +13,7 @@ pt: &pt
       students:
         name: 'Nome'
         actions: 'Ações'
+        grades_export: 'Exportar notas'
 
 pt_BR:
   <<: *pt
