@@ -178,7 +178,7 @@ class Noosfero::Plugin
     end
 
     def all
-      @all ||= available_plugins.map{ |dir| (File.basename(dir) + "_plugin").camelize }
+      @all ||= available_plugins.map{ |dir| "#{File.basename dir}_plugin".camelize.constantize.to_s }
     end
   end
 
