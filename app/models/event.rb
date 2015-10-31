@@ -9,6 +9,10 @@ class Event < Article
     _('Event')
   end
 
+  def self.refuse_blocks
+    true
+  end
+
   settings_items :address, :type => :string
 
   def link=(value)

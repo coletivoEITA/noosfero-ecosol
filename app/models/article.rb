@@ -43,6 +43,10 @@ class Article < ActiveRecord::Base
     'full'
   end
 
+  def self.refuse_blocks
+    true
+  end
+
   #FIXME This is necessary because html is being generated on the model...
   include ActionView::Helpers::TagHelper
 

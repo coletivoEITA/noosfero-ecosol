@@ -10,6 +10,10 @@ class TinyMceArticle < TextArticle
     _('Add a new text article.')
   end
 
+  def self.refuse_blocks
+    true
+  end
+
   xss_terminate :only => [  ]
 
   xss_terminate :only => [ :name, :abstract, :body ], :with => 'white_list', :on => 'validation'

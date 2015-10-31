@@ -12,6 +12,10 @@ class EnterpriseHomepage < Article
     _("Put a text and show the enterprise's catalog below.")
   end
 
+  def self.refuse_blocks
+    true
+  end
+
   def name
     if self['name'].blank? then _('Homepage') else self['name'] end
   end

@@ -454,9 +454,7 @@ class CmsController < MyProfileController
   end
 
   def refuse_blocks
-    if ['TinyMceArticle', 'TextileArticle', 'Event', 'EnterpriseHomepage'].include?(@type)
-      @no_design_blocks = true
-    end
+    @no_design_blocks = true if @type.constantize.refuse_blocks
   end
 
   def per_page

@@ -8,6 +8,10 @@ class TextileArticle < TextArticle
     _('Textile format.')
   end
 
+  def self.refuse_blocks
+    true
+  end
+
   def to_html(options ={})
     convert_to_html(body)
   end
