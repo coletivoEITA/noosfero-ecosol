@@ -13,6 +13,7 @@ class AnalyticsPlugin::Base < Noosfero::Plugin
     ['analytics'].map{ |j| "javascripts/#{j}" }
   end
 
+  # FIXME: not reloading on development, need server restart
   def application_controller_filters
     [{
       type: 'around_filter', options: {}, block: -> &block do
@@ -24,15 +25,12 @@ class AnalyticsPlugin::Base < Noosfero::Plugin
         return unless profile and profile.analytics_enabled?
 
         Noosfero::Scheduler::Defer.later 'analytics: register page view' do
-          page_view = profile.page_views.build request: request, profile_id: profile,
+          page_view = profile.page_views.build request: request, profile_id: profile.id,
             request_started_at: request_started_at, request_finished_at: request_finished_at
-
           unless profile.analytics_anonymous?
-            session_id = session.id
             page_view.user = user
-            page_view.session_id = session_id
+            page_view.session_id = session.id
           end
-
           page_view.save!
         end
       end,

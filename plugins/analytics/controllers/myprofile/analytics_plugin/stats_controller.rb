@@ -25,7 +25,8 @@ class AnalyticsPlugin::StatsController < MyProfileController
 
     @profiles = environment.profiles.find ids
     @user = environment.people.find params[:user_id]
-    @visits = AnalyticsPlugin::Visit.latest.eager_load(:page_views).where(profile_id: ids, analytics_plugin_page_views: {user_id: @user.id})
+    @visits = AnalyticsPlugin::Visit.eager_load(:users_page_views).
+      where(profile_id: ids, analytics_plugin_page_views: {user_id: @user.id})
 
     render partial: 'table', locals: {visits: @visits}
 

@@ -6,5 +6,5 @@ analytics-settings data-opts="#{CGI.escapeHTML({settings: {enabled: profile.anal
 / needs html_safe to work
 /= riot_component :analytics_settings, settings: {enabled: profile.analytics_settings.enabled, anonymous: profile.analytics_settings.anonymous}
 
-= render 'table', visits: profile.visits
+= render 'table', visits: profile.users_visits.limit(50)
 

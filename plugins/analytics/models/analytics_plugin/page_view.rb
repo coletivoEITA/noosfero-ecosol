@@ -10,7 +10,7 @@ class AnalyticsPlugin::PageView < ActiveRecord::Base
 
   acts_as_having_settings field: :options
 
-  belongs_to :visit, class_name: 'AnalyticsPlugin::Visit'
+  belongs_to :visit, class_name: 'AnalyticsPlugin::Visit', touch: true
   belongs_to :referer_page_view, class_name: 'AnalyticsPlugin::PageView'
 
   belongs_to :user, class_name: 'Person'
@@ -24,8 +24,20 @@ class AnalyticsPlugin::PageView < ActiveRecord::Base
   before_validation :extract_request_data, on: :create
   before_validation :fill_referer_page_view, on: :create
   before_validation :fill_visit, on: :create
+  before_validation :fill_is_bot, on: :create
 
-  scope :latest, -> { order 'request_started_at DESC' }
+  after_update :destroy_empty_visit
+  after_destroy :destroy_empty_visit
+
+  scope :in_sequence, -> { order 'analytics_plugin_page_views.request_started_at ASC' }
+
+  scope :page_loaded, -> { where 'analytics_plugin_page_views.page_loaded_at IS NOT NULL' }
+  scope :not_page_loaded, -> { where 'analytics_plugin_page_views.page_loaded_at IS NULL' }
+
+  scope :no_bots, -> { where.not is_bot: true }
+  scope :bots, -> { where is_bot: true }
+
+  scope :loaded_users, -> { in_sequence.page_loaded.no_bots }
 
   def request_duration
     self.request_finished_at - self.request_started_at
@@ -43,8 +55,8 @@ class AnalyticsPlugin::PageView < ActiveRecord::Base
     Time.now < self.user_last_time_seen + AnalyticsPlugin::TimeOnPageUpdateInterval
   end
 
-  def page_load!
-    self.page_loaded_at = Time.now
+  def page_load! time
+    self.page_loaded_at = time
     self.update_column :page_loaded_at, self.page_loaded_at
   end
 
@@ -54,6 +66,16 @@ class AnalyticsPlugin::PageView < ActiveRecord::Base
 
     self.time_on_page = now - self.initial_time
     self.update_column :time_on_page, self.time_on_page
+  end
+
+  def find_referer_page_view
+    return if self.referer_url.blank?
+    AnalyticsPlugin::PageView.order('request_started_at DESC').
+      where(url: self.referer_url, session_id: self.session_id, user_id: self.user_id, profile_id: self.profile_id).first
+  end
+
+  def browser
+    @browser ||= Browser.new ua: self.user_agent
   end
 
   protected
@@ -67,13 +89,22 @@ class AnalyticsPlugin::PageView < ActiveRecord::Base
   end
 
   def fill_referer_page_view
-    self.referer_page_view = AnalyticsPlugin::PageView.order('request_started_at DESC').
-      where(url: self.referer_url, session_id: self.session_id, user_id: self.user_id, profile_id: self.profile_id).first if self.referer_url.present?
+    self.referer_page_view = self.find_referer_page_view
   end
 
   def fill_visit
     self.visit = self.referer_page_view.visit if self.referer_page_view and self.referer_page_view.user_on_page?
     self.visit ||= AnalyticsPlugin::Visit.new profile: profile
+  end
+
+  def fill_is_bot
+    self.is_bot = self.browser.bot?
+  end
+
+  def destroy_empty_visit
+    return unless self.visit_id_changed?
+    old_visit = AnalyticsPlugin::Visit.find self.visit_id_was
+    old_visit.destroy if old_visit.page_views.empty?
   end
 
 end

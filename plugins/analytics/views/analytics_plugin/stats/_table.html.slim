@@ -4,23 +4,26 @@
     thead
       th= t'analytics_plugin.views.stats.user'
       th= t'analytics_plugin.views.stats.initial_time'
+      th= t'analytics_plugin.views.stats.ip'
       th= t'analytics_plugin.views.stats.pages'
 
     tbody
       - visits.each do |visit|
-        tr
+        tr data-visit-id='#{visit.id}'
           td= link_to visit.user.name, visit.user.url if visit.user
           td
             div data-toggle="tooltip" data-title='#{l visit.initial_time}'
-              = time_ago_in_words(visit.initial_time)
+              = time_ago_in_words visit.initial_time
               |&nbsp
               = _'ago'
+          td= visit.users_page_views.first.remote_ip
           td
-            - visit.page_views.each do |page_view|
-              = link_to page_view.url, page_view.url
-              |&nbsp;
-              = "(#{distance_of_time_in_words page_view.time_on_page})"
-              |&nbsp;->&nbsp;
+            ol
+              - visit.users_page_views.each do |page_view|
+                li
+                  = link_to (if page_view.title.present? then page_view.title else page_view.url end), page_view.url, target: '_blank'
+                  |&nbsp;
+                  = "(#{distance_of_time_in_words page_view.time_on_page})"
 
 javascript:
   $('#analytics-stats').bootstrapTable({

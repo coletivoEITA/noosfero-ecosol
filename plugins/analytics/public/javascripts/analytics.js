@@ -32,7 +32,7 @@ analytics = {
 
   pageLoad: function() {
     $.ajax(analytics.timeOnPage.baseUrl+'/page_load', {
-      type: 'POST', data: {id: analytics.requestId},
+      type: 'POST', data: {id: analytics.requestId, title: document.title, time: Math.floor(Date.now()/1000)},
       success: function(data) {
       },
     });

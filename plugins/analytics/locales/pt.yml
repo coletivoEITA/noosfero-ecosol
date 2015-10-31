@@ -14,6 +14,7 @@ pt: &pt
         config_save: "Configuração salva"
         user: 'Usuário'
         initial_time: 'Horário'
+        ip: 'IP'
         pages: 'Páginas'
 
 pt_BR:
