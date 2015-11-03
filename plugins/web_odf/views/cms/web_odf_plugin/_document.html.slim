@@ -1,0 +1,13 @@
+= content_for :head
+  = javascript_include_tag 'plugins/web_odf/wodotexteditor-0.5.9/wodotexteditor/wodotexteditor'
+  = javascript_include_tag 'plugins/web_odf/javascripts/web_odf'
+  = stylesheet_link_tag 'plugins/web_odf/stylesheets/editor'
+
+= required f.text_field :name, class: 'form-control'
+
+input type='hidden' name='article[body]' id='article_body'
+#webodf-editor style='width: 900px;height: 600px;'
+
+javascript:
+  web_odf.edit.file(#{@article.id.to_i.to_json}, #{user.name.to_json})
+
