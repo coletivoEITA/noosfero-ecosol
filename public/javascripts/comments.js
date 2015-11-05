@@ -6,7 +6,7 @@ noosfero.comments = {
 
     var url = $("#page_url").val()
     MessageBus.subscribe(url+'/new_comment', function (data) {
-      data = JSON.parse(data)
+      if (data.user_login == noosfero.user_data.login) return
       noosfero.comments.receiveComment(data)
     })
 
@@ -84,7 +84,7 @@ noosfero.comments = {
       Recaptcha.reload()
     }
 
-    if (data.msg !== null)
+    if (data.msg)
       display_notice(data.msg)
 
     if (self.button.length) {

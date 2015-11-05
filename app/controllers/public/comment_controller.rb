@@ -75,30 +75,18 @@ class CommentController < ApplicationController
     url = "#{url_for only_path: true, controller: :content_viewer, action: :view_page, profile: profile.identifier, page: @page.path.split('/')}/new_comment"
     comment_to_render = @comment.comment_root
     comment_html = render_to_string partial: 'comment', locals: {comment: comment_to_render, display_link: true}
-
-    @plugins.dispatch(:process_extra_comment_params, [@comment,params]) if @saved
-
     comment_json = {
-      user_id: current_user.id,
+      user_login: current_user.login,
       saved: @saved,
       render_target: comment_to_render.anchor,
       html: comment_html,
     }
 
     if @saved
+      @plugins.dispatch(:process_extra_comment_params, [@comment,params]) if @saved
       MessageBus.publish url, comment_json
-      MessageBus.client_filter url do |user_id, message|
-        data = message.data
-        this_user = user_id == data['user_id']
-        unless this_user
-          data = data.dup
-          json['this_user'] = false
-          message.data = data
-        end
-      end
     end
 
-    comment_json[:this_user] = true
     comment_json[:msg] = _('Comment successfully created.')
     render json: comment_json
   end
