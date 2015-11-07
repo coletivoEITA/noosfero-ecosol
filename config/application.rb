@@ -69,13 +69,7 @@ module Noosfero
     # like if you have constraints or database-specific column types
     # config.active_record.schema_format = :sql
 
-    # Enable the asset pipeline
-    config.assets.enabled = true
-
-    # don't let rails prepend app/assets to config.assets.paths
-    # as we are doing it
-    config.paths['app/assets'] = ''
-
+    # Asset pipeline
     config.assets.paths =
       Dir.glob("app/assets/plugins/*/{,stylesheets,javascripts}") +
       Dir.glob("app/assets/{,stylesheets,javascripts}") +

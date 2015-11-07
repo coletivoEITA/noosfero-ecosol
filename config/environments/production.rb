@@ -8,8 +8,8 @@ Noosfero::Application.configure do
   # Full error reports are disabled and caching is turned on
   # config.action_controller.perform_caching = true
 
-  # Compress JavaScripts and CSS
-  config.assets.compress = true
+  # Compress JavaScripts (sass-rails enable compression of CSS by default)
+  config.assets.js_compressor = :uglifier
 
   # Generate digests for assets URLs
   config.assets.digest = true
