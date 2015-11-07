@@ -1,5 +1,6 @@
 //= require views/elearning-secretary-context
 //= require views/elearning-secretary-student
+//= require views/elearning-secretary-documents-export
 
 elearning_secretary = {
 

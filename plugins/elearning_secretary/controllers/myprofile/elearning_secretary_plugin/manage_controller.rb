@@ -10,6 +10,15 @@ class ElearningSecretaryPlugin::ManageController < MyProfileController
     send_file @file, type: 'application/xlsx', disposition: 'attachment', filename: 'test.xlsx'
   end
 
+  def document
+    @document = profile.web_odf_documents.find params.fetch(:id)
+    @student = environment.people.find params.fetch(:student_id)
+    @attributes = @student.attributes.except('data').merge @student.attributes['data']
+    @type = params.fetch :type
+    @method = WebODFPlugin::Export.method "#{@type}_report"
+    send_data @method.call(@document.odf, @attributes), filename: "#{@document.name}.#{@type}"
+  end
+
   protected
 
   # inherit routes from core skipping use_relative_controller!
