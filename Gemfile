@@ -77,7 +77,7 @@ gem 'rack-cors'
 gem 'rack-contrib'
 
 group :assets do
-  gem 'assets_live_compile'
+  gem 'assets_live_compile', '>= 0.2.1'
   gem 'therubyracer' # for fast js template compilations
   gem 'uglifier', '>= 1.0.3'
   gem 'sass'

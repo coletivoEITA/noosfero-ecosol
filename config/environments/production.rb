@@ -23,7 +23,9 @@ Noosfero::Application.configure do
   # fallback to assets pipeline if a precompiled asset is missed
   config.serve_static_assets = true
   config.assets.compile = true
-  config.assets.cache_store = :assets_live_compile_store
+  config.assets.configure do |env|
+    env.cache = Sprockets::Cache::AssetsLiveCompileStore.new
+  end
 
   # Defaults to nil and saved in location specified by config.assets.prefix
   # config.assets.manifest = YOUR_PATH
