@@ -1,6 +1,6 @@
 en: &en
 
-  webodf_plugin:
+  web_odf_plugin:
     lib:
       plugin:
         name: "WebODF"

@@ -1,15 +1,15 @@
 class WebODFPlugin::Document < Article
 
   def self.icon_name article = nil
-    'webodf-document'
+    'web-odf-document'
   end
 
   def self.short_description
-    I18n.t'webodf_plugin.models.document.short_description'
+    I18n.t'web_odf_plugin.models.document.short_description'
   end
 
   def self.description
-    I18n.t'webodf_plugin.models.document.description'
+    I18n.t'web_odf_plugin.models.document.description'
   end
 
   def self.refuse_blocks

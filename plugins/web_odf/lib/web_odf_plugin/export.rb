@@ -1,6 +1,6 @@
 class WebODFPlugin::Export
 
-  def self.report odt, params
+  def self.odt_report odt, params
     tempfile odt do |f|
       report = ODFReport::Report.new f.path do |r|
         params.each do |field, value|
@@ -24,7 +24,7 @@ class WebODFPlugin::Export
   end
 
   def self.pdf_report odt, params
-    self.pdf self.report(odt, params)
+    self.pdf self.odt_report(odt, params)
   end
 
   private
