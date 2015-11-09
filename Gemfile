@@ -15,7 +15,7 @@ gem 'rake', :require => false
 gem 'rest-client',              '~> 1.6'
 gem 'exception_notification',   '~> 4.0.1'
 gem 'gettext',                  '~> 2.2.1', :require => false
-gem 'locale',                   '~> 2.1'
+gem 'locale',                   '~> 2.0.5'
 gem 'whenever', :require => false
 gem 'eita-jrails', '~> 0.10.0', require: 'jrails'
 gem 'will-paginate-i18n'
