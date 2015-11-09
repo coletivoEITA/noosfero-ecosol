@@ -14,7 +14,7 @@ gem 'delayed_job_active_record'
 gem 'rake', :require => false
 gem 'rest-client',              '~> 1.6'
 gem 'exception_notification',   '~> 4.0.1'
-gem 'gettext',                  '~> 3.1', :require => false
+gem 'gettext',                  '~> 2.2.1', :require => false
 gem 'locale',                   '~> 2.1'
 gem 'whenever', :require => false
 gem 'eita-jrails', '~> 0.10.0', require: 'jrails'
