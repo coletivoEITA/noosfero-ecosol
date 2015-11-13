@@ -92,6 +92,10 @@ class Category < ActiveRecord::Base
     display_in_menu
   end
 
+  def may_change_choosable?
+    self.children.present? and (self.parent.blank? or not self.parent.choosable)
+  end
+
   def children_for_menu
     results = []
     pending = children.where(display_in_menu: true).order('path ASC').all
