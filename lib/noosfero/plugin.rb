@@ -183,7 +183,7 @@ class Noosfero::Plugin
   end
 
   def has_block?(block)
-    self.class.extra_blocks.keys.include?(block)
+    self.extra_blocks.keys.include?(block)
   end
 
   def expanded_template(file_path, locals = {})
