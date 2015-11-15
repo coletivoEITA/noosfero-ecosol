@@ -181,7 +181,9 @@ class PersonTest < ActiveSupport::TestCase
     person = create(User).person
 
     assert_kind_of Blog, person.articles.find_by_path(blog.path)
+    assert person.articles.find_by_path(blog.path).published?
     assert_kind_of RssFeed, person.articles.find_by_path(blog.feed.path)
+    assert person.articles.find_by_path(blog.feed.path).published?
   end
 
   should 'create a default set of blocks' do
@@ -1823,6 +1825,17 @@ class PersonTest < ActiveSupport::TestCase
     person.vote_against(article)
     refute person.voted_for?(article)
     assert person.voted_against?(article)
+  end
+
+  should 'access comments through profile' do
+    p1 = fast_create(Person)
+    p2 = fast_create(Person)
+    article = fast_create(Article)
+    c1 = fast_create(Comment, :source_id => article.id, :author_id => p1.id)
+    c2 = fast_create(Comment, :source_id => article.id, :author_id => p2.id)
+    c3 = fast_create(Comment, :source_id => article.id, :author_id => p1.id)
+
+    assert_equivalent [c1,c3], p1.comments
   end
 
 end

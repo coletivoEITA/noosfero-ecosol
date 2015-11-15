@@ -1,4 +1,14 @@
 source "https://rubygems.org"
+
+platform :ruby do
+  gem 'pg'
+  gem 'rmagick',                '~> 2.13'
+end
+platform :jruby do
+  gem 'activerecord-jdbcpostgresql-adapter'
+  gem 'rmagick4j'
+end
+
 gem 'rails',                    '~> 4.2.4'
 gem 'fast_gettext',             '~> 0.9'
 gem 'acts-as-taggable-on',      '~> 3.5'
@@ -18,6 +28,8 @@ gem 'gettext',                  '~> 2.2.1', :require => false
 gem 'locale',                   '~> 2.0.5'
 gem 'whenever', :require => false
 gem 'eita-jrails', '~> 0.10.0', require: 'jrails'
+gem 'diffy',                    '~> 3.0'
+
 gem 'will-paginate-i18n'
 gem 'utf8-cleaner'
 gem 'premailer-rails'
@@ -33,9 +45,9 @@ gem 'js-routes', '>= 1.1.2'
 gem 'riot_js-rails'#, path: '../../others/riot_js-rails'
 gem 'sprockets-es6'
 
+#############################################
+
 platform :ruby do
-  gem 'pg', '~> 0.18'
-  gem 'rmagick', '~> 2.13'
   gem 'unicorn'
 
   gem 'unicode'
@@ -58,16 +70,19 @@ platform :ruby do
     gem 'unicorn-worker-killer'
   end
 end
-platform :jruby do
-  gem 'activerecord-jdbcpostgresql-adapter'
-  gem 'rmagick4j'
-end
 
 group :performance do
   gem 'stackprof', platform: :mri
   gem 'flamegraph', platform: :mri
   #gem 'rack-mini-profiler'
 end
+
+group :assets do
+  gem 'assets_live_compile', '>= 0.2.1'
+  gem 'therubyracer' # for fast js template compilations
+end
+
+#############################################
 
 # API dependencies
 gem 'grape',                    '~> 0.12'
@@ -77,10 +92,7 @@ gem 'rack-cors'
 gem 'rack-contrib'
 
 group :assets do
-  gem 'assets_live_compile', '>= 0.2.1'
-  gem 'therubyracer' # for fast js template compilations
   gem 'uglifier', '>= 1.0.3'
-  gem 'sass'
   gem 'sass-rails'
 end
 
@@ -104,12 +116,11 @@ end
 
 group :development, :test do
   gem 'spring'
-  gem 'spring-commands-testunit'
 end
 
 group :test do
-  gem 'rspec',                  '~> 3.3'
-  gem 'rspec-rails',            '~> 3.2'
+  gem 'rspec',                  '~> 3.3', require: false
+  gem 'rspec-rails',            '~> 3.2', require: false
   gem 'mocha',                  '~> 1.1.0', :require => false
   gem 'test-unit' if RUBY_VERSION >= '2.2.0'
   gem 'minitest'

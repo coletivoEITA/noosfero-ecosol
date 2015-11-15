@@ -8,6 +8,9 @@ Noosfero::Application.configure do
   # Full error reports are disabled and caching is turned on
   # config.action_controller.perform_caching = true
 
+  # Enable Rails's static asset server (Apache or nginx should do this)
+  config.serve_static_assets = true
+
   # Compress JavaScripts (sass-rails enable compression of CSS by default)
   config.assets.js_compressor = :uglifier
 
@@ -21,7 +24,6 @@ Noosfero::Application.configure do
   end.compact
 
   # fallback to assets pipeline if a precompiled asset is missed
-  config.serve_static_assets = true
   config.assets.compile = true
   config.assets.configure do |env|
     env.cache = Sprockets::Cache::AssetsLiveCompileStore.new

@@ -55,6 +55,10 @@ class LinkListBlock < Block
     _('This block can be used to create a menu of links. You can add, remove and update the links as you wish.')
   end
 
+  def self.pretty_name
+    _('Link list')
+  end
+
   def content(args={})
     block = self
     list = links.select{ |i| i[:name].present? and i[:address].present? }

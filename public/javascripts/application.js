@@ -40,6 +40,8 @@
 *= require pagination.js
 *= require loading-overlay.js
 *= require require_login.js
+*= require slick.js
+*= require block-store.js
 */
 
 // lodash configuration

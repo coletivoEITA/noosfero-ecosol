@@ -50,7 +50,10 @@ module XssTerminate
         if self[field]
           self[field] = sanitizer.sanitize(self[field])
         else
-          self.send("#{field}=", sanitizer.sanitize(self.send("#{field}")))
+          value = self.send("#{field}")
+          return unless value
+          value = sanitizer.sanitize(value)
+          self.send("#{field}=", value)
         end
       end
     end

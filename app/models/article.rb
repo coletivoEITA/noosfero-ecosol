@@ -32,9 +32,14 @@ class Article < ActiveRecord::Base
   def initialize(*params)
     super
 
-    if !params.blank? && params.first.has_key?(:profile) && !params.first[:profile].blank?
-      profile = params.first[:profile]
-      self.published = false unless profile.public?
+    if !params.blank?
+      if params.first.has_key?(:profile) && !params.first[:profile].blank?
+        profile = params.first[:profile]
+        self.published = false unless profile.public_profile
+      end
+
+      self.published = params.first["published"] if params.first.has_key?("published")
+      self.published = params.first[:published] if params.first.has_key?(:published)
     end
 
   end
@@ -842,7 +847,7 @@ class Article < ActiveRecord::Base
   end
 
   def first_image
-    img = ( image.present? && { 'src' => image.public_filename } ) ||
+    img = ( image.present? && { 'src' => File.join([Noosfero.root, image.public_filename].join) } ) ||
           # automatic_abstract conflict, this leads to infinite loop
           #Nokogiri::HTML.fragment(self.lead.to_s).css('img[src]').first ||
           Nokogiri::HTML.fragment(self.body.to_s).search('img').first

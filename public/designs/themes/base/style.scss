@@ -1,6 +1,20 @@
 @import url(/assets/designs/themes/blogoosfero-responsive/bootstrap/all.css);
 @import url(/stylesheets/typeahead.css);
 
+@import 'stylesheets/layouts';
+
+@import 'stylesheets/signup';
+@import 'stylesheets/account';
+@import 'stylesheets/cms';
+@import 'stylesheets/catalog';
+@import 'stylesheets/profile-editor';
+@import 'stylesheets/profile';
+
+@import 'stylesheets/content';
+
+@import 'stylesheets/events';
+@import 'stylesheets/product';
+
 /* ==> button.css <== */
 
 .button {
@@ -479,6 +493,7 @@ div#notice {
 #content .profile-list-block ul,
 #content .enterprises-block ul,
 #content .communities-block ul,
+#content .favorite-enterprises-block ul,
 #content .fans-block ul {
   min-width: 196px;
   width: 192px;
@@ -494,15 +509,14 @@ div#notice {
   display: block;
 }
 
+.block-footer-content {
+  text-align: center;
+  padding-top: 3px;
+}
+
 .block-footer-content a.view-all {
-  position: absolute;
-  top: 2px;
-  right: 0px;
   font-size: 11px;
   color: #000;
-  text-decoration: none;
-  padding-right: 15px;
-  background: url(imgs/arrow-right-p.png) 100% 50% no-repeat;
 }
 
 #content .profile-list-block .block-title {
@@ -637,7 +651,6 @@ div#notice {
   border-radius-topright: 0px;
   border-radius-bottomright: 0px;
   background-color: #cecece;
-  width: 100%;
   border-right: 2px solid #555753;
 }
 
@@ -2063,3 +2076,4 @@ div.with_media_panel .formfield input[type="checkbox"] {
 .profile-members-title-sort {
   clear: both;
 }
+
