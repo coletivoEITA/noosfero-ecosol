@@ -12,7 +12,7 @@ module FormsHelper
 
       options[:id] ||= 'radio-' + FormsHelper.next_id_number
       content_tag( 'div', content_tag( 'label', radio_button_tag( name, value, checked, options ) + '  ' +
- human_name, for: options[:id] ), class:'radio radio-inline')
+ human_name, for: options[:id] ), class:'radio-inline')
     end
 
     # add -inline class
@@ -22,7 +22,7 @@ module FormsHelper
       options[:id] ||= 'checkbox-' + FormsHelper.next_id_number
       hidden_field_tag(name, '0') +
         content_tag( 'div', content_tag( 'label', check_box_tag( name, value, checked, options ) + '  ' +
- human_name, for: options[:id] ), class:'checkbox checkbox-inline')
+ human_name, for: options[:id] ), class:'checkbox-inline')
     end
 
     def submit_button type, label, html_options = {}
