@@ -29,6 +29,7 @@ gem 'locale',                   '~> 2.1'
 gem 'whenever', :require => false
 gem 'eita-jrails', '~> 0.10.0', require: 'jrails'
 gem 'diffy',                    '~> 3.0'
+gem 'slim'
 
 gem 'will-paginate-i18n'
 gem 'utf8-cleaner'
@@ -109,9 +110,6 @@ group :production do
   gem 'redis-rails'
   # not in active development :(
   #gem 'rack-cache'
-end
-
-group :development do
 end
 
 group :development, :test do

@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+require 'html2haml'
+require 'haml2slim'
+
 def run cmd
   puts cmd
   system cmd

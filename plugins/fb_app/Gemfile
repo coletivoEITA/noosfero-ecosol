@@ -1,4 +1,3 @@
-
 # for backwards compatibility of serialized objects
 gem 'fb_graph'
 
