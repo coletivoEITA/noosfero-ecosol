@@ -1,5 +1,7 @@
 = render 'shared/bootstrap_table'
 
+= button :back, _('Back to control panel'), controller: 'profile_editor'
+
 = js_translations_include plugin: :analytics
 = javascript_include_tag 'plugins/analytics/javascripts/views/settings'
 analytics-settings data-opts="#{CGI.escapeHTML({settings: {enabled: profile.analytics_settings.enabled, anonymous: profile.analytics_settings.anonymous}}.to_json)}" data-riot=''
