@@ -291,7 +291,7 @@ class ShoppingCartPluginController < OrdersPluginController
 
     order = OrdersPlugin::Sale.new
     order.profile = environment.profiles.find(cart[:profile_id])
-    order.supplier_delivery = profile.delivery_methods.find params[:order][:supplier_delivery_id]
+    order.supplier_delivery = profile.delivery_methods.where(:id => params[:order][:supplier_delivery_id]).first
     order.session_id = session_id unless user
     order.consumer = user
     order.source = 'shopping_cart_plugin'
