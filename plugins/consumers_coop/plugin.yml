@@ -1,6 +1,0 @@
-name: consumers_coop
-dependencies:
-  - orders
-  - orders_cycle
-  - suppliers
-  - volunteers
