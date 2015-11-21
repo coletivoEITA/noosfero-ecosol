@@ -34,7 +34,6 @@ gem 'slim'
 gem 'will-paginate-i18n'
 gem 'utf8-cleaner'
 gem 'premailer-rails'
-gem 'slim'
 gem 'message_bus'
 
 # js
