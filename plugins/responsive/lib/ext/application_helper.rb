@@ -161,7 +161,7 @@ module ApplicationHelper
       host = environment.default_hostname
 
       output = '<li class="dropdown">'
-      output += link_to(content_tag(:span, _('People'), '#', :class=>"dropdown-toggle icon-menu-people", title: _('People')), :'data-toggle'=>"dropdown", :'data-hover'=>"dropdown")
+      output += link_to(content_tag(:span, _('People')), '#', :class=>"dropdown-toggle icon-menu-people", title: _('People'), :'data-toggle'=>"dropdown", :'data-hover'=>"dropdown")
       output += '<ul class="dropdown-menu" role="menu">'
 
       output += '<li>' + link_to(_('All people'), {host: host, controller: "search", action: 'people', category_path: ''}) + '</li>'
