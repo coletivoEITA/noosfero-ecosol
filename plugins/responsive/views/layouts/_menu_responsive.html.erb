@@ -18,7 +18,12 @@
         <span class="icon-bar"></span>
       </button>
 
-      <a class="navbar-brand" href="<%= environment.top_url %>"><span id="navbar-brand-site-title"><%= theme_site_title %></span><%= h @environment.name %></a>
+      <a class="navbar-brand" href="<%= environment.top_url %>">
+        <%= theme_site_title %>
+        <span id="navbar-brand-site-title">
+          <%= h @environment.name %>
+        </span>
+      </a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
