@@ -9,11 +9,11 @@
      content_tag('h3', hidden_field_tag('newsletter[enabled]', false) +
                   f.check_box('enabled') +
                   _('Enable send of newsletter to members on this environment'), :id => 'newsletter-enabled-field'),
-    nil)
+    '')
   %>
 
   <%= labelled_form_field(
-    content_tag('span', hidden_field_tag('newsletter[moderated]', false) + f.check_box('moderated') + _('Moderate newsletter each time before sending to users.')), nil)
+    content_tag('span', hidden_field_tag('newsletter[moderated]', false) + f.check_box('moderated') + _('Moderate newsletter each time before sending to users.')), '')
   %>
 
   <h2>
@@ -57,7 +57,7 @@
 
   <div id='newsletter-file-options'>
     <%= labelled_form_field(
-      content_tag('span', check_box_tag('file[headers]', 1, false, disabled: true) + _('The CSV file contains a header row')), nil)
+      content_tag('span', check_box_tag('file[headers]', 1, false, disabled: true) + _('The CSV file contains a header row')), '')
     %>
 
     <%= labelled_form_field(
