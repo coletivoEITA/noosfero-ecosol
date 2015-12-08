@@ -4,5 +4,6 @@
 User-agent: *
 # block searches' queries
 Disallow: /search
+Disallow: /tag
 Disallow: /search*query=*
 Disallow: /cat/*
