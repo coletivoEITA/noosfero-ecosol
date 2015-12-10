@@ -145,7 +145,7 @@ class Profile
       {no_templates: :boolean},
       # ordered/query-boosted fields
       {solr_name_sortable: :string}, {user_id: :integer},
-      :enabled, :active, :validated, :public_profile, :visible, :is_template,
+      :enabled, :active, :validated, :public_profile, :visible, :is_template, :secret, :type,
       {lat: :float}, {lng: :float},
       :updated_at, :created_at,
     ],
