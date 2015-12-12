@@ -7,6 +7,8 @@ class AccountController < ApplicationController
   # FIXME this gives intermittent blank screen!
   #before_filter :protect_from_bots, :only => :signup
 
+  protect_from_forgery except: [:login]
+
   helper CustomFieldsHelper
   # say something nice, you goof!  something sweet.
   def index
