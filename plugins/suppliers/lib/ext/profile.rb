@@ -20,7 +20,7 @@ class Profile
   has_many :to_products, through: :products
 
   has_many :suppliers, class_name: 'SuppliersPlugin::Supplier', foreign_key: :consumer_id, dependent: :destroy,
-    include: [{profile: [:domains], consumer: [:domains]}], order: 'name ASC'
+    include: [{profile: [:domains], consumer: [:domains]}], order: 'suppliers_plugin_suppliers.name ASC'
   has_many :consumers, class_name: 'SuppliersPlugin::Consumer', foreign_key: :profile_id, dependent: :destroy,
     include: [{profile: [:domains], consumer: [:domains]}], order: 'name ASC'
 
