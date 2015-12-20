@@ -1,0 +1,22 @@
+<div id="exchange-header">
+
+  <%= render :partial => "states", :locals => {:exchange => @exchange} %>
+
+  <div id="exchange-enterprise-headers">
+
+    <div class="exchange-enterprise profile">
+      <%= profile_link_with_image profile, :thumb %>
+      <div class="name"><%= profile.name %></div>
+    </div>
+
+    <div class="exchange-enterprise theother">
+      <%= profile_link_with_image @theother, :thumb %>
+      <div class="name"><%= @theother.name %></div>
+    </div>
+
+    <div id="exchange-exchange-symbol"></div>
+
+    <div class="clean"></div>
+
+  </div>
+</div>

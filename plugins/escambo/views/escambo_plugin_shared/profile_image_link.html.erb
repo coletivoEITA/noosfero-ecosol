@@ -1,0 +1,35 @@
+<div class="escambo-plugin-profile-block <%= 'bg-purple inside-border-purple' %>">
+
+  <div class="image-profile-area" style="background-image: url('<%= profile.image.public_filename if profile.image %>')">
+
+    <% if @active_organization and @active_organization != profile %>
+      <div class="icons <%= 'has-exchanged' if @active_organization.has_exchanged(profile) %>">
+      </div>
+    <% end %>
+
+    <% if not logged_in? or (@active_organization and @active_organization != profile) %>
+      <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile, :element_id => nil, :element_type => nil} %>
+    <% end %>
+  </div>
+
+  <div class="profile-homepage-link"><%= link_to profile.name, profile.url %></div>
+
+  <div class="categories-area">
+    <%= profile.product_categories.first(3).join(', ') %>
+  </div>
+
+  <div class="location-area <%= 'empty' unless profile.region.present? %>">
+    <% if profile.region.present? %>
+      <% extend SearchHelper %>
+      <%= city_with_state profile.region %>
+    <% else %>
+      <%= _("Localization wasn't informed") %>
+    <% end %>
+  </div>
+
+  <div class="summary-area">
+    <%= _('Already made %{exchanges_count} exchanges with %{enterprises_count} enterprises.') % {
+      :exchanges_count => profile.exchanges_count, :enterprises_count => profile.exchanged_profile_count
+    } %>
+  </div>
+</div>

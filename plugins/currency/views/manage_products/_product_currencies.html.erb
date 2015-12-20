@@ -1,0 +1,12 @@
+<%= javascript_tag do %>
+  addScript('/plugins/currency/underscore-min.js', currency.underscore_settings);
+  currency.product.load({
+    currencies: <%= @product.enterprise.currencies.to_json %>,
+    prices: <%= @product.product_currencies.with_price.all.to_json %>,
+    discounts: <%= @product.product_currencies.with_discount.all.to_json %>,
+  });
+<% end %>
+
+<script id="currency-template" type="text/html">
+  <%= render :partial => 'currency_template' %>
+</script>

@@ -1,0 +1,6 @@
+<%= text_field_tag 'query', nil, :onkeyup =>
+  "currency.search.do(this, '#{url_for :action => :enterprise_search, :id => @currency.id}', currency.disassociate.search);" %>
+
+<div id="enterprise-results">
+  <%= render :partial => 'enterprise_results' %>
+</div>

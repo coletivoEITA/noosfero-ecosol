@@ -748,6 +748,7 @@ class Environment < ActiveRecord::Base
     url << Noosfero.root('')
     url
   end
+  alias_method :url, :top_url
 
   def to_s
     self.name || '?'

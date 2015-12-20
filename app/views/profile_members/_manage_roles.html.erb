@@ -12,7 +12,7 @@
 <% end %>
 
 <% @roles.each do |role| %>
-  <% search_url = url_for(:action => 'search_user', :profile => profile.identifier, :role => role.id) %>
+  <% search_url = url_for(:controller => :profile_members, :action => 'search_user', :profile => profile.identifier, :role => role.id) %>
   <% pre_population = params[:action] == 'last_admin' ? [].to_json : profile.members_by_role_to_json(role) %>
   <script type="text/javascript">
     jQuery(<%= ('#search_' + role.key).to_json %>)

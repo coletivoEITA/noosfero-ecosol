@@ -1,0 +1,9 @@
+<div id="escambo-members">
+  <h3><%= _('Members from this enterprise') %></h3>
+
+  <% if profile == @active_organization %>
+    <%= link_to _('Add'), {controller: :escambo_plugin_myprofile, action: :add_member}, class: 'modal-toggle add action-button' %>
+  <% end %>
+
+  <%= render partial: 'members' %>
+</div>

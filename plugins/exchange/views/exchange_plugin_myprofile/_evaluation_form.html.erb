@@ -1,0 +1,35 @@
+<div id="exchange-evaluation-form">
+
+  <%= form_for :evaluation, :url => {:controller => 'exchange_plugin_myprofile', :action => 'evaluate', :exchange_id => @exchange.id, :theother_id => @theother.id } do |f| %>
+
+    <div class="evaluation-message">
+      <%= profile_link_with_image profile, :thumb %>
+      <%= text_area_tag 'text', '', :class => "evaluation-body", :placeholder => _('Please evaluate the behaviour of %s during the exchange process') % @theother.name %>
+
+    </div>
+
+    <div class="evaluation-score">
+      <h5><%= _('Score') %></h5>
+      <label for="score_1">1</label>
+      <%= radio_button_tag "score", 1 , '', :class => "evaluation-radio"%>
+      <label for="score_2">2</label>
+      <%= radio_button_tag "score", 2 , '', :class => "evaluation-radio"%>
+      <label for="score_3">3</label>
+      <%= radio_button_tag "score", 3, '', :class => "evaluation-radio" %>
+      <label for="score_4">4</label>
+      <%= radio_button_tag "score", 4, '', :class => "evaluation-radio" %>
+      <label for="score_5">5</label>
+      <%= radio_button_tag "score", 5, '', :class => "evaluation-radio" %>
+    </div>
+
+    <div class="evaluation-result">
+
+      <h5><%= _('The deal happened?') %></h5>
+      <%= select("result", '', EvaluationPlugin::Evaluation::ResultMessage.map{ |id, m| [_(m), id] }, {:include_blank => false}, {:class => "evaluation-select", :name => "result"}) %>
+    </div>
+
+    <%= f.submit _('Submit Evaluation'), :class => "action-button" %>
+
+  <% end %>
+
+</div>

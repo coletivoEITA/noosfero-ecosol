@@ -1,0 +1,20 @@
+<div id="currency-wrap" class="popin currency-accept-dialog">
+
+  <h2> <%= _('Accept a new currency') %> </h2>
+
+  <p>
+    <%= _("Find the currency you want to accept on the network") %>
+  </p>
+
+  <%= text_field_tag :query, '', :id => 'search-query',
+    :onkeyup => "currency.search.do(this, '#{url_for :action => :accept_search}', currency.accept.search);" %>
+
+  <div id="currency-search">
+    <%= render :partial => 'accept_form' %>
+  </div>
+
+  <%= javascript_tag do %>
+    currency.accept.load('<%= _('search') %>');
+  <% end %>
+
+</div>

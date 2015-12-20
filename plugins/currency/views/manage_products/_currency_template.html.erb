@@ -1,0 +1,16 @@
+<@ _.each(currencies, function(currency) { @>
+  <tr>
+    <td>
+      <label name="product[currencies[<@=currency.id@>][<@=field@>]]" class='formlabel'>
+        <@ if (field == 'price') { @>
+          <@= "<%= _('Price in %{currency}') %>".format({currency: currency.name_with_symbol}) @>
+        <@ } else { @>
+          <@= "<%= _('Discount in %{currency}') %>".format({currency: currency.name_with_symbol}) @>
+        <@ } @>
+      </label>
+    </td>
+    <td class='formfield'>
+      <input name="product[currencies[<@=currency.id@>][<@=field@>]]" value="<@=currency[field] || ''@>" type="text" class='numbers-only'/>
+    </td>
+  </tr>
+<@ }); @>

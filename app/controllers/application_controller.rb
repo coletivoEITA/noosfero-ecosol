@@ -47,6 +47,8 @@ class ApplicationController < ActionController::Base
     @user_is_admin = user and user.is_admin?
   end
 
+  protected
+
   def allow_cross_domain_access
     origin = request.headers['Origin']
     return if origin.blank?
@@ -120,6 +122,20 @@ class ApplicationController < ActionController::Base
   helper_method :current_person, :current_person
 
   protected
+
+  before_filter :load_active_organization, except: :select_active_organization
+  def load_active_organization id = nil
+    return unless user
+    if id
+      @active_organization = environment.profiles.find_by_id id
+    elsif cookies[:active_organization]
+      @active_organization = environment.profiles.find_by_id cookies[:active_organization]
+    else
+      @active_organization = user.memberships.first
+    end
+    @active_organization = nil unless @active_organization and @active_organization.members.include? user
+    cookies[:active_organization] = @active_organization.id if @active_organization
+  end
 
   def verified_request?
     super || form_authenticity_token == request.headers['X-XSRF-TOKEN']

@@ -1,0 +1,33 @@
+<div id="enterprise-register">
+
+  <div class='help-text'>
+    Agora vamos cadastrar o espaço em que você vai mostrar suas ofertas
+    para troca. Digite o nome do Ponto de Cultura, que pode ser o nome do
+    seu coletivo, ou seu nome caso queira trocar individualmente. Complete
+    os dados relativos ao Ponto de Cultura, caso sejam diferentes dos seus
+    dados pessoais.
+  </div>
+
+  <div class='help-text'>
+    <%= link_to_function _('Your enterprise is already registered? Click here!'), 'escambo.signup.enterprise.find()' %>
+  </div>
+
+  <%= render :partial => 'escambo_plugin_shared/enterprise_register' %>
+</div>
+
+<div id="enterprise-find">
+
+  <div class='help-text'>
+    <%= _("Find bellow your enterprise. If it doesn't exist, you can %{register}.") % {
+      :register => link_to_function(_('register it'), 'escambo.signup.enterprise.register()')
+    } %>
+  </div>
+
+  <%= render :partial => 'escambo_plugin_public/enterprise_search' %>
+  <%= hidden_field_tag 'enterprise_register', 'true', :id => 'enterprise-register-field' %>
+
+  <div id="help-wait-membership" class='help-text'>
+    <%= _("Your membership will wait for aproval of one the administrators from the selected enteprise") %>
+  </div>
+
+</div>

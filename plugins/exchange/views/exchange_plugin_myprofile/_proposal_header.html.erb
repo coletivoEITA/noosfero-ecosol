@@ -1,0 +1,12 @@
+<div class="exchange-proposal-header">
+  <% if proposal.state == "accepted" %>
+    <%= _('%{origin} proposed and %{target} accepted!') % {
+      :origin => content_tag('strong', proposal.origin.name),
+      :target => content_tag('strong', proposal.target.name),
+    } %>
+<% else %>
+  <%= _('%{origin} proposes') % {
+    :origin => content_tag('strong', proposal.origin.name),
+  } %>
+<% end %>
+</div>

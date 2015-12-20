@@ -1,0 +1,30 @@
+<% profile = interest.profile %>
+
+<div class="escambo-snippet sniffer-plugin-interest-snippet">
+  <div class="first-column">
+    <div class="label">
+      <%= _('Interest') %>
+    </div>
+  </div>
+
+  <div class="second-column">
+    <%= _('%{profile} is interested in %{interest}') % {
+      :profile => link_to(profile.name, profile.url),
+      :interest => link_to(interest.name, {:controller => :search, :query => interest.name}),
+    } %>
+
+    <%= render :partial => 'snippets/local', :locals => {:profile => profile} %>
+  </div>
+
+  <div class="third-column">
+    <% if profile != @active_organization %>
+      <%# render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile} %>
+    <% else %>
+      <%= link_to _("Edit"), {:controller => :sniffer_plugin_myprofile, :action => :edit, :profile => profile.identifier}, :class => 'exchange' %>
+      <%# link_to _("Remove"), {:controller => :sniffer_plugin_myprofile, :action => :destroy, :opportunity_id => interest.id, :profile => profile.identifier}, :class => 'exchange',
+        :confirm => _('Are you sure that you want to remove this interest?') %>
+    <% end %>
+  </div>
+
+  <div class="clean"></div>
+</div>
