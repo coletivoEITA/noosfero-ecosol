@@ -84,7 +84,7 @@ class Article < ActiveRecord::Base
   belongs_to :last_changed_by, :class_name => 'Person', :foreign_key => 'last_changed_by_id'
   belongs_to :created_by, :class_name => 'Person', :foreign_key => 'created_by_id'
 
-  has_many :comments, :class_name => 'Comment', :foreign_key => 'source_id', :dependent => :destroy, :order => 'created_at desc'
+  has_many :comments, :class_name => 'Comment', :as => 'source', :dependent => :destroy, :order => 'created_at asc'
 
   has_many :article_categorizations, -> { where 'articles_categories.virtual = ?', false }
   has_many :categories, -> { where 'categories.visible_for_articles = ?', true }, through: :article_categorizations

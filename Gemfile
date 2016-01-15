@@ -17,7 +17,7 @@ gem 'RedCloth',                 '~> 4.2'
 gem 'ruby-feedparser',          '~> 0.7'
 gem 'daemons',                  '~> 1.1'
 gem 'nokogiri',                 '~> 1.6.0'
-gem 'will_paginate'
+gem 'will_paginate',            '~> 3.0.5.0'
 gem 'pothoven-attachment_fu',   '~> 3.2.16'
 gem 'delayed_job'
 gem 'delayed_job_active_record'
@@ -91,10 +91,10 @@ gem 'grape_logging'
 gem 'rack-cors'
 gem 'rack-contrib'
 
-group :assets do
-  gem 'uglifier', '>= 1.0.3'
-  gem 'sass-rails'
-end
+# asset pipeline
+gem 'uglifier', '>= 1.0.3'
+gem 'sass-rails'
+gem 'sprockets-rails', '~> 2.1'
 
 # gems to enable rails3 behaviour
 gem 'protected_attributes'

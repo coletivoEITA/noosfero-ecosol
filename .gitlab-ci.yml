@@ -2,18 +2,37 @@ image: noosfero/ci
 
 before_script:
   - mkdir -p locale # makes quick-start skip compiling translations
+  - ./script/set-apt-proxy
   - ./script/silent-quick-start
+
+stages:
+  - smoke-tests
+  - all-tests
+
+smoke:
+  script: bundle exec rake ci:smoke
+  stage: smoke-tests
 
 units:
   script: bundle exec rake test:units
+  stage: all-tests
+
 functionals:
   script: bundle exec rake test:functionals
+  stage: all-tests
+
 integration:
   script: bundle exec rake test:integration
+  stage: all-tests
+
 cucumber:
   script: bundle exec rake cucumber
+  stage: all-tests
+
 selenium:
   script: bundle exec rake selenium
+  stage: all-tests
+
 plugins:
   script: bundle exec rake test:noosfero_plugins
-
+  stage: all-tests
