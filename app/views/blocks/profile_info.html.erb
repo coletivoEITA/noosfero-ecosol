@@ -5,13 +5,10 @@
 <div class="profile-info-picture">
   <div class="profile-info-picture-inner1">
     <span class="profile-info-picture-inner2">
-      <a href="<%= url_for(block.owner.url) %>">
-        <%=
-          profile_image(block.owner, :thumb) +"\n"+
-          profile_sex_icon( profile ) +
-          profile_cat_icons( profile )
-        %>
-      </a>
+      <%=
+        profile_image(block.owner, :thumb) +"\n"+
+        profile_sex_icon( profile )
+      %>
     </span>
   </div>
 </div>

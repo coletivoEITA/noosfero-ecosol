@@ -110,15 +110,15 @@ class Organization < Profile
     economic_activity
     management_information
     address
-    address_line2
-    address_reference
-    district
     zip_code
     city
     state
     country
     tag_list
     template_id
+    district
+    address_line2
+    address_reference
   ]
 
   def self.fields

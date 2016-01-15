@@ -13,7 +13,7 @@ class ThemesController < ApplicationController
 
   def index
     @environment = environment
-    @themes = (environment.themes + Theme.approved_themes(target)).sort_by{ |t| t.name }.uniq{ |t| t.id }
+    @themes = (environment.themes + Theme.approved_themes(target)).uniq.sort_by { |t| t.name }
 
     @current_theme = target.theme
 

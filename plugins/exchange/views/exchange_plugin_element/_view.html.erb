@@ -1,0 +1,81 @@
+<% type = element.object_type.gsub('::', '').underscore %>
+
+<li id="exchange-element-<%= element.id %>" class="exchange-element <%=type%> <%=actor%>">
+
+  <% if element.object.respond_to? :image and element.object.image.present? %>
+    <div class="exchange-element-image" style="background-image: url('<%= element.object.image.public_filename if element.object.image %>');">
+    </div>
+  <% end %>
+
+  <div class="exchange-element-control">
+    <% if element.proposal.open? %>
+      <div id="exchange-quantity" class="exchange-qty">
+        <div class="label"><%= _('Qty') %></div>
+        <%= text_field_tag "quantity", element.quantity, class: "exchange-qty-input",
+          onblur: "exchange.updateField(this, '#{url_for controller: :exchange_plugin_element, action: :edit, id: element.id}', {element: {quantity: this.value}});" %>
+      </div>
+
+      <div class="exchange-trash">
+        <%= link_to_remote '<img src="/plugins/exchange/images/trash.png"/>', url: {controller: :exchange_plugin_element, action: :destroy, id: element.id, actor: actor, object_type: element.object_type} %>
+      </div>
+
+    <% else %>
+      <% if element.quantity.present? %>
+        <div class="exchange-qty readonly">
+          <div class="label"><%= _('Qty') %></div>
+          <div class="value"><%= element.quantity %></div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <% if element.object_type == "Product" %>
+    <div class="title"><%= link_to element.object.name, element.object.url, target: '_blank' %></div>
+    <div class="desc"><%= element.object.description %></div>
+
+    <% if element.proposal.open? %>
+      <%= label_tag :comment, _('Comment (optional)') %>
+      <%= text_area_tag :comment, element.comment,
+        onblur: "exchange.updateField(this, '#{url_for controller: :exchange_plugin_element, action: :edit, id: element.id}', {element: {comment: this.value}});" %>
+    <% end %>
+
+    <% if element.comment.present? %>
+      <div class="comment">
+        <strong><%= _('Comment:') %></strong>
+        <%= element.comment %>
+      </div>
+    <% end %>
+  <% elsif element.object_type == "Article" %>
+  <% #elsif element.object_type == "CmsLearningPlugin::Learning" FIXME
+  %>
+    <div class="title"><%= link_to element.object.name, element.object.url, target: 'blank' %></div>
+    <div class="desc"><%= element.object.summary %></div>
+
+  <% elsif element.object_type == "CurrencyPlugin::Currency" %>
+
+    <% if element.proposal.open? %>
+      <%= select "element", 'object_id',
+        options_for_select(profile.currencies.collect{|c| [c.name_with_symbol, c.id]}, element.object.id), {},
+        class: 'title',
+        onblur: "exchange.updateField(this, '#{url_for controller: :exchange_plugin_element, action: :edit, id: element.id}', {element: {object_id: this.value}});" %>
+    <% else %>
+      <div class="title"><%= element.object.name_with_symbol %></div>
+    <% end %>
+
+  <% elsif element.object_type == "ExchangePlugin::UnregisteredItem" %>
+    <% if element.proposal.open? %>
+      <div class="title"><%= _('Unregistered item') %></div>
+
+      <%= label_tag :title, _('Title') %>
+      <%= text_field_tag :title, element.object.name,
+        onblur: "exchange.updateField(this, '#{url_for controller: :exchange_plugin_element, action: :edit, id: element.id}', {element: {object_attributes: {name: this.value}}});" %>
+
+      <%= label_tag :description, _('Comment (optional)') %>
+      <%= text_area_tag :description, element.object.description,
+        onblur: "exchange.updateField(this, '#{url_for controller: :exchange_plugin_element, action: :edit, id: element.id}', {element: {object_attributes: {description: this.value}}});" %>
+    <% else %>
+      <div class="title"><%= element.object.name %></div>
+      <div class="desc"><%= element.object.description %></div>
+    <% end %>
+  <% end %>
+</li>

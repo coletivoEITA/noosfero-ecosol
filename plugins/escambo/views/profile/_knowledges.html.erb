@@ -1,0 +1,18 @@
+<div id="knowledges">
+  <h3><%= _('Knowledges') %></h3>
+
+  <% if profile == @active_organization %>
+    <%= link_to _("Add"), {:controller => :cms, :action => :new, :type => "CmsLearningPlugin::Learning"}, :class => 'add action-button' %>
+  <% end %>
+
+  <% unless all %>
+    <span class="see-all"><%= link_to _("See all"), {:action => :knowledges, :profile => profile.identifier} %></span>
+  <% end %>
+
+  <% knowledges = @profile.knowledges %>
+  <% knowledges = knowledges.first(4) unless all %>
+
+  <% knowledges.each do |knowledge| %>
+    <%= render :partial => 'snippets/cms_learning_plugin_learning', :locals => {:knowledge => knowledge} %>
+  <% end %>
+</div>

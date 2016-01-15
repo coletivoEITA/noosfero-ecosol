@@ -1,0 +1,62 @@
+<% first = true %>
+
+<% @proposals.each do |proposal| %>
+
+  <% next unless (not proposal.open?) or proposal.origin == profile %>
+
+  <div class="exchange-proposal-wrap">
+
+    <% if not proposal.open? %>
+      <div class="exchange-proposal-sent">
+        <%= _('Proposal sent %s') % proposal.sent_at.strftime(_("%m/%d/%Y at %H:%Mh")) %>
+      </div>
+    <% end %>
+
+    <div class="exchange-proposal <%=proposal.origin == profile ? 'sent' : 'received' %>">
+      <%= render "proposal_header", proposal: proposal %>
+
+      <% if first and (@exchange.state == "proposal" or @exchange.state == "negociation") %>
+        <%= render "proposal_buttons", proposal: proposal %>
+      <% end %>
+
+      <%= render "proposal_messages", proposal: proposal, new_message: first %>
+
+      <% first = false %>
+
+      <div class="exchange-proposal-part profile">
+
+        <h3><%= _('You offer') %></h3>
+        <%= render 'proposal_element_list', proposal: proposal, profile: @profile, actor: 'profile'  %>
+
+        <% if proposal.open? %>
+          <h3><%= _('What you can offer?') %></h3>
+
+          <div class="exchange-button-wrapper">
+            <%= render 'proposal_add_unreg_item', profile: profile, actor: 'profile', proposal: proposal %>
+            <%= render 'proposal_add_money', profile: profile, actor: 'profile', proposal: proposal %>
+          </div>
+
+          <%= render 'proposal_offers', profile: profile, actor: 'profile', proposal: proposal %>
+          <%= render 'proposal_knowledges', profile: profile, actor: 'profile', proposal: proposal %>
+
+        <% end %>
+      </div>
+
+      <div class="exchange-proposal-part theother">
+
+        <h3><%= _('You ask') %></h3>
+        <%= render 'proposal_element_list', proposal: proposal, profile: @theother, actor: 'theother'  %>
+
+        <% if proposal.open? %>
+          <div class="exchange-button-wrapper">
+            <%= render 'proposal_add_unreg_item', profile: @theother, actor: 'theother', proposal: proposal %>
+            <%= render 'proposal_add_money', profile: @theother, actor: 'theother', proposal: proposal %>
+          </div>
+
+          <%= render 'proposal_offers', profile: @theother, actor: 'theother', proposal: proposal %>
+          <%= render 'proposal_knowledges', profile: @theother, actor: 'theother', proposal: proposal %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -46,7 +46,7 @@ class RequireAuthToCommentPlugin < Noosfero::Plugin
   protected
 
   def logged_in?
-    context.send :logged_in?
+    context.send(:logged_in?)
   end
 
   def allowed_by_profile

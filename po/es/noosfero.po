@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.3~rc2-8-g01ea9f7\n"
 "POT-Creation-Date: 2015-11-04 12:36-0300\n"
-"PO-Revision-Date: 2015-11-29 18:45+0000\n"
+"PO-Revision-Date: 2016-01-07 11:31+0000\n"
 "Last-Translator: María Vecino <mariavecino@ecoalternative.net>\n"
 "Language-Team: Spanish "
 "<https://hosted.weblate.org/projects/noosfero/noosfero/es/>\n"
@@ -41,17 +41,17 @@ msgstr "El artículo fue eliminado."
 
 #: app/models/approve_comment.rb:81
 msgid "%{requestor} wants to comment the article: %{article}."
-msgstr "% {requestor} quiere comentar el artículo:% {articule}"
+msgstr "%{requestor} quiere comentar el artículo: %{articule}"
 
 #: app/models/approve_comment.rb:83
 msgid "%{requestor} wanted to comment the article but it was removed."
-msgstr "% {requestor} quiso comentar un articulo pero fue eliminado."
+msgstr "% {requestor} quiso comentar un articulo pero este ha sido eliminado."
 
 #: app/models/approve_comment.rb:89
 msgid ""
 "You need to login on %{system} in order to approve or reject this comment."
 msgstr ""
-"Debes iniciar sesión en  %{system} para aprobar o rechazar este artículo."
+"Debes iniciar sesión en %{system} para aprobar o rechazar este artículo."
 
 #: app/models/approve_comment.rb:94
 msgid ""
@@ -63,7 +63,7 @@ msgstr ""
 "Tu solicitud para publicar el artículo \"%articulo}\" fue aprobada. Aquí "
 "está el comentario dejado por el administrador que aprobó el artículo: \n"
 "\n"
-"%{commentasio} "
+"%{comment} "
 
 #: app/models/approve_comment.rb:96
 msgid "Your request for comment the article \"%{article}\" was approved."
@@ -71,7 +71,7 @@ msgstr "Tu solicitud para comentar el artículo \"%{article}\" fue aprobada."
 
 #: app/models/approve_comment.rb:101
 msgid "Your request for commenting the article \"%{article}\" was rejected."
-msgstr "La solicitud para comentar tu artículo \"%{article}\" fue rechazado."
+msgstr "La solicitud para comentar tu artículo \"%{article}\" fue rechazada."
 
 #: app/models/approve_comment.rb:103
 msgid ""
@@ -82,7 +82,7 @@ msgid ""
 msgstr ""
 "Aquí está la explicación del por qué el administrador rechazó tu artículo: \n"
 "\n"
-"%{comenta}"
+"%{reject_explanation}"
 
 #: app/models/comment.rb:4 app/models/article.rb:186
 #: app/views/content_viewer/_comment_form.html.erb:70
@@ -130,7 +130,7 @@ msgstr "Contenido"
 #: app/models/comment.rb:34
 #, fuzzy
 msgid "{fn} can only be informed for unauthenticated authors"
-msgstr "%{fn} solamente puede ser informado por autores no autenticados"
+msgstr "%{fn} solamente puede ser informado por autores no autentificados"
 
 #: app/models/comment.rb:82
 msgid "(removed user)"
@@ -138,7 +138,7 @@ msgstr "(usuario eliminado)"
 
 #: app/models/comment.rb:82
 msgid "(unauthenticated user)"
-msgstr "(usuario no autenticado)"
+msgstr "(usuario no autentificado)"
 
 #: app/models/product.rb:5 app/models/organization.rb:138
 #: app/models/certifier.rb:7 app/views/search/_article_description.html.erb:4
@@ -200,7 +200,7 @@ msgstr "<user> te esta invitando a unirte a \"<community>\" en <environment>."
 
 #: app/models/invite_member.rb:59 app/models/invite_friend.rb:39
 msgid "To accept the invitation, please follow this link:"
-msgstr "Para aceptar la invitación, por favor sigue esta liga:"
+msgstr "Para aceptar la invitación, por favor sigue este link:"
 
 #: app/models/my_network_block.rb:6 app/models/my_network_block.rb:10
 msgid "My network"
@@ -216,7 +216,7 @@ msgstr "Buscar por empresa y productos"
 
 #: app/models/sellers_search_block.rb:10
 msgid "Products/Enterprises search"
-msgstr "Búsqueda de productos/empresas"
+msgstr "Búsqueda de Productos/Empresas"
 
 #: app/models/sellers_search_block.rb:14
 msgid "Search for sellers"
@@ -252,15 +252,15 @@ msgid ""
 "There was an error while authenticating. Did you enter correct login and "
 "password?"
 msgstr ""
-"Se ha producido un error durante la autenticación. ¿Ingresaste correctamente "
-"tu usuario y contraseña?"
+"Se ha producido un error durante la autentificación. ¿Ingresaste "
+"correctamente tu usuario y contraseña?"
 
 #: app/models/contact_list.rb:25
 msgid ""
 "There was an error while looking for your contact list. Please, try again"
 msgstr ""
 "Se ha producido un error mientras se buscaba tu lista de contactos. Por "
-"favor inténtalo de nuevo"
+"favor, inténtalo de nuevo"
 
 #: app/models/uploaded_file.rb:10
 msgid "File"
@@ -330,7 +330,7 @@ msgstr "Abreviatura"
 
 #: app/models/category.rb:9 app/models/article.rb:20
 msgid "Slug"
-msgstr ""
+msgstr "Ficha"
 
 #: app/models/category.rb:12
 msgid "{fn} cannot be like that."
@@ -551,7 +551,7 @@ msgstr "Chat basado en XMPP/Jabber"
 
 #: app/models/environment.rb:154
 msgid "Show a zoom link on all article images"
-msgstr "Muestra un enlace de acercamiento en todas las imágenes del artículo."
+msgstr "Muestra un enlace de acercamiento en todas las imágenes en artículos."
 
 #: app/models/environment.rb:155
 msgid "Ask captcha when a logged user comments too"
@@ -594,50 +594,51 @@ msgid "Stays on the same page the user was before login."
 msgstr "Permanecer en la misma página en la que el usuario se identificó."
 
 #: app/models/environment.rb:170 app/models/environment.rb:182
+#, fuzzy
 msgid "Redirects the user to the environment homepage."
-msgstr ""
+msgstr "Redirige al usuario a la home"
 
 #: app/models/environment.rb:171 app/models/environment.rb:183
 msgid "Redirects the user to his profile page."
-msgstr ""
+msgstr "Redirige al usuario a su página de perfil."
 
 #: app/models/environment.rb:172 app/models/environment.rb:184
 msgid "Redirects the user to his homepage."
-msgstr ""
+msgstr "Redirige al usuario a la home."
 
 #: app/models/environment.rb:173 app/models/environment.rb:185
 msgid "Redirects the user to his control panel."
-msgstr ""
+msgstr "Redirige al usuario a su panel de control."
 
 #: app/models/environment.rb:174
 msgid "Specify the URL to redirect to:"
-msgstr ""
+msgstr "Especifique la URL para redirigir a:"
 
 #: app/models/environment.rb:181
 msgid "Stays on the same page the user was before signup."
 msgstr ""
+"Mantenerse en la misma página que el usuario estaba antes de registrarse."
 
 #: app/models/environment.rb:186
+#, fuzzy
 msgid "Redirects the user to the environment welcome page."
-msgstr ""
+msgstr "Redirige al usuario a la página de bienvenida."
 
 #: app/models/environment.rb:291
-#, fuzzy
 msgid "This enterprise needs to be enabled."
-msgstr "Tu empresa ha sido bloqueada"
+msgstr "Esta empresa tiene que estar habilitada."
 
 #: app/models/environment.rb:672
 msgid "Only one Virtual Community can be the default one"
 msgstr "Solamente una Comunidad Virtual puede ser la predeterminada"
 
 #: app/models/environment.rb:1010 app/models/profile.rb:388
-#, fuzzy
 msgid "is not available."
-msgstr "No disponible"
+msgstr "No disponible."
 
 #: app/models/environment.rb:1018
 msgid "have unsupported languages."
-msgstr ""
+msgstr "no permite ciertos idiomas."
 
 #: app/models/communities_block.rb:6 app/helpers/application_helper.rb:564
 #: app/helpers/application_helper.rb:1128 app/helpers/assets_helper.rb:11
@@ -677,12 +678,11 @@ msgstr "Evento"
 #: app/models/event.rb:33
 #, fuzzy
 msgid "{fn} cannot come before end date."
-msgstr "%{fn} no puede venir antes de la fecha."
+msgstr "%{fn} no puede aparecer antes de la fecha final."
 
 #: app/models/event.rb:63
-#, fuzzy
 msgid "A calendar event."
-msgstr "Un evento de calendario"
+msgstr "Un evento de calendario."
 
 #: app/models/forum.rb:25 app/models/forum.rb:29
 #: app/models/link_list_block.rb:31 app/helpers/application_helper.rb:939
@@ -697,14 +697,13 @@ msgstr ""
 "las discusiones."
 
 #: app/models/forum.rb:38
-#, fuzzy
 msgid "Logged users"
-msgstr "Autenticado como %s"
+msgstr "Usuarios registrados"
 
 #: app/models/forum.rb:41
 #, fuzzy
 msgid "Me"
-msgstr "Masculino"
+msgstr "Mí"
 
 #: app/models/forum.rb:42 app/models/block.rb:250
 #: app/helpers/application_helper.rb:563
@@ -712,9 +711,8 @@ msgid "Friends"
 msgstr "Amigos"
 
 #: app/models/forum.rb:45
-#, fuzzy
 msgid "Administrators"
-msgstr "Administación"
+msgstr "Administadores"
 
 #: app/models/forum.rb:46 app/models/block.rb:250
 #: app/helpers/profile_helper.rb:43 app/helpers/application_helper.rb:571
@@ -794,23 +792,20 @@ msgstr ""
 "si este perfil debe ser dishabilitado o no."
 
 #: app/models/image.rb:20
-#, fuzzy
 msgid "{fn} of uploaded file was larger than the maximum size of 5.0 MB"
 msgstr "%{fn} del archivo subido fue más grande que el tamaño máximo de 5.0 MB"
 
 #: app/models/profile_suggestion.rb:35 app/models/profile_suggestion.rb:38
-#, fuzzy
 msgid "Friends in common"
-msgstr "Invitación de amigo"
+msgstr "Amigos en común"
 
 #: app/models/profile_suggestion.rb:36
-#, fuzzy
 msgid "Communities in common"
-msgstr "Menú comunidades"
+msgstr "Comunidades en común"
 
 #: app/models/profile_suggestion.rb:37 app/models/profile_suggestion.rb:39
 msgid "Tags in common"
-msgstr ""
+msgstr "Palabras claves en común"
 
 #: app/models/person.rb:13 app/models/link_list_block.rb:29
 #: app/views/templates/index.html.erb:5
@@ -923,19 +918,17 @@ msgstr "Código postal"
 #: app/models/person.rb:261 app/models/organization.rb:138
 #: app/views/profile_editor/_person_form.html.erb:27
 #: app/views/shared/_organization_custom_fields.html.erb:14
-#, fuzzy
 msgid "District"
-msgstr "Restricciones"
+msgstr "Distrito"
 
 #: app/models/person.rb:261 app/models/organization.rb:138
 #: app/views/profile_editor/_person_form.html.erb:26
 #: app/views/shared/_organization_custom_fields.html.erb:13
 #, fuzzy
 msgid "Address reference"
-msgstr "Dirección: "
+msgstr "Dirección:"
 
 #: app/models/person.rb:292
-#, fuzzy
 msgid "{fn} is already used by other user"
 msgstr "%{fn} ya lo tiene otro usuario"
 
@@ -1001,16 +994,14 @@ msgid "%{requestor} wants to activate enterprise %{linked_subject}."
 msgstr "%{requestor} quiere activar la empresa %{linked_subject}."
 
 #: app/models/enterprise_activation.rb:29
-#, fuzzy
 msgid "Pending activation of enterprise %{linked_subject}."
-msgstr "%{requestor} quiere activar la empresa %{linked_subject}."
+msgstr "%{requestor} Pendiente de activar la empresa %{linked_subject}."
 
 #: app/models/enterprise_activation.rb:43
 msgid "%{requestor} wants to activate enterprise %{enterprise}."
 msgstr "%{rquestor} quiere activar la empresa %{enterprise}."
 
 #: app/models/enterprise_activation.rb:45
-#, fuzzy
 msgid "Pending activation of enterprise %{enterprise}."
 msgstr "%{rquestor} quiere activar la empresa %{enterprise}."
 
@@ -1025,7 +1016,7 @@ msgstr "Invitación"
 
 #: app/models/invitation.rb:41
 msgid "You can't invite youself"
-msgstr "No puedes invitarte a ti."
+msgstr "No puedes invitarte a ti mismo."
 
 #: app/models/invitation.rb:53
 msgid "Firstname Lastname <friend@email.com>"
@@ -1040,9 +1031,8 @@ msgid "Raw HTML"
 msgstr "HTML plano"
 
 #: app/models/person_notifier.rb:103
-#, fuzzy
 msgid "[%s] Notifications"
-msgstr "Opciones de moderación"
+msgstr "Notificaciones"
 
 #: app/models/moderate_user_registration.rb:31
 #: app/views/account/login.html.erb:36
@@ -1051,13 +1041,12 @@ msgid "New user"
 msgstr "Nuevo usuario"
 
 #: app/models/moderate_user_registration.rb:39
-#, fuzzy
 msgid "%{sender} wants to register."
-msgstr "%{requestor} quiere ser tu amigo."
+msgstr "%{requestor} quiere registrarse."
 
 #: app/models/moderate_user_registration.rb:48
 msgid "%{sender} tried to register."
-msgstr ""
+msgstr "%{sender} intentó registrarse."
 
 #: app/models/moderate_user_registration.rb:54
 #, fuzzy
@@ -1066,14 +1055,13 @@ msgstr ""
 "Debes iniciar sesión en  %{system} para aprobar o rechazar este artículo."
 
 #: app/models/moderate_user_registration.rb:58
-#, fuzzy
 msgid ""
 "User \"%{user}\" just requested to register. You have to approve or reject "
 "it through the \"Pending Validations\" section in your control panel.\n"
 msgstr ""
-"El usuario \"%{user}\" acaba de solicitar crear la comunidad %{community}. "
-"Debes aprobarla o rechazarla a través de la sección  \"Validaciones "
-"pendientes\" que está en tu panel de control\n"
+"El usuario \"%{user}\" acaba de solicitar registrarse. Debes aprobarla o "
+"rechazarla a través de la sección  \"Validaciones pendientes\" que está en "
+"tu panel de control.\n"
 
 #: app/models/user.rb:11 app/models/change_password.rb:8
 #: app/views/invite/_select_address_book.html.erb:34
@@ -1112,7 +1100,6 @@ msgid "e-Mail"
 msgstr "correo electrónico"
 
 #: app/models/user.rb:131
-#, fuzzy
 msgid "{fn} must be checked in order to signup."
 msgstr "%{fn} debe estar seleccionado para registrarse."
 
@@ -1121,11 +1108,12 @@ msgid ""
 "The user \"%{login}\" is not activated! Please check your email to activate "
 "your user"
 msgstr ""
+"El usuario \"%{login}\" no está activado. Por favor, revisa tu correo para "
+"activar tu usuario"
 
 #: app/models/user.rb:339
-#, fuzzy
 msgid "does not match."
-msgstr "Las contraseñas no coinciden"
+msgstr "no coinciden."
 
 #: app/models/highlights_block.rb:28
 #: app/views/box_organizer/_highlights_block.html.erb:3
@@ -1147,11 +1135,11 @@ msgstr ""
 
 #: app/models/approve_article.rb:10
 msgid "You can not post articles to other users."
-msgstr ""
+msgstr "No puedes postear artículos a otros usuarios."
 
 #: app/models/approve_article.rb:13
 msgid "Only members can post articles on communities."
-msgstr ""
+msgstr "Sólo miembros pueden postear en la comunidad."
 
 #: app/models/approve_article.rb:19
 msgid "(The original text was removed)"
@@ -1201,16 +1189,15 @@ msgid "Your request for publishing the article \"%{article}\" was rejected."
 msgstr "La solicitud para publicar tu artículo \"{article}\" fue rechazado."
 
 #: app/models/approve_article.rb:140
-#, fuzzy
 msgid ""
 "Here is the reject explanation left by the administrator who rejected your "
 "article: \n"
 "\n"
 "%{reject_explanation}"
 msgstr ""
-"Aquí está la explicación del por qué el administrador rechazó tu artículo: \n"
+"Aquí está la explicación del por qué el administrador rechazó tu artículo:\n"
 "\n"
-"%{comment} "
+"%{reject_explanation}"
 
 #: app/models/article_block.rb:6
 msgid "Display one of your contents"
@@ -1229,12 +1216,10 @@ msgid "Article not selected yet."
 msgstr "Artículo no seleccionado aun."
 
 #: app/models/article.rb:18
-#, fuzzy
 msgid "Abstract"
 msgstr "Resumen"
 
 #: app/models/article.rb:21
-#, fuzzy
 msgid "Filename"
 msgstr "Nombre del archivo"
 
@@ -1248,11 +1233,11 @@ msgstr ""
 
 #: app/models/article.rb:153
 msgid "self-reference is not allowed."
-msgstr ""
+msgstr "La referencia a uno mismo no está permitida."
 
 #: app/models/article.rb:160
 msgid "cyclical reference is not allowed."
-msgstr ""
+msgstr "Una referencia cíclica no está permitida."
 
 #: app/models/article.rb:234 app/models/organization.rb:138
 msgid "Tag list"
@@ -1282,7 +1267,7 @@ msgstr "El lenguaje puede ser elegido para el artículo nativo"
 #: app/models/article.rb:712 app/models/article.rb:714
 #: lib/file_presenter.rb:63
 msgid "Unknown"
-msgstr ""
+msgstr "Desconocido"
 
 #: app/models/article.rb:782
 msgid "no comments"
@@ -1598,20 +1583,18 @@ msgid "Chat"
 msgstr "Chat"
 
 #: app/models/link_list_block.rb:39
-#, fuzzy
 msgid "Same page"
-msgstr "Inicio"
+msgstr "Misma página"
 
 # sigue la duda sobre como traducir "post"
 #: app/models/link_list_block.rb:40
 #, fuzzy
 msgid "New tab"
-msgstr "Nueva entrada"
+msgstr "Nueva tabulación"
 
 #: app/models/link_list_block.rb:41
-#, fuzzy
 msgid "New window"
-msgstr "Nuevo amigo(a)"
+msgstr "Nueva ventana"
 
 #: app/models/link_list_block.rb:51
 msgid "Links (static menu)"
@@ -1636,9 +1619,8 @@ msgstr "Este bloque presenta el contenido principal de tus páginas"
 
 #: app/models/main_block.rb:29 app/models/block.rb:247
 #: app/helpers/users_helper.rb:4
-#, fuzzy
 msgid "All users"
-msgstr "Todos los grupos"
+msgstr "Todos los usuarios"
 
 #: app/models/gallery.rb:12
 msgid "A gallery, inside which you can put images."
@@ -1653,7 +1635,6 @@ msgid "name"
 msgstr "nombre"
 
 #: app/models/layout_template.rb:23
-#, fuzzy
 msgid "title"
 msgstr "Título"
 
@@ -1769,9 +1750,8 @@ msgid "Perform task"
 msgstr "Realizar tarea"
 
 #: app/models/profile.rb:76
-#, fuzzy
 msgid "View tasks"
-msgstr "Ver detalles"
+msgstr "Ver tareas"
 
 #: app/models/profile.rb:77
 msgid "Moderate comments"
@@ -1804,11 +1784,12 @@ msgid ""
 "You must to provide `lat` and `lng`, or `city` and `country` to define the "
 "center of the search circle, defined by `distance`."
 msgstr ""
+"Debes introducir latitud y longitud o ciudad para concretar el centro de la "
+"búsqueda definida por distancia."
 
 #: app/models/profile.rb:393
-#, fuzzy
 msgid "is not a template."
-msgstr "Editar plantillas"
+msgstr "no es una plantilla."
 
 #: app/models/profile.rb:744
 msgid "%s can't have members"
@@ -1873,27 +1854,24 @@ msgid "Community Info and settings"
 msgstr "Información de la comunidad y ajustes"
 
 #: app/models/tiny_mce_article.rb:6
-#, fuzzy
 msgid "Text article with visual editor"
 msgstr "Artículo de texto con editor visual"
 
 #: app/models/tiny_mce_article.rb:10
 msgid "Not accessible for visually impaired users."
-msgstr "No accesible para usuarios con deficiencias visuales"
+msgstr "No accesible para usuarios con déficit visual."
 
 #: app/models/suggest_article.rb:52
 msgid "Article suggestion"
 msgstr "Sugerencia de artículos"
 
 #: app/models/suggest_article.rb:65
-#, fuzzy
 msgid "%{requestor} suggested the publication of the article: %{subject}."
-msgstr "%{author} sugirió la publicación de el artículo: %{subject}."
+msgstr "%{requestor} sugirió la publicación del artículo: %{subject}."
 
 #: app/models/suggest_article.rb:78
-#, fuzzy
 msgid "%{requestor} suggested the publication of the article: %{article}."
-msgstr "%{sender} sugirió la publicación del artículo: %{article}."
+msgstr "%{requestor} sugirió la publicación del artículo: %{article}."
 
 #: app/models/rss_feed.rb:6
 msgid "RssFeed"
@@ -1920,38 +1898,33 @@ msgid "HTML"
 msgstr "HTML"
 
 #: app/models/raw_html_article.rb:8
-#, fuzzy
 msgid "Raw HTML text article"
-msgstr "Artículo de HTML plano."
+msgstr "Artículo de HTML plano"
 
 #: app/models/raw_html_article.rb:12
-#, fuzzy
 msgid "Allows HTML without filter (only for admins)."
-msgstr "Permite HTML sin filtro (solamente para administradores)"
+msgstr "Permite HTML sin filtro (solamente para administradores)."
 
 #: app/models/product_categories_block.rb:4
-#, fuzzy
 msgid "Product category menu"
-msgstr "Categoría de producto"
+msgstr "Menú de categoría de producto"
 
 #: app/models/product_categories_block.rb:9
-#, fuzzy
 msgid "Catalog"
-msgstr "Estado del chat"
+msgstr "Catálogo"
 
 #: app/models/product_categories_block.rb:13
 msgid "Helps to filter the products catalog."
-msgstr ""
+msgstr "Ayuda a filtrar el catálogo de productos."
 
 #: app/models/product_categories_block.rb:22
-#, fuzzy
 msgid "There are no sub-categories for %s"
-msgstr "No existe tal página: %s"
+msgstr "No existe subcategoria para  %s"
 
 #: app/models/product_categories_block.rb:36
 #, fuzzy
 msgid "Only on the catalog"
-msgstr "Solamente en la página de inicio"
+msgstr "Solamente en el catálogo"
 
 #: app/models/favorite_enterprises_block.rb:4
 #: app/models/favorite_enterprises_block.rb:12
@@ -2006,16 +1979,15 @@ msgstr "Teléfono de contacto"
 #: app/models/create_enterprise.rb:47
 #, fuzzy
 msgid "{fn} is not a validator for the chosen region"
-msgstr "%{fn} no es un validador para la región escogida"
+msgstr "{fn} no es un validador para la región escogida"
 
 #: app/models/create_enterprise.rb:54
-#, fuzzy
 msgid ""
 "{fn} is already being as identifier by another enterprise, organization or "
 "person."
 msgstr ""
-"%{fn} está siendo utilizado como identificador por otra empresa, "
-"organización o persona."
+"{fn} está siendo utilizado como identificador por otra empresa, organización "
+"o persona."
 
 #: app/models/create_enterprise.rb:166 app/models/create_enterprise.rb:212
 msgid "%{requestor} wants to create enterprise %{subject}."
@@ -2114,9 +2086,8 @@ msgid "CreateEnterprise|Identifier"
 msgstr "Crear empresa|Identificador"
 
 #: app/models/license.rb:7
-#, fuzzy
 msgid "URL"
-msgstr "URL:"
+msgstr "URL"
 
 #: app/models/enterprise_homepage.rb:4 app/models/enterprise_homepage.rb:16
 #: app/views/blocks/profile_info.html.erb:18
@@ -2127,9 +2098,8 @@ msgid "Homepage"
 msgstr "Inicio"
 
 #: app/models/enterprise_homepage.rb:8
-#, fuzzy
 msgid "Enterprise homepage"
-msgstr "Página de inicio de la empresa."
+msgstr "Página de inicio de la empresa"
 
 #: app/models/enterprise_homepage.rb:12
 msgid "Display the summary of profile."
@@ -2220,7 +2190,6 @@ msgid "Your password was changed successfully."
 msgstr "Tu contraseña fue cambiada correctamente."
 
 #: app/models/change_password.rb:73
-#, fuzzy
 msgid ""
 "In order to change your password, please visit the following address:\n"
 "\n"
@@ -2231,7 +2200,9 @@ msgid ""
 msgstr ""
 "Para cambiar tu contraseña, por favor visita la siguiente dirección :\n"
 "\n"
-"%s"
+"%s\n"
+"\n"
+"Si no has solicitado cambiar la contraseña omite este mail."
 
 #: app/models/feed_reader_block.rb:40
 msgid "Feed reader"
@@ -2275,40 +2246,38 @@ msgid "Don't display"
 msgstr "No mostrar"
 
 #: app/models/block.rb:248
-#, fuzzy
 msgid "Logged"
-msgstr "Autenticado como %s"
+msgstr "Autentificado"
 
 #: app/models/block.rb:249
 msgid "Not logged"
-msgstr ""
+msgstr "No autentificado"
 
 #: app/models/block.rb:256
 msgid "Can be modified"
-msgstr ""
+msgstr "Puede ser modificado"
 
 #: app/models/block.rb:257
 msgid "Cannot be modified"
-msgstr ""
+msgstr "No puede ser modificado"
 
 #: app/models/block.rb:263
 msgid "Can be moved"
-msgstr ""
+msgstr "Puede moverse"
 
 #: app/models/block.rb:264
-#, fuzzy
 msgid "Cannot be moved"
-msgstr "%s no pudo ser actualizado"
+msgstr "No puede moverse"
 
 #: app/models/add_member.rb:28
 msgid "New member"
 msgstr "Nuevo miembro"
 
 #: app/models/add_member.rb:34 app/models/add_member.rb:53
-#, fuzzy
 msgid ""
 "%{requestor}%{requestor_email} wants to be a member of '%{organization}'."
-msgstr "%{requestor} quiere ser miembro de esta comunidad."
+msgstr ""
+"%{requestor}%{recuestor_mail} quiere ser miembro de esta '%{organization}'."
 
 #: app/models/add_member.rb:58
 msgid ""
@@ -2343,9 +2312,8 @@ msgid "None"
 msgstr "Ninguno"
 
 #: app/models/certifier.rb:8
-#, fuzzy
 msgid "Link"
-msgstr "Enlaces"
+msgstr "Enlace"
 
 #: app/models/products_block.rb:19
 msgid "This block presents a list of your products."
@@ -2364,9 +2332,8 @@ msgid "Subscribe RSS Feed"
 msgstr "Suscribirse a noticias RSS"
 
 #: app/models/national_region.rb:5
-#, fuzzy
 msgid "Region Code"
-msgstr "Región"
+msgstr "Código postal"
 
 #: app/models/national_region.rb:72
 msgid "Invalid city or state name."
@@ -2405,18 +2372,16 @@ msgstr ""
 "es parte de <i>%{env}</i> y enlaces útiles."
 
 #: app/models/domain.rb:17
-#, fuzzy
 msgid ""
 "{fn} must be composed of sequences of lowercase letters (a to z), numbers (0 "
 "to 9), \"_\" and \"-\", separated by dots."
 msgstr ""
-"%{fn} debe estar compuesto solo por letras minúsculas (a - z), números (0 - "
-"9), \"_\" y \"-\", separados por puntos."
+"{fn} debe estar compuesto solo por letras minúsculas (a - z), números (0 - 9)"
+", \"_\" y \"-\", separados por puntos."
 
 #: app/models/domain.rb:26
-#, fuzzy
 msgid "{fn} must not start with www."
-msgstr "%{fn} no debe empezar con www."
+msgstr "{fn} no debe empezar con www."
 
 #: app/models/disabled_enterprise_message_block.rb:4
 msgid "\"Disabled enterprise\" message"
@@ -2424,7 +2389,7 @@ msgstr "Mensaje de \"deshabilitar empresa\""
 
 #: app/models/disabled_enterprise_message_block.rb:8
 msgid "Shows a message for disabled enterprises."
-msgstr "Muestra un mensaje para empresas deshabilitadas"
+msgstr "Muestra un mensaje para empresas deshabilitadas."
 
 #: app/models/disabled_enterprise_message_block.rb:12
 #: app/mailers/contact.rb:23
@@ -2457,9 +2422,8 @@ msgid "Are you sure you want to visit this web site?"
 msgstr "¿Esta seguro de querer visitar este sitio?"
 
 #: app/helpers/catalog_helper.rb:18
-#, fuzzy
 msgid "Start"
-msgstr "Fecha de inicio"
+msgstr "inicio"
 
 #: app/helpers/categories_helper.rb:4
 msgid "General Category"
@@ -2624,7 +2588,7 @@ msgstr "Buscar..."
 #: app/helpers/application_helper.rb:669
 msgid "This is a search box. Click, write your query, and press enter to find"
 msgstr ""
-"Esta es una caja de búsqueda. Seleccione aquí, escribe tu consulta y "
+"Esta es una caja de búsqueda. Seleccione aquí, escribe la consulta y "
 "presione enter para buscar."
 
 #: app/helpers/application_helper.rb:670
@@ -2822,7 +2786,7 @@ msgstr "Reportar abuso"
 
 #: app/helpers/application_helper.rb:1266
 msgid "You already reported this profile."
-msgstr "Tú ya has reportado este perfil"
+msgstr "Ya has reportado este perfil."
 
 #: app/helpers/application_helper.rb:1267
 msgid "Report this profile for abusive behaviour"
@@ -3121,7 +3085,7 @@ msgstr "Teléfono (s):"
 
 #: app/helpers/enterprise_homepage_helper.rb:9
 msgid "Location:"
-msgstr "Ubicación"
+msgstr "Ubicación:"
 
 #: app/helpers/enterprise_homepage_helper.rb:10
 #: app/views/cms/_event.html.erb:16
@@ -3746,7 +3710,7 @@ msgstr "Última publicación"
 # Usamos etiquetas o entendemos qeu tag es de uso común?
 #: app/helpers/tags_helper.rb:34
 msgid "No tags yet."
-msgstr "Sin etiquetas"
+msgstr "Sin etiquetas todavía."
 
 #: app/helpers/tags_helper.rb:35
 msgid "What are tags?"
@@ -3852,7 +3816,7 @@ msgstr "Biofísica"
 
 #: app/helpers/profile_editor_helper.rb:15
 msgid "Biology"
-msgstr "Biología "
+msgstr "Biología"
 
 #: app/helpers/profile_editor_helper.rb:16
 msgid "Biotechnology"
@@ -4160,7 +4124,7 @@ msgstr "[Seleccione ...]"
 
 #: app/helpers/profile_editor_helper.rb:132
 msgid "Preferred domain name:"
-msgstr "Nombre de dominio preferido"
+msgstr "Nombre de dominio elegido:"
 
 #: app/helpers/profile_editor_helper.rb:132
 msgid "Select domain"
@@ -4220,12 +4184,12 @@ msgstr "Características actualizadas correctamente."
 
 #: app/controllers/admin/features_controller.rb:27
 msgid "Person fields updated successfully."
-msgstr "Campo persona actualizado correctamente"
+msgstr "Campos de persona actualizados correctamente"
 
 # No se si campo es la mejor traducción de fields
 #: app/controllers/admin/features_controller.rb:29
 msgid "Person fields not updated successfully."
-msgstr "El campo persona no se actualizo correctamente"
+msgstr "Los campos de la persona no se actualizaron correctamente."
 
 #: app/controllers/admin/features_controller.rb:37
 msgid "Enterprise fields updated successfully."
@@ -4370,7 +4334,7 @@ msgstr "Características actualizadas correctamente."
 # No se si campo es la mejor traducción de fields
 #: app/controllers/admin/plugins_controller.rb:14
 msgid "Plugins were not updated successfully."
-msgstr "Las caracteristicas no se actualizaron correctamente"
+msgstr "Los pluggings no se actualizaron correctamente"
 
 #: app/controllers/admin/licenses_controller.rb:14
 #, fuzzy
@@ -4647,7 +4611,7 @@ msgstr "Ya eres amigo de %s."
 
 #: app/controllers/public/profile_controller.rb:160
 msgid "You have unblocked %s successfully. "
-msgstr "Has desbloqueado %s correctamente."
+msgstr "Has desbloqueado %s correctamente. "
 
 #: app/controllers/public/profile_controller.rb:163
 msgid "You are not allowed to unblock enterprises in this environment."
@@ -4882,8 +4846,8 @@ msgstr "Administradores actuales"
 #: app/controllers/my_profile/profile_members_controller.rb:147
 msgid "The members list couldn't be updated. Please contact the administrator."
 msgstr ""
-"La lista de miembros no puede ser actualizada. Por favor contacta al "
-"administrador"
+"La lista de miembros no puede ser actualizada. Por favor contacta con el "
+"administrador."
 
 #: app/controllers/my_profile/profile_members_controller.rb:153
 msgid "The members list was updated."
@@ -5201,7 +5165,7 @@ msgstr "Sin imagen"
 
 #: app/views/catalog/index.html.erb:46
 msgid "from "
-msgstr "desde"
+msgstr "desde "
 
 #: app/views/catalog/index.html.erb:47
 msgid "by "
@@ -5834,7 +5798,7 @@ msgstr "Ver tareas procesadas"
 
 #: app/views/tasks/index.html.erb:60 app/views/tasks/index.html.erb:70
 msgid "Set all to: "
-msgstr "Ajustar todo a:"
+msgstr "Ajustar todo a: "
 
 #: app/views/box_organizer/_products_block.html.erb:5
 msgid "Select the products that must be shown."
@@ -5879,7 +5843,7 @@ msgstr "Tamaño de la presentación"
 #: app/views/box_organizer/_slideshow_block.html.erb:7
 #: app/views/box_organizer/_highlights_block.html.erb:20
 msgid "Image transition:"
-msgstr "Transición de imagen"
+msgstr "Transición de imagen:"
 
 #: app/views/box_organizer/_slideshow_block.html.erb:7
 #: app/views/box_organizer/_highlights_block.html.erb:20
@@ -5950,7 +5914,7 @@ msgstr "Calle"
 
 #: app/views/box_organizer/_location_block.html.erb:5
 msgid "Map Type:"
-msgstr "Tipo de mapa"
+msgstr "Tipo de mapa:"
 
 #: app/views/box_organizer/_location_block.html.erb:5
 msgid "Road Map"
@@ -5974,11 +5938,11 @@ msgstr "Híbrido"
 
 #: app/views/box_organizer/edit.html.erb:6
 msgid "Custom title for this block: "
-msgstr "Título personalizado para este bloque"
+msgstr "Título personalizado para este bloque: "
 
 #: app/views/box_organizer/edit.html.erb:11
 msgid "Display this block:"
-msgstr "Mostrar este bloque"
+msgstr "Mostrar este bloque:"
 
 #: app/views/box_organizer/edit.html.erb:16
 #, fuzzy
@@ -6205,7 +6169,7 @@ msgstr "Fecha de fin"
 
 #: app/views/search/_sellers_form.html.erb:5
 msgid "Search in:"
-msgstr "Buscar en: "
+msgstr "Buscar en:"
 
 # ¿Que es esto?
 #: app/views/search/tags.html.erb:1
@@ -6299,7 +6263,7 @@ msgstr ";"
 #: app/views/search/_full_product.html.erb:71
 #: app/views/shared/product/_qualifiers.html.erb:6
 msgid "cert. "
-msgstr "cert."
+msgstr "cert. "
 
 #: app/views/search/_article_last_change.html.erb:5
 #, fuzzy
@@ -9924,7 +9888,7 @@ msgstr ""
 
 #: app/views/manage_products/_display_description.html.erb:9
 msgid "Add some description to your product"
-msgstr "Añadir alguna descripción a tu producto "
+msgstr "Añadir alguna descripción a tu producto"
 
 #: app/views/manage_products/_display_description.html.erb:12
 msgid ""
@@ -10332,7 +10296,7 @@ msgstr "Producto sin categoría"
 
 #: lib/noosfero/api/helpers.rb:247
 msgid "Method Not Allowed"
-msgstr ""
+msgstr "Método no permitido"
 
 #: lib/file_presenter.rb:65
 msgid "File (%s)"

@@ -1,0 +1,27 @@
+<div id="currency-wrap">
+
+  <div id="currency-organized">
+    <h2> <%= _('Currencies organized by your enterprise') %> </h2>
+
+    <%= link_to _('Create new currency'), {action: :create}, class: 'modal-toggle currency-action-button' %>
+
+    <div class="items">
+      <% @organized_currencies.each do |currency| %>
+        <%= render partial: 'currency_organized', locals: {currency: currency} %>
+      <% end %>
+    </div>
+  </div>
+
+  <div id="currency-accepted">
+    <h2> <%= _('Currencies already accepted') %> </h2>
+
+    <%= link_to _('Accept a new currency'), {action: :accept}, class: 'modal-toggle currency-action-button' %>
+
+    <div class="items">
+      <% @accepted_currencies.each do |currency| %>
+        <%= render partial: 'currency_accepted', locals: {currency: currency} %>
+      <% end %>
+    </div>
+  </div>
+
+</div>

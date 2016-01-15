@@ -1,12 +1,3 @@
-<% if @block_bot %>
-  <div class="atention" style="font-size: 150%;">
-    <strong><%=_('Are you a robot?')%></strong> <br />
-    <%=_('Please, prove that you are human by filling the captcha.')%>
-  </div>
-<% end %>
-
-<% @profile_data = @person %>
-
 <%= javascript_include_tag('sign_up_password_rate') %>
 
 <%= error_messages_for :user, :person, :header_message => _('The account could not be created') %>

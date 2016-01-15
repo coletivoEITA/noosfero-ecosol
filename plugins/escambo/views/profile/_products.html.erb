@@ -1,0 +1,18 @@
+<div id="offers">
+  <h3><%= _('Offers from this enterprise') %></h3>
+
+  <% if profile == @active_organization %>
+    <%= link_to _("Add"), {:controller => :manage_products, :action => :new}, :class => 'add action-button' %>
+  <% end %>
+
+  <% unless all %>
+    <span class="see-all"><%= link_to _("See all"), {:controller => :catalog, :profile => profile.identifier} %></span>
+  <% end %>
+
+  <% products = @profile.products %>
+  <% products = products.first(4) unless all %>
+
+  <% products.each do |product| %>
+    <%= render :partial => 'snippets/product', :object => product %>
+  <% end %>
+</div>

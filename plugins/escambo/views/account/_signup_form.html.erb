@@ -1,0 +1,4 @@
+<h1> <%= _('I want to exchange in %{environment}!') % {environment: environment.name} %> </h1>
+
+<%= render file: "#{Rails.root}/app/views/account/_signup_form.html.erb", locals: {f: f} %>
+

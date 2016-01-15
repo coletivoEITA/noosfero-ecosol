@@ -1,0 +1,104 @@
+@import 'base';
+
+/* Images */
+
+$image-star: "/plugins/evaluation/images/star.png";
+$image-star-empty: "/plugins/evaluation/images/star_empty.png";
+$image-star-width: 29px;
+$image-star-height: 25px;
+
+/* Colors */
+
+$color-text-area-border: #C5AAA5;
+
+
+.evaluation-mean {
+
+  .evaluation-star-value-wrap {
+    margin-bottom: $margin;
+  }
+}
+
+.evaluation-star-value-wrap {
+  background: url($image-star-empty);
+  width: 5*$image-star-width;
+  height: $image-star-height;
+
+  .value-icon {
+    background: url($image-star);
+    height: $image-star-height;
+
+    &.value-0 { width: 0*$image-star-width; }
+    &.value-1 { width: 1*$image-star-width; }
+    &.value-2 { width: 2*$image-star-width; }
+    &.value-3 { width: 3*$image-star-width; }
+    &.value-4 { width: 4*$image-star-width; }
+    &.value-5 { width: 5*$image-star-width; }
+  }
+}
+
+.evaluation-snippet {
+
+  &.left {
+    .profile-image,
+    .arrow-wrap,
+    .evaluation-text {
+      float: left;
+    }
+  }
+  &.right {
+    .profile-image,
+    .arrow-wrap,
+    .evaluation-text {
+      float: right;
+    }
+  }
+
+  $arrow-size: $base/2;
+  $arrow-inner-size: $base/2 - $border;
+  .arrow-wrap {
+    margin-top: $profile-thumb-size/2 - $arrow-size;
+    width: 0;
+    height: 0;
+    position: relative;
+
+    .arrow {
+      margin-top: -$arrow-inner-size;
+    }
+    &.left {
+      left: $border;
+      border-style: solid;
+      border-width: $arrow-size $arrow-size $arrow-size 0;
+      border-color: transparent $color-text-area-border transparent transparent;
+      .arrow {
+        margin-left: $border;
+        border-style: solid;
+        border-width: $arrow-inner-size $arrow-inner-size $arrow-inner-size 0;
+        border-color: transparent white transparent transparent;
+      }
+    }
+    &.right {
+      left: -$border;
+      border-style: solid;
+      border-width: $arrow-size 0 $arrow-size $arrow-size;
+      border-color: transparent transparent transparent $color-text-area-border;
+      .arrow {
+        margin-left: -($arrow-inner-size + $border);
+        border-style: solid;
+        border-width: $arrow-inner-size 0 $arrow-inner-size $arrow-inner-size;
+        border-color: transparent transparent transparent white;
+      }
+    }
+  }
+  .evaluation-text {
+    width: $module04 + $intercolumn - $arrow-size;
+    padding: $padding - $border;
+    border: $border solid $color-text-area-border;
+
+    .evaluation-message {
+    }
+
+    .evaluation-footer {
+    }
+  }
+}

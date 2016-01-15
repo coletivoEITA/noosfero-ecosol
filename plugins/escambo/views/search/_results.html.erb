@@ -1,0 +1,7 @@
+<% if @geosearch %>
+  <p> <%= _("Showing results near of your enterprise '%{enterprise}'") % {:enterprise => @active_organization.name} %> </p>
+<% end %>
+
+<% @results.each do |result| %>
+  <%= render :partial => "escambo_search/#{result.class.name.gsub('::', '').underscore}", :locals => {:result => result} %>
+<% end %>

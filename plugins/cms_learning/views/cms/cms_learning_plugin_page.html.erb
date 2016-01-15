@@ -1,0 +1,35 @@
+<div>
+
+  <div id="cms-learning-right-bar">
+    <div class='cms-learning-association'>
+      <div><b><%= _('Associated products') %></b></div>
+      <ul>
+        <% @page.product_categories.each do |pc| %>
+          <li><%= link_to_category pc, false %></li>
+        <% end %>
+      </ul>
+      <div><b><%= _('Associated Persons') %></b></div>
+      <ul>
+        <% @page.persons.each do |p| %>
+          <li><%= link_to_profile p.short_name, p.identifier, :title => p.name %></li>
+        <% end %>
+      </ul>
+    </div> 
+  </div>
+
+  <div id="cms-learning-view-content">
+    <div class='cms-learning-field'>
+      <div><b><%= _('Summary') %></b></div>
+      <%= @page.summary %>
+    </div> 
+    <div class='cms-learning-field'>
+      <div><b><%= _('Good practices') %></b></div>
+      <%= @page.good_practices %>
+    </div> 
+    <div id="cms-learning-details" class='cms-learning-field'>
+      <div><b><%= _("Details") %></b></div>
+      <%= @page.body %>
+    </div> 
+  </div> 
+
+</div>

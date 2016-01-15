@@ -1,0 +1,9 @@
+<% @product.product_currencies.send("with_#{field}").each do |pc| %>
+  <div>
+    <%=  _('%{field_name} in %{currency}: %{symbol} %{field}') % {
+      :field_name => field.capitalize,
+      :currency => pc.currency.name, :symbol => pc.currency.symbol,
+      :field => pc.send(field),
+    } %>
+  </div>
+<% end %>

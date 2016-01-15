@@ -1,0 +1,8 @@
+name: escambo
+dependencies:
+  - cms_learning
+  - currency
+  - evaluation
+  - exchange
+  - sniffer
+  - solr

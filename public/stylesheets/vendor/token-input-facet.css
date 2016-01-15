@@ -1,7 +1,7 @@
 /* Example tokeninput style #1: Token vertical list*/
 ul.token-input-list-facet {
-    overflow: hidden; 
-    height: auto !important; 
+    overflow: hidden;
+    height: auto !important;
     height: 1%;
     width: 95%;
     border: 1px solid #999;
@@ -29,8 +29,8 @@ ul.token-input-list-facet li input {
 }
 
 li.token-input-token-facet {
-    overflow: hidden; 
-    height: auto !important; 
+    overflow: hidden;
+    height: auto !important;
     height: 1%;
     margin: 3px;
     padding: 3px 5px;
@@ -75,7 +75,7 @@ div.token-input-dropdown-facet {
     cursor: default;
     font-size: 12px;
     font-family: Verdana;
-    z-index: 1;
+    z-index: 10000; // bigger than colorbox
 }
 
 div.token-input-dropdown-facet p {

@@ -1,0 +1,44 @@
+<%= stylesheet_link_tag 'tasks' %>
+
+<h1><%= _("%s's pending tasks") % profile.name %></h1>
+<p>
+
+<% type_collection = [[nil, _('All')]] %>
+<% type_collection += Task.all_types.sort_by {|klass| klass.constantize.new.title}.map{|s| [s, s.constantize.new.title] } %>
+
+<% if !@failed.blank? %>
+  <div id="errorExplanation">
+    <% @failed.each do |error, tasks_descriptions|%>
+      <h2> <%= error %></h2>
+      <p><%=_("This error happened with the following tasks: ")%></p>
+      <ul>
+        <% tasks_descriptions.each do |description| %>
+            <li> <%= description %> </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @tasks.empty? %>
+  <em><%= _('No pending tasks for %s') % profile.name %></em>
+<% else %>
+  <%= form_tag :action => 'close' do%>
+    <% button_bar do %>
+      <%= submit_button :save, _("Apply!") %>
+      <%= button(:edit, _('View processed tasks'), :action => 'processed') %>
+    <% end %>
+
+    <%= pagination_links(@tasks)%>
+
+    <ul class='task-list'>
+      <% @tasks.each do |task| %>
+        <%= render :partial => 'task', :locals => { :task => task } %>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>
+</p>
+
+
+<%= javascript_include_tag 'tasks' %>

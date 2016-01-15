@@ -1,0 +1,16 @@
+<% currencies = @product.send "available_currencies_for_#{field}" %>
+
+<span class="add-in-currency">
+  <% if currencies.empty? %>
+    <%= _('Already specified in all %{link}') % {
+      :link => link_to(_('accepted currencies'), {:controller => :currency_plugin_myprofile, :profile => profile.identifier, :action => :index}),
+    } %>
+  <% else %>
+    <%= _('Specify %{field} in %{select}') % {
+      :field => _(field),
+      :select => select_tag("available_currencies_for_#{field}",
+                            options_for_select([['','']] + currencies.collect{ |c| [c.name_with_symbol, c.id] }),
+                            :id => "#{field}-currency-select")
+    } %>
+  <% end %>
+</span>

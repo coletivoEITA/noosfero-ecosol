@@ -1,5 +1,7 @@
 module ContentViewerHelper
 
+  protected
+
   include BlogHelper
   include ForumHelper
   include DatesHelper

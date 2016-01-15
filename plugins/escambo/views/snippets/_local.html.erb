@@ -1,0 +1,7 @@
+<% if profile.region %>
+  <div class="local">
+    <% extend SearchHelper %>
+    <%= _('Region of %{city_with_state}') %
+          { :city_with_state => city_with_state(profile.region) } %>
+  </div>
+<% end %>

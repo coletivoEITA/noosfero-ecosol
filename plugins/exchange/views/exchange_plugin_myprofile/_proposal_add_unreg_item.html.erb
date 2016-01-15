@@ -1,0 +1,4 @@
+<%= link_to_remote _('Add not registered product'), {url: {
+  controller: :exchange_plugin_element, action: :create, actor: actor, element: {proposal_id: proposal.id, object_type: "ExchangePlugin::UnregisteredItem", profile_id: profile.id}}},
+  class: 'action-button exchange-add-unreg-item' %>
+

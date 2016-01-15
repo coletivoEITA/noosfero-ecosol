@@ -1,0 +1,62 @@
+<div id="escambo-enterprise-info">
+  <h3>blank</h3>
+  <div class="sidebar">
+    <div class="info">
+      <h4><%= _('About this enterprise') %></h4>
+      <div class="description"><%= profile.description %></div>
+
+      <div class="contact-button">
+        <%= link_to _('Contact the enterprise'), {controller: :contact, action: :new}, class: 'modal-toggle' %>
+      </div>
+
+      <span class="state">
+        <div class="label"><%= _('State') %></div>
+        <div class="value"><%= profile.state %></div>
+      </span>
+      <span class="city">
+        <div class="label"><%= _('City') %></div>
+        <div class="value"><%= profile.city %></div>
+      </span>
+
+      <div class="address">
+        <div class="label"><%= _('Address') %></div>
+        <div class="value"><%= profile.address %></div>
+      </div>
+
+      <span class="phone1">
+        <div class="label"><%= _('Phone') %></div>
+        <div class="value"><%= profile.contact_phone %></div>
+      </span>
+      <span class="phone2">
+        <div class="label"><%= _('Mobile') %></div>
+        <div class="value"><%= profile.contact_phone %></div>
+      </span>
+
+      <div class="email">
+        <div class="label"><%= _('Email') %></div>
+        <div class="value"><%= profile.contact_email %></div>
+      </div>
+      <div class="site">
+        <div class="label"><%= _('Site') %></div>
+        <div class="value"><%= profile.organization_website %></div>
+      </div>
+    </div>
+    <div class="evaluation">
+      <h4><%= _('Evaluations of this enterprise') %></h4>
+
+      <%= render partial: 'evaluation_plugin_shared/profile_mean' %>
+    </div>
+    <div class="currencies">
+      <h4><%= _('Accepted Currencies') %></h4>
+
+      <%= render partial: 'accepted_currencies' %>
+    </div>
+    <div class="members">
+      <h4><%= _('Members') %></h4>
+
+      <%= render partial: 'members' %>
+    </div>
+  </div>
+</div>
+
+<div class=clean></div>

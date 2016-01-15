@@ -1,0 +1,41 @@
+<div class="exchange-proposal-messages">
+  <div class="exchange-messages">
+
+    <% if new_message and (@exchange.state == "proposal" or @exchange.state == "negociation") %>
+
+      <div id="exchange-new-message" class="exchange-message profile">
+
+        <div class="exchange-message-thumb">
+          <%= profile_link_with_image profile, :thumb %>
+        </div>
+
+        <div class="arrow-wrap left">
+          <div class="arrow">
+          </div>
+        </div>
+
+        <div class="exchange-message-body">
+          <%= form_remote_tag url: {action: 'new_message', proposal_id: proposal.id},
+            before: "formSubmit.disable(this, '#{_ 'Sending'}')", complete: 'formSubmit.enable()' do %>
+            <%= text_area_tag 'body', nil, rows: 2, cols: 30, placeholder: _('Type your message') %>
+            <%= submit_tag _('Send message'), class: 'action-button' %>
+          <% end %>
+        </div>
+
+      </div>
+    <% end %>
+
+    <% if not proposal.messages.blank? %>
+      <% proposal.messages.each do |message| %>
+
+        <% actor = message.sender.id == profile.id ? 'profile' : 'theother' %>
+        <%= render "proposal_message",
+          message: message, actor: actor,
+          profile: actor == 'profile' ? profile : message.proposal.the_other(profile)
+        %>
+      <% end %>
+    <% else %>
+      <%# FIXME %>
+    <% end %>
+  </div>
+</div>
