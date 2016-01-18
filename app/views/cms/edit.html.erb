@@ -4,7 +4,7 @@
   <%= render :partial => 'archived_warning', :locals => {:article => @article} %>
 <% end %>
 <div class='<%= if @article.display_media_panel? then 'col-lg-8 col-md-6 col-sm-6 with_media_panel' else 'col-lg-12 col-md-12 col-sm-12 no_media_panel' end %>'>
-<%= labelled_form_for 'article', :html => { :multipart => true, :class => @type } do |f| %>
+<%= labelled_form_for 'article', :html => { :multipart => true, :class => "#{@type} #{@type.to_css_class}" } do |f| %>
 
   <%= hidden_field_tag("type", @type) if @type %>
 
