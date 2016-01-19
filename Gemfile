@@ -61,7 +61,7 @@ group :performance do
 end
 
 group :assets do
-  gem 'assets_live_compile'
+  gem 'assets_live_compile', '~> 0.1.1'
   gem 'uglifier', '>= 1.0.3'
   gem 'coffee-rails'
   gem 'sass'
