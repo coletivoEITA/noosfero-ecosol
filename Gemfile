@@ -6,7 +6,7 @@ gem 'rails_autolink',           '~> 1.1.5'
 gem 'RedCloth',                 '~> 4.2.9'
 gem 'ruby-feedparser',          '~> 0.7'
 gem 'daemons',                  '~> 1.1.5'
-gem 'nokogiri',                 '~> 1.5.5'
+gem 'nokogiri'                 
 gem 'rake', require: false
 gem 'rest-client',              '~> 1.6.7'
 gem 'exception_notification',   '~> 4.0.1'
@@ -44,7 +44,7 @@ platform :ruby do
   end
 
   group :production do
-    gem 'unicorn'
+    gem 'unicorn',  '~> 4.9'
     #gem 'rainbows'
     gem 'unicorn-worker-killer'
   end
