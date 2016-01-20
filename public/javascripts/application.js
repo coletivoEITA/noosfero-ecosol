@@ -18,7 +18,7 @@
 *= require jquery.textchange.js
 *= require jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.js
 *= require inputosaurus.js
-*= require reflection.js
+* require reflection.js
 *= require select-or-die/_src/selectordie
 *= require rails.js
 *= require rails-extended.js
