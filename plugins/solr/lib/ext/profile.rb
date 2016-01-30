@@ -64,6 +64,31 @@ class Profile
     self.region_id.to_s
   end
 
+  def self.solr_f_region_title region
+    if region
+      if region.kind_of?(City)
+        city_with_state(region)
+      else
+        region.name
+      end
+    else
+      nil
+    end
+  end
+
+  def self.solr_f_region_label_proc environment
+    case environment.solr_plugin_region_facet_type
+      when :city
+        c_('City')
+      when :state
+        c_('State')
+      when :region
+        c_('Region')
+      else
+        c_('City')
+    end
+  end
+
   def self.solr_f_region_proc facet, id_count_arr
     ids = id_count_arr.map{ |id, count| id }
     regs, r = [], Region.where(id: ids).includes(:parent)
@@ -75,7 +100,7 @@ class Profile
     count_hash = Hash[id_count_arr]
     extend SearchHelper
     regs.map do |c|
-      [c.id.to_s, city_with_state(c), count_hash[c.id.to_s]]
+      [c.id.to_s, solr_f_region_title(c), count_hash[c.id.to_s]]
     end
   end
 
@@ -119,7 +144,7 @@ class Profile
         proc: method(:solr_f_enabled_proc).to_proc
       },
       solr_f_region: {
-        label: c_('City'), type_if: -> (klass) { not klass.kind_of? Community },
+        label: c_('State'), type_if: -> (klass) { not klass.kind_of? Community },
         proc: method(:solr_f_region_proc).to_proc,
       },
       solr_f_categories: {
