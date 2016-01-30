@@ -16,6 +16,11 @@ GetText::Tools::Task.define do |task|
     'public/*.html.erb',
     'public/designs/themes/{base,noosfero,profile-base}/*.{rhtml,html.erb}',
   ].map { |pattern| Dir.glob(pattern) }.flatten
+
+  # installed, no po/ available
+  if !File.directory?(task.po_base_directory)
+    task.locales = Dir.chdir(task.mo_base_directory) { Dir.glob('*') }
+  end
 end
 
 task 'gettext:mo:update' => :symlinkmo
@@ -91,6 +96,19 @@ languages.each do |lang|
   desc "checks #{lang} translation files"
   task "checkpo:#{lang}" do
     checkpo(Dir.glob("po/#{lang}/*.po") + Dir.glob("plugins/*/po/#{lang}/*.po"))
+  end
+end
+
+task :makemo => 'tmp/makemo.stamp'
+file 'tmp/makemo.stamp' do |t|
+  sh 'find po plugins/*/po -name "*.po" -exec touch "{}" ";"'
+  Rake::Task['gettext:mo:update'].invoke
+  touch t.name
+end
+
+task :updatepo => 'gettext:po:update' do
+  Dir.glob('**/*.po').each do |po|
+    sh "cp #{po} #{po}.tmp && msguniq -o #{po} #{po}.tmp && rm -f #{po}.tmp"
   end
 end
 

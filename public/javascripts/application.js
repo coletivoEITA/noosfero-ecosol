@@ -450,7 +450,7 @@ jQuery(function($) {
   $.ajaxSetup({
     cache: false,
     headers: {
-      'X-CSRF-Token': $.cookie("_noosfero_.XSRF-TOKEN")
+      'X-XSRF-TOKEN': $.cookie("_noosfero_.XSRF-TOKEN")
     }
   });
 
