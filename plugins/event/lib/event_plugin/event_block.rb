@@ -86,4 +86,8 @@ class EventPlugin::EventBlock < Block
     "#{super}-#{last_event.updated_at if last_event}"
   end
 
+  def self.expire_on
+    { :profile => [:article], :environment => [:article] }
+  end
+
 end
