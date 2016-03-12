@@ -1,7 +1,5 @@
 class SnifferPluginMyprofileController < MyProfileController
 
-  before_filter :fetch_sniffer_profile, :only => [:edit, :search]
-
   include SnifferPlugin::Helper
   helper SnifferPlugin::Helper
   helper CmsHelper
@@ -9,9 +7,9 @@ class SnifferPluginMyprofileController < MyProfileController
   def edit
     if request.post?
       begin
-        @sniffer_profile.update(params[:sniffer_plugin_profile])
-        @sniffer_profile.enabled = true
-        @sniffer_profile.save!
+        @profile.update(params[:sniffer_plugin_profile])
+        @profile.enabled = true
+        @profile.save!
         session[:notice] = _('Consumer interests updated')
       rescue Exception => exception
         flash[:error] = _('Could not save consumer interests')
@@ -51,8 +49,8 @@ class SnifferPluginMyprofileController < MyProfileController
   def search
     @no_design_blocks = true
 
-    suppliers_products = @sniffer_profile.suppliers_products
-    consumers_products = @sniffer_profile.consumers_products
+    suppliers_products = @profile.sniffer_suppliers_products
+    consumers_products = @profile.sniffer_consumers_products
 
     profiles_of_interest = fetch_profiles(suppliers_products + consumers_products)
 
@@ -100,10 +98,6 @@ class SnifferPluginMyprofileController < MyProfileController
   end
 
   protected
-
-  def fetch_sniffer_profile
-    @sniffer_profile = SnifferPlugin::Profile.find_or_create profile
-  end
 
   def fetch_profiles(products)
     profiles = Profile.all :conditions => {:id => products.map { |p| target_profile_id(p) }}
