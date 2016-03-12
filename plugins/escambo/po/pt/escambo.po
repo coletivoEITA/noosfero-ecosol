@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: noosfero 0.44.4\n"
 "POT-Creation-Date: 2013-10-15 09:01-0300\n"
-"PO-Revision-Date: 2013-03-13 17:47-0300\n"
+"PO-Revision-Date: 2016-03-12 08:56-0300\n"
 "Last-Translator: Rodrigo Souto <rodrigo@colivre.coop.br>\n"
 "Language-Team: LANGUAGE TEAM <E-MAIL@ADDRESS or HOME PAGE>\n"
 "Language: \n"
@@ -408,3 +408,64 @@ msgstr "%{profile} oferece %{product}"
 #: plugins/escambo/views/snippets/_local.html.erb:4
 msgid "Region of %{city_with_state}"
 msgstr "Região de %{city_with_state}"
+
+#: public/designs/themes/escambo/header.html.erb:18
+msgid "home"
+msgstr "início"
+
+#: public/designs/themes/escambo/header.html.erb:19
+msgid "culture points"
+msgstr "pontos de cultura"
+
+#: public/designs/themes/escambo/header.html.erb:20
+msgid "offers, knowledges and interests"
+msgstr "ofertas, saberes e interesses"
+
+#: public/designs/themes/escambo/header.html.erb:42
+msgid "New enterprise"
+msgstr "Novo ponto de cultura"
+
+#: public/designs/themes/escambo/header.html.erb:46
+msgid "Log out"
+msgstr "deslogar-se"
+
+#: public/designs/themes/escambo/header.html.erb:53
+msgid "sign up"
+msgstr "cadastro"
+
+#: public/designs/themes/escambo/header.html.erb:54
+msgid "login"
+msgstr "entrar!"
+
+#: public/designs/themes/escambo/profile_line.html.erb:17
+msgid "members"
+msgstr "integrantes"
+
+#: public/designs/themes/escambo/profile_line.html.erb:18
+msgid "exchanges"
+msgstr "trocas"
+
+#: public/designs/themes/escambo/profile_line.html.erb:20
+msgid "offers"
+msgstr "ofertas"
+
+#: public/designs/themes/escambo/profile_line.html.erb:21
+msgid "knowledges"
+msgstr "saberes"
+
+#: public/designs/themes/escambo/profile_line.html.erb:22
+msgid "interests"
+msgstr "interesses"
+
+#: public/designs/themes/escambo/profile_line.html.erb:23
+msgid "currencies"
+msgstr "moedas"
+
+#: public/designs/themes/escambo/profile_line.html.erb:24
+msgid "sniffer"
+msgstr "farejador"
+
+#: public/designs/themes/escambo/profile_line.html.erb:25
+msgid "settings"
+msgstr "configurações"
+
