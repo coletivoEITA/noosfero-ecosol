@@ -7,7 +7,7 @@
 <%= form_for(@profile, as: :profile_data, url: {action: 'edit'}, method: 'post') do |f| %>
 
   <div id='sniffer-plugin-product-select'>
-    <% current_categories = @profile.sniffer_interested_product_category_string_ids.map{ |i| {id: i.id, name: i.name} } %>
+    <% current_categories = @profile.sniffer_interested_product_categories.map{ |i| {id: i.id, name: i.name} } %>
 
     <%= token_input_field_tag('profile_data[sniffer_interested_product_category_string_ids]',
                               'sniffer_interested_product_category_string_ids',

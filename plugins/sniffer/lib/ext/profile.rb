@@ -2,13 +2,17 @@ require_dependency 'profile'
 
 class Profile
 
+  attr_accessor :sniffer_plugin_distance
+
   has_many :sniffer_opportunities, :class_name => 'SnifferPlugin::Opportunity', :dependent => :destroy
   has_many :sniffer_interested_product_categories, :through => :sniffer_opportunities, :source => :product_category, :class_name => 'ProductCategory',
     :conditions => ['sniffer_plugin_opportunities.opportunity_type = ?', 'ProductCategory']
 
-  attr_accessor :sniffer_plugin_distance
-
   attr_accessor :sniffer_interested_product_category_string_ids
+  descendants.each do |k|
+    k.attr_accessible :sniffer_interested_product_category_string_ids
+  end
+
   def sniffer_interested_product_category_string_ids
     ''
   end
