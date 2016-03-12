@@ -1,0 +1,272 @@
+# translation of noosfero.po to
+# Krishnamurti Lelis Lima Vieira Nunes <krishna@colivre.coop.br>, 2007.
+# noosfero - Brazilian Portuguese translation
+# Copyright (C) 2007,
+# Forum Brasileiro de Economia Solidaria <http://www.fbes.org.br/>
+# Copyright (C) 2007,
+# Ynternet.org Foundation <http://www.ynternet.org/>
+# This file is distributed under the same license as noosfero itself.
+# Joenio Costa <joenio@colivre.coop.br>, 2008.
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: noosfero 0.44.4\n"
+"POT-Creation-Date: 2013-10-15 09:01-0300\n"
+"PO-Revision-Date: 2013-03-13 17:47-0300\n"
+"Last-Translator: Rodrigo Souto <rodrigo@colivre.coop.br>\n"
+"Language-Team: LANGUAGE TEAM <E-MAIL@ADDRESS or HOME PAGE>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 1.0.2\n"
+
+#: app/models/external_feed.rb:- app/views/manage_products/_edit_info.rhtml:21
+#: plugins/currency/views/manage_products/_edit_info.html.erb:26
+msgid "Available"
+msgstr "Disponível"
+
+#: app/models/qualifier_certifier.rb:- app/models/product_qualifier.rb:-
+#: app/views/manage_products/_edit_info.rhtml:33
+#: plugins/currency/views/manage_products/_edit_info.html.erb:38
+msgid "Qualifier"
+msgstr "Qualificador"
+
+#: app/models/qualifier_certifier.rb:- app/models/product_qualifier.rb:-
+#: app/views/manage_products/_edit_info.rhtml:34
+#: plugins/currency/views/manage_products/_edit_info.html.erb:39
+msgid "Certifier"
+msgstr "Certificador"
+
+#: app/views/profile_editor/_organization.rhtml:51
+#: app/views/manage_products/_edit_info.rhtml:22
+#: app/views/manage_products/_edit_input.rhtml:20
+#: app/views/manage_products/_edit_input.rhtml:29
+#: app/views/account/activate_enterprise.rhtml:10
+#: app/views/account/logout_popup.rhtml:4 app/views/cms/_blog.rhtml:44
+#: app/views/friends/remove.rhtml:20
+#: plugins/evaluation/models/evaluation_plugin/evaluation.rb:12
+#: plugins/currency/views/manage_products/_edit_info.html.erb:27
+#: plugins/escambo/views/profile_editor/_organization.html.erb:51
+#: plugins/bsc/views/shared/_fields.html.erb:41
+msgid "Yes"
+msgstr "Sim"
+
+#: app/views/profile_editor/_organization.rhtml:52
+#: app/views/manage_products/_edit_info.rhtml:22
+#: app/views/manage_products/_edit_input.rhtml:22
+#: app/views/manage_products/_edit_input.rhtml:31
+#: app/views/account/activate_enterprise.rhtml:11 app/views/cms/_blog.rhtml:45
+#: app/views/friends/remove.rhtml:21
+#: plugins/evaluation/models/evaluation_plugin/evaluation.rb:15
+#: plugins/currency/views/manage_products/_edit_info.html.erb:27
+#: plugins/escambo/views/profile_editor/_organization.html.erb:52
+#: plugins/bsc/views/shared/_fields.html.erb:42
+msgid "No"
+msgstr "Não"
+
+#: app/views/manage_products/_display_info.rhtml:7
+#: plugins/currency/views/manage_products/_display_info.html.erb:11
+msgid "Edit basic information"
+msgstr "Editar informações básicas"
+
+#: app/views/manage_products/_display_info.rhtml:7
+#: plugins/currency/views/manage_products/_display_info.html.erb:11
+msgid ""
+"Click here to edit price, discount and qualifiers/certifiers to make your "
+"product more attractive and detailed for the consumers"
+msgstr ""
+"Clique aqui para adicionar preço, desconto e qualificadores/certificadores "
+"para deixar seu produto mais atrativo e detalhado para os consumidores"
+
+#: app/views/manage_products/_display_info.rhtml:9
+#: plugins/currency/views/manage_products/_display_info.html.erb:13
+msgid "Add price and other basic information"
+msgstr "Adicionar preço e outras informações básicas"
+
+#: app/views/manage_products/_display_info.rhtml:10
+#: plugins/currency/views/manage_products/_display_info.html.erb:14
+msgid ""
+"Click here to add price, discount and qualifiers/certifiers to make your "
+"product more attractive and detailed for the consumers"
+msgstr ""
+"Clique aqui para adicionar preço, desconto e qualificadores/certificadores "
+"para deixar seu produto mais atrativo e detalhado para os consumidores"
+
+#: app/views/manage_products/_edit_info.rhtml:13
+#: plugins/currency/views/manage_products/_edit_info.html.erb:13
+msgid "Price (%s)"
+msgstr "Preço (%s)"
+
+#: app/views/manage_products/_edit_info.rhtml:17
+#: plugins/currency/views/manage_products/_edit_info.html.erb:18
+msgid "Discount (%s)"
+msgstr "Desconto (%s)"
+
+#: app/views/manage_products/_edit_info.rhtml:18
+#: plugins/currency/views/manage_products/_edit_info.html.erb:19
+msgid "If your product is on sale, fill this field with the discount value"
+msgstr ""
+"Se o seu produto está à venda, preencha este campo com o valor de desconto"
+
+#: app/views/manage_products/_edit_info.rhtml:25
+#: plugins/currency/views/manage_products/_edit_info.html.erb:30
+msgid "Highlight this product?"
+msgstr "Destacar este produto?"
+
+#: app/views/manage_products/_edit_info.rhtml:49
+#: plugins/currency/views/manage_products/_edit_info.html.erb:54
+msgid "Add new qualifier"
+msgstr "Adicionar novo qualificador"
+
+#: plugins/currency/models/currency_plugin/currency.rb:28
+msgid "%{name} (%{symbol})"
+msgstr "%{name} (%{symbol})"
+
+#: plugins/currency/models/currency_plugin/currency.rb:45
+msgid "can't be equal to environment currency unit"
+msgstr ""
+
+#: plugins/currency/lib/currency_plugin.rb:12
+msgid "Create and accepts social currencies"
+msgstr "Cria e aceita moedas sociais"
+
+#: plugins/currency/views/manage_products/_currencies_display.html.erb:3
+msgid "%{field_name} in %{currency}: %{symbol} %{field}"
+msgstr "%{field_name} em %{currency}: %{symbol} %{field}"
+
+#: plugins/currency/views/manage_products/_currency_template.html.erb:6
+msgid "Price in %{currency}"
+msgstr "Preço em %{currency}"
+
+#: plugins/currency/views/manage_products/_currency_template.html.erb:8
+msgid "Discount in %{currency}"
+msgstr "Desconto em %{currency}"
+
+#: plugins/currency/views/manage_products/_add_in_currency.html.erb:5
+msgid "Already specified in all %{link}"
+msgstr "Já especificado em %{link}"
+
+#: plugins/currency/views/manage_products/_add_in_currency.html.erb:6
+msgid "accepted currencies"
+msgstr "moedas aceitas"
+
+#: plugins/currency/views/manage_products/_add_in_currency.html.erb:9
+msgid "Specify %{field} in %{select}"
+msgstr "Especificar %{field} em %{select}"
+
+#: plugins/currency/views/manage_products/_add_in_currency.html.erb:9
+msgid "price"
+msgstr "preço"
+
+#: plugins/currency/views/manage_products/_add_in_currency.html.erb:9
+msgid "discount"
+msgstr "desconto"
+
+#: plugins/currency/views/currency_plugin_myprofile/edit.html.erb:3
+msgid "Edit currency"
+msgstr "Editar moeda social"
+
+#: plugins/currency/views/currency_plugin_myprofile/create.html.erb:3
+msgid "Create a new currency"
+msgstr "Criar nova moeda social"
+
+#: plugins/currency/views/currency_plugin_myprofile/_currency_form.html.erb:6
+#: plugins/currency/views/currency_plugin_myprofile/_accept_form.html.erb:23
+msgid "OK"
+msgstr "OK"
+
+#: plugins/currency/views/currency_plugin_myprofile/_currency_form.html.erb:7
+#: plugins/currency/views/currency_plugin_myprofile/_accept_form.html.erb:24
+#: plugins/currency/views/currency_plugin_myprofile/disassociate.html.erb:27
+msgid "cancel"
+msgstr "Cancelar"
+
+#: plugins/currency/views/currency_plugin_myprofile/accept.html.erb:3
+#: plugins/currency/views/currency_plugin_myprofile/index.html.erb:18
+msgid "Accept a new currency"
+msgstr "Aceitar nova moeda social"
+
+#: plugins/currency/views/currency_plugin_myprofile/accept.html.erb:6
+msgid "Find the currency you want to accept on the network"
+msgstr "Procure a moeda que você quer aceitar no seu ponto de cultura"
+
+#: plugins/currency/views/currency_plugin_myprofile/accept.html.erb:17
+msgid "search"
+msgstr "Busca"
+
+#: plugins/currency/views/currency_plugin_myprofile/_accept_form.html.erb:14
+msgid "%{name}, currency offered by %{organizer}"
+msgstr "%{name}, moeda oferecida por %{organizer}"
+
+#: plugins/currency/views/currency_plugin_myprofile/index.html.erb:4
+msgid "Currencies organized by your enterprise"
+msgstr "Moedas sociais organizadas pelo seu ponto de cultura"
+
+#: plugins/currency/views/currency_plugin_myprofile/index.html.erb:6
+msgid "Create new currency"
+msgstr "Criar nova moeda"
+
+#: plugins/currency/views/currency_plugin_myprofile/index.html.erb:16
+msgid "Currencies already accepted"
+msgstr "Moedas sociais já aceitas"
+
+#: plugins/currency/views/currency_plugin_myprofile/disassociate.html.erb:3
+msgid "Disassociate currency '%{name}'"
+msgstr "Desassociar moeda social '%{name}'"
+
+#: plugins/currency/views/currency_plugin_myprofile/disassociate.html.erb:8
+msgid ""
+"This currency is now organized by your enterprise and potencially accepted "
+"by others enterprises and theirs products."
+msgstr ""
+"Essa moeda social agora é organizada pelo seu ponto de cultura e pode ser "
+"usada por outros pontos de cultura."
+
+#: plugins/currency/views/currency_plugin_myprofile/disassociate.html.erb:11
+msgid ""
+"Disassociating this currency mean you're not going to be responsible for it "
+"anymore. You may leave it orphan but it is recommended that you pass the "
+"organization to another enterprise."
+msgstr ""
+
+#: plugins/currency/views/currency_plugin_myprofile/disassociate.html.erb:14
+msgid ""
+"Please give the organization responsibility to other enterprises by finding "
+"them below or leave it blank to make this currency orphan."
+msgstr ""
+
+#: plugins/currency/views/currency_plugin_myprofile/disassociate.html.erb:23
+msgid "Still accept this currency"
+msgstr "Seguir aceitando essa moeda social"
+
+#: plugins/currency/views/currency_plugin_myprofile/disassociate.html.erb:26
+#: plugins/currency/views/currency_plugin_myprofile/_currency_organized.html.erb:6
+msgid "Disassociate"
+msgstr "Desassociar"
+
+#: plugins/currency/views/currency_plugin_myprofile/_currency_organized.html.erb:16
+msgid "%{number} enterprise(s) accept this currency"
+msgstr "%{number} pontos de cultura aceitam esta moeda social"
+
+#: plugins/currency/views/currency_plugin_myprofile/_currency_organized.html.erb:23
+msgid "Coverage (how many are circulating)"
+msgstr "Cobertura (quantidade em circulação)"
+
+#: plugins/currency/views/currency_plugin_myprofile/_currency_accepted.html.erb:3
+msgid "Stop accepting"
+msgstr "Deixar de aceitar"
+
+#: plugins/currency/views/currency_plugin_shared/_popin.html.erb:18
+msgid "No enterprise accept this currency yet"
+msgstr "Nenhuma ponto de cultura aceita essa moeda"
+
+#: plugins/currency/views/currency_plugin_shared/_popin.html.erb:20
+msgid "%{number} enterprises accept %{symbol}"
+msgstr "%{number} pontos de cultura aceitam %{symbol}"
+
+#: plugins/currency/views/currency_plugin_shared/_popin.html.erb:36
+msgid "Accept this currency"
+msgstr "Aceitar essa moeda social"
