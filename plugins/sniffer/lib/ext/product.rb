@@ -138,7 +138,7 @@ class Product
     from: "articles",
     joins:   "INNER JOIN article_resources ON (articles.id = article_resources.article_id)
                INNER JOIN sniffer_plugin_opportunities as op ON ( article_resources.resource_id = op.opportunity_id AND op.opportunity_type = 'ProductCategory' AND article_resources.resource_type = 'ProductCategory' )
-               INNER JOIN profiles ON ( op.profile_id = profile.id )",
+               INNER JOIN profiles ON ( op.profile_id = profiles.id )",
     conditions: "articles.profile_id = #{profile.id}
                   AND profiles.public_profile = true
                   AND profiles.visible = true
