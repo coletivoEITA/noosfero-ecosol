@@ -622,7 +622,7 @@ body.controller-content_viewer .icon-alert {
   }
 
   #escambo-search-form {
-    @extend .sniffer-search-box;
+    //@extend .sniffer-search-box;
     margin: -$padding;
     margin-top: $margin;
     margin-bottom: $margin;
@@ -633,7 +633,7 @@ body.controller-content_viewer .icon-alert {
           @extend .sniffer-search-input;
         }
         input[type=submit] {
-          @extend .sniffer-search-submit;
+          //@extend .sniffer-search-submit;
         }
       }
     }
