@@ -1,6 +1,9 @@
 require_dependency 'solr_plugin'
 require_dependency 'solr_plugin/search_helper'
 
+SolrPlugin::Base.send :remove_method, :search_pre_contents
+SolrPlugin::Base.send :remove_method, :search_post_contents
+
 class EscamboPlugin < Noosfero::Plugin
 
   def self.plugin_name
@@ -38,7 +41,7 @@ class EscamboPlugin < Noosfero::Plugin
         latitude: @active_organization.lat, longitude: @active_organization.lng
     end
     if @active_organization
-      solr_options.merge! filter_queries: ["!profile_id:#{@active_organization.id}"]
+      solr_options.merge! filter_queries: ["!profile_id_i:#{@active_organization.id}"]
     end
 
     @interests = SnifferPlugin::Opportunity.find_by_contents(@query, paginate_options, solr_options)[:results].results
