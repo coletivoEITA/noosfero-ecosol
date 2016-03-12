@@ -7,6 +7,7 @@ class Category
   after_save_reindex [:articles, :profiles], with: :delayed_job
 
   acts_as_searchable fields: [
+    {type: :string}, {environment_id: :integer},
     # searched fields
     {name: {type: :text, boost: 2.0}},
     {path: :text}, {slug: :text},
