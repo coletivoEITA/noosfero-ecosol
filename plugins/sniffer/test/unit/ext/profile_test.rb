@@ -47,17 +47,17 @@ class ProfileTest < ActiveSupport::TestCase
     p5.save!
 
     # register e2 interest for 'Category 2' use by p2
-    e2.product_category_string_ids = "#{c2.id},#{c4.id}"
+    e2.sniffer_interested_product_category_string_ids = "#{c2.id},#{c4.id}"
     e2.enabled = true
     e2.save!
 
     assert_equal [p1.id, p1.id, p2.id],
-      e1_sniffer.consumers_products.sort_by(&:id).map(&:id)
+      e1.sniffer_consumers_products.sort_by(&:id).map(&:id)
 
     # since they have interest in the same product, e2 and e3 position
     # may vary here, but the last enterprise should be e2
     assert_equivalent [e2.id, e3.id],
-      e1_sniffer.consumers_products.sort_by(&:id).map{|p| p[:consumer_profile_id].to_i}.first(2)
+      e1.sniffer_consumers_products.sort_by(&:id).map{|p| p[:consumer_profile_id].to_i}.first(2)
     assert_equal e2.id,
       e1.sniffer_consumers_products.sort_by(&:id).map{|p| p[:consumer_profile_id].to_i}.last
 
@@ -82,15 +82,15 @@ class ProfileTest < ActiveSupport::TestCase
     p2.save!
 
     # register e2 interest for 'Category 1' used by p1
-    e2.product_category_string_ids = "#{c1.id}"
+    e2.sniffer_interested_product_category_string_ids = "#{c1.id}"
     e2.enabled = true
     e2.save!
 
     # should not find anything for disabled enterprise
     e1.enabled = false
     e1.save!
-    assert_equal [], e2_sniffer.consumers_products
-    assert_equal [], e2_sniffer.suppliers_products
+    assert_equal [], e2.sniffer_consumers_products
+    assert_equal [], e2.sniffer_suppliers_products
   end
 
 end

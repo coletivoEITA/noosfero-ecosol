@@ -27,11 +27,11 @@ class Profile
   def sniffer_suppliers_products
     products = []
 
-    products += Product.sniffer_plugin_suppliers_products profile if profile.enterprise?
-    products += Product.sniffer_plugin_interests_suppliers_products profile
+    products += Product.sniffer_plugin_suppliers_products self if self.enterprise?
+    products += Product.sniffer_plugin_interests_suppliers_products self
     if defined?(CmsLearningPlugin)
-      products += Product.sniffer_plugin_knowledge_suppliers_inputs profile
-      products += Product.sniffer_plugin_knowledge_suppliers_interests profile
+      products += Product.sniffer_plugin_knowledge_suppliers_inputs self
+      products += Product.sniffer_plugin_knowledge_suppliers_interests self
     end
 
     products
@@ -40,11 +40,11 @@ class Profile
   def sniffer_consumers_products
     products = []
 
-    products += Product.sniffer_plugin_consumers_products profile if profile.enterprise?
-    products += Product.sniffer_plugin_interests_consumers_products profile
+    products += Product.sniffer_plugin_consumers_products self if self.enterprise?
+    products += Product.sniffer_plugin_interests_consumers_products self
     if defined?(CmsLearningPlugin)
-      products += Product.sniffer_plugin_knowledge_consumers_inputs profile
-      products += Product.sniffer_plugin_knowledge_consumers_interests profile
+      products += Product.sniffer_plugin_knowledge_consumers_inputs self
+      products += Product.sniffer_plugin_knowledge_consumers_interests self
     end
 
     products
