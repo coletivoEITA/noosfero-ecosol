@@ -1,4 +1,8 @@
 <div id='search-content'>
+  <div class='total'>
+    <%= _('Total of %s results ') % @searches[@asset][:results].total_entries.inspect %>
+  </div>
+
   <%= plugins_search_pre_contents %>
 
   <% if @asset == :products %>

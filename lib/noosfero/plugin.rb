@@ -10,6 +10,10 @@ class Noosfero::Plugin
     self.context = context
   end
 
+  def environment
+    context.send :environment if self.context
+  end
+
   class << self
 
     include Noosfero::Plugin::ParentMethods
@@ -39,6 +43,7 @@ class Noosfero::Plugin
       # filters must be loaded after all extensions
       klasses.each do |plugin|
         load_plugin_filters plugin
+        load_plugin_hotspots plugin
       end
     end
 
@@ -75,6 +80,7 @@ class Noosfero::Plugin
         end
         [ config.autoload_paths, $:].each do |path|
           path << File.join(dir, 'models')
+          path << File.join(dir, 'serializers')
           path << File.join(dir, 'lib')
           # load vendor/plugins
           Dir.glob(File.join(dir, '/vendor/plugins/*')).each do |vendor_plugin|
@@ -118,6 +124,23 @@ class Noosfero::Plugin
       end
     end
 
+    # This is a generic method to extend the hotspots list with plugins
+    # hotspots. This allows plugins to extend other plugins.
+    # To use this, the plugin must define its hotspots inside a module Hotspots.
+    # Its also needed to include Noosfero::Plugin::HotSpot module
+    # in order to dispatch plugins methods.
+    #
+    # Checkout FooPlugin for usage example.
+    def load_plugin_hotspots(plugin)
+      ActionDispatch::Reloader.to_prepare do
+        begin
+          module_name = "#{plugin.name}::Hotspots"
+          Noosfero::Plugin.send(:include, module_name.constantize)
+        rescue NameError
+        end
+      end
+    end
+
     def add_controller_filters(controller_class, plugin, filters)
       unless filters.is_a?(Array)
         filters = [filters]
@@ -134,15 +157,16 @@ class Noosfero::Plugin
 
     def load_plugin_extensions(dir)
       ActionDispatch::Reloader.to_prepare do
-        Dir[File.join(dir, 'lib', 'ext', '*.rb')].each {|file| require_dependency file }
+        Dir[File.join(dir, 'lib', 'ext', '*.rb')].each{ |file| require_dependency file }
+        ActiveSupport.run_load_hooks "#{File.basename dir}_plugin_extensions".to_sym
       end
     end
 
     def available_plugins
       unless @available_plugins
         path = File.join(Rails.root, '{baseplugins,config/plugins}', '*')
-        @available_plugins = Dir.glob(path).sort.select{ |i| File.directory?(i) }
-        if Rails.env.test? && !@available_plugins.include?(File.join(Rails.root, 'config', 'plugins', 'foo'))
+        @available_plugins = Dir.glob(path).select{ |i| File.directory?(i) }
+        if (Rails.env.test? || Rails.env.cucumber?) && !@available_plugins.include?(File.join(Rails.root, 'config', 'plugins', 'foo'))
           @available_plugins << File.join(Rails.root, 'plugins', 'foo')
         end
       end
@@ -154,9 +178,12 @@ class Noosfero::Plugin
     end
 
     def all
-      @all ||= available_plugins.map{ |dir| (File.basename(dir) + "_plugin").camelize }
+      @all ||= available_plugins.map{ |dir| "#{File.basename dir}_plugin".camelize.constantize.to_s }
     end
+  end
 
+  def has_block?(block)
+    self.extra_blocks.keys.include?(block)
   end
 
   def expanded_template(file_path, locals = {})
@@ -180,6 +207,4 @@ end
 
 require 'noosfero/plugin/hot_spot'
 require 'noosfero/plugin/manager'
-require 'noosfero/plugin/active_record'
-require 'noosfero/plugin/mailer_base'
 require 'noosfero/plugin/settings'

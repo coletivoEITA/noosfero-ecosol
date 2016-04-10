@@ -18,11 +18,12 @@ class OrdersPlugin::Sale < OrdersPlugin::Order
     self.total_price_consumer_ordered
   end
 
+  extend CurrencyHelper::ClassMethods
   has_number_with_locale :purchase_quantity_total
   has_currency :purchase_price_total
 
   def supplier_delivery
-    super || (self.profile.delivery_methods.first rescue nil)
+    super || (self.delivery_methods.first rescue nil)
   end
   def supplier_delivery_id
     self[:supplier_delivery_id] || (self.supplier_delivery.id rescue nil)

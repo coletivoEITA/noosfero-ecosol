@@ -2,9 +2,6 @@
 require_relative "../test_helper"
 require 'contact_controller'
 
-# Re-raise errors caught by the controller.
-class ContactController; def rescue_action(e) raise e end; end
-
 class ContactControllerTest < ActionController::TestCase
 
   all_fixtures
@@ -131,7 +128,7 @@ class ContactControllerTest < ActionController::TestCase
     post :new, :profile => community.identifier
 
     assert_response :forbidden
-    assert_template :private_profile
+    assert_template "profile/_private_profile"
   end
 
   should 'not show send e-mail page to non members of invisible community' do
@@ -140,7 +137,7 @@ class ContactControllerTest < ActionController::TestCase
     post :new, :profile => community.identifier
 
     assert_response :forbidden
-    assert_template :access_denied
+    assert_template 'shared/access_denied'
   end
 
   should 'show send e-mail page to members of private community' do

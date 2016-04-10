@@ -1,9 +1,6 @@
 require_relative "../test_helper"
 require 'comment_controller'
 
-# Re-raise errors caught by the controller.
-class CommentController; def rescue_action(e) raise e end; end
-
 class CommentControllerTest < ActionController::TestCase
 
   def setup
@@ -358,7 +355,7 @@ class CommentControllerTest < ActionController::TestCase
   should "render the root comment when a reply is made" do
     login_as profile.identifier
     page = profile.articles.create!(:name => 'myarticle')
- 
+
     comment = fast_create(Comment, :body => 'some content', :source_id => page.id, :source_type => 'Article')
 
     xhr :post, :create, :profile => profile.identifier, :id => page.id, :comment => {:body => 'Some comment...', :reply_of_id => comment.id}, :confirm => 'true'
@@ -417,7 +414,7 @@ class CommentControllerTest < ActionController::TestCase
     login_as 'normaluser' # normaluser cannot remove other people's comments
     xhr :post, :mark_as_spam, :profile => profile.identifier, :id => comment.id
     comment.reload
-    assert !comment.spam?
+    refute comment.spam?
   end
 
   should "not be able to mark as spam other people's comments if not moderator or admin and return json if is an ajax request" do
@@ -434,7 +431,7 @@ class CommentControllerTest < ActionController::TestCase
     xhr :post, :mark_as_spam, :profile => profile.identifier, :id => comment.id
     assert_response :success
     comment.reload
-    assert !comment.spam?
+    refute comment.spam?
     assert_match /\{\"ok\":false\}/, @response.body
   end
 

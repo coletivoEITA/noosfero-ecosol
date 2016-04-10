@@ -1,0 +1,9 @@
+= render 'shared/bootstrap_table'
+
+= js_translations_include plugin: :elearning_secretary
+= javascript_include_tag 'plugins/elearning_secretary/javascripts/elearning_secretary'
+
+elearning-secretary-context
+javascript:
+  riot.mount($('elearning-secretary-context').get(0), #{ElearningSecretaryPlugin::ContextSerializer.new(profile).to_hash.to_json})
+

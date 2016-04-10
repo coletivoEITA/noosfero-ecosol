@@ -10,11 +10,12 @@ class SearchController < PublicController
   before_filter :load_search_assets, :except => :suggestions
   before_filter :load_query, :except => :suggestions
   before_filter :load_order, :except => :suggestions
+  before_filter :load_templates, :except => :suggestions
 
   # Backwards compatibility with old URLs
   def redirect_asset_param
     return unless params.has_key?(:asset)
-    redirect_to params.merge(:action => params.delete(:asset))
+    redirect_to url_for(params.merge action: params.delete(:asset))
   end
 
   no_design_blocks
@@ -62,14 +63,14 @@ class SearchController < PublicController
   end
 
   def articles
-    @scope = @environment.articles.public.includes(
+    @scope = @environment.articles.is_public.includes(
       :last_changed_by, :parent, :tags, {profile: [:domains]}
     )
     full_text_search
   end
 
   def contents
-    redirect_to params.merge(:action => :articles)
+    redirect_to url_for(params.merge action: :articles)
   end
 
   def people
@@ -78,7 +79,7 @@ class SearchController < PublicController
   end
 
   def products
-    @scope = @environment.products.enabled.public.includes(
+    @scope = @environment.products.enabled.is_public.includes(
       :product_category, :unit, :region, :image, {inputs: [:product_category]},
       {product_qualifiers: [:qualifier, :certifier]},
       {price_details: [:production_cost]},
@@ -99,10 +100,10 @@ class SearchController < PublicController
 
   def events
     if params[:year].blank? && params[:year].blank? && params[:day].blank?
-      @date = Date.today
+      @date = DateTime.now
     else
-      year = (params[:year] ? params[:year].to_i : Date.today.year)
-      month = (params[:month] ? params[:month].to_i : Date.today.month)
+      year = (params[:year] ? params[:year].to_i : DateTime.now.year)
+      month = (params[:month] ? params[:month].to_i : DateTime.now.month)
       day = (params[:day] ? params[:day].to_i : 1)
       @date = build_date(year, month, day)
     end
@@ -113,9 +114,7 @@ class SearchController < PublicController
       @events = @category ?
         environment.events.by_day(@date).in_category(Category.find(@category_id)).paginate(:per_page => per_page, :page => params[:page]) :
         environment.events.by_day(@date).paginate(:per_page => per_page, :page => params[:page])
-    end
-
-    if params[:year] || params[:month]
+    elsif params[:year] || params[:month]
       @events = @category ?
         environment.events.by_month(@date).in_category(Category.find(@category_id)).paginate(:per_page => per_page, :page => params[:page]) :
         environment.events.by_month(@date).paginate(:per_page => per_page, :page => params[:page])
@@ -131,7 +130,7 @@ class SearchController < PublicController
   # keep old URLs workings
   def assets
     params[:action] = params[:asset].is_a?(Array) ? :index : params.delete(:asset)
-    redirect_to params
+    redirect_to url_for(params)
   end
 
   def tags
@@ -152,7 +151,6 @@ class SearchController < PublicController
   def events_by_day
     @date = build_date(params[:year], params[:month], params[:day])
     @events = environment.events.by_day(@date).paginate(:per_page => per_page, :page => params[:page])
-    @title_use_day = params[:day].blank? ? false : true
     render :partial => 'events/events'
   end
 
@@ -191,22 +189,24 @@ class SearchController < PublicController
     end
   end
 
-  AVAILABLE_SEARCHES = ActiveSupport::OrderedHash[
-    :articles, _('Contents'),
-    :people, _('People'),
-    :communities, _('Communities'),
-    :enterprises, _('Enterprises'),
-    :products, _('Products and Services'),
-    :events, _('Events'),
-  ]
+  def available_searches
+    @available_searches ||= ActiveSupport::OrderedHash[
+      :articles, _('Contents'),
+      :people, _('People'),
+      :communities, _('Communities'),
+      :enterprises, _('Enterprises'),
+      :products, _('Products and Services'),
+      :events, _('Events'),
+    ]
+  end
 
   def load_search_assets
-    if AVAILABLE_SEARCHES.keys.include?(params[:action].to_sym) && environment.enabled?("disable_asset_#{params[:action]}")
+    if available_searches.keys.include?(params[:action].to_sym) && environment.enabled?("disable_asset_#{params[:action]}")
       render_not_found
       return
     end
 
-    @enabled_searches = AVAILABLE_SEARCHES.select {|key, name| environment.disabled?("disable_asset_#{key}") }
+    @enabled_searches = available_searches.select {|key, name| environment.disabled?("disable_asset_#{key}") }
     @searching = {}
     @titles = {}
     @enabled_searches.each do |key, name|
@@ -218,12 +218,16 @@ class SearchController < PublicController
 
   def load_order
     @order = 'more_recent'
-    if AVAILABLE_SEARCHES.keys.include?(@asset.to_sym)
-      klass = asset_class @asset
-      available_orders = klass::SEARCH_FILTERS[:order]
-      @order = available_orders.first
+    if available_searches.keys.include?(@asset.to_sym)
+      available_orders = asset_class(@asset)::SEARCH_FILTERS[:order]
       @order = params[:order] if available_orders.include?(params[:order])
+      @order ||= available_orders.first
     end
+  end
+
+  def load_templates
+    @templates = {}
+    @templates[@asset] = environment.send(@asset.to_s).templates if [:people, :enterprises, :communities].include?(@asset)
   end
 
   def limit
@@ -246,7 +250,7 @@ class SearchController < PublicController
   end
 
   def full_text_search
-    @searches[@asset] = find_by_contents(@asset, environment, @scope, @query, paginate_options, {:category => @category, :filter => @order})
+    @searches[@asset] = find_by_contents(@asset, environment, @scope, @query, paginate_options, {:category => @category, :filter => @order, :template_id => params[:template_id]})
   end
 
   private

@@ -1,3 +1,6 @@
+# FIXME needed by test/units/application_helper.rb
+require_dependency 'application_helper'
+
 class PersonNotifier
 
   def initialize(person)
@@ -28,7 +31,7 @@ class PersonNotifier
 
   def notify
     if @person.notification_time && @person.notification_time > 0
-      notifications = @person.tracked_notifications.find(:all, :conditions => ["created_at > ?", notify_from])
+      notifications = @person.tracked_notifications.where("created_at > ?", notify_from)
       tasks = Task.to(@person).without_spam.pending.where("created_at > ?", notify_from).order_by('created_at', 'asc')
 
       Noosfero.with_locale @person.environment.default_language do
@@ -74,9 +77,9 @@ class PersonNotifier
 
   end
 
-  class Mailer < ActionMailer::Base
+  class Mailer < ApplicationMailer
 
-    add_template_helper(ApplicationHelper)
+    helper ActionTrackerHelper
 
     def session
       {:theme => nil}
@@ -84,8 +87,8 @@ class PersonNotifier
 
     def content_summary(person, notifications, tasks)
       if person.environment
-        ActionMailer::Base.asset_host = person.environment.top_url
-        ActionMailer::Base.default_url_options[:host] = person.environment.default_hostname
+        ApplicationMailer.asset_host = person.environment.top_url
+        ApplicationMailer.default_url_options[:host] = person.environment.default_hostname
       end
 
       @current_theme = 'default'
@@ -93,7 +96,7 @@ class PersonNotifier
       @recipient = @profile.nickname || @profile.name
       @notifications = notifications
       @tasks = tasks
-      @environment = @profile.environment.name
+      @environment = @profile.environment
       @url = @profile.environment.top_url
       mail(
         content_type: "text/html",

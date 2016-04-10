@@ -16,8 +16,9 @@ module UrlHelper
     # the request params (see #url_options below)
     host = options[:host]
     if host.blank? or host == environment.default_hostname
-      controller_path = (options[:controller] || self.controller_path).to_s
-      controller = UrlHelper.controller_path_class[controller_path] ||= "#{controller_path}_controller".camelize.constantize
+      path = options[:controller].to_s.gsub %r{^/}, '' if options[:controller]
+      path ||= self.controller_path
+      controller = UrlHelper.controller_path_class[path] ||= "#{path}_controller".camelize.constantize
       profile_needed = controller.profile_needed if controller.respond_to? :profile_needed, true
       if profile_needed and options[:profile].blank? and params[:profile].present?
         options[:profile] = params[:profile]
@@ -35,14 +36,17 @@ module UrlHelper
     @_url_options_without_profile ||= begin
       # fix rails exception
       opts = super rescue {}
-      # FIXME: rails4 changes this to _recall
-      opts[:_path_segments].delete :profile if opts[:_path_segments]
+      opts[:_recall].delete :profile if opts[:_recall]
       opts
     end
   end
 
   def default_url_options
     {protocol: '//'}
+  end
+
+  def back_url
+    'javascript:history.back()'
   end
 
 end

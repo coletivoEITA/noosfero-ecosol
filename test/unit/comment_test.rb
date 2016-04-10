@@ -73,7 +73,8 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   should 'update counter cache in article activity' do
-    owner = create_user('testuser').person
+    User.current = user = create_user 'testuser'
+    owner = user.person
     article = create(TextileArticle, :profile_id => owner.id)
 
     action = article.activity
@@ -187,7 +188,8 @@ class CommentTest < ActiveSupport::TestCase
     owner = create_user('testuser').person
     article = owner.articles.create!(:name => 'test', :body => '...')
     javascript = "<script>alert('XSS')</script>"
-    comment = create(Comment, :article => article, :name => javascript, :title => javascript, :body => javascript, :email => 'cracker@test.org')
+    comment = Comment.new(:source => article, :name => javascript, :title => javascript, :body => javascript, :email => 'cracker@test.org')
+    comment.valid?
     assert_no_match(/<script>/, comment.name)
   end
 
@@ -199,17 +201,6 @@ class CommentTest < ActiveSupport::TestCase
 
     assert comment.errors[:name.to_s].present?
     assert comment.errors[:body.to_s].present?
-  end
-
-  should 'escape malformed html tags' do
-    owner = create_user('testuser').person
-    article = owner.articles.create(:name => 'test', :body => '...')
-    comment = build(Comment, :article => article, :title => '<h1 title </h1>>> sd f <<', :body => '<h1>> sdf><asd>< body </h1>', :name => '<h1 name </h1>>><<dfsf<sd', :email => 'cracker@test.org')
-    comment.valid?
-
-    assert_no_match /[<>]/, comment.title
-    assert_no_match /[<>]/, comment.body
-    assert_no_match /[<>]/, comment.name
   end
 
   should 'use an existing image for deleted comments' do
@@ -286,7 +277,8 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   should "return activities comments as a thread" do
-    person = create_user.person
+    User.current = user = create_user
+    person = user.person
     a = TextileArticle.create!(:profile => person, :name => 'My article', :body => 'Article body')
     c0 = Comment.create!(:source => a, :body => 'My comment', :author => person)
     c1 = Comment.create!(:reply_of_id => c0.id, :source => a, :body => 'bla', :author => person)
@@ -294,6 +286,7 @@ class CommentTest < ActiveSupport::TestCase
     c3 = Comment.create!(:reply_of_id => c0.id, :source => a, :body => 'bla', :author => person)
     c4 = Comment.create!(:source => a, :body => 'My comment', :author => person)
     result = a.activity.comments
+    assert result.present?
     assert_equal c0, result[0]
     assert_equal [c1, c3], result[0].replies
     assert_equal [c2], result[0].replies[0].replies
@@ -302,7 +295,8 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   should "return activities comments when some comment on thread is spam and not display its replies" do
-    person = create_user.person
+    User.current = user = create_user
+    person = user.person
     a = TextileArticle.create!(:profile => person, :name => 'My article', :body => 'Article body')
     c0 = Comment.create(:source => a, :body => 'Root comment', :author => person)
     c1 = Comment.create(:reply_of_id => c0.id, :source => a, :body => 'c1', :author => person)
@@ -328,7 +322,7 @@ class CommentTest < ActiveSupport::TestCase
 
   should 'be able to reject a comment' do
     c = Comment.new
-    assert !c.rejected?
+    refute c.rejected?
 
     c.reject!
     assert c.rejected?
@@ -380,7 +374,8 @@ class CommentTest < ActiveSupport::TestCase
     now = Time.now
     Time.stubs(:now).returns(now)
 
-    profile = create_user('testuser').person
+    User.current = user = create_user 'testuser'
+    profile = user.person
     article = create(TinyMceArticle, :profile => profile)
 
     ActionTracker::Record.record_timestamps = false
@@ -394,7 +389,8 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   should 'create a new activity when add a comment and the activity was removed' do
-    profile = create_user('testuser').person
+    User.current = user = create_user 'testuser'
+    profile = user.person
     article = create(TinyMceArticle, :profile => profile)
     article.activity.destroy
 
@@ -408,15 +404,15 @@ class CommentTest < ActiveSupport::TestCase
     c = Comment.new
     c.spam = true
     assert c.spam?
-    assert !c.ham?
+    refute c.ham?
 
     c.spam = false
     assert c.ham?
-    assert !c.spam?
+    refute c.spam?
 
     c.spam = nil
-    assert !c.spam?
-    assert !c.ham?
+    refute c.spam?
+    refute c.ham?
   end
 
   should 'be able to select non-spam comments' do
@@ -547,7 +543,7 @@ class CommentTest < ActiveSupport::TestCase
     article = Article.new
     comment = build(Comment, :article => article)
 
-    assert !comment.need_moderation?
+    refute comment.need_moderation?
   end
 
   should 'not need moderation if the comment author is the article author' do
@@ -560,7 +556,7 @@ class CommentTest < ActiveSupport::TestCase
     comment = build(Comment, :article => article)
     comment.stubs(:author).returns(author)
 
-    assert !comment.need_moderation?
+    refute comment.need_moderation?
   end
 
   should 'need moderation if article is moderated and the comment has no author' do
@@ -589,7 +585,7 @@ class CommentTest < ActiveSupport::TestCase
   should 'not be able to destroy comment without user' do
     comment = Comment.new
 
-    assert !comment.can_be_destroyed_by?(nil)
+    refute comment.can_be_destroyed_by?(nil)
   end
 
   should 'not be able to destroy comment' do
@@ -599,7 +595,7 @@ class CommentTest < ActiveSupport::TestCase
     comment = build(Comment, :article => article)
     user.expects(:has_permission?).with(:moderate_comments, profile).returns(false)
 
-    assert !comment.can_be_destroyed_by?(user)
+    refute comment.can_be_destroyed_by?(user)
   end
 
   should 'be able to destroy comment if is the author' do
@@ -631,7 +627,7 @@ class CommentTest < ActiveSupport::TestCase
   should 'not be able to mark comment as spam without user' do
     comment = Comment.new
 
-    assert !comment.can_be_marked_as_spam_by?(nil)
+    refute comment.can_be_marked_as_spam_by?(nil)
   end
 
   should 'not be able to mark comment as spam' do
@@ -641,7 +637,7 @@ class CommentTest < ActiveSupport::TestCase
     comment = build(Comment, :article => article)
     user.expects(:has_permission?).with(:moderate_comments, profile).returns(false)
 
-    assert !comment.can_be_marked_as_spam_by?(user)
+    refute comment.can_be_marked_as_spam_by?(user)
   end
 
   should 'be able to mark comment as spam if is the profile' do
@@ -666,14 +662,14 @@ class CommentTest < ActiveSupport::TestCase
   should 'not be able to update comment without user' do
     comment = Comment.new
 
-    assert !comment.can_be_updated_by?(nil)
+    refute comment.can_be_updated_by?(nil)
   end
 
   should 'not be able to update comment' do
     user = Person.new
     comment = Comment.new
 
-    assert !comment.can_be_updated_by?(user)
+    refute comment.can_be_updated_by?(user)
   end
 
   should 'be able to update comment if is the author' do
@@ -701,6 +697,64 @@ class CommentTest < ActiveSupport::TestCase
     c4 = fast_create(Comment)
 
     assert_equivalent [c1,c4], Comment.without_reply
+  end
+
+  should 'vote in a comment' do
+    comment = create_comment
+    person = create_user('voter').person
+    person.vote(comment, 5)
+    assert_equal 1, comment.voters_who_voted.length
+    assert_equal 5, comment.votes_total
+  end
+
+  should 'like a comment' do
+    comment = create_comment
+    person = create_user('voter').person
+    refute comment.voted_by?(person, true)
+    person.vote_for(comment)
+    assert comment.voted_by?(person, true)
+    refute comment.voted_by?(person, false)
+  end
+
+  should 'count voters for' do
+    comment = create_comment
+    person = create_user('voter').person
+    person2 = create_user('voter2').person
+    person3 = create_user('voter3').person
+    person.vote_for(comment)
+    person2.vote_for(comment)
+    person3.vote_against(comment)
+    assert_equal 2, comment.votes_for
+  end
+
+  should 'count votes againts' do
+    comment = create_comment
+    person = create_user('voter').person
+    person2 = create_user('voter2').person
+    person3 = create_user('voter3').person
+    person.vote_against(comment)
+    person2.vote_against(comment)
+    person3.vote_for(comment)
+    assert_equal 2, comment.votes_against
+  end
+
+  should 'be able to remove a voted comment' do
+    comment = create_comment
+    person = create_user('voter').person
+    person.vote(comment, 5)
+    comment.destroy
+  end
+
+  should 'not double escape html content after validation' do
+    comment = create_comment
+    body = 'Comment with "quotes"'
+    comment.body = body
+
+    comment.valid?
+    assert_equal body, comment.body
+
+    comment.valid?
+    assert_equal body, comment.body
   end
 
   private

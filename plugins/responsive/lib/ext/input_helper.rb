@@ -1,3 +1,5 @@
+require_dependency 'application_helper'
+
 module InputHelper
 
   protected

@@ -1,0 +1,48 @@
+teams-context
+  h1.col-md-12
+    a if='{allow_edit}' href='#' onclick='{list}'
+      |{tm.t('views.teams.title')}
+    span if='{!allow_edit}'
+      |{tm.t('views.teams.title')}
+
+    button.btn.btn-default.btn-success.pull-right onclick='{add}' show='{!edition && allow_edit}'
+      |{tm.t('views.teams.add')}
+
+  .teams.col-lg-12 show='{!edition}'
+    .row
+      team-view each='{team in teams}' data='{team}'
+
+  team-edit show='{edition && allow_edit}'
+
+  .clear
+
+  javascript:
+    this.tm = window.teams
+    this.teams = opts.teams
+    this.context = opts.context
+    this.allow_edit = opts.allow_edit
+
+    this.edition = false
+    this.editView = this.tags['team-edit']
+
+    add () {
+      var self = this
+      var createUrl = Routes.teams_plugin_teams_path({profile: noosfero.profile, action: 'create'})
+      $.post(createUrl, {context: this.context}, function (team) {
+        self.teams.push(team)
+        self.update()
+      })
+    }
+
+    edit (team) {
+      this.editView.team = team
+      this.editView.update()
+      this.edition = this.allow_edit
+      this.update()
+    }
+    list () {
+      this.edition = false
+      this.update()
+      return false
+    }
+

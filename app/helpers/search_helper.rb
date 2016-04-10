@@ -5,24 +5,21 @@ module SearchHelper
   BLOCKS_SEARCH_LIMIT = 24
   MULTIPLE_SEARCH_LIMIT = 8
 
-  FILTERS_TRANSLATIONS = {
-    :order => _('Order'),
-    :display => _('Display')
-  }
-
-  FILTERS_OPTIONS_TRANSLATION = {
-    :order => {
-      #'more_popular' => _('More popular'),
-      #'more_active' => _('More active'),
-      'more_recent' => _('More recent'),
-      'more_comments' => _('More comments')
-    },
-    :display => {
-      'map' => _('Map'),
-      'full' => _('Full'),
-      'compact' => _('Compact')
+  def filters_options_translation
+    @filters_options_translation ||= {
+      :order => {
+        #'more_popular' => _('More popular'),
+        #'more_active' => _('More active'),
+        'more_recent' => _('More recent'),
+        'more_comments' => _('More comments')
+      },
+      :display => {
+        'map' => _('Map'),
+        'full' => _('Full'),
+        'compact' => _('Compact')
+      }
     }
-  }
+  end
 
   COMMON_PROFILE_LIST_BLOCK = [
     :enterprises,
@@ -100,7 +97,7 @@ module SearchHelper
     if options.size <= 1
       return
     else
-      options = options.map {|option| [FILTERS_OPTIONS_TRANSLATION[name][option], option]}
+      options = options.map {|option| [filters_options_translation[name][option], option]}
       options = options_for_select(options, :selected => (params[name] || default))
       select_tag(name, options)
     end
@@ -151,6 +148,13 @@ module SearchHelper
 
   def asset_link(asset)
     link_to(@enabled_searches[asset], "/search/#{asset}")
+  end
+
+  def assets_submenu(asset)
+    return '' if @templates[asset].blank? || @templates[asset].length == 1
+    options = @templates[asset].map {|template| [template.name, template.id]}
+    options = options_for_select([[_('Choose a template'), nil]] + options, selected: (params[:template_id]))
+    select_tag('template_id', options, :id => 'submenu')
   end
 
 end

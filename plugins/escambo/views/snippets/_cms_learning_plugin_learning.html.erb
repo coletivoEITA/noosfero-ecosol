@@ -1,0 +1,35 @@
+<% profile = knowledge.profile %>
+
+<div class="escambo-snippet cms-learning-plugin-learning-snippet">
+  <div class="first-column">
+    <div class="label">
+      <%= _('Learning') %>
+    </div>
+  </div>
+
+  <div class="second-column">
+    <%= _('%{profile} knows %{learning}') % {
+      :profile => link_to(profile.name, profile.url),
+      :learning => link_to(knowledge.name, knowledge.url),
+      } %>
+
+    <div class="description">
+      <p><%= knowledge.summary %></p>
+    </div>
+
+    <%= render :partial => 'snippets/local', :locals => {:profile => profile} %>
+  </div>
+
+  <div class="third-column">
+  <% if profile != @active_organization %>
+    <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile, :object_id => knowledge.id, :object_type => "CmsLearningPlugin::Learning"} %>
+  <% else %>
+    <%= link_to _("Edit"), {:controller => :cms, :action => :edit, :profile => profile.identifier, :id => knowledge.id}, :class => 'exchange' %>
+    <%= link_to _("Remove"), {:controller => :cms, :action => :destroy, :profile => profile.identifier, :id => knowledge.id}, :class => 'exchange',
+      :confirm => _("Are you sure that you want to remove this knowledge?") %>
+  <% end %>
+  </div>
+
+
+  <div class="clean"></div>
+</div>

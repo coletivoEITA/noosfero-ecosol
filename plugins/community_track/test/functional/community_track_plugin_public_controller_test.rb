@@ -1,8 +1,5 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require File.dirname(__FILE__) + '/../../controllers/public/community_track_plugin_public_controller'
-
-# Re-raise errors caught by the controller.
-class CommunityTrackPluginPublicController; def rescue_action(e) raise e end; end
+require_relative '../test_helper'
+require_relative '../../controllers/public/community_track_plugin_public_controller'
 
 class CommunityTrackPluginPublicControllerTest < ActionController::TestCase
 
@@ -52,7 +49,7 @@ class CommunityTrackPluginPublicControllerTest < ActionController::TestCase
   should 'do not show more link in all tracks if there is no more tracks to show' do
     CommunityTrackPlugin::Track.destroy_all
     get :all_tracks, :id => @block.id
-    assert !assigns['show_more']
+    refute assigns['show_more']
     assert_no_match /track_list_more_#{@block.id}/, @response.body
   end
 

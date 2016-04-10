@@ -1,24 +1,21 @@
 <h3><%= title %></h3>
 
-<%= form_tag({:controller => 'search', :action => 'assets'}, {:method => 'get'}) do %>
+<%= form_tag({:controller => 'search', :action => 'assets'}, {:method => 'get', :class => 'form-inline'}) do %>
 
   <div class="search-in-opt"><%= _('Search in:') %>
-    <dir>
-      <%= labelled_radio_button _('Enterprises'), 'asset', 'enterprises', true %><br />
-      <%= labelled_radio_button _('Products'), 'asset', 'products', false %>
-    </dir>
-  </div>
+    
+    <%= labelled_radio_button _('Enterprises'), 'asset', 'enterprises', true %>
+    <%= labelled_radio_button _('Products'), 'asset', 'products', false %>
 
-  <div class="formfield search-from-opt">
-    <%= select_city(true) %>
-  </div>
+    <div class="formfield form-group search-from-opt">
+      <%= select_city(true) %>
+    </div>
   
-  <div class="formfield search-distance-opt">
-    <%= labelled_select(_('Distance:'), 'radius', :first, :last, nil, [15, 30, 50, 100, 150, 200, 300, 400, 500, 1000].map{|n|[n, n.to_s + 'km']}) %>
-  </div>
+    <div class="formfield form-group search-distance-opt">
+      <%= labelled_select(_('Distance:'), 'radius', :first, :last, nil, [15, 30, 50, 100, 150, 200, 300, 400, 500, 1000].map{|n|[n, n.to_s + 'km']}) %>
+    </div>
 
-  <div class="button-bar">
-    <%= submit_button :search, _('Search') %>
+      <%= submit_button :search, _('Search') %>
   </div>
 
 <% end %>

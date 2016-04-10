@@ -234,7 +234,8 @@ class OpenGraphPlugin::Stories
       models: :Product,
       on: :update,
       criteria: proc do |product, actor|
-        product.profile.enterprise?
+        # only post from enterprises and products with images
+        product.profile.enterprise? and product.image.present?
       end,
     },
 

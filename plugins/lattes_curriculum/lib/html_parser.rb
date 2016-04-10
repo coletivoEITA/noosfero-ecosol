@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'nokogiri'
 require 'open-uri'
 
@@ -19,6 +18,8 @@ class Html_parser
       page = _("Lattes not found. Please, make sure the informed URL is correct.")
     rescue Timeout::Error => e
       page = _("Lattes Platform is unreachable. Please, try it later.")
+    rescue
+      page = _("Could not import the lattes")
     end
   end
 

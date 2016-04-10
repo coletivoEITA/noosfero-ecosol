@@ -1,0 +1,11 @@
+= javascript_include_tag 'typeahead.bundle.js'
+= stylesheet_link_tag 'typeahead'
+
+= js_translations_include plugin: :teams
+= javascript_include_tag 'plugins/teams/javascripts/teams'
+
+teams-context
+
+javascript:
+  riot.mount($('teams-context').get(0), #{TeamsPlugin::ContextSerializer.new(context).to_hash.to_json})
+

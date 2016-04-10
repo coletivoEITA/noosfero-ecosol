@@ -130,7 +130,7 @@ module ApplicationHelper
       host = environment.default_hostname
 
       output = '<li class="dropdown">'
-      output += link_to(_('Contents'), '#', :class=>"dropdown-toggle icon-menu-articles", title: _('Contents'), :'data-toggle'=>"dropdown", :'data-hover'=>"dropdown")
+      output += link_to(content_tag(:span, _('Contents')), '#', :class=>"dropdown-toggle icon-menu-articles", title: _('Contents'), :'data-toggle'=>"dropdown", :'data-hover'=>"dropdown")
       output += '<ul class="dropdown-menu" role="menu">'
 
       output += '<li>' + link_to(_('All contents'), {host: host, controller: "search", action: 'contents', category_path: ''}) + '</li>'
@@ -161,7 +161,7 @@ module ApplicationHelper
       host = environment.default_hostname
 
       output = '<li class="dropdown">'
-      output += link_to(_('People'), '#', :class=>"dropdown-toggle icon-menu-people", title: _('People'), :'data-toggle'=>"dropdown", :'data-hover'=>"dropdown")
+      output += link_to(content_tag(:span, _('People')), '#', :class=>"dropdown-toggle icon-menu-people", title: _('People'), :'data-toggle'=>"dropdown", :'data-hover'=>"dropdown")
       output += '<ul class="dropdown-menu" role="menu">'
 
       output += '<li>' + link_to(_('All people'), {host: host, controller: "search", action: 'people', category_path: ''}) + '</li>'
@@ -193,7 +193,7 @@ module ApplicationHelper
       host = environment.default_hostname
 
       output = '<li class="dropdown">'
-      output += link_to(_('Communities'), '#', :class=>"dropdown-toggle icon-menu-community", title: _('Communities'), :'data-toggle'=>"dropdown", :'data-hover'=>"dropdown")
+      output += link_to(content_tag(:span, _('Communities')), '#', :class=>"dropdown-toggle icon-menu-community", title: _('Communities'), :'data-toggle'=>"dropdown", :'data-hover'=>"dropdown")
       output += '<ul class="dropdown-menu" role="menu">'
 
       output += '<li>' + link_to(_('All communities'), {host: host, controller: "search", action: 'communities', category_path: ''}) + '</li>'

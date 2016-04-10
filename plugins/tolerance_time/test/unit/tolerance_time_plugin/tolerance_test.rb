@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../../../../test/test_helper'
+require 'test_helper'
 
 class ToleranceTimePlugin::ToleranceTest < ActiveSupport::TestCase
   should 'validate presence of profile' do
@@ -8,7 +8,7 @@ class ToleranceTimePlugin::ToleranceTest < ActiveSupport::TestCase
 
     tolerance.profile = fast_create(Profile)
     tolerance.valid?
-    assert !tolerance.errors[:profile_id].present?
+    refute tolerance.errors[:profile_id].present?
   end
 
   should 'validate uniqueness of profile' do

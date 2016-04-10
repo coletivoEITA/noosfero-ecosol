@@ -1,0 +1,9 @@
+avaliacoes-student-grades
+
+  table.table
+    tbody riot-tag='avaliacoes-student-discipline' each='{discipline in disciplines}' data='{discipline}'
+
+  javascript:
+    this.a = window.avaliacoes
+    this.disciplines = opts.disciplines
+

@@ -67,7 +67,7 @@ class ChatController < PublicController
 
   def update_presence_status
     if request.xhr?
-      current_user.update_attributes({:chat_status_at => DateTime.now}.merge(params[:status] || {}))
+      current_user.update({:chat_status_at => DateTime.now}.merge(params[:status] || {}))
     end
     render :nothing => true
   end
@@ -107,7 +107,7 @@ class ChatController < PublicController
   end
 
   def recent_conversations
-    profiles = Profile.where(:id => ActiveRecord::Base.connection.execute("select profiles.id from profiles inner join (select distinct r.id as id, MAX(r.created_at) as created_at from (select from_id, to_id, created_at, (case when from_id=#{user.id} then to_id else from_id end) as id from chat_messages where from_id=#{user.id} or to_id=#{user.id}) as r group by id order by created_at desc, id) as t on profiles.id=t.id order by t.created_at desc").entries.map {|e| e['id']})
+    profiles = Profile.find_by_sql("select profiles.* from profiles inner join (select distinct r.id as id, MAX(r.created_at) as created_at from (select from_id, to_id, created_at, (case when from_id=#{user.id} then to_id else from_id end) as id from chat_messages where from_id=#{user.id} or to_id=#{user.id}) as r group by id order by created_at desc, id) as t on profiles.id=t.id order by t.created_at desc")
     jids = profiles.map(&:jid).reverse
     render :json => jids.to_json
   end

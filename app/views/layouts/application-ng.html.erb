@@ -25,11 +25,6 @@
       end.join("\n")
     %>
 
-    <script type='text/javascript'>
-      DEFAULT_LOADING_MESSAGE = <%="'#{ _('loading...') }'" %>;
-      noosfero.profile = <%= (@profile.identifier if @profile).to_json %>
-    </script>
-
   </head>
   <body class="<%= h body_classes %>">
     <a href="#content" id="link-go-content"><span><%= _("Go to the content") %></span></a>
@@ -39,9 +34,12 @@
         if content.respond_to?(:call) then instance_exec(&content).to_s.html_safe else content.to_s.html_safe end
       end.join("\n")
     %>
+    <div id="global-header">
+      <%= global_header %>
+    </div>
 
     <div id="wrap-1">
-      <div id='theme-header'>
+      <div id="theme-header">
         <%= theme_header %>
       </div>
       <div id="wrap-2">
@@ -61,9 +59,14 @@
       </div><!-- end id="wrap-2" -->
     </div><!-- end id="wrap-1" -->
     <%= render_environment_features(:logged_in) if logged_in? %>
-    <div id="theme-footer">
-      <%= theme_footer %>
-    </div><!-- end id="theme-footer" -->
+    <div id="footer">
+      <div id="theme-footer">
+        <%= theme_footer %>
+      </div><!-- end id="theme-footer" -->
+      <div id="global-footer">
+        <%= global_footer %>
+      </div><!-- end id="global-footer" -->
+    </div><!-- end id="footer" -->
     <%= noosfero_layout_features %>
     <%= addthis_javascript %>
     <%=

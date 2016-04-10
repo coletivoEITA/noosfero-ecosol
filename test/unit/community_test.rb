@@ -28,9 +28,9 @@ class CommunityTest < ActiveSupport::TestCase
   should 'create default set of blocks' do
     c = create(Community, :environment => Environment.default, :name => 'my new community')
 
-    assert !c.boxes[0].blocks.empty?, 'person must have blocks in area 1'
-    assert !c.boxes[1].blocks.empty?, 'person must have blocks in area 2'
-    assert !c.boxes[2].blocks.empty?, 'person must have blocks in area 3'
+    refute c.boxes[0].blocks.empty?, 'person must have blocks in area 1'
+    refute c.boxes[1].blocks.empty?, 'person must have blocks in area 2'
+    refute c.boxes[2].blocks.empty?, 'person must have blocks in area 3'
   end
 
   should 'create a default set of articles' do
@@ -39,7 +39,9 @@ class CommunityTest < ActiveSupport::TestCase
     community = create(Community, :environment => Environment.default, :name => 'my new community')
 
     assert_kind_of Blog, community.articles.find_by_path(blog.path)
+    assert community.articles.find_by_path(blog.path).published?
     assert_kind_of RssFeed, community.articles.find_by_path(blog.feed.path)
+    assert community.articles.find_by_path(blog.feed.path).published?
   end
 
   should 'have contact_person' do
@@ -82,7 +84,7 @@ class CommunityTest < ActiveSupport::TestCase
 
     c.destroy
     relationships.each do |i|
-      assert !RoleAssignment.exists?(i.id)
+      refute RoleAssignment.exists?(i.id)
     end
   end
 
@@ -118,24 +120,24 @@ class CommunityTest < ActiveSupport::TestCase
     e = Environment.default
     e.expects(:required_community_fields).returns(['contact_phone']).at_least_once
     community = build(Community, :name => 'My community', :environment => e)
-    assert ! community.valid?
+    refute  community.valid?
     assert community.errors[:contact_phone.to_s].present?
 
     community.contact_phone = '99999'
     community.valid?
-    assert ! community.errors[:contact_phone.to_s].present?
+    refute  community.errors[:contact_phone.to_s].present?
   end
 
   should 'not require fields if community is a template' do
     e = Environment.default
     e.expects(:required_community_fields).returns(['contact_phone']).at_least_once
     community = build(Community, :name => 'My community', :environment => e)
-    assert ! community.valid?
+    refute  community.valid?
     assert community.errors[:contact_phone.to_s].present?
 
     community.is_template = true
     community.valid?
-    assert ! community.errors[:contact_phone.to_s].present?
+    refute  community.errors[:contact_phone.to_s].present?
   end
 
   should 'return newest text articles as news' do
@@ -242,31 +244,17 @@ class CommunityTest < ActiveSupport::TestCase
     end
   end
 
-  should 'escape malformed html tags' do
-    community = Community.new
-    community.name = "<h1 Malformed >> html >< tag"
-    community.address = "<h1 Malformed >,<<<asfdf> html >< tag"
-    community.contact_phone = "<h1 Malformed<<> >> html >><>< tag"
-    community.description = "<h1 Malformed /h1>>><<> html ><>h1< tag"
-    community.valid?
-
-    assert_no_match /[<>]/, community.name
-    assert_no_match /[<>]/, community.address
-    assert_no_match /[<>]/, community.contact_phone
-    assert_no_match /[<>]/, community.description
-  end
-
   should "the followed_by method be protected and true to the community members by default" do
     c = fast_create(Community)
     p1 = fast_create(Person)
     p2 = fast_create(Person)
     p3 = fast_create(Person)
 
-    assert !p1.is_member_of?(c)
+    refute p1.is_member_of?(c)
     c.add_member(p1)
     assert p1.is_member_of?(c)
 
-    assert !p3.is_member_of?(c)
+    refute p3.is_member_of?(c)
     c.add_member(p3)
     assert p3.is_member_of?(c)
 
@@ -288,7 +276,7 @@ class CommunityTest < ActiveSupport::TestCase
       process_delayed_job_queue
       community.add_member(p3)
       assert p1.is_member_of?(community)
-      assert !p2.is_member_of?(community)
+      refute p2.is_member_of?(community)
       assert p3.is_member_of?(community)
       process_delayed_job_queue
     end
@@ -368,7 +356,7 @@ class CommunityTest < ActiveSupport::TestCase
     scrap = create(Scrap, defaults_for_scrap(:sender => person, :receiver => community, :content => 'A scrap'))
     activity = ActionTracker::Record.last
 
-    assert_equal [scrap], community.activities.map { |a| a.klass.constantize.find(a.id) }
+    assert_equal [scrap], community.activities.map(&:activity)
   end
 
   should 'return tracked_actions of community as activities' do
@@ -378,7 +366,7 @@ class CommunityTest < ActiveSupport::TestCase
     User.current = person.user
     assert_difference 'ActionTracker::Record.count', 1 do
       article = create(TinyMceArticle, :profile => community, :name => 'An article about free software')
-      assert_equal [article.activity], community.activities.map { |a| a.klass.constantize.find(a.id) }
+      assert_equal [article.activity], community.activities.map(&:activity)
     end
   end
 
@@ -391,6 +379,32 @@ class CommunityTest < ActiveSupport::TestCase
     article = create(TinyMceArticle, :profile => community2, :name => 'Another article about free software')
 
     assert_not_includes community.activities.map { |a| a.klass.constantize.find(a.id) }, article.activity
+  end
+
+
+  should 'check if a community admin user is really a community admin' do
+    c = fast_create(Community, :name => 'my test profile', :identifier => 'mytestprofile')
+    admin = create_user('adminuser').person
+    c.add_admin(admin)
+
+    assert c.is_admin?(admin)
+  end
+
+  should 'a member user not be a community admin' do
+    c = fast_create(Community, :name => 'my test profile', :identifier => 'mytestprofile')
+    admin = create_user('adminuser').person
+    c.add_admin(admin)
+
+    member = create_user('memberuser').person
+    c.add_member(member)
+    refute c.is_admin?(member)
+  end
+
+  should 'a moderator user not be a community admin' do
+    c = fast_create(Community, :name => 'my test profile', :identifier => 'mytestprofile')
+    moderator = create_user('moderatoruser').person
+    c.add_moderator(moderator)
+    refute c.is_admin?(moderator)
   end
 
 end

@@ -1,0 +1,9 @@
+<% object_id = nil unless defined?(object_id) %>
+<% object_type = nil unless defined?(object_type) %>
+
+<% if logged_in? %>
+  <% url = {:controller => :exchange_plugin_profile, :action => :start_exchange, :profile => profile.identifier, :object_id => object_id, :object_type => object_type} %>
+<% else %>
+  <% url = {:controller => :account, :action => :signup} %>
+<% end %>
+<%= link_to _('Start an exchange'), url, :class => 'exchange' %>

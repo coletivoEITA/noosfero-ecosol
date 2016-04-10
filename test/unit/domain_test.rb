@@ -10,37 +10,37 @@ class DomainTest < ActiveSupport::TestCase
   should 'not allow domains without name' do
     domain = Domain.new
     domain.valid?
-    assert domain.errors[:name.to_s].present?
+    assert domain.errors[:name].present?
   end
 
   should 'not allow domain without dot' do
     domain = build(Domain, :name => 'test')
     domain.valid?
-    assert domain.errors[:name.to_s].present?
+    assert domain.errors[:name].present?
   end
 
   should 'allow domains with dot' do
     domain = build(Domain, :name => 'test.org')
     domain.valid?
-    assert !domain.errors[:name.to_s].present?
+    refute domain.errors[:name].present?
   end
 
   should 'not allow domains with upper cased letters' do
     domain = build(Domain, :name => 'tEst.org')
     domain.valid?
-    assert domain.errors[:name.to_s].present?
+    assert domain.errors[:name].present?
   end
 
   should 'allow domains with hyphen' do
     domain = build(Domain, :name => 'test-domain.org')
     domain.valid?
-    assert !domain.errors[:name.to_s].present?
+    refute domain.errors[:name].present?
   end
 
   should 'allow domains with underscore' do
     domain = build(Domain, :name => 'test_domain.org')
     domain.valid?
-    assert !domain.errors[:name.to_s].present?
+    refute domain.errors[:name].present?
   end
 
   should 'return protocol' do
@@ -66,11 +66,11 @@ class DomainTest < ActiveSupport::TestCase
     d = Domain.new
     d.name = 'www.example.net'
     d.valid?
-    assert d.errors[:name.to_s].present?, "Name should not accept www."
+    assert d.errors[:name].present?, "Name should not accept www."
 
     d.name = 'example.net'
     d.valid?
-    assert !d.errors[:name.to_s].present?
+    refute d.errors[:name].present?
   end
 
   def test_find_by_name
@@ -78,8 +78,8 @@ class DomainTest < ActiveSupport::TestCase
     fast_create(Domain, :name => 'example.net')
     d1 = Domain.find_by_name('example.net')
     d2 =  Domain.find_by_name('www.example.net')
-    assert !d1.nil?
-    assert !d2.nil?
+    refute d1.nil?
+    refute d2.nil?
     assert d1 == d2
   end
 
@@ -88,8 +88,8 @@ class DomainTest < ActiveSupport::TestCase
     assert create(Domain, :name => 'example.net')
 
     d = build(Domain, :name => 'example.net')
-    assert !d.valid?
-    assert d.errors[:name.to_s].present?
+    refute d.valid?
+    assert d.errors[:name].present?
   end
 
   def test_environment

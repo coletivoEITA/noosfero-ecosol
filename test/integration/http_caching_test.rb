@@ -1,6 +1,6 @@
 require_relative "../test_helper"
 
-class HttpCachingTest < ActionController::IntegrationTest
+class HttpCachingTest < ActionDispatch::IntegrationTest
 
   def setup
     create_user('joao', password: 'test', password_confirmation: 'test').activate
@@ -85,7 +85,7 @@ class HttpCachingTest < ActionController::IntegrationTest
 
   test 'private community content should not return cache headers' do
     community = create_private_community('the-community')
-    create(Article, profile_id: community.id, name: 'Test page')
+    create(Article, profile_id: community.id, name: 'Test page', published: false)
 
     get "/the-community/test-page"
     assert_response 403
@@ -139,4 +139,3 @@ class HttpCachingTest < ActionController::IntegrationTest
   end
 
 end
-

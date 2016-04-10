@@ -4,8 +4,9 @@ set -e
 
 . /usr/share/debconf/confmodule
 
-echo "Fetching noosfero domain ..."
-domain=$(noosfero-runner 'e = Environment.default ; d = e.domains.where(:is_default => true).first || e.domains.first; if d.present?; puts d.name; else; puts "localhost"; end')
+echo -n "Fetching noosfero domain ..."
+domain=$(noosfero-runner 'puts Environment.default.default_hostname(true)')
+echo " [domain = $domain]"
 
 ejabberd_config='/etc/ejabberd/ejabberd.cfg'
 if test -f $ejabberd_config; then
@@ -13,12 +14,14 @@ if test -f $ejabberd_config; then
   sed -i "s/hosts, *\[[^]]*/hosts, [\"$domain\"/" /etc/ejabberd/ejabberd.cfg
 fi
 
+echo -n 'Fetching noosfero database name ...'
+noosfero_database=$(noosfero-runner 'puts Environment.connection_config[:database]')
+echo " [database = $noosfero_database]"
+
 echo 'Creating ejabberd schema ...'
 . /etc/default/noosfero
 noosfero_user="$NOOSFERO_USER"
-#FIXME Will probably need to prompt database name or move this code to a
-#      noosfero script to get database name from the config file...
-su - postgres -c "psql -c 'GRANT CREATE ON DATABASE noosfero TO $noosfero_user;' > /dev/null"
+su - postgres -c "psql -c 'GRANT CREATE ON DATABASE $noosfero_database TO $noosfero_user;' > /dev/null"
 su - $noosfero_user -c 'rails dbconsole production < /usr/share/noosfero/util/chat/postgresql/ejabberd.sql > /dev/null'
 
 if which update-noosfero-odbc > /dev/null ; then

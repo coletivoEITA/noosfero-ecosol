@@ -8,7 +8,7 @@ class Noosfero::Plugin
   module ParentMethods
 
     def identifier
-      @identifier ||= (if self.parents.first != Object then self.parents.first else self end).name.underscore
+      @identifier ||= (if self.parents.first.instance_of? Module then self.parents.first else self end).name.underscore
     end
 
     def module_name
@@ -52,6 +52,11 @@ class Noosfero::Plugin
 
     def has_admin_url?
       File.exists?(File.join(root_path, 'controllers', "#{self.identifier}_admin_controller.rb"))
+    end
+
+    # -> define grape class used to map resource api provided by the plugin
+    def api_mount_points
+      []
     end
 
     def controllers

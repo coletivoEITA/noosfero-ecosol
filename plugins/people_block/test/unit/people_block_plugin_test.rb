@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative '../test_helper'
 
 class PeopleBlockPluginTest < ActiveSupport::TestCase
 
@@ -15,7 +15,7 @@ class PeopleBlockPluginTest < ActiveSupport::TestCase
   end
 
   should "return false for class method has_admin_url?" do
-    assert !PeopleBlockPlugin.has_admin_url?
+    refute PeopleBlockPlugin.has_admin_url?
   end
 
   should "return false for class method stylesheet?" do

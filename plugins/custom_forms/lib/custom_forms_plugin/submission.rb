@@ -1,4 +1,5 @@
-class CustomFormsPlugin::Submission < Noosfero::Plugin::ActiveRecord
+class CustomFormsPlugin::Submission < ActiveRecord::Base
+
   belongs_to :form, :class_name => 'CustomFormsPlugin::Form'
   belongs_to :profile
 
@@ -47,6 +48,14 @@ class CustomFormsPlugin::Submission < Noosfero::Plugin::ActiveRecord
     end
 
     self.answers
+  end
+
+  def q_and_a
+    qa = {}
+    form.fields.each do |f|
+      self.answers.select{|a| a.field == f}.map{|answer| qa[f] = answer }
+    end
+    qa
   end
 
   protected

@@ -1,8 +1,5 @@
-require File.dirname(__FILE__) + '/../../../../test/test_helper'
-require File.dirname(__FILE__) + '/../../controllers/stoa_plugin_controller'
-
-# Re-raise errors caught by the controller.
-class StoaPluginController; def rescue_action(e) raise e end; end
+require 'test_helper'
+require_relative '../../controllers/stoa_plugin_controller'
 
 class StoaPluginControllerTest < ActionController::TestCase
 
@@ -99,7 +96,7 @@ class StoaPluginControllerTest < ActionController::TestCase
 
     post :authenticate, :login => user.login, :password => '123456', :fields => 'special'
 
-    assert !json_response.keys.include?('f1')
+    refute json_response.keys.include?('f1')
     assert json_response.keys.include?('f2')
     assert json_response.keys.include?('f3')
   end
@@ -153,7 +150,7 @@ class StoaPluginControllerTest < ActionController::TestCase
     usp_id = '87654321'
     StoaPlugin::UspUser.stubs(:exists?).with(usp_id).returns(false)
     get :check_usp_id, :usp_id => usp_id
-    assert !json_response['exists']
+    refute json_response['exists']
   end
 
   should 'check existent cpf' do
@@ -176,7 +173,7 @@ class StoaPluginControllerTest < ActionController::TestCase
     user_with_cpf.stubs(:cpf).returns(nil)
     StoaPlugin::UspUser.stubs(:find_by_codpes).with(usp_id_without_cpf).returns(user_without_cpf)
     get :check_cpf, :usp_id => usp_id_without_cpf
-    assert !json_response['exists']
+    refute json_response['exists']
   end
 
   private

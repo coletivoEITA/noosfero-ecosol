@@ -1,0 +1,11 @@
+<li id="Product-<%= element.object_id %>">
+  <h6 class="element-title">
+    <%= element.object.name %>
+  </h6>
+
+  <%= link_to_remote "<button class='action-button exchange-add'>+</button>",
+    :url => {:controller => :exchange_plugin_element, :action => :create, :actor => actor, :object_id => element.object_id, :object_type => element.object_type,
+              :element => {:proposal_id => element.proposal.id,
+              :object_id => element.object_id, :object_type => element.object_type, :profile_id => profile.id}} %>
+</li>
+

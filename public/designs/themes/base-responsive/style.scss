@@ -1,5 +1,14 @@
 @import 'stylesheets/chat';
-// bootstrap not included here, see noosfero-responsive
+
+$bootstrap-loaded: false !default;
+@if not $bootstrap-loaded {
+  @import url(/assets/plugins/responsive/bootstrap/all.css);
+  $bootstrap-loaded: true;
+}
+
+// Parts
+// TODO: move more code from here to parts
+@import 'stylesheets/profile_title';
 
 /* ==> button.css <== */
 
@@ -1762,7 +1771,7 @@ a.button.with-text, a.button.with-text:visited, body.noosfero a.button.with-text
 
 @media (min-width: 768px) and (max-width: 1199px) {
 
-    .menu-navigation > li > a {
+    .menu-navigation > li > a > span {
         font-size: 0px;
         //color: rgba(255,255,255,0) !important;
         padding-top: 15.5px;
@@ -1771,7 +1780,7 @@ a.button.with-text, a.button.with-text:visited, body.noosfero a.button.with-text
     .menu-navigation > li > a:hover:before {
         color: #18bc9c;
     }
-    .menu-navigation > li > a:before {
+    .menu-navigation > li > a {
         font-size: 22px;
         //color:inherit;
     }
@@ -1970,6 +1979,8 @@ $padding_value:7px;
   padding-right: 7px;
 }
 
+
+
 #content .automatic-abstract-thumb,
 #content #boxes .container-1 .article-block img.automatic-abstract-thumb,
 #content #article .article-body img.automatic-abstract-thumb {
@@ -2052,9 +2063,9 @@ table.cms-articles .article-name {
 }
 
 /* Default color for buttons */
-a.btn, .block a.btn, a.btn:visited, .block a.btn:visited, a.btn:hover, .block a.btn:hover {
+/*a.btn, .block a.btn, a.btn:visited, .block a.btn:visited, a.btn:hover, .block a.btn:hover {
   color: #fff;
-}
+}*/
 
 /* Adjustments for no-boxes */
 #content .no-boxes {

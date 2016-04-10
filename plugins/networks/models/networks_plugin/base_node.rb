@@ -1,14 +1,15 @@
 class NetworksPlugin::BaseNode < Enterprise
 
-  has_many :nodes, :through => :network_node_parent_relations, :source => :child_np, :class_name => 'NetworksPlugin::Node',
-    :conditions => 'profiles.visible = true'
+  has_many :nodes, -> { where profiles: {visible: true} },
+    through: :network_node_parent_relations, source: :child_np, class_name: 'NetworksPlugin::Node'
 
-  self.abstract_class = true
+  # if abstract_class is true then it will trigger https://github.com/rails/rails/issues/20871
+  #self.abstract_class = true
 
-  delegate :parent, :to => :network_node_child_relation, :allow_nil => true
+  delegate :parent, to: :network_node_child_relation, allow_nil: true
   def parent= node
     self.network_node_child_relations = []
-    self.network_node_child_relations.build :parent => node, :child => self
+    self.network_node_child_relations.build parent: node, child: self
   end
 
   # replace on subclasses
@@ -18,8 +19,8 @@ class NetworksPlugin::BaseNode < Enterprise
 
   def add_enterprise enterprise
     self.class.transaction do
-      self.network_node_parent_relations.create! :parent => self, :child => enterprise
-      self.suppliers.create! :profile => enterprise
+      self.network_node_parent_relations.create! parent: self, child: enterprise
+      self.suppliers.create! profile: enterprise
     end
   end
 

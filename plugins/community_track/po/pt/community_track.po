@@ -11,8 +11,8 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.0-690-gcb6e853\n"
-"POT-Creation-Date: 2015-03-05 12:09-0300\n"
+"Project-Id-Version: 1.3~rc2-1-ga15645d\n"
+"POT-Creation-Date: 2015-10-30 16:35-0300\n"
 "PO-Revision-Date: 2014-12-18 18:40-0200\n"
 "Last-Translator: Luciano Prestes Cavalcanti <lucianopcbr@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero/"
@@ -85,7 +85,7 @@ msgstr "Lista de Trilhas"
 msgid "This block displays a list of most relevant tracks."
 msgstr "Este bloco apresenta a lista das trilhas mais relevantes."
 
-#: plugins/community_track/controllers/public/community_track_plugin_public_controller.rb:40
+#: plugins/community_track/controllers/public/community_track_plugin_public_controller.rb:39
 msgid "Select one community to proceed"
 msgstr "Selecione uma comunidade para prosseguir"
 

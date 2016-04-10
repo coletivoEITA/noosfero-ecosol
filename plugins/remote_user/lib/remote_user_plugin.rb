@@ -28,9 +28,9 @@ class RemoteUserPlugin < Noosfero::Plugin
           end
 
           if !logged_in?
-            self.current_user = User.find_by_login(remote_user)
+            self.current_user = User.where(environment_id: environment, login: remote_user).first
             unless self.current_user
-              self.current_user = User.create!(:login => remote_user, :email => remote_user_email, :name => remote_user_name, :password => ('pw4'+remote_user), :password_confirmation => ('pw4'+remote_user))
+              self.current_user = User.create!(:environment => environment, :login => remote_user, :email => remote_user_email, :name => remote_user_name, :password => ('pw4'+remote_user), :password_confirmation => ('pw4'+remote_user))
               self.current_user.activate
             end
             self.current_user.save!
@@ -39,17 +39,20 @@ class RemoteUserPlugin < Noosfero::Plugin
               self.current_user.forget_me
               reset_session
 
-              self.current_user = User.find_by_login(remote_user)
+	      self.current_user = User.where(environment_id: environment, login: remote_user).first
               unless self.current_user
-                self.current_user = User.create!(:login => remote_user, :email => remote_user_email, :name => remote_user_name, :password => ('pw4'+remote_user), :password_confirmation => ('pw4'+remote_user))
+                self.current_user = User.create!(:environment => environment, :login => remote_user, :email => remote_user_email, :name => remote_user_name, :password => ('pw4'+remote_user), :password_confirmation => ('pw4'+remote_user))
                 self.current_user.activate
               end
               self.current_user.save!
             end
           end
         end
-      rescue ActiveRecord::RecordInvalid => invalid
-        session[:notice] = _('Could not create the remote_user.')
+      rescue ::ActiveRecord::RecordInvalid
+        session[:notice] = _('Could not create the remote user.')
+        render_404
+      rescue
+        session[:notice] = _("Could not log in.")
         render_404
       end
     end

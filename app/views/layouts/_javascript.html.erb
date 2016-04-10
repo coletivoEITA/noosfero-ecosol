@@ -6,3 +6,10 @@
   <% full_path = Rails.root.join('public', 'javascripts', require_path+'.js')%>
   <%= javascript_include_tag require_path if File.exists?(full_path) %>
 <% end %>
+
+<script type="text/javascript">
+  DEFAULT_LOADING_MESSAGE = <%="'#{ _('loading...') }'" %>
+  noosfero.profile = <%= (@profile.identifier if @profile).to_json %>
+  I18n.locale = <%= I18n.locale.to_json %>
+</script>
+

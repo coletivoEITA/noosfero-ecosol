@@ -10,4 +10,8 @@ module DrivenSignupPlugin
     _'Allow external websites to manage the signup'
   end
 
+  def self.admin_url
+    {controller: "#{self.identifier}/admin", action: 'index'}
+  end
+
 end

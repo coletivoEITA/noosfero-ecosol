@@ -1,17 +1,21 @@
-<div class='join-leave-button'>
-  <% if logged_in? and not profile.already_request_membership? user %>
-    <% if user.in? profile.members %>
-      <%= button(:delete, content_tag('span', _('Leave community')), profile.leave_url,
-        class: 'leave-community',
-        title: _("Leave community"),
-        style: 'position: relative;') %>
-      <%= button(:add, content_tag('span', _('Join this community')), profile.join_url,
-        class: 'join-community',
-        title: _("Join community"),
-        style: 'position: relative; display: none;') %>
+<div class='join-leave-button require-login-popup'>
+  <% if logged_in? %>
+    <% if profile.already_request_membership? user %>
+      <%= _('Your membership is waiting for approval') %>
     <% else %>
-      <%= button :add, _('Join this community'), profile.join_not_logged_url, title: _('Join this community'), class: 'join-community' %>
+      <% if user.in? profile.members %>
+        <%= button :delete, content_tag('span', _('Leave community')), profile.leave_url,
+          class: 'leave-community',
+          style: 'position: relative;' %>
+        <%= button :add, content_tag('span', _('Join this community')), profile.join_url,
+          class: 'join-community',
+          style: 'position: relative; display: none;' %>
+      <% else %>
+        <%= button :add, _('Join this community'), profile.join_url, class: 'join-community' %>
+      <% end %>
     <% end %>
+  <% else %>
+    <%= button :add, _('Join this community'), profile.join_not_logged_url %>
   <% end %>
 </div>
 

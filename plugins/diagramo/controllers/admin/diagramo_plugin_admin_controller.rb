@@ -2,7 +2,7 @@ class DiagramoPluginAdminController < AdminController
 
   def index
     # FIXME: remove request.post? on rails3
-    if request.put? or request.post?
+    if request.patch? or request.post?
       environment.diagramo_settings = params[:environment][:diagramo_settings]
       environment.save!
     end

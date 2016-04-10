@@ -6,7 +6,7 @@ class CmsController < MyProfileController
 
   def search_tags
     arg = params[:term].downcase
-    result = ActsAsTaggableOn::Tag.where('LOWER(name) LIKE ?', "%#{arg}%").limit(10)
+    result = Tag.where('name ILIKE ?', "%#{arg}%").limit(10)
     render :text => prepare_to_token_input_by_label(result).to_json, :content_type => 'application/json'
   end
 
@@ -27,20 +27,13 @@ class CmsController < MyProfileController
 
   helper_method :file_types
 
-  protect_if :only => :upload_files do |c, user, profile|
-    article_id = c.params[:parent_id]
-    (!article_id.blank? && profile.articles.find(article_id).allow_create?(user)) ||
-    (user && (user.has_permission?('post_content', profile) || user.has_permission?('publish_content', profile)))
-  end
-
   protect_if :except => [:suggest_an_article, :set_home_page, :edit, :destroy, :publish, :publish_on_portal_community, :publish_on_communities, :search_communities_to_publish, :upload_files, :new] do |c, user, profile|
     user && (user.has_permission?('post_content', profile) || user.has_permission?('publish_content', profile))
   end
 
-  protect_if :only => :new do |c, user, profile|
-    article = profile.articles.find_by_id(c.params[:parent_id])
-    (!article.nil? && (article.allow_create?(user) || article.parent.allow_create?(user))) ||
-    (user && (user.has_permission?('post_content', profile) || user.has_permission?('publish_content', profile)))
+  protect_if :only => [:new, :upload_files] do |c, user, profile|
+    parent = profile.articles.find_by_id(c.params[:parent_id])
+    user && user.can_post_content?(profile, parent)
   end
 
   protect_if :only => :destroy do |c, user, profile|
@@ -57,16 +50,9 @@ class CmsController < MyProfileController
 
   def view
     @article = profile.articles.find(params[:id])
-    conditions = []
-    if @article.has_posts?
-      conditions = ['type != ?', 'RssFeed']
-    end
-
-    @articles = @article.children.reorder("case when type = 'Folder' then 0 when type ='Blog' then 1 else 2 end, updated_at DESC, name").paginate(
-      :conditions => conditions,
-      :per_page => per_page,
-      :page => params[:npage]
-    )
+    @articles = @article.children.reorder("case when type = 'Folder' then 0 when type ='Blog' then 1 else 2 end, updated_at DESC, name")
+    @articles = @articles.where "type <> ?", 'RssFeed' if @article.has_posts?
+    @articles = @articles.paginate per_page: per_page, page: params[:npage]
   end
 
   def index
@@ -100,9 +86,13 @@ class CmsController < MyProfileController
     refuse_blocks
     record_coming
     if request.post?
-      @article.image = nil if params[:remove_image] == 'true'
+      if @article.image.present? && params[:article][:image_builder] &&
+        params[:article][:image_builder][:label]
+        @article.image.label = params[:article][:image_builder][:label]
+        @article.image.save!
+      end
       @article.last_changed_by = user
-      if @article.update_attributes(params[:article])
+      if @article.update(params[:article])
         if !continue
           if @article.content_type.nil? || @article.image?
             success_redirect
@@ -112,6 +102,8 @@ class CmsController < MyProfileController
         end
       end
     end
+
+    escape_fields @article
   end
 
   def new
@@ -143,7 +135,14 @@ class CmsController < MyProfileController
     klass = @type.constantize
     article_data = environment.enabled?('articles_dont_accept_comments_by_default') ? { :accept_comments => false } : {}
     article_data.merge!(params[:article]) if params[:article]
-    @article = klass.new(article_data)
+    article_data.merge!(:profile => profile) if profile
+
+    @article = if params[:clone]
+      current_article = profile.articles.find(params[:id])
+      current_article.copy_without_save
+    else
+      klass.new(article_data)
+    end
 
     parent = check_parent(params[:parent_id])
     if parent
@@ -174,6 +173,8 @@ class CmsController < MyProfileController
         return
       end
     end
+
+    escape_fields @article
 
     render :action => 'edit'
   end
@@ -222,7 +223,7 @@ class CmsController < MyProfileController
       else
         session[:notice] = _('File(s) successfully uploaded')
         if @back_to
-          redirect_to @back_to
+          redirect_to url_for(@back_to)
         elsif @parent
           redirect_to :action => 'view', :id => @parent.id
         else
@@ -280,7 +281,7 @@ class CmsController < MyProfileController
          task.cancel
       end
       if @failed.blank?
-        session[:notice] = _("Your publish request was sent successfully")
+        session[:notice] = _("You published this content successfully")
         if @back_to
           redirect_to @back_to
         else
@@ -357,7 +358,8 @@ class CmsController < MyProfileController
       @task.ip_address = request.remote_ip
       @task.user_agent = request.user_agent
       @task.referrer = request.referrer
-      if captcha_verify(:model => @task, :message => _('Please type the words correctly')) && @task.save
+      @task.requestor = current_person if logged_in?
+      if (logged_in? || verify_recaptcha(:model => @task, :message => _('Please type the words correctly'))) && @task.save
         session[:notice] = _('Thanks for your suggestion. The community administrators were notified.')
         redirect_to @back_to
       end
@@ -452,9 +454,7 @@ class CmsController < MyProfileController
   end
 
   def refuse_blocks
-    if ['TinyMceArticle', 'TextileArticle', 'Event', 'EnterpriseHomepage'].include?(@type)
-      @no_design_blocks = true
-    end
+    @no_design_blocks = true if @type.constantize.refuse_blocks
   end
 
   def per_page
@@ -522,4 +522,10 @@ class CmsController < MyProfileController
     end
   end
 
+  def escape_fields article
+    unless article.kind_of?(RssFeed)
+      @escaped_body = CGI::escapeHTML(article.body || '')
+      @escaped_abstract = CGI::escapeHTML(article.abstract || '')
+    end
+  end
 end

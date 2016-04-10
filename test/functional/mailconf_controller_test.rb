@@ -60,7 +60,7 @@ class MailconfControllerTest < ActionController::TestCase
 
   should 'display correctly the state false of e-mail enable/disable' do
     login_as('ze')
-    user.update_attributes!(:enable_email => false)
+    user.update!(:enable_email => false)
     get :index, :profile => 'ze'
     assert_tag :tag => 'a', :content => 'Enable e-Mail'
     assert_no_tag :tag => 'a', :content => 'Disable e-Mail', :attributes => { :href => '/myprofile/ze/mailconf/disable' }
@@ -95,7 +95,7 @@ class MailconfControllerTest < ActionController::TestCase
     login_as('ze')
     assert user.enable_email!
     post :disable, :profile => 'ze'
-    assert !Profile['ze'].user.enable_email
+    refute Profile['ze'].user.enable_email
   end
 
   should 'go back on save' do

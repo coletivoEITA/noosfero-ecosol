@@ -16,6 +16,7 @@ class ProfileActivity < ActiveRecord::Base
 
   def self.update_activity activity
     profile_activity = ProfileActivity.where(activity_id: activity.id, activity_type: activity.class.base_class.name).first
+    return unless profile_activity
     profile_activity.send :copy_timestamps
     profile_activity.save!
     profile_activity
@@ -24,8 +25,8 @@ class ProfileActivity < ActiveRecord::Base
   protected
 
   def copy_timestamps
-    self.created_at = self.activity.created_at
-    self.updated_at = self.activity.updated_at
+    self.created_at = self.activity.created_at if self.activity.created_at
+    self.updated_at = self.activity.updated_at if self.activity.updated_at
   end
 
 end

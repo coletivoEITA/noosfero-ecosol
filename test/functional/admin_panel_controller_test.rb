@@ -1,9 +1,6 @@
 require_relative "../test_helper"
 require 'admin_panel_controller'
 
-# Re-raise errors caught by the controller.
-class AdminPanelController; def rescue_action(e) raise e end; end
-
 class AdminPanelControllerTest < ActionController::TestCase
 
   all_fixtures
@@ -17,12 +14,12 @@ class AdminPanelControllerTest < ActionController::TestCase
   should 'manage the correct environment' do
     current = fast_create(Environment, :name => 'test environment', :is_default => false)
     current.domains.create!(:name => 'example.com')
-    
+
     @request.expects(:host).returns('example.com').at_least_once
     get :index
     assert_equal current, assigns(:environment)
   end
-  
+
   should 'link to site_info editing page' do
     get :index
     assert_tag :tag => 'a', :attributes => { :href => '/admin/admin_panel/site_info' }
@@ -102,7 +99,7 @@ class AdminPanelControllerTest < ActionController::TestCase
     post :site_info, :environment => { :terms_of_use => content }
     assert_redirected_to :action => 'index'
 
-    assert !Environment.default.has_terms_of_use?
+    refute Environment.default.has_terms_of_use?
   end
 
   should 'save subject and body of signup welcome text' do
@@ -113,7 +110,7 @@ class AdminPanelControllerTest < ActionController::TestCase
 
     assert_equal subject, Environment.default.signup_welcome_text[:subject]
     assert_equal body, Environment.default.signup_welcome_text[:body]
-    assert !Environment.default.signup_welcome_text.blank?
+    refute Environment.default.signup_welcome_text.blank?
   end
 
   should 'not save empty string as signup welcome text' do
@@ -121,13 +118,26 @@ class AdminPanelControllerTest < ActionController::TestCase
     post :site_info, :environment => { :signup_welcome_text_body => content }
     assert_redirected_to :action => 'index'
 
-    assert !Environment.default.has_signup_welcome_text?
+    refute Environment.default.has_signup_welcome_text?
   end
 
   should 'sanitize message for disabled enterprise with white_list' do
     post :site_info, :environment => { :message_for_disabled_enterprise => "This <strong>is</strong> <script>alert('alow')</script>my new environment" }
     assert_redirected_to :action => 'index'
-    assert_equal "This <strong>is</strong> my new environment", Environment.default.message_for_disabled_enterprise
+    assert_equal "This <strong>is</strong> alert('alow')my new environment", Environment.default.message_for_disabled_enterprise
+  end
+
+  should 'save site article date format option' do
+    post :site_info, :environment => { :date_format => "numbers_with_year" }
+    assert_redirected_to :action => 'index'
+
+    assert_equal "numbers_with_year", Environment.default.date_format
+  end
+
+  should 'dont save site article date format option when a invalid option is passed' do
+    post :site_info, :environment => { :date_format => "invalid_format" }
+
+    assert_not_equal "invalid_format", Environment.default.date_format
   end
 
   should 'set portal community' do
@@ -377,38 +387,6 @@ class AdminPanelControllerTest < ActionController::TestCase
     assert_redirected_to :action => 'index'
 
     assert_equal body, Environment.default.signup_welcome_screen_body
-    assert !Environment.default.signup_welcome_screen_body.blank?
-  end
-
-  should 'show list to deactivate organizations' do
-    enabled_community = fast_create(Community, :environment_id => Environment.default, :name=>"enabled community")
-    disabled_community = fast_create(Community, :environment_id => Environment.default, :name=>"disabled community")
-    user = create_user('user')
-
-    disabled_community.disable
-
-    Environment.default.add_admin user.person
-    login_as('user')
-
-    get :manage_organizations_status, :filter=>"enabled"
-    assert_match(/Organization profiles - enabled/, @response.body)
-    assert_match(/enabled community/, @response.body)
-    assert_not_match(/disabled community/, @response.body)
-  end
-
-  should 'show list to activate organizations' do
-    enabled_community = fast_create(Community, :environment_id => Environment.default, :name=>"enabled community")
-    disabled_community = fast_create(Community, :environment_id => Environment.default, :name=>"disabled community")
-    user = create_user('user')
-
-    disabled_community.disable
-
-    Environment.default.add_admin user.person
-    login_as('user')
-
-    get :manage_organizations_status, :filter=>"disabled"
-    assert_match(/Organization profiles - disabled/, @response.body)
-    assert_not_match(/enabled community/, @response.body)
-    assert_match(/disabled community/, @response.body)
+    refute Environment.default.signup_welcome_screen_body.blank?
   end
 end

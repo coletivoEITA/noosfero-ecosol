@@ -1,0 +1,46 @@
+submission
+  td
+    a if='{submission.can_download}' href='{Routes.page_path({profile: noosfero.profile, page: submission.path})}' {submission.name}
+    span if='{!submission.can_download}' {submission.name}
+  td
+    |{I18n.l('time.formats.default', submission.created_at*1000)}
+  td
+    a.btn.btn-default.btn-xs.w-a-icon.fa.fa-trash-o if='{submission.may_delete}' href="{Routes.work_assignment_plugin_myprofile_path({profile: noosfero.profile, action: 'destroy', id: submission.id})}" onclick='{delete}'
+    |&emsp;
+    a class="btn btn-default btn-xs w-a-icon fa {'fa-square-o': !submission.user_read, 'fa-check-square-o': submission.user_read}" data-toggle="tooltip" data-original-title="{submission.read_by_names.join('<br/>')}" data-html='true' onclick='{toggleRead}' href="{Routes.work_assignment_plugin_myprofile_path({profile: noosfero.profile, action: 'toggle_read', id: submission.id})}"
+      |&emsp;{wa.t('views.submissions.'+ (submissions.user_has_read ? 'unmark_as_read' : 'mark_as_read'))}
+
+  javascript:
+    this.wa = window.work_assignment
+    this.submission = opts.data
+
+    toggleRead(e) {
+      $.post(e.target.href)
+      this.submission.user_read = !this.submission.user_read
+      if (this.submission.user_read)
+        this.submission.read_by_names.push(noosfero.user_data.name)
+      else
+        this.submission.read_by_names.splice(this.submission.read_by_names.indexOf(noosfero.user_data.name), 1)
+
+      this.update()
+      // from http://stackoverflow.com/questions/9501921/change-twitter-bootstrap-tooltip-content-on-click
+      $(this.root).find('[data-toggle=tooltip]').tooltip('setContent').tooltip('show')
+
+      return false
+    }
+
+    delete(e) {
+      if (!confirm(this.wa.t('views.submissions.delete_confirm')))
+        return;
+      var self = this
+      $.post(e.target.href, function () {
+        self.parent.remove(self.submission)
+      })
+
+      return false
+    }
+
+    this.on('mount', function () {
+      $(this.root).find('[data-toggle=tooltip]').tooltip()
+    })
+

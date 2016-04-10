@@ -6,9 +6,9 @@ class PersonTest < ActiveSupport::TestCase
 
   def test_person_must_come_from_the_creation_of_an_user
     p = build(Person, :environment => Environment.default, :name => 'John', :identifier => 'john')
-    assert !p.valid?
+    refute p.valid?
     p.user =  create_user('john', :email => 'john@doe.org', :password => 'dhoe', :password_confirmation => 'dhoe')
-    assert !p.valid?
+    refute p.valid?
     p = create_user('johnz', :email => 'johnz@doe.org', :password => 'dhoe', :password_confirmation => 'dhoe').person
     assert p.valid?
   end
@@ -59,7 +59,7 @@ class PersonTest < ActiveSupport::TestCase
 
     p2 = build(Person, :environment => Environment.default)
     p2.user = u
-    assert !p2.valid?
+    refute p2.valid?
     assert p2.errors[:user_id.to_s].present?
   end
 
@@ -86,7 +86,7 @@ class PersonTest < ActiveSupport::TestCase
     assert p.define_roles([r2], e)
     p = Person.find(p.id)
     assert p.role_assignments.any? {|ra| ra.role == r2}
-    assert !p.role_assignments.any? {|ra| ra.role == r1}
+    refute p.role_assignments.any? {|ra| ra.role == r1}
   end
 
   should 'report that the user has the permission' do
@@ -97,7 +97,7 @@ class PersonTest < ActiveSupport::TestCase
     p = Person.find(p.id)
     assert e.reload
     assert p.has_permission?('edit_profile', e)
-    assert !p.has_permission?('destroy_profile', e)
+    refute p.has_permission?('destroy_profile', e)
   end
 
   should 'get an email address from the associated user instance' do
@@ -144,7 +144,7 @@ class PersonTest < ActiveSupport::TestCase
     other = create_user('user', :email => 'other@example.com', :environment => other_env).person
     other.email = 'user@example.com'
     other.valid?
-    assert !other.errors[:email.to_s].present?
+    refute other.errors[:email.to_s].present?
   end
 
   should 'be an admin if have permission of environment administration' do
@@ -152,8 +152,8 @@ class PersonTest < ActiveSupport::TestCase
     env = fast_create(Environment)
     person = create_user('just_another_person').person
     env.affiliate(person, role)
-    assert ! person.is_admin?(env)
-    role.update_attributes(:permissions => ['view_environment_admin_panel'])
+    refute  person.is_admin?(env)
+    role.update(:permissions => ['view_environment_admin_panel'])
     person = Person.find(person.id)
     assert person.is_admin?(env)
   end
@@ -164,7 +164,7 @@ class PersonTest < ActiveSupport::TestCase
 
     # role is an admin role
     role = create(Role, :name => 'just_another_admin_role')
-    role.update_attributes(:permissions => ['view_environment_admin_panel'])
+    role.update(:permissions => ['view_environment_admin_panel'])
 
     # user is admin of env1, but not of env2
     person = create_user('just_another_person').person
@@ -172,7 +172,7 @@ class PersonTest < ActiveSupport::TestCase
 
     person = Person.find(person.id)
     assert person.is_admin?(env1)
-    assert !person.is_admin?(env2)
+    refute person.is_admin?(env2)
   end
 
   should 'create a default set of articles' do
@@ -181,15 +181,17 @@ class PersonTest < ActiveSupport::TestCase
     person = create(User).person
 
     assert_kind_of Blog, person.articles.find_by_path(blog.path)
+    assert person.articles.find_by_path(blog.path).published?
     assert_kind_of RssFeed, person.articles.find_by_path(blog.feed.path)
+    assert person.articles.find_by_path(blog.feed.path).published?
   end
 
   should 'create a default set of blocks' do
     p = create(User).person
 
-    assert !p.boxes[0].blocks.empty?, 'person must have blocks in area 1'
-    assert !p.boxes[1].blocks.empty?, 'person must have blocks in area 2'
-    assert !p.boxes[2].blocks.empty?, 'person must have blocks in area 3'
+    refute p.boxes[0].blocks.empty?, 'person must have blocks in area 1'
+    refute p.boxes[1].blocks.empty?, 'person must have blocks in area 2'
+    refute p.boxes[2].blocks.empty?, 'person must have blocks in area 3'
   end
 
   should 'link to all articles created by default' do
@@ -317,7 +319,7 @@ class PersonTest < ActiveSupport::TestCase
 
   should 'required name' do
     person = Person.new
-    assert !person.valid?
+    refute person.valid?
     assert person.errors[:name].present?
   end
 
@@ -325,7 +327,7 @@ class PersonTest < ActiveSupport::TestCase
     p1 = create_user('testuser1').person
     p2 = create_user('testuser2').person
     create(AddFriend, person: p1, friend: p2).finish
-    assert !p1.already_request_friendship?(p2)
+    refute p1.already_request_friendship?(p2)
     create(AddFriend, person: p1, friend: p2)
     assert p1.already_request_friendship?(p2)
   end
@@ -394,7 +396,7 @@ class PersonTest < ActiveSupport::TestCase
     p1 = create_user('user_with_tasks').person
     c1 = fast_create(Community)
     c1.tasks << Task.new
-    assert !c1.tasks.pending.empty?
+    refute c1.tasks.pending.empty?
     c1.add_admin(p1)
 
     c2 = fast_create(Community)
@@ -463,12 +465,12 @@ class PersonTest < ActiveSupport::TestCase
     e = Environment.default
     e.expects(:required_person_fields).returns(['cell_phone']).at_least_once
     person = build(Person, :environment => e)
-    assert ! person.valid?
+    refute  person.valid?
     assert person.errors[:cell_phone.to_s].present?
 
     person.cell_phone = '99999'
     person.valid?
-    assert ! person.errors[:cell_phone.to_s].present?
+    refute  person.errors[:cell_phone.to_s].present?
   end
 
   should 'require custom_area_of_study if area_of_study is others' do
@@ -476,12 +478,12 @@ class PersonTest < ActiveSupport::TestCase
     e.expects(:required_person_fields).returns(['area_of_study', 'custom_area_of_study']).at_least_once
 
     person = build(Person, :environment => e, :area_of_study => 'Others')
-    assert !person.valid?
+    refute person.valid?
     assert person.errors[:custom_area_of_study.to_s].present?
 
     person.custom_area_of_study = 'Customized area of study'
     person.valid?
-    assert ! person.errors[:custom_area_of_study.to_s].present?
+    refute  person.errors[:custom_area_of_study.to_s].present?
   end
 
   should 'not require custom_area_of_study if area_of_study is not others' do
@@ -490,7 +492,7 @@ class PersonTest < ActiveSupport::TestCase
 
     person = build(Person, :environment => e, :area_of_study => 'Agrometeorology')
     person.valid?
-    assert ! person.errors[:custom_area_of_study.to_s].present?
+    refute  person.errors[:custom_area_of_study.to_s].present?
   end
 
   should 'require custom_formation if formation is others' do
@@ -498,12 +500,12 @@ class PersonTest < ActiveSupport::TestCase
     e.expects(:required_person_fields).returns(['formation', 'custom_formation']).at_least_once
 
     person = build(Person, :environment => e, :formation => 'Others')
-    assert !person.valid?
+    refute person.valid?
     assert person.errors[:custom_formation.to_s].present?
 
     person.custom_formation = 'Customized formation'
     person.valid?
-    assert ! person.errors[:custom_formation.to_s].present?
+    refute  person.errors[:custom_formation.to_s].present?
   end
 
   should 'not require custom_formation if formation is not others' do
@@ -511,20 +513,20 @@ class PersonTest < ActiveSupport::TestCase
     e.expects(:required_person_fields).returns(['formation']).at_least_once
 
     person = build(Person, :environment => e, :formation => 'Agrometeorology')
-    assert !person.valid?
-    assert ! person.errors[:custom_formation.to_s].present?
+    refute person.valid?
+    refute  person.errors[:custom_formation.to_s].present?
   end
 
   should 'not require fields if person is a template' do
     e = Environment.default
     e.expects(:required_person_fields).returns(['cell_phone']).at_least_once
     person = build(Person, :environment => e)
-    assert ! person.valid?
+    refute  person.valid?
     assert person.errors[:cell_phone.to_s].present?
 
     person.is_template = true
     person.valid?
-    assert ! person.errors[:cell_phone.to_s].present?
+    refute  person.errors[:cell_phone.to_s].present?
   end
 
   should 'identify when person is a friend' do
@@ -538,7 +540,7 @@ class PersonTest < ActiveSupport::TestCase
   should 'identify when person isnt a friend' do
     p1 = create_user('testuser1').person
     p2 = create_user('testuser2').person
-    assert !p1.is_a_friend?(p2)
+    refute p1.is_a_friend?(p2)
   end
 
   should 'refuse join community' do
@@ -547,7 +549,7 @@ class PersonTest < ActiveSupport::TestCase
 
     assert p.ask_to_join?(c)
     p.refuse_join(c)
-    assert !p.ask_to_join?(c)
+    refute p.ask_to_join?(c)
   end
 
   should 'not ask to join for a member' do
@@ -555,7 +557,7 @@ class PersonTest < ActiveSupport::TestCase
     c = fast_create(Community)
     c.add_member(p)
 
-    assert !p.ask_to_join?(c)
+    refute p.ask_to_join?(c)
   end
 
   should 'not ask to join if already asked' do
@@ -563,7 +565,7 @@ class PersonTest < ActiveSupport::TestCase
     c = fast_create(Community)
     create(AddMember, :person => p, :organization => c)
 
-    assert !p.ask_to_join?(c)
+    refute p.ask_to_join?(c)
   end
 
   should 'ask to join if community is not public' do
@@ -577,7 +579,7 @@ class PersonTest < ActiveSupport::TestCase
     person = fast_create(Person)
     community = fast_create(Community, :visible => false)
 
-    assert !person.ask_to_join?(community)
+    refute person.ask_to_join?(community)
   end
 
   should 'save organization_website with http' do
@@ -606,7 +608,7 @@ class PersonTest < ActiveSupport::TestCase
     p2 = create_user('testuser2').person
     assert p1.add_friend(p2)
     assert Profile['testuser1'].is_a_friend?(p2)
-    assert !Profile['testuser1'].add_friend(p2)
+    refute Profile['testuser1'].add_friend(p2)
   end
 
   should 'not raise exception when validates person without e-mail' do
@@ -614,7 +616,7 @@ class PersonTest < ActiveSupport::TestCase
     person.user.email = nil
 
     assert_nothing_raised ActiveRecord::RecordInvalid do
-      assert !person.save
+      refute person.save
     end
   end
 
@@ -766,11 +768,11 @@ class PersonTest < ActiveSupport::TestCase
     p2 = fast_create(Person)
     p3 = fast_create(Person)
 
-    assert !p1.is_member_of?(c)
+    refute p1.is_member_of?(c)
     c.add_member(p1)
     assert p1.is_member_of?(c)
 
-    assert !p3.is_member_of?(c)
+    refute p3.is_member_of?(c)
     c.add_member(p3)
     assert p3.is_member_of?(c)
 
@@ -786,11 +788,11 @@ class PersonTest < ActiveSupport::TestCase
     p2 = fast_create(Person)
     p3 = fast_create(Person)
 
-    assert !p1.is_member_of?(e)
+    refute p1.is_member_of?(e)
     e.add_member(p1)
     assert p1.is_member_of?(e)
 
-    assert !p3.is_member_of?(e)
+    refute p3.is_member_of?(e)
     e.add_member(p3)
     assert p3.is_member_of?(e)
 
@@ -843,7 +845,7 @@ class PersonTest < ActiveSupport::TestCase
 
     p1.add_friend(p2)
     assert p1.is_a_friend?(p2)
-    assert !p1.is_a_friend?(p3)
+    refute p1.is_a_friend?(p3)
     p1.add_friend(p4)
     assert p1.is_a_friend?(p4)
 
@@ -867,7 +869,7 @@ class PersonTest < ActiveSupport::TestCase
 
     p1.add_friend(p2)
     assert p1.is_a_friend?(p2)
-    assert !p1.is_a_friend?(p3)
+    refute p1.is_a_friend?(p3)
     p1.add_friend(p4)
     assert p1.is_a_friend?(p4)
 
@@ -886,7 +888,7 @@ class PersonTest < ActiveSupport::TestCase
 
     p1.add_friend(p2)
     assert p1.is_a_friend?(p2)
-    assert !p1.is_a_friend?(p3)
+    refute p1.is_a_friend?(p3)
     p1.add_friend(p4)
     assert p1.is_a_friend?(p4)
 
@@ -913,10 +915,10 @@ class PersonTest < ActiveSupport::TestCase
     assert p1.is_member_of?(community)
     community.add_member(p3)
     assert p3.is_member_of?(community)
-    assert !p2.is_member_of?(community)
+    refute p2.is_member_of?(community)
     process_delayed_job_queue
 
-    action_tracker = fast_create(ActionTracker::Record, :verb => 'create_article')
+    action_tracker = create(ActionTracker::Record, user: p1, verb: 'create_article')
     action_tracker.target = community
     action_tracker.user = p4
     action_tracker.save!
@@ -943,7 +945,7 @@ class PersonTest < ActiveSupport::TestCase
     assert p3.is_member_of?(community)
     community.add_member(p4)
     assert p4.is_member_of?(community)
-    assert !p2.is_member_of?(community)
+    refute p2.is_member_of?(community)
 
     action_tracker = fast_create(ActionTracker::Record)
     article = mock()
@@ -990,14 +992,14 @@ class PersonTest < ActiveSupport::TestCase
     p1, p2 = fast_create(Person), fast_create(Person)
     s = fast_create(Scrap, :sender_id => p1.id, :receiver_id => p1.id)
     assert p1.can_control_scrap?(s)
-    assert !p2.can_control_scrap?(s)
+    refute p2.can_control_scrap?(s)
   end
 
   should "control activity or not" do
     p1, p2 = fast_create(Person), fast_create(Person)
     a = fast_create(ActionTracker::Record, :user_id => p2.id)
     n = fast_create(ActionTrackerNotification, :profile_id => p2.id, :action_tracker_id => a.id)
-    assert !p1.reload.can_control_activity?(a)
+    refute p1.reload.can_control_activity?(a)
     assert p2.reload.can_control_activity?(a)
   end
 
@@ -1006,9 +1008,9 @@ class PersonTest < ActiveSupport::TestCase
     p = create_user('test_user').person
     c = fast_create(Community, :name => "Foo")
     c.add_member(p)
-    assert_equal ["Foo"], ActionTracker::Record.last(:conditions => {:verb => 'join_community'}).get_resource_name
+    assert_equal ["Foo"], ActionTracker::Record.where(verb: 'join_community').last.get_resource_name
     c.reload.add_moderator(p.reload)
-    assert_equal ["Foo"], ActionTracker::Record.last(:conditions => {:verb => 'join_community'}).get_resource_name
+    assert_equal ["Foo"], ActionTracker::Record.where(verb: 'join_community').last.get_resource_name
   end
 
   should 'the tracker target be Community when a person joins a community' do
@@ -1016,7 +1018,7 @@ class PersonTest < ActiveSupport::TestCase
     p = create_user('test_user').person
     c = fast_create(Community, :name => "Foo")
     c.add_member(p)
-    assert_kind_of Community, ActionTracker::Record.last(:conditions => {:verb => 'join_community'}).target
+    assert_kind_of Community, ActionTracker::Record.where(verb: 'join_community').last.target
   end
 
   should 'the community be notified specifically when a person joins a community' do
@@ -1024,7 +1026,7 @@ class PersonTest < ActiveSupport::TestCase
     p = create_user('test_user').person
     c = fast_create(Community, :name => "Foo")
     c.add_member(p)
-    assert_not_nil ActionTracker::Record.last(:conditions => {:verb => 'add_member_in_community'})
+    assert_not_nil ActionTracker::Record.where(verb: 'add_member_in_community').last
   end
 
   should 'the community specific notification created when a member joins community could not be propagated to members' do
@@ -1121,7 +1123,7 @@ class PersonTest < ActiveSupport::TestCase
     organization.add_admin(person)
 
     assert person.is_last_admin_leaving?(organization, [])
-    assert !person.is_last_admin_leaving?(organization, [Role.find_by_key('profile_admin')])
+    refute person.is_last_admin_leaving?(organization, [Role.find_by_key('profile_admin')])
   end
 
   should 'return unique members of a community' do
@@ -1226,7 +1228,7 @@ class PersonTest < ActiveSupport::TestCase
   should 'check if person already reported profile' do
     person = create_user('some-user').person
     profile = fast_create(Profile)
-    assert !person.already_reported?(profile)
+    refute person.already_reported?(profile)
 
     person.register_report(build(AbuseReport, :reason => 'some reason'), profile)
     person.reload
@@ -1240,7 +1242,7 @@ class PersonTest < ActiveSupport::TestCase
 
     person.disable
 
-    assert !person.visible
+    refute person.visible
     assert_not_equal password, person.user.password
   end
 
@@ -1334,7 +1336,7 @@ class PersonTest < ActiveSupport::TestCase
     person = create_user('person').person
 
     assert abuser.abuser?
-    assert !person.abuser?
+    refute person.abuser?
   end
 
   should 'be able to retrieve abusers and non abusers' do
@@ -1346,14 +1348,12 @@ class PersonTest < ActiveSupport::TestCase
 
     abusers = Person.abusers
 
-    assert_equal ActiveRecord::Relation, abusers.class
     assert_includes abusers, abuser1
     assert_includes abusers, abuser2
     assert_not_includes abusers, person
 
     non_abusers = Person.non_abusers
 
-    assert_equal ActiveRecord::Relation, non_abusers.class
     assert_not_includes non_abusers, abuser1
     assert_not_includes non_abusers, abuser2
     assert_includes non_abusers, person
@@ -1374,7 +1374,7 @@ class PersonTest < ActiveSupport::TestCase
     assert_includes non_abusers, not_abuser
   end
 
-  should 'admins named_scope return persons who are admin users' do
+  should 'admins scope return persons who are admin users' do
     Person.delete_all
     e = Environment.default
     admins = []
@@ -1389,7 +1389,7 @@ class PersonTest < ActiveSupport::TestCase
     assert_equivalent admins, Person.admins
   end
 
-  should 'activated named_scope return persons who are activated users' do
+  should 'activated scope return persons who are activated users' do
     Person.delete_all
     e = Environment.default
     activated = []
@@ -1405,7 +1405,7 @@ class PersonTest < ActiveSupport::TestCase
     assert_equivalent activated, Person.activated
   end
 
-  should 'deactivated named_scope return persons who are deactivated users' do
+  should 'deactivated scope return persons who are deactivated users' do
     Person.delete_all
     e = Environment.default
     deactivated = []
@@ -1636,6 +1636,206 @@ class PersonTest < ActiveSupport::TestCase
   should 'follow? return false when no profile is passed as parameter' do
     person = Person.new
     assert_equal false, person.follows?(nil)
+  end
+
+  should 'allow posting content when has post_content permission' do
+    person = create_user('person').person
+    profile = mock
+    person.expects(:has_permission?).with('post_content', profile).returns(true)
+    assert person.can_post_content?(profile)
+  end
+
+  should 'allow posting content when has publish_content permission' do
+    person = create_user('person').person
+    profile = mock
+    person.expects(:has_permission?).with('post_content', profile).returns(false)
+    person.expects(:has_permission?).with('publish_content', profile).returns(true)
+    assert person.can_post_content?(profile)
+  end
+
+  should 'allow posting content when has permission in the parent' do
+    person = create_user('person').person
+    profile = mock
+    parent = mock
+    parent.expects(:allow_create?).with(person).returns(true)
+    assert person.can_post_content?(profile, parent)
+  end
+
+  should 'fetch people there are visible for a user' do
+    person = create_user('some-person').person
+    admin = create_user('some-admin').person
+    Environment.default.add_admin(admin)
+
+    p1 = fast_create(Person, :public_profile => true , :visible => true )
+    p1.add_friend(person)
+    p2 = fast_create(Person, :public_profile => true , :visible => true )
+    p3 = fast_create(Person, :public_profile => false, :visible => true )
+    p4 = fast_create(Person, :public_profile => false, :visible => true)
+    p4.add_friend(person)
+    person.add_friend(p4)
+    p5 = fast_create(Person, :public_profile => true , :visible => false)
+    p6 = fast_create(Person, :public_profile => false, :visible => false)
+
+    people = Person.visible_for_person(person)
+    people_for_admin = Person.visible_for_person(admin)
+
+    assert_includes     people, p1
+    assert_includes     people_for_admin, p1
+
+    assert_includes     people, p2
+    assert_includes     people_for_admin, p2
+
+    assert_not_includes people, p3
+    assert_includes     people_for_admin, p3
+
+    assert_includes     people, p4
+    assert_includes     people_for_admin, p4
+
+    assert_not_includes people, p5
+    assert_includes     people_for_admin, p5
+
+    assert_not_includes people, p6
+    assert_includes     people_for_admin, p6
+  end
+
+  should 'vote in a comment with value greater than 1' do
+    comment = fast_create(Comment)
+    person = fast_create(Person)
+
+    person.vote(comment, 5)
+    assert_equal 1, person.vote_count
+    assert_equal 5, person.votes.first.vote
+    assert person.voted_on?(comment)
+  end
+
+  should 'vote in a comment with value lesser than -1' do
+    comment = fast_create(Comment)
+    person = fast_create(Person)
+
+    person.vote(comment, -5)
+    assert_equal 1, person.vote_count
+    assert_equal -5, person.votes.first.vote
+  end
+
+  should 'vote for a comment' do
+    comment = fast_create(Comment)
+    person = fast_create(Person)
+
+    refute person.voted_for?(comment)
+    person.vote_for(comment)
+    assert person.voted_for?(comment)
+    refute person.voted_against?(comment)
+  end
+
+  should 'vote against a comment' do
+    comment = fast_create(Comment)
+    person = fast_create(Person)
+
+    refute person.voted_against?(comment)
+    person.vote_against(comment)
+    refute person.voted_for?(comment)
+    assert person.voted_against?(comment)
+  end
+
+  should 'do not vote against a comment twice' do
+    comment = fast_create(Comment)
+    person = fast_create(Person)
+
+    assert person.vote_against(comment)
+    refute person.vote_against(comment)
+  end
+
+  should 'do not vote for a comment twice' do
+    comment = fast_create(Comment)
+    person = fast_create(Person)
+
+    assert person.vote_for(comment)
+    refute person.vote_for(comment)
+  end
+
+  should 'not vote against a voted for comment' do
+    comment = fast_create(Comment)
+    person = fast_create(Person)
+
+    person.vote_for(comment)
+    person.vote_against(comment)
+    assert person.voted_for?(comment)
+    refute person.voted_against?(comment)
+  end
+
+  should 'not vote for a voted against comment' do
+    comment = fast_create(Comment)
+    person = fast_create(Person)
+
+    person.vote_against(comment)
+    person.vote_for(comment)
+    refute person.voted_for?(comment)
+    assert person.voted_against?(comment)
+  end
+
+  should 'undo a vote for a comment' do
+    comment = fast_create(Comment)
+    person = fast_create(Person)
+
+    person.vote_for(comment)
+    assert person.voted_for?(comment)
+    person.votes.for_voteable(comment).destroy_all
+    refute person.voted_for?(comment)
+  end
+
+  should 'count comments voted' do
+    comment = fast_create(Comment)
+    person = fast_create(Person)
+
+    comment2 = fast_create(Comment)
+    comment3 = fast_create(Comment)
+    person.vote_for(comment)
+    person.vote_for(comment2)
+    person.vote_against(comment3)
+    assert_equal 3, person.vote_count
+    assert_equal 2, person.vote_count(true)
+    assert_equal 1, person.vote_count(false)
+  end
+
+  should 'vote in a article with value greater than 1' do
+    article = fast_create(Article)
+    person = fast_create(Person)
+
+    person.vote(article, 5)
+    assert_equal 1, person.vote_count
+    assert_equal 5, person.votes.first.vote
+    assert person.voted_on?(article)
+  end
+
+  should 'vote for a article' do
+    article = fast_create(Article)
+    person = fast_create(Person)
+
+    refute person.voted_for?(article)
+    person.vote_for(article)
+    assert person.voted_for?(article)
+    refute person.voted_against?(article)
+  end
+
+  should 'vote against a article' do
+    article = fast_create(Article)
+    person = fast_create(Person)
+
+    refute person.voted_against?(article)
+    person.vote_against(article)
+    refute person.voted_for?(article)
+    assert person.voted_against?(article)
+  end
+
+  should 'access comments through profile' do
+    p1 = fast_create(Person)
+    p2 = fast_create(Person)
+    article = fast_create(Article)
+    c1 = fast_create(Comment, :source_id => article.id, :author_id => p1.id)
+    c2 = fast_create(Comment, :source_id => article.id, :author_id => p2.id)
+    c3 = fast_create(Comment, :source_id => article.id, :author_id => p1.id)
+
+    assert_equivalent [c1,c3], p1.comments
   end
 
 end

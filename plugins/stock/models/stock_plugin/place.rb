@@ -1,4 +1,4 @@
-class StockPlugin::Place < Noosfero::Plugin::ActiveRecord
+class StockPlugin::Place < ActiveRecord::Base
 
   belongs_to :profile
 

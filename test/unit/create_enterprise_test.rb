@@ -15,18 +15,18 @@ class CreateEnterpriseTest < ActiveSupport::TestCase
       assert task.respond_to?("#{field}=")
     end
   end
-  
+
   should 'accept only numbers as foundation year' do
     task = CreateEnterprise.new
     task.stubs(:environment).returns(Environment.default)
 
     task.foundation_year = "test"
     task.valid?
-    assert task.errors[:foundation_year.to_s].present?
+    assert task.errors[:foundation_year].present?
 
     task.foundation_year = 2006
     task.valid?
-    assert !task.errors[:foundation_year.to_s].present?
+    refute task.errors[:foundation_year].present?
   end
 
   should 'require a requestor' do
@@ -37,7 +37,7 @@ class CreateEnterpriseTest < ActiveSupport::TestCase
     assert task.errors[:requestor_id.to_s].present?
     task.requestor = create_user('testuser').person
     task.valid?
-    assert !task.errors[:requestor_id.to_s].present?
+    refute task.errors[:requestor_id.to_s].present?
   end
 
   should 'require a target (validator organization)' do
@@ -49,7 +49,7 @@ class CreateEnterpriseTest < ActiveSupport::TestCase
     task.target = Organization.create!(:name => "My organization", :identifier => 'validator_organization')
 
     task.valid?
-    assert !task.errors[:target_id.to_s].present?
+    refute task.errors[:target_id.to_s].present?
   end
 
   should 'require that the informed target (validator organization) actually validates for the chosen region' do
@@ -65,11 +65,11 @@ class CreateEnterpriseTest < ActiveSupport::TestCase
 
     task.valid?
     assert task.errors[:target.to_s].present?
-    
+
     region.validators << validator
 
     task.valid?
-    assert !task.errors[:target.to_s].present?
+    refute task.errors[:target.to_s].present?
   end
 
   should 'cancel task when rejected ' do
@@ -84,7 +84,7 @@ class CreateEnterpriseTest < ActiveSupport::TestCase
     task.reject_explanation = nil
 
     task.valid?
-    assert !task.errors[:reject_explanation.to_s].present?
+    refute task.errors[:reject_explanation.to_s].present?
 
     task.status = Task::Status::CANCELLED
     task.valid?
@@ -92,7 +92,7 @@ class CreateEnterpriseTest < ActiveSupport::TestCase
 
     task.reject_explanation = 'bla bla bla'
     task.valid?
-    assert !task.errors[:reject_explanation.to_s].present?
+    refute task.errors[:reject_explanation.to_s].present?
   end
 
   should 'finish task when approved' do
@@ -130,7 +130,7 @@ class CreateEnterpriseTest < ActiveSupport::TestCase
 
     task.finish
 
-    assert !enterprise.new_record?
+    refute enterprise.new_record?
     assert_equal person.user, enterprise.user
     assert_equal environment, enterprise.environment
 
@@ -167,7 +167,7 @@ class CreateEnterpriseTest < ActiveSupport::TestCase
 
     task.finish
 
-    assert !enterprise.new_record?
+    refute enterprise.new_record?
     assert_equal person.user, enterprise.user
     assert_equal environment, enterprise.environment
 
@@ -203,7 +203,7 @@ class CreateEnterpriseTest < ActiveSupport::TestCase
       :requestor_id => person.id,
     })
 
-    assert !task.valid? && task.valid_before_selecting_target?
+    refute task.valid? && task.valid_before_selecting_target?
 
     task.target = validator
     assert task.valid?

@@ -1,0 +1,11 @@
+= render 'folder', f: f
+
+- if defined? TeamsPlugin and @article.persisted?
+  label = t('teams_plugin.views.teams.title')
+  - label = if @article.allow_edit? user then _'Edit' else _'View' end
+  = modal_button :edit, label, controller: 'teams_plugin/teams', action: :index, context: {id: @article.id, type: 'Article'}
+
+= labelled_form_field _('Default email message:'), text_area(:article, :default_email, rows: 3, cols: 64)
+= labelled_check_box _('Publish submissions'), 'article[publish_submissions]', true, @article.publish_submissions
+= labelled_check_box _('Allow users change submissions privacy?'), 'article[allow_visibility_edition]', true, @article.allow_visibility_edition
+

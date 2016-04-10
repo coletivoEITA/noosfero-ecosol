@@ -93,6 +93,7 @@ class FolderTest < ActiveSupport::TestCase
     image = UploadedFile.create!(:profile => person, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
 
     community = fast_create(Community)
+    community.add_member(person)
     folder = fast_create(Folder, :profile_id => community.id)
     a = create(ApproveArticle, :article => image, :target => community, :requestor => person, :article_parent => folder)
     a.finish
@@ -129,15 +130,7 @@ class FolderTest < ActiveSupport::TestCase
     folder.body = '<p><!-- <asdf> << aasdfa >>> --> <h1> Wellformed html code </h1>'
     folder.valid?
 
-    assert_match  /<!-- .* --> <h1> Wellformed html code <\/h1>/, folder.body
-  end
-
-  should 'escape malformed html tags' do
-    folder = Folder.new
-    folder.body = "<h1<< Description >>/h1>"
-    folder.valid?
-
-    assert_no_match /[<>]/, folder.body
+    assert_match  /<p><!-- .* --> <\/p><h1> Wellformed html code <\/h1>/, folder.body
   end
 
   should 'not have a blog as parent' do

@@ -4,7 +4,7 @@ module LanguageHelper
   end
 
   def tinymce_language
-    language.downcase.split('_').first
+    language
   end
 
   def html_language

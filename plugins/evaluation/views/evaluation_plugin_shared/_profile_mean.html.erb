@@ -1,0 +1,18 @@
+<div class="evaluation-mean">
+
+  <%= render :partial => 'evaluation_plugin_shared/star_value', :locals => {:value => profile.evaluations_mean.to_f} %>
+
+  <% unless profile.evaluations.blank? %>
+    <p>
+      <%= _('%s evaluations') % profile.evaluations.count %>
+    </p>
+
+    <p>
+      <%= link_to _('Read evaluations'), :controller => 'evaluation_plugin_profile', :action => 'index', :profile => profile.identifier %>
+    </p>
+  <% else %>
+    <p>
+      <%= _('No evaluations yet') %>
+    </p>
+  <% end %>
+</div>

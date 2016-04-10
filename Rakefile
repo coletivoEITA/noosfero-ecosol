@@ -15,4 +15,5 @@ Noosfero::Application.load_tasks
   Dir.glob(pattern).sort
 end.flatten.each do |taskfile|
   load taskfile
-end
+end 
+

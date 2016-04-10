@@ -1,0 +1,9 @@
+= content_for :head
+  = javascript_include_tag 'plugins/web_odf/javascripts/webodf'
+  = javascript_include_tag 'plugins/web_odf/javascripts/web_odf'
+  = stylesheet_link_tag 'plugins/web_odf/stylesheets/viewer'
+
+#odf
+
+javascript:
+  web_odf.view.file(#{@page.id.to_i.to_json})

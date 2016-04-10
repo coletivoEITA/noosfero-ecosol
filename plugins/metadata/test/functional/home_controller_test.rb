@@ -1,9 +1,6 @@
 require 'test_helper'
 require 'home_controller'
 
-# Re-raise errors caught by the controller.
-class HomeController; def rescue_action(e) raise e end; end
-
 class HomeControllerTest < ActionController::TestCase
 
   def setup
@@ -11,8 +8,9 @@ class HomeControllerTest < ActionController::TestCase
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
 
-    Noosfero::Plugin.stubs(:all).returns([MetadataPlugin.name])
-    Noosfero::Plugin::Manager.any_instance.stubs(:enabled_plugins).returns([MetadataPlugin.new])
+    @environment = Environment.default
+    @environment.enabled_plugins += ['MetadataPlugin']
+    @environment.save!
   end
 
   should 'display meta tags for social media' do

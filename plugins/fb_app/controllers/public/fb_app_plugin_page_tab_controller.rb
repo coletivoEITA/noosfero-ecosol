@@ -65,10 +65,10 @@ class FbAppPluginPageTabController < FbAppPluginController
     return redirect_to '/plugin/fb_app/myprofile_config' if params[:page_id].blank? and params[:signed_request].blank?
     return unless load_page_tabs
 
-    if request.put? and @page_id.present?
+    if request.patch? and @page_id.present?
       create_page_tabs if @page_tab.nil?
 
-      @page_tab.update_attributes! params[:page_tab]
+      @page_tab.update! params[:page_tab]
 
       respond_to do |format|
         format.js{ render action: 'admin' }
@@ -88,10 +88,11 @@ class FbAppPluginPageTabController < FbAppPluginController
   end
 
   def enterprise_search
-    scope = environment.enterprises.enabled.public
+    scope = environment.enterprises.enabled.is_public
     @query = params[:query]
     @profiles = scope.limit(10).order('name ASC').
-      where(['name ILIKE ? OR name ILIKE ? OR identifier LIKE ?', "#{@query}%", "% #{@query}%", "#{@query}%"])
+      where(['nickname ILIKE ? OR nickname ILIKE ? OR name ILIKE ? OR name ILIKE ? OR identifier LIKE ?',
+             "#{@query}%", "% #{@query}%", "#{@query}%", "% #{@query}%", "#{@query}%"])
     render partial: 'open_graph_plugin/myprofile/profile_search', locals: {profiles: @profiles}
   end
 
@@ -150,7 +151,11 @@ class FbAppPluginPageTabController < FbAppPluginController
   def get_layout
     return nil if request.format == :js or request.xhr?
 
+<<<<<<< HEAD
     return "#{Rails.root}/public/designs/themes/cirandas-responsive/layouts/cirandas-responsive"
+=======
+    return 'application-responsive'
+>>>>>>> rails4
   end
 
   def disable_cache

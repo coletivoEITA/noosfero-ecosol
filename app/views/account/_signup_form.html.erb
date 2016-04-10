@@ -1,12 +1,3 @@
-<% if @block_bot %>
-  <div class="atention" style="font-size: 150%;">
-    <strong><%=_('Are you a robot?')%></strong> <br />
-    <%=_('Please, prove that you are human by filling the captcha.')%>
-  </div>
-<% end %>
-
-<% @profile_data = @person %>
-
 <%= javascript_include_tag('sign_up_password_rate') %>
 
 <%= error_messages_for :user, :person, :header_message => _('The account could not be created') %>
@@ -126,7 +117,8 @@
   <% end %>
 </div>
 
-<%= render 'shared/captcha' if @block_bot %>
+<%= recaptcha_tags :ajax => true, :display => {:theme => 'clean'} if @block_bot %>
+<%= render :partial => 'shared/custom_fields', :locals => {:f => f, :profile => @person, :signup => true} %>
 
 <p style="text-align: center">
   <%= submit_button('save', _('Create my account')) %>

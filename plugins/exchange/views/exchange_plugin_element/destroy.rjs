@@ -1,0 +1,6 @@
+page.remove "exchange-element-#{@element.id}"
+
+if (@element.object_type == 'Product' || @element.object_type == 'Article')
+page.insert_html :top, "exchange-#{@element.object_type}-list-#{params[:actor]}", :partial => 'view_list',
+ :locals => {:element => @element, :actor => params[:actor]}
+end

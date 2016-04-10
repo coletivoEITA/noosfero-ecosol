@@ -1,8 +1,5 @@
 require 'test_helper'
-require File.dirname(__FILE__) + '/../../controllers/spaminator_plugin_admin_controller'
-
-# Re-raise errors caught by the controller.
-class SpaminatorPluginAdminController; def rescue_action(e) raise e end; end
+require_relative '../../controllers/spaminator_plugin_admin_controller'
 
 class SpaminatorPluginAdminControllerTest < ActionController::TestCase
   def setup
@@ -38,7 +35,7 @@ class SpaminatorPluginAdminControllerTest < ActionController::TestCase
     get :withhold
     reload_settings
 
-    assert !settings.deployed
+    refute settings.deployed
   end
 
   should 'make spaminator scan' do
@@ -70,7 +67,7 @@ class SpaminatorPluginAdminControllerTest < ActionController::TestCase
     reload_settings
 
     assert settings.scheduled_scan.nil?
-    assert !Delayed::Job.exists?(settings.scheduled_scan)
+    refute Delayed::Job.exists?(settings.scheduled_scan)
   end
 
   private

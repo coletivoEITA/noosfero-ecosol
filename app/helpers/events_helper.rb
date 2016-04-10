@@ -1,7 +1,8 @@
 module EventsHelper
 
-  def list_events(date, events, title_use_day=nil)
-    title = _('Events for %s') % show_date_month(date,false,true,title_use_day)
+  include DatesHelper
+  def list_events(date, events)
+    title = _('Events for %s') % show_date_month(date)
     content_tag('h2', title) +
     content_tag('div',
       (events.any? ?
@@ -15,7 +16,7 @@ module EventsHelper
 
     content_tag( 'tr',
       content_tag('td',
-        content_tag('div', show_date(article.start_date) + ( article.end_date.nil? ?  '' : (_(" to ") + show_date(article.end_date))),:class => 'event-date' ) +
+        content_tag('div', show_time(article.start_date) + ( article.end_date.nil? ?  '' : (_(" to ") + show_time(article.end_date))),:class => 'event-date' ) +
         content_tag('div',link_to(article.name,article.url),:class => 'event-title') +
         content_tag('div',(article.address.nil? or article.address == '')  ? '' : (_('Place: ') + article.address),:class => 'event-place')
       )
@@ -23,13 +24,14 @@ module EventsHelper
   end
 
   def populate_calendar(selected_date, events)
-    events.reject! {|event| !event.display_to?(user)}
+    selected_date = selected_date.to_date
+    events = events.reject{ |event| !event.display_to? user }
     calendar = Event.date_range(selected_date.year, selected_date.month).map do |date|
       [
         # the day itself
         date,
         # is there any events in this date?
-        events.any? {|event| event.date_range.include?(date)},
+        events.any? {|event| event.date_range.cover?(date)},
         # is this date in the current month?
         true
       ]

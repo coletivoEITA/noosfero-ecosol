@@ -1,0 +1,666 @@
+@import 'base';
+@import 'core_ext';
+@import 'exchange';
+@import 'sniffer';
+
+/* Colors */
+
+$color-interest-bg: #F3F5ED;
+$color-interest-label: #79A458;
+$color-knowledge-bg: #FCF0EE;
+$color-knowledge-label: #C37169;
+$color-offer-bg: #F1F1F7;
+$color-offer-label: #677FB7;
+
+$color-profile-info-bg: #EBF49D;
+$color-profile-info-border: #C5AAA5;
+
+$color-exchange: #394E41;
+
+$color-yellow: #E5F600;
+$color-violet: #7F005C;
+
+$color-presentation-button: $color-yellow;
+$color-presentation-button-highlight: $color-violet;
+
+$color-user-bg: #FAF7DC;
+$color-user-border: #C5AAA5;
+
+/* Images */
+
+$image-heart-empty: '/plugins/escambo/images/heart-empty.png'; // FIXME: missing
+$image-heart: '/plugins/escambo/images/heart.png';
+$image-previous: '/plugins/escambo/images/previous.png';
+$image-next: '/plugins/escambo/images/next.png';
+
+/* Home */
+
+.controller-home {
+
+  #presentation-wrap-1 {
+    background: $color-violet;
+    height: 30*$base;
+    margin-top: 2*$margin;
+    margin-bottom: 3*$margin;
+
+    #presentation-wrap-2 {
+      margin: auto;
+      width: $wireframe;
+      position: relative;
+
+      img {
+        &.left, &.right {
+          position: absolute;
+          bottom: 5*$base;
+        }
+        &.left {
+          left: -(148 + 11*$base);
+          bottom: 5.5*$base;
+        }
+        &.right {
+          right: -(177 + 8*$base);
+        }
+      }
+
+      #presentation {
+        padding: 2*$margin $padding;
+
+        .text {
+          color: white;
+          font-size: 25px;
+          line-height: 38px;
+        }
+        .join {
+          margin: auto;
+          margin-top: 1.5*$margin;
+          width: 34*$base;
+
+          #sign-up, #login {
+            display: inline-block;
+            padding: $padding 1.5*$padding;
+            margin-right: $margin;
+            background: $color-presentation-button;
+            font-weight: bold;
+            text-transform: lowercase;
+            text-decoration: none;
+          }
+          #know-more {
+            color: white;
+            font-weight: bold;
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+
+  h2 {
+    display: inline-block;
+    padding: 0 $padding;
+  }
+
+  #items-area {
+
+
+  }
+
+  #enterprises-area {
+    margin-left: -20px;
+    width: $wireframe + 2*20 + $padding;
+    margin-bottom: 8*$base;
+
+    h2 {
+      margin-left: $margin;
+    }
+
+    .scroll-left, .scroll-right {
+      width: 20px;
+      height: 37px;
+      margin-top: 11*$base;
+      cursor: pointer;
+    }
+    .scroll-left {
+      float: left;
+      background: url($image-previous) no-repeat;
+    }
+    .scroll-right {
+      float: right;
+      background: url($image-next) no-repeat;
+    }
+
+    #enterprises-crop-wrap {
+      float: left;
+      width: $wireframe - $padding;
+      padding-left: $padding;
+      padding-right: $padding;
+      overflow: hidden;
+
+      #enterprises-crop {
+        width: 5*$wireframe;
+        @extend .container-clean;
+
+        .escambo-plugin-profile-block {
+          float: left;
+        }
+      }
+    }
+  }
+}
+
+/* content */
+
+body.controller-content_viewer .icon-new,
+body.controller-content_viewer .icon-alert {
+  display: none;
+}
+
+/* colors of borders/backgrounds */
+
+.escambo-inside-border-purple {
+  border-color: #7F0085;
+}
+.escambo-bg-purple {
+  background-color: #F3E1EF;
+}
+
+/* Profile block */
+
+.escambo-plugin-profile-block {
+  width: $module02;
+  border: 3*$border double #7F0085;
+  border-radius: $border-radius;
+  margin-right: $margin - 5*$border;
+  margin-bottom: $margin;
+
+  .profile-homepage-link, .categories-area, .location-area, .summary-area {
+    margin: $padding ($padding - 3*$border);
+  }
+  .profile-homepage-link, .categories-area, .location-area {
+    border-bottom: $border dotted black;
+  }
+
+  .profile-homepage-link {
+    height: 6*$base;
+    @extend .pstyle-basic;
+    margin-top: $half-margin;
+    padding: $padding 0;
+  }
+  .categories-area {
+    height: 4*$base;
+  }
+  .location-area {
+    height: 4*$base;
+
+    &.empty {
+      @extend .pstyle-tm2;
+    }
+  }
+  .summary-area {
+    height: 2*$base;
+    @extend .pstyle-tm2;
+  }
+
+  .image-profile-area {
+    height: $base*12;
+    position: relative;
+    background-position: center;
+    background-size: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    .icons {
+      height: $base*2;
+      float: right;
+      margin-right: $half-margin;
+
+      .has-exchanged {
+        @extend .icon;
+        background: url($image-exchange) no-repeat;
+      }
+
+      .has-not-exchanged {
+        @extend .icon;
+        background: url($image-exchange-empty);
+      }
+
+      .is-bookmarked {
+
+      }
+      .isnot-bookmarked {
+        background: url($image-heart-empty);
+      }
+    }
+
+    .exchange {
+      position: absolute;
+      bottom: -$padding;
+      left: ($padding - 3*$border);
+      width: $module02 - 2*($padding - 3*$border) - 2*$padding;
+    }
+  }
+}
+
+/* Signup */
+
+.action-account-signup .no-boxes form {
+  width: $module08;
+  margin: auto;
+}
+#signup-form {
+
+  .required-field label, .formlabel {
+    margin: 0;
+    padding: 0;
+    padding-top: $padding;
+  }
+  select, textarea, input, #signup-domain {
+    margin: 0;
+    padding: ($half-padding - $border + 2) ($padding - $border);
+  }
+  #signup-domain {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  input[type=checkbox], input[type=radio] {
+    width: 32px;
+    height: 20px;
+    margin: 0;
+    position: relative;
+    top: 6px;
+  }
+
+  .filled-in, .invalid, input.validated, .checking, input.valid_input {
+    /* override application.css, copied from theme */
+    background: none;
+    border: $border solid #999;
+    color: inherit;
+    padding: ($half-padding - $border + 2) ($padding - $border);
+  }
+
+  .loading {
+    cursor: progress;
+    background: transparent url(/images/loading.gif) no-repeat scroll right 0px;
+  }
+
+  .help-text {
+    margin-bottom: $half-margin;
+
+    &#help-wait-membership {
+      margin-top: $margin;
+    }
+  }
+
+  small#signup-balloon, small#password-balloon, small#password-confirmation-balloon, small#email-balloon, small#name-balloon {
+    right: 80px;
+  }
+
+  .signup-step {
+    padding-left: $module01;
+    padding-right: $module01;
+    padding-top: $padding;
+    padding-bottom: $padding;
+    border: $border solid #CDCDCD;
+    border-radius: $border-radius;
+    margin-bottom: $margin;
+
+    &#first-step,
+    &#second-step {
+      background-position: 0px 0px;
+    }
+    &#first-step {
+      background: url(/images/blocks/1.png) no-repeat;
+
+      #user_login {
+        margin: 0;
+      }
+
+      #signup-form-profile {
+        margin: 0;
+      }
+    }
+    &#second-step {
+      min-height: 44*$base;
+      background: url(/images/blocks/2.png) no-repeat;
+
+      #enterprise-find {
+        display: none;
+      }
+
+      #enterprise-results {
+
+        .result {
+          margin-top: $half-margin;
+
+          img {
+            vertical-align: middle;
+            width: 32px;
+            height: 32px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.escambo-plugin-has-exchanged {
+  background-image: url($image-trash);
+}
+
+/* New enterprise page */
+
+#escambo-new-enterprise {
+
+  form {
+
+    input[type=submit] {
+      @extend .action-button;
+    }
+
+    .field-with-privacy-selector:hover {
+      background: none;
+    }
+  }
+
+}
+
+/* Profile homepage */
+
+#escambo-enterprise-items {
+  float: left;
+  width: $module07 + $padding;
+  margin-right: $half-margin;
+
+  h3 {
+    display: inline-block;
+    padding-left: $padding;
+  }
+  h3, .add {
+    margin-right: $half-margin;
+  }
+  .see-all {
+    @extend .pstyle-tm1;
+  }
+
+  #offers, #knowledges, #interests {
+    margin-bottom: $margin;
+  }
+
+  .escambo-snippet {
+    .second-column {
+      width: $module03;
+    }
+    .third-column {
+      width: $module02 - $padding;
+    }
+  }
+}
+#escambo-enterprise-info {
+  float: left;
+
+  h3 {
+    visibility: hidden;
+  }
+  .sidebar {
+    width: $module03;
+    padding: $padding - $border;
+    border: $border solid $color-profile-info-border;
+    background: $color-profile-info-bg;
+
+    h4 {
+      padding: 0;
+    }
+
+    .info, .evaluation, .currencies {
+      border-bottom: $border solid $color-profile-info-border;
+      padding-bottom: $padding;
+      margin-bottom: $padding;
+    }
+
+    .info {
+
+      .description {
+        padding-bottom: $padding;
+      }
+
+      .contact-button a {
+        @extend .action-button;
+        margin-bottom: $margin;
+        display: block;
+      }
+
+      .label {
+        font-weight: bold;
+      }
+
+      .state, .city, .address, .phone1, .phone2, .email, .site {
+        float: none;
+        clear: both;
+        margin-bottom: $half-margin;
+
+        &.site {
+          margin-bottom: 0;
+        }
+      }
+      .state, .city, .phone1, .phone2 {
+        float: left;
+        clear: none;
+        display: inline-block;
+        width: $module;
+      }
+      .state, .phone1 {
+        margin-right: $margin;
+      }
+      .city {
+        width: $module02;
+      }
+    }
+
+    .currencies {
+      position: relative;
+
+      .currency-item {
+
+        .symbol, .name {
+          padding: $half-padding/2 $padding;
+          padding-left: 0;
+        }
+        .symbol {
+          a {
+            text-decoration: none;
+          }
+        }
+        .name {
+        }
+        .popin {
+
+          .currency-popin {
+            &.current {
+              top: $margin;
+              left: -$margin;
+            }
+          }
+        }
+      }
+    }
+
+    .members {
+    }
+  }
+}
+
+/* Members */
+.escambo-profile-member {
+  @extend .container-clean;
+  background: $color-user-bg;
+  height: 8*$base;
+  border: $border solid $color-user-border;
+  width: $module03;
+  margin-bottom: $half-margin;
+  &:last-child { margin-bottom: 0; }
+
+  .profile-image {
+    float: left;
+    height: 8*$base;
+    width: 8*$base;
+  }
+  .right {
+    float: left;
+    width: $module02 - 2*$padding;
+    height: 8*$base - 2*($padding - $border);
+    padding: $padding - $border;
+    position: relative;
+
+    .name {
+      display: block;
+    }
+    .action-button {
+      width: $module02 - 4*$padding;
+      position: absolute;
+      left: $padding;
+      bottom: $padding - $border;
+    }
+  }
+}
+
+#escambo-members {
+  h3 {
+    display: inline-block;
+  }
+}
+#escambo-add-member {
+  .icon-cancel {
+    display: none;
+  }
+}
+
+/* Snippets */
+
+.product-snippet {
+  background: $color-offer-bg;
+  padding: $padding - $border;
+  border: $border solid $color-offer-label;
+  border-radius: 5px;
+
+  .label {
+    background: $color-offer-label;
+  }
+  .first-column {
+    height: $module02;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: $module02; /* not css3 enabled */
+    background-size: contain;
+  }
+}
+.cms-learning-plugin-learning-snippet {
+  background: $color-knowledge-bg;
+  padding: $padding - 2*$border;
+  border: 2*$border dotted $color-knowledge-label;
+
+  .label {
+    background: $color-knowledge-label;
+  }
+}
+.sniffer-plugin-interest-snippet {
+  background: $color-interest-bg;
+  padding: $padding - 2*$border;
+  border: 2*$border dashed $color-interest-label;
+
+  .label {
+    background: $color-interest-label;
+  }
+}
+
+.escambo-snippet {
+  margin-bottom: $half-margin;
+  min-height: 7*$base;
+  position: relative;
+
+  .first-column, .second-column, .third-column {
+    float: left;
+    min-height: $module;
+  }
+  .first-column {
+    width: $module02;
+    margin-right: $margin;
+
+    .label {
+      text-transform: uppercase;
+      padding: $padding;
+      margin: -$padding;
+      color: white;
+      display: inline-block;
+    }
+  }
+  .second-column {
+    width: $module06;
+    margin-right: $margin;
+
+    .descripxion, .local {
+      margin-top: $margin;
+      @extend .pstyle-tm2;
+    }
+  }
+  .third-column {
+    width: $module02;
+    margin-bottom: $margin;
+  }
+
+  .exchange {
+    position: absolute;
+    bottom: $padding;
+    right: $padding;
+  }
+}
+
+/* Search */
+
+.controller-search {
+
+  h1 {
+    padding-left: $padding;
+  }
+
+  #escambo-search-form {
+    //@extend .sniffer-search-box;
+    margin: -$padding;
+    margin-top: $margin;
+    margin-bottom: $margin;
+
+    form {
+      .search-field {
+        #search-input {
+          @extend .sniffer-search-input;
+        }
+        input[type=submit] {
+          //@extend .sniffer-search-submit;
+        }
+      }
+    }
+  }
+
+  #search-column-left {
+    display: none;
+  }
+  #search-column-right {
+    float: none;
+    width: auto;
+  }
+
+  .search-results-header {
+    padding-left: $padding;
+  }
+  #search-results {
+    padding-left: $padding;
+
+    li.search-profile-item {
+      display: inline-block;
+      margin-top: $half-margin;
+
+      .escambo-plugin-profile-block {
+        margin-bottom: 0;
+        margin-right: $half-margin;
+      }
+    }
+  }
+}

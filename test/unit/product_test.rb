@@ -117,7 +117,7 @@ class ProductTest < ActiveSupport::TestCase
     enterprise.expects(:public_profile_url).returns({})
 
     product.expects(:id).returns(999)
-    product.expects(:enterprise).returns(enterprise)
+    product.expects(:profile).returns(enterprise)
     assert_equal({:controller => 'manage_products', :action => 'show', :id => 999}, product.url)
   end
 
@@ -130,7 +130,7 @@ class ProductTest < ActiveSupport::TestCase
     e1.public_profile = false
     e1.save!; p1.reload;
 
-    assert !p1.public?
+    refute p1.public?
   end
 
   should 'accept prices in american\'s or brazilian\'s currency format' do
@@ -169,16 +169,6 @@ class ProductTest < ActiveSupport::TestCase
     product.valid?
 
     assert_equal @product_category.name, product.name
-  end
-
-  should 'escape malformed html tags' do
-    product = build(Product, :product_category => @product_category)
-    product.name = "<h1 Malformed >> html >< tag"
-    product.description = "<h1 Malformed</h1>><<<a>> >> html >< tag"
-    product.valid?
-
-    assert_no_match /[<>]/, product.name
-    assert_no_match /[<>]/, product.description
   end
 
   should 'use name of category when has no name yet' do
@@ -267,7 +257,7 @@ class ProductTest < ActiveSupport::TestCase
 
   should 'has basic info if filled unit, price or discount' do
     product = Product.new
-    assert !product.has_basic_info?
+    refute product.has_basic_info?
 
     product = build(Product, :unit => Unit.new)
     assert product.has_basic_info?
@@ -349,7 +339,7 @@ class ProductTest < ActiveSupport::TestCase
     product = fast_create(Product, :price => 30.0)
 
     first = fast_create(Input, :product_id => product.id, :product_category_id => fast_create(ProductCategory).id, :price_per_unit => 20.0, :amount_used => 1)
-    assert !Product.find(product.id).price_described?
+    refute Product.find(product.id).price_described?
 
     second = fast_create(Input, :product_id => product.id, :product_category_id => fast_create(ProductCategory).id, :price_per_unit => 10.0, :amount_used => 1)
     assert Product.find(product.id).price_described?
@@ -375,7 +365,7 @@ class ProductTest < ActiveSupport::TestCase
     cost = fast_create(ProductionCost, :owner_id => Environment.default.id, :owner_type => 'Environment')
     cost2 = fast_create(ProductionCost, :owner_id => Environment.default.id, :owner_type => 'Environment')
     price_detail = product.price_details.create(:production_cost_id => cost.id, :price => 10)
-    assert !product.price_details.empty?
+    refute product.price_details.empty?
 
     product.update_price_details([{:production_cost_id => cost.id, :price => 20}, {:production_cost_id => cost2.id, :price => 30}])
     assert_equal 20, product.price_details.find_by_production_cost_id(cost.id).price
@@ -575,6 +565,70 @@ class ProductTest < ActiveSupport::TestCase
     assert_includes products, p1
     assert_includes products, p2
     assert_includes products, p3
+  end
+
+  should 'fetch products from organizations that are visible for a user' do
+    person = create_user('some-person').person
+    admin = create_user('some-admin').person
+    env_admin = create_user('env-admin').person
+    env = Environment.default
+
+    e1 = fast_create(Enterprise, :public_profile => true , :visible => true)
+    p1 = fast_create(Product, :profile_id => e1.id)
+    e1.affiliate(admin, Profile::Roles.admin(env.id))
+    e1.affiliate(person, Profile::Roles.member(env.id))
+
+    e2 = fast_create(Enterprise, :public_profile => true , :visible => true)
+    p2 = fast_create(Product, :profile_id => e2.id)
+    e3 = fast_create(Enterprise, :public_profile => false, :visible => true)
+    p3 = fast_create(Product, :profile_id => e3.id)
+
+    e4 = fast_create(Enterprise, :public_profile => false, :visible => true)
+    p4 = fast_create(Product, :profile_id => e4.id)
+    e4.affiliate(admin, Profile::Roles.admin(env.id))
+    e4.affiliate(person, Profile::Roles.member(env.id))
+
+    e5 = fast_create(Enterprise, :public_profile => true, :visible => false)
+    p5 = fast_create(Product, :profile_id => e5.id)
+    e5.affiliate(admin, Profile::Roles.admin(env.id))
+    e5.affiliate(person, Profile::Roles.member(env.id))
+
+    e6 = fast_create(Enterprise, :enabled => false, :visible => true)
+    p6 = fast_create(Product, :profile_id => e6.id)
+    e6.affiliate(admin, Profile::Roles.admin(env.id))
+
+    e7 = fast_create(Enterprise, :public_profile => false, :visible => false)
+    p7 = fast_create(Product, :profile_id => e7.id)
+
+    Environment.default.add_admin(env_admin)
+
+    products_person    = Product.visible_for_person(person)
+    products_admin     = Product.visible_for_person(admin)
+    products_env_admin = Product.visible_for_person(env_admin)
+
+    assert_includes     products_person,    p1
+    assert_includes     products_admin,     p1
+    assert_includes     products_env_admin, p1
+
+    assert_includes     products_person,    p2
+    assert_includes     products_env_admin, p2
+    assert_not_includes products_person,    p3
+    assert_includes     products_env_admin, p3
+
+    assert_includes     products_person,    p4
+    assert_includes     products_admin,     p4
+    assert_includes     products_env_admin, p4
+
+    assert_not_includes products_person,    p5
+    assert_includes     products_admin,     p5
+    assert_includes     products_env_admin, p5
+
+    assert_not_includes products_person,    p6
+    assert_includes     products_admin,     p6
+    assert_includes     products_env_admin, p6
+
+    assert_not_includes products_person,    p7
+    assert_includes     products_env_admin, p7
   end
 
 end

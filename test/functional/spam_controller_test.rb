@@ -10,7 +10,7 @@ class SpamControllerTest < ActionController::TestCase
     @article = fast_create(TextileArticle, :profile_id => @community.id)
     @spam_comment = fast_create(Comment, :source_id => @article.id, :spam => true, :name => 'foo', :email => 'foo@example.com')
 
-    @spam_suggest_article = SuggestArticle.create!(:name => 'spammer', :article_name => 'Spam article', :email => 'spammer@shady.place', :article_body => "Something you don't need", :target => @community, :spam => true)
+    @spam_suggest_article = SuggestArticle.create!(:name => 'spammer', :article => {:name => 'Spam article', :body => "Something you don't need"}, :email => 'spammer@shady.place', :target => @community, :spam => true)
     login_as @profile.identifier
   end
 
@@ -40,13 +40,13 @@ class SpamControllerTest < ActionController::TestCase
   test "should remove comments" do
     post :index, :profile => @community.identifier, :remove_comment => @spam_comment.id
 
-    assert !Comment.exists?(@spam_comment.id)
+    refute Comment.exists?(@spam_comment.id)
   end
 
   test "should remove suggest articles" do
     post :index, :profile => @community.identifier, :remove_task => @spam_suggest_article.id
 
-    assert !SuggestArticle.exists?(@spam_suggest_article.id)
+    refute SuggestArticle.exists?(@spam_suggest_article.id)
   end
 
   should 'properly render spam that have replies' do

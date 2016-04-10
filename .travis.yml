@@ -1,41 +1,60 @@
+# noosfero-ecosol: only test on specific branches
 branches:
   except:
     - master
+    - next
 
 notifications:
-  email:
-    - braulio@eita.org.br
+  irc:
+    channels:
+      - "chat.freenode.net#noosfero"
+      - "chat.freenode.net#noosfero-br"
+    template:
+      - "%{repository_slug} %{branch} %{commit} %{commit_subject} - %{result} %{build_url}"
 
 language: ruby
 rvm:
-  - ree
+  - 2.2.3
 
+sudo: false
+addons:
+  apt:
+    packages:
+      - po4a
+      - iso-codes
+      - tango-icon-theme
+      - pidgin-data
+      # for gem extensions
+      - libmagickwand-dev
+      - libpq-dev
+      - libreadline-dev
+      - libsqlite3-dev
+      - libxslt1-dev
+
+# workaround for https://github.com/travis-ci/travis-ci/issues/4536
 before_install:
-# dependencies
-  - gem update --system 1.4.1
-  - sudo apt-get update
-  - sudo apt-get -y install po4a iso-codes tango-icon-theme openjdk-6-jre curl wget
-  - sudo apt-get -y install libmagickwand-dev libpq-dev libreadline-dev libsqlite3-dev libxslt1-dev
-# postgres setup
-  - psql -c 'create database myapp_test;' -U postgres
-# selenium support
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+  - export GEM_HOME=$PWD/vendor/bundle/ruby/2.2.0
+  - gem install bundler
+cache: bundler
 
 before_script:
-  - mkdir -p tmp/pids log
+  - mkdir -p tmp/{pids,cache} log
+  - script/noosfero-plugins disableall
+  #- bundle exec rake makemo &>/dev/null
+# database
   - cp config/database.yml.travis config/database.yml
-  - bundle exec rake db:schema:load --trace
-  #- bundle exec script/noosfero-plugins enableall
-  #- bundle exec rake db:migrate --trace
+  - psql -c 'create database myapp_test;' -U postgres
+  - bundle exec rake db:schema:load &>/dev/null
+  - bundle exec rake db:migrate &>/dev/null
 
 env:
   - TASK=test:units
   - TASK=test:functionals
   - TASK=test:integration
-  - TASK=cucumber
+  - TASK=cucumber LANG=en
   - TASK=selenium
-  - TASK=test:noosfero_plugins
+  - TASK=test:noosfero_plugins BUNDLE_OPTS=install
 
 script:
-  - bundle exec rake $TASK --trace
+  - bundle exec rake $TASK
+

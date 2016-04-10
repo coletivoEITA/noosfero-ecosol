@@ -1,16 +1,9 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require File.dirname(__FILE__) + '/../../controllers/myprofile/community_track_plugin_myprofile_controller'
-
-# Re-raise errors caught by the controller.
-class CommunityTrackPluginMyprofileController; def rescue_action(e) raise e end; end
+require_relative '../test_helper'
+require_relative '../../controllers/myprofile/community_track_plugin_myprofile_controller'
 
 class CommunityTrackPluginMyprofileControllerTest < ActionController::TestCase
 
   def setup
-    @controller = CommunityTrackPluginMyprofileController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
-
     @profile = fast_create(Community)
     @track = create_track('track', @profile)
 

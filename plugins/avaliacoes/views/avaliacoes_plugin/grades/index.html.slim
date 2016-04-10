@@ -1,0 +1,10 @@
+= render 'shared/bootstrap_table'
+
+= js_translations_include
+= js_translations_include plugin: :avaliacoes
+= javascript_include_tag 'plugins/avaliacoes/javascripts/avaliacoes'
+
+avaliacoes-student-grades
+javascript:
+  riot.mount($('avaliacoes-student-grades').get(0), #{AvaliacoesPlugin::StudentSerializer.new(@student.avaliacoes_student).to_hash.to_json})
+

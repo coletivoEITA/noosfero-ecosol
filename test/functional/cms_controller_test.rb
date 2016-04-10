@@ -1,9 +1,6 @@
 require_relative "../test_helper"
 require 'cms_controller'
 
-# Re-raise errors caught by the controller.
-class CmsController; def rescue_action(e) raise e end; end
-
 class CmsControllerTest < ActionController::TestCase
 
   include NoosferoTestHelper
@@ -141,7 +138,7 @@ class CmsControllerTest < ActionController::TestCase
     profile.description = 'a' * 600
     profile.save(:validate => false)
 
-    assert !profile.valid?
+    refute profile.valid?
     assert_not_equal a, profile.home_page
 
     post :set_home_page, :profile => profile.identifier, :id => a.id
@@ -221,6 +218,20 @@ class CmsControllerTest < ActionController::TestCase
     a.reload
 
     assert_equal profile, a.last_changed_by
+  end
+
+  should 'be able to set label to article image' do
+    login_as(profile.identifier)
+    post :new, :type => TextileArticle.name, :profile => profile.identifier,
+         :article => {
+           :name => 'adding-image-label',
+           :image_builder => {
+             :uploaded_data => fixture_file_upload('/files/tux.png', 'image/png'),
+             :label => 'test-label'
+           }
+         }
+     a = Article.last
+     assert_equal a.image.label, 'test-label'
   end
 
   should 'edit by using the correct template to display the editor depending on the mime-type' do
@@ -316,6 +327,20 @@ class CmsControllerTest < ActionController::TestCase
     assert_difference 'UploadedFile.count' do
       post :new, :type => UploadedFile.name, :profile => profile.identifier, :article => { :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png')}
     end
+  end
+
+  should 'be able to edit an image label' do
+    image = fast_create(Image, :content_type => 'image/png', :filename => 'event-image.png', :label => 'test_label', :size => 1014)
+    article = fast_create(Article, :profile_id => profile.id, :name => 'test_label_article', :body => 'test_content')
+    article.image = image
+    article.save
+    assert_not_nil article
+    assert_not_nil article.image
+    assert_equal 'test_label', article.image.label
+
+    post :edit, :profile => profile.identifier, :id => article.id, :article => {:image_builder => { :label => 'test_label_modified'}}
+    article.reload
+    assert_equal 'test_label_modified', article.image.label
   end
 
    should 'be able to upload more than one file at once' do
@@ -503,7 +528,7 @@ class CmsControllerTest < ActionController::TestCase
     post :new, :type => TextileArticle.name, :profile => profile.identifier, :article => { :name => 'adding-categories-test', :category_ids => [ c1.id, c3.id, c3.id ] }
 
     saved = profile.articles.find_by_name('adding-categories-test')
-    assert_equal [c1, c3], saved.categories
+    assert_equal [c1, c3], saved.categories.all
   end
 
   should 'filter html with white_list from tiny mce article name' do
@@ -512,18 +537,18 @@ class CmsControllerTest < ActionController::TestCase
   end
 
   should 'filter html with white_list from tiny mce article abstract' do
-    post :new, :type => 'TinyMceArticle', :profile => profile.identifier, :article => { :name => 'article', :abstract => "<script>alert('test')</script> article", :body => 'the text of the article ...' }
-    assert_equal " article", assigns(:article).abstract
+    post :new, :type => 'TinyMceArticle', :profile => profile.identifier, :article => { :name => 'article', :abstract => "<script>alert('text')</script> article", :body => 'the text of the article ...' }
+    assert_equal "alert('text') article", assigns(:article).abstract
   end
 
   should 'filter html with white_list from tiny mce article body' do
     post :new, :type => 'TinyMceArticle', :profile => profile.identifier, :article => { :name => 'article', :abstract => 'abstract', :body => "the <script>alert('text')</script> of article ..." }
-    assert_equal "the  of article ...", assigns(:article).body
+    assert_equal "the alert('text') of article ...", assigns(:article).body
   end
 
   should 'not filter html tags permitted from tiny mce article body' do
     post :new, :type => 'TinyMceArticle', :profile => profile.identifier, :article => { :name => 'article', :abstract => 'abstract', :body => "<b>the</b> <script>alert('text')</script> <strong>of</strong> article ..." }
-    assert_equal "<b>the</b>  <strong>of</strong> article ...", assigns(:article).body
+    assert_equal "<b>the</b> alert('text') <strong>of</strong> article ...", assigns(:article).body
   end
 
   should 'sanitize tags' do
@@ -532,8 +557,17 @@ class CmsControllerTest < ActionController::TestCase
   end
 
   should 'keep informed parent_id' do
+    fast_create(:blog, :name=>"Sample blog", :profile_id=>@profile.id)
+
+    profile.home_page = profile.blogs.find_by_name "Sample blog"
+    profile.save!
+
     get :new, :profile => @profile.identifier, :parent_id => profile.home_page.id, :type => 'TextileArticle'
-    assert_tag :tag => 'input', :attributes => { :name => 'parent_id', :value => profile.home_page.id }
+    assert_tag :tag => 'select',
+               :attributes => { :id => 'article_parent_id' },
+               :child => {
+                  :tag => "option", :attributes => {:value => profile.home_page.id, :selected => "selected"}
+               }
   end
 
   should 'list folders before others' do
@@ -751,9 +785,9 @@ class CmsControllerTest < ActionController::TestCase
     post :new, :profile => profile.identifier, :type => 'TextileArticle', :parent_id => folder.id, :article => { :name => 'new-private-article'}
     folder.reload
 
-    assert !assigns(:article).published?
+    refute assigns(:article).published?
     assert_equal 'new-private-article', folder.children[0].name
-    assert !folder.children[0].published?
+    refute folder.children[0].published?
   end
 
   should 'publish the article in the selected community if community is not moderated' do
@@ -925,13 +959,24 @@ class CmsControllerTest < ActionController::TestCase
     assert_no_tag :tag => 'a', :attributes => { :href => "/myprofile/#{profile.identifier}/cms/edit/#{profile.blog.feed.id}" }
   end
 
-  should 'remove the image of an article' do
+  should 'remove the image of a blog' do
     blog = create(Blog, :profile_id => profile.id, :name=>'testblog', :image_builder => { :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png')})
     blog.save!
-    post :edit, :profile => profile.identifier, :id => blog.id, :remove_image => 'true'
+    post :edit, :profile => profile.identifier, :id => blog.id, :article => {:image_builder => { :remove_image => 'true'}}
     blog.reload
 
     assert_nil blog.image
+  end
+
+  should 'remove the image of an article' do
+    image = fast_create(Image, :content_type => 'image/png', :filename => 'event-image.png', :label => 'test_label', :size => 1014)
+    article = fast_create(Article, :profile_id => profile.id, :name => 'test_label_article', :body => 'test_content')
+    article.image = image
+    article.save
+    post :edit, :profile => profile.identifier, :id => article.id, :article => {:image_builder => { :remove_image => 'true'}}
+    article.reload
+
+    assert_nil article.image
   end
 
   should 'update feed options by edit blog form' do
@@ -1209,7 +1254,7 @@ class CmsControllerTest < ActionController::TestCase
 
     get :new, :profile => c.identifier
     assert_response :forbidden
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
   end
 
   should 'allow user with permission create an article in community' do
@@ -1231,7 +1276,7 @@ class CmsControllerTest < ActionController::TestCase
 
     get :edit, :profile => c.identifier, :id => a.id
     assert_response :forbidden
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
   end
 
   should 'not allow user edit article if he is owner but has no publish permission' do
@@ -1242,7 +1287,7 @@ class CmsControllerTest < ActionController::TestCase
 
     get :edit, :profile => c.identifier, :id => a.id
     assert_response :forbidden
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
   end
 
   should 'allow user edit article if he is owner and has publish permission' do
@@ -1282,7 +1327,7 @@ class CmsControllerTest < ActionController::TestCase
 
     UploadedFile.attachment_options[:thumbnails].each do |suffix, size|
       assert File.exists?(UploadedFile.find(file_1.id).public_filename(suffix))
-      assert !File.exists?(UploadedFile.find(file_2.id).public_filename(suffix))
+      refute File.exists?(UploadedFile.find(file_2.id).public_filename(suffix))
     end
     file_1.destroy
     file_2.destroy
@@ -1407,20 +1452,55 @@ class CmsControllerTest < ActionController::TestCase
     assert_template 'suggest_an_article'
   end
 
+  should 'display name and email when a not logged in user suggest an article' do
+    logout
+    get :suggest_an_article, :profile => profile.identifier, :back_to => 'action_view'
+
+    assert_select '#task_name'
+    assert_select '#task_email'
+  end
+
+  should 'do not display name and email when a logged in user suggest an article' do
+    get :suggest_an_article, :profile => profile.identifier, :back_to => 'action_view'
+
+    assert_select '#task_name', 0
+    assert_select '#task_email', 0
+  end
+
+  should 'display captcha when suggest an article for not logged in users' do
+    logout
+    get :suggest_an_article, :profile => profile.identifier, :back_to => 'action_view'
+
+    assert_select '#dynamic_recaptcha'
+  end
+
+  should 'not display captcha when suggest an article for logged in users' do
+    get :suggest_an_article, :profile => profile.identifier, :back_to => 'action_view'
+
+    assert_select '#dynamic_recaptcha', 0
+  end
+
   should 'render TinyMce Editor on suggestion of article' do
     logout
     get :suggest_an_article, :profile => profile.identifier
 
-    assert_tag :tag => 'textarea', :attributes => { :name => /article_abstract/, :class => 'mceEditor' }
-    assert_tag :tag => 'textarea', :attributes => { :name => /article_body/, :class => 'mceEditor' }
+    assert_tag :tag => 'textarea', :attributes => { :name => /task\[article\]\[abstract\]/, :class => 'mceEditor' }
+    assert_tag :tag => 'textarea', :attributes => { :name => /task\[article\]\[body\]/, :class => 'mceEditor' }
   end
 
   should 'create a task suggest task to a profile' do
     c = Community.create!(:name => 'test comm', :identifier => 'test_comm', :moderated_articles => true)
 
     assert_difference 'SuggestArticle.count' do
-      post :suggest_an_article, :profile => c.identifier, :back_to => 'action_view', :task => {:article_name => 'some name', :article_body => 'some body', :email => 'some@localhost.com', :name => 'some name'}
+      post :suggest_an_article, :profile => c.identifier, :back_to => 'action_view', :task => {:article => {:name => 'some name', :body => 'some body'}, :email => 'some@localhost.com', :name => 'some name'}
     end
+  end
+
+  should 'create suggest task with logged in user as the article author' do
+    c = Community.create!(:name => 'test comm', :identifier => 'test_comm', :moderated_articles => true)
+
+    post :suggest_an_article, :profile => c.identifier, :back_to => 'action_view', :task => {:article => {:name => 'some name', :body => 'some body'}}
+    assert_equal profile, SuggestArticle.last.requestor
   end
 
   should 'suggest an article from a profile' do
@@ -1490,7 +1570,7 @@ class CmsControllerTest < ActionController::TestCase
     profile.articles << Blog.new(:name => 'Blog for test', :profile => profile, :display_posts_in_current_language => true)
     post :edit, :profile => profile.identifier, :id => profile.blog.id, :article => { :display_posts_in_current_language => false }
     profile.blog.reload
-    assert !profile.blog.display_posts_in_current_language?
+    refute profile.blog.display_posts_in_current_language?
   end
 
   should 'update to true blog display posts in current language setting' do
@@ -1518,11 +1598,11 @@ class CmsControllerTest < ActionController::TestCase
     assert_no_tag :tag => 'input', :attributes => { :type => 'checkbox', :name => 'article[display_posts_in_current_language]', :checked => 'checked' }
   end
 
-  should 'not display accept comments option when creating forum post' do
+  should 'display accept comments option when creating forum post' do
     profile.articles << f = Forum.new(:name => 'Forum for test')
     get :new, :profile => profile.identifier, :type => 'TinyMceArticle', :parent_id => f.id
-    assert :tag => 'input', :attributes => {:name => 'article[accept_comments]', :value => 1, :type => 'hidden'}
-    assert_no_tag :tag => 'input', :attributes => {:name => 'article[accept_comments]', :value => 1, :type => 'checkbox'}
+    assert_no_tag :tag => 'input', :attributes => {:name => 'article[accept_comments]', :value => 1, :type => 'hidden'}
+    assert_tag :tag => 'input', :attributes => {:name => 'article[accept_comments]', :value => 1, :type => 'checkbox'}
   end
 
   should 'display accept comments option when creating an article that is not a forum post' do
@@ -1719,7 +1799,7 @@ class CmsControllerTest < ActionController::TestCase
 
     get :upload_files, :profile => c.identifier, :parent_id => a.id
     assert_response :forbidden
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
   end
 
   should 'filter profile folders to select' do
@@ -1820,10 +1900,37 @@ class CmsControllerTest < ActionController::TestCase
   end
 
   should 'return tags found' do
-    tag = mock; tag.stubs(:name).returns('linux')
-    ActsAsTaggableOn::Tag.stubs(:find).returns([tag])
+    a = profile.articles.create(:name => 'blablabla')
+    a.tags.create! name: 'linux'
     get :search_tags, :profile => profile.identifier, :term => 'linux'
     assert_equal '[{"label":"linux","value":"linux"}]', @response.body
+  end
+
+  should 'clone an article with its parent' do
+    login_as(profile.identifier)
+
+    f = Folder.new(:name => 'f')
+    profile.articles << f
+    f.save!
+
+    post :new, :type => 'TinyMceArticle', :profile => profile.identifier, :parent_id => f.id,
+               :article => { :name => 'Main Article', :body => 'some content' }
+
+    main_article = profile.articles.find_by_name('Main Article')
+    assert_not_nil main_article
+
+    post :new, :type => 'TinyMceArticle', :profile => profile.identifier, :parent_id => f.id,
+               :id => main_article.id, :clone => true
+
+    cloned_main_article = profile.articles.find_by_name('Main Article')
+    assert_not_nil cloned_main_article
+
+    assert_equal main_article.parent_id, cloned_main_article.parent_id
+
+    get :new, :profile => profile.identifier, :id => cloned_main_article.id,
+              :clone => true, :type => 'TinyMceArticle'
+
+    assert_match main_article.body, @response.body
   end
 
   protected

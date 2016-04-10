@@ -3,14 +3,21 @@ class CreateCommunity < Task
   validates_presence_of :requestor_id, :target_id
   validates_presence_of :name
 
+  validates :requestor, kind_of: {kind: Person}
+  validates :target, kind_of: {kind: Environment}
+
   alias :environment :target
   alias :environment= :target=
 
+  attr_accessible :environment, :requestor, :target
+  attr_accessible :reject_explanation, :template_id
+
   acts_as_having_image
 
-  DATA_FIELDS = Community.fields + ['name', 'closed']
+  DATA_FIELDS = Community.fields + ['name', 'closed', 'description']
   DATA_FIELDS.each do |field|
     settings_items field.to_sym
+    attr_accessible field.to_sym
   end
 
   def validate
@@ -27,7 +34,7 @@ class CreateCommunity < Task
       ! DATA_FIELDS.include?(key.to_s)
     end
 
-    community.update_attributes(community_data)
+    community.update(community_data)
     community.image = image if image
     community.environment = self.environment
     community.save!

@@ -1,6 +1,6 @@
 require_relative "../test_helper"
 
-class ManageFriendshipsTest < ActionController::IntegrationTest
+class ManageFriendshipsTest < ActionDispatch::IntegrationTest
 
   def setup
     FriendsController.any_instance.stubs(:get_layout).returns('application')
@@ -31,7 +31,7 @@ class ManageFriendshipsTest < ActionController::IntegrationTest
     follow_redirect!
 
     assert assigns(:friends).empty?
-    assert !@person.is_a_friend?(@friend)
-    assert !@friend.is_a_friend?(@person)
+    refute @person.is_a_friend?(@friend)
+    refute @friend.is_a_friend?(@person)
   end
 end

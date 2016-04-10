@@ -19,13 +19,14 @@ debian/noosfero-check-dbconfig    usr/sbin
 debian/noosfero-console           usr/sbin
 debian/noosfero-runner            usr/sbin
 debian/noosfero.yml               etc/noosfero
-debian/thin.yml                   etc/noosfero
+debian/unicorn.rb                 etc/noosfero
 doc                               usr/share/noosfero
 doc/noosfero                      usr/share/noosfero/doc
 etc/init.d/noosfero               etc/init.d
 etc/logrotate.d/noosfero          etc/logrotate.d
 etc/noosfero/varnish-accept-language.vcl  etc/noosfero
 etc/noosfero/varnish-noosfero.vcl         etc/noosfero
+etc/awstats-noosfero.conf         etc/noosfero
 lib                               usr/share/noosfero
 locale                            usr/share/noosfero
 plugins                           usr/share/noosfero

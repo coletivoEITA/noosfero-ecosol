@@ -35,13 +35,13 @@ class ConsumersCoopPlugin::Import
         end
 
         address = "#{row[7]} - #{row[8]}"
-        profile_data = {:name => name, :zip_code => row[4], :city => row[5], :contact_phone => row[6], :address => address}
+        profile_data = {name: name, zip_code: row[4], city: row[5], contact_phone: row[6], address: address}
 
         p = proc{ puts 'ia mandar email mas nao vou mais' }
         User.send :define_method, :activate, &p
         User.send :define_method, :deliver_activation_code, &p
         User.send :define_method, :delay_activation_check, &p
-        u = User.new(:login => login, :email => email, :password => pass, :password_confirmation => pass, :terms_accepted => "1")
+        u = User.new(login: login, email: email, password: pass, password_confirmation: pass, terms_accepted: "1")
         u.terms_of_use = environment.terms_of_use
         u.environment = environment
         u.person_data = profile_data
@@ -59,27 +59,27 @@ class ConsumersCoopPlugin::Import
     end
 
     id_s = {}
-    CSV.readlines(supplier_csv,:headers => true).each do |row|
-      s = SuppliersPlugin::Supplier.create_dummy :consumer => profile, :name => row[1]
+    CSV.readlines(supplier_csv,headers: true).each do |row|
+      s = SuppliersPlugin::Supplier.create_dummy consumer: profile, name: row[1]
       id_s[row[0]] = s
       email = row[3]
       email = 'rede@terramater.org.br' if email.blank? or !email.include? '@'
       email = email.strip.split(';').first
       puts email if verbose
 
-      s.profile.update_attributes! :contact_phone => row[2], :contact_email => email
+      s.profile.update! contact_phone: row[2], contact_email: email
       profile.admins.each{ |a| s.profile.add_admin a }
     end
 
     id_p = {}
-    CSV.readlines(products_csv,:headers => true).each do |row|
+    CSV.readlines(products_csv,headers: true).each do |row|
       if row[1] =~  /(.+?) - (.+)/  # check for a description
         name = $1; description = $2
       else
         name = row[1]
         description = ''
       end
-      product = SuppliersPlugin::DistributedProduct.new :profile => profile, :name => name, :description => description, :available => row[2]
+      product = SuppliersPlugin::DistributedProduct.new profile: profile, name: name, description: description, available: row[2]
       puts row[1] if product.nil? and verbose
       id_p[row[0]] = product
     end
@@ -93,7 +93,7 @@ class ConsumersCoopPlugin::Import
       print " - p: #{row[2]}" if !row[2].nil? and verbose
       puts " - m: "+ row[3] if !row[3].nil? and verbose
       print "\n\n"
-      p.update_attributes :supplier_product => {:price => row[2], :margin_percentage => row[3]}
+      p.update supplier_product: {price: row[2], margin_percentage: row[3]}
       p.save!
     end
 

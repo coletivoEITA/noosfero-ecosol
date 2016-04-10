@@ -1,0 +1,5 @@
+
+<%= labelled_fields_for(:enterprise_data, @enterprise) do |f| %>
+  <%= required f.text_field(:name, :rel => _('Enterprise name')) %>
+  <%= render :partial => 'shared/organization_custom_fields', :locals => { :f => f, :object_name => :enterprise_data, :profile => @enterprise } %>
+<% end %>

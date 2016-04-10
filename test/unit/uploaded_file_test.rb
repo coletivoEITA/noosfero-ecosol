@@ -3,7 +3,8 @@ require_relative "../test_helper"
 class UploadedFileTest < ActiveSupport::TestCase
 
   def setup
-    @profile = create_user('testinguser').person
+    User.current = user = create_user 'testinguser'
+    @profile = user.person
   end
   attr_reader :profile
 
@@ -74,7 +75,7 @@ class UploadedFileTest < ActiveSupport::TestCase
   should 'not upload files bigger than max_size' do
     f = build(UploadedFile, :profile => @profile, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
     f.expects(:size).returns(UploadedFile.attachment_options[:max_size] + 1024)
-    assert !f.valid?
+    refute f.valid?
   end
 
   should 'upload files smaller than max_size' do
@@ -147,7 +148,7 @@ class UploadedFileTest < ActiveSupport::TestCase
   should 'use name as title by default but cut down the title' do
     upload = build(UploadedFile, :uploaded_data => fixture_file_upload('/files/AGENDA_CULTURA_-_FESTA_DE_VAQUEIROS_PONTO_DE_SERRA_PRETA_BAIXA.txt'))
     upload.valid?
-    assert_blank upload.errors[:title]
+    assert upload.errors[:title].blank?
   end
 
   should 'create thumbnails after processing jobs' do
@@ -175,7 +176,7 @@ class UploadedFileTest < ActiveSupport::TestCase
   end
 
   should 'return false by default in thumbnails_processed' do
-    assert !UploadedFile.new.thumbnails_processed
+    refute UploadedFile.new.thumbnails_processed
   end
 
   should 'set thumbnails_processed to true' do
@@ -229,7 +230,7 @@ class UploadedFileTest < ActiveSupport::TestCase
   should 'track action when a published image is uploaded in a gallery' do
     p = fast_create(Gallery, :profile_id => @profile.id)
     f = create(UploadedFile, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :parent => p, :profile => @profile)
-    ta = ActionTracker::Record.last(:conditions => { :verb => "upload_image" })
+    ta = ActionTracker::Record.where(verb: "upload_image").last
     assert_kind_of String, ta.get_thumbnail_path[0]
     assert_equal [f.reload.view_url], ta.get_view_url
     assert_equal [p.reload.url], ta.get_parent_url
@@ -240,26 +241,26 @@ class UploadedFileTest < ActiveSupport::TestCase
     ActionTracker::Record.delete_all
     p = fast_create(Gallery, :profile_id => @profile.id)
     f = create(UploadedFile, :uploaded_data => fixture_file_upload('/files/test.txt', 'text/plain'), :parent => p, :profile => @profile)
-    assert_nil ActionTracker::Record.last(:conditions => { :verb => "upload_image" })
+    assert_nil ActionTracker::Record.where(verb: "upload_image").last
   end
 
   should 'not track action when has no parent' do
     f = create(UploadedFile, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :parent => nil, :profile => @profile)
-    assert_nil ActionTracker::Record.last(:conditions => { :verb => "upload_image" })
+    assert_nil ActionTracker::Record.where(verb: "upload_image").last
   end
 
   should 'not track action when is not published' do
     ActionTracker::Record.delete_all
     p = fast_create(Gallery, :profile_id => @profile.id)
     f = create(UploadedFile, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :parent => p, :profile => @profile, :published => false)
-    assert_nil ActionTracker::Record.last(:conditions => { :verb => "upload_image" })
+    assert_nil ActionTracker::Record.where(verb: "upload_image").last
   end
 
   should 'not track action when parent is not gallery' do
     ActionTracker::Record.delete_all
     p = fast_create(Folder, :profile_id => @profile.id)
     f = create(UploadedFile, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :parent => p, :profile => @profile)
-    assert_nil ActionTracker::Record.last(:conditions => { :verb => "upload_image" })
+    assert_nil ActionTracker::Record.where(verb: "upload_image").last
   end
 
   should 'not crash if first paragraph called' do
@@ -346,13 +347,13 @@ class UploadedFileTest < ActiveSupport::TestCase
     'INVALID' => 5.megabytes,   # use default for invalid input
     '1ZYX'    => 5.megabytes,   # use default for invalid input
   }.each do |input,output|
-    test 'maximum upload size: convert %s into %s' % [input, output] do
+    should 'maximum upload size: convert %s into %s' % [input, output] do
       NOOSFERO_CONF.expects(:[]).with('max_upload_size').returns(input)
       assert_equal output, UploadedFile.max_size
     end
   end
-  test 'max_size should always return an integer' do
-    NOOSFERO_CONF.expects(:[]).with('max_upload_size').returns("0.5 GB")
+  should 'max_size should always return an integer' do
+    NOOSFERO_CONF.expects(:[]).with('max_upload_size').returns("0.5 GB").at_least_once
     assert_instance_of Fixnum, UploadedFile.max_size
   end
 

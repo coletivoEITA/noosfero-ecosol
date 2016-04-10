@@ -78,6 +78,7 @@ class FbAppPlugin::Auth < OauthClientPlugin::Auth
   end
 
   def schedule_exchange_token
+    return unless self.expires_at < Time.now
     self.delay(run_at: self.expires_at - 2.weeks).exchange_token_and_reschedule!
   end
 

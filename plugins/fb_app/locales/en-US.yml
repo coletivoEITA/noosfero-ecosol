@@ -16,13 +16,13 @@
           query: 'Catalog of products chosen by filter or free search'
     views:
       myprofile:
-        checking_auth: 'Checking authorization' 
-        different_login: 'But you are logged in on facebook as:' 
-        current_login: 'You are logged in on facebook as:' 
-        connect: 'I want to install the Cirandas app for Facebook' 
-        logged_connect: 'Connect this Facebook account with my user %{profile} at Cirandas' 
+        checking_auth: 'Checking authorization'
+        different_login: 'But you are logged in on facebook as:'
+        current_login: 'You are logged in on facebook as:'
+        connect: 'I want to install the Cirandas app for Facebook'
+        logged_connect: 'Connect this Facebook account with my user %{profile} at Cirandas'
         disconnect: 'Disconnect'
-        connect_to_another: 'Conect to another Facebook account' 
+        connect_to_another: 'Conect to another Facebook account'
         reconnect: 'Reconnect'
 
         timeline:
@@ -52,10 +52,10 @@
           confirm_removal_button: 'Yes, I want to delete this catalog'
           confirm_disconnect: "<p>Warning: If you disconnect your Cirandas account to this Facebook profile, all your catalogs will also be removed</p><p>And then, to really remove your catalogs (if they were created), you must go to the facebook page where it is, click at '<u>add or remove tabs</u>' and then remove the tab.</p><p>After that, you can come here and disconnect.</p><p>Are you sure you want to disconnect your Cirandas account to this Facebook profile?</p>"
           confirm_disconnect_button: 'Yes, I want to disconnect my Cirandas account from this Facebook profile'
-          
+
         catalog:
           see_page: 'See page on Facebook'
-          
+
         error:
           empty_title: 'Please add a title to your catalog.'
           empty_settings: 'Please choose SSE enterprises or search terms or filters for your catalog.'

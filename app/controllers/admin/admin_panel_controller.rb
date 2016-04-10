@@ -12,7 +12,7 @@ class AdminPanelController < AdminController
       if params[:environment][:languages]
         params[:environment][:languages] = params[:environment][:languages].map {|lang, value| lang if value=='true'}.compact
       end
-      if @environment.update_attributes(params[:environment])
+      if @environment.update(params[:environment])
         session[:notice] = _('Environment settings updated')
         redirect_to :action => 'index'
       end
@@ -54,7 +54,7 @@ class AdminPanelController < AdminController
 
      if request.post?
        env = environment
-       folders = params[:folders].map{|fid| Folder.find(:first, :conditions => {:profile_id => env.portal_community, :id => fid})} if params[:folders]
+       folders = env.portal_community.folders.where(id: params[:folders]).order(params[:folders].reverse.map{ |f| "id=#{f}" }) if params[:folders]
        env.portal_folders = folders
        if env.save
          session[:notice] = _('Saved the portal folders')
@@ -65,28 +65,10 @@ class AdminPanelController < AdminController
 
   def set_portal_news_amount
     if request.post?
-      if @environment.update_attributes(params[:environment])
+      if @environment.update(params[:environment])
         session[:notice] = _('Saved the number of news on folders')
         redirect_to :action => 'index'
       end
     end
-  end
-
-  def manage_organizations_status
-    scope = environment.organizations
-    @filter = params[:filter] || 'any'
-    @title = "Organization profiles"
-    @title = @title+" - "+@filter if @filter != 'any'
-
-    if @filter == 'enabled'
-      scope = scope.visible
-    elsif @filter == 'disabled'
-      scope = scope.disabled
-    end
-
-    scope = scope.order('name ASC')
-
-    @q = params[:q]
-    @collection = find_by_contents(:organizations, environment, scope, @q, {:per_page => 10, :page => params[:npage]})[:results]
   end
 end

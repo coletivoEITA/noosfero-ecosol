@@ -1,0 +1,13 @@
+en_US: &en_US
+  work_assignment_plugin:
+    views:
+      submissions:
+        work: 'File'
+        date: 'Submission date'
+        delete_confirm: "Are you sure you want to exclude this sent work?"
+        mark_as_read: 'ark as read'
+        unmark_as_read: 'Unmark as read'
+
+en:
+  <<: *en_US
+

@@ -8,14 +8,19 @@ class ApplicationController < ActionController::Base
   before_filter :init_noosfero_plugins
   before_filter :allow_cross_domain_access
 
-  before_filter :login_from_cookie
-  before_filter :login_required, :if => :private_environment?
+  include AuthenticatedSystem
+  before_filter :require_login_for_environment, :if => :private_environment?
 
   before_filter :check_admin
 
   before_filter :verify_members_whitelist, :if => [:private_environment?, :user]
+  before_filter :redirect_to_current_user
   before_filter :authorize_profiler if defined? Rack::MiniProfiler
   around_filter :set_time_zone
+
+  def require_login_for_environment
+    login_required
+  end
 
   def verify_members_whitelist
     render_access_denied unless @user_is_admin || environment.in_whitelist?(user)
@@ -60,7 +65,7 @@ class ApplicationController < ActionController::Base
 
   layout :get_layout
   def get_layout
-    return nil if request.format == :js or request.xhr?
+    return false if request.format == :js or request.xhr?
 
     theme_layout = theme_option(:layout)
     if theme_layout
@@ -84,18 +89,15 @@ class ApplicationController < ActionController::Base
   helper :language
 
   include DesignHelper
-
-  # Be sure to include AuthenticationSystem in Application Controller instead
-  include AuthenticatedSystem
   include PermissionCheck
 
   before_filter :set_locale
   def set_locale
     FastGettext.available_locales = environment.available_locales
-    FastGettext.default_locale = environment.default_locale
-    FastGettext.locale = (params[:lang] || session[:lang] || environment.default_locale || request.env['HTTP_ACCEPT_LANGUAGE'] || 'en')
-    I18n.locale = FastGettext.locale.to_s.gsub '_', '-'
-    I18n.default_locale = FastGettext.default_locale.to_s.gsub '_', '-'
+    FastGettext.default_locale = environment.default_locale || :en_US
+    FastGettext.locale = (params[:lang] || session[:lang] || environment.default_locale || request.env['HTTP_ACCEPT_LANGUAGE'] || :en_US)
+    I18n.locale = FastGettext.locale
+    I18n.default_locale = FastGettext.default_locale
     if params[:lang]
       session[:lang] = params[:lang]
     end
@@ -118,6 +120,20 @@ class ApplicationController < ActionController::Base
   helper_method :current_person, :current_person
 
   protected
+
+  before_filter :load_active_organization, except: :select_active_organization
+  def load_active_organization id = nil
+    return unless user
+    if id
+      @active_organization = environment.profiles.find_by_id id
+    elsif cookies[:active_organization]
+      @active_organization = environment.profiles.find_by_id cookies[:active_organization]
+    else
+      @active_organization = user.memberships.first
+    end
+    @active_organization = nil unless @active_organization and @active_organization.members.include? user
+    cookies[:active_organization] = @active_organization.id if @active_organization
+  end
 
   def verified_request?
     super || form_authenticity_token == request.headers['X-XSRF-TOKEN']
@@ -168,7 +184,7 @@ class ApplicationController < ActionController::Base
       if @domain.profile and params[:profile].present? and params[:profile] != @domain.profile.identifier
         @profile = @environment.profiles.find_by_identifier params[:profile]
         return render_not_found if @profile.blank?
-        redirect_to params.merge(:host => @profile.default_hostname, :protocol => @profile.default_protocol)
+        redirect_to url_for(params.merge host: @profile.default_hostname, protocol: @profile.default_protocol)
       end
     end
   end
@@ -183,7 +199,8 @@ class ApplicationController < ActionController::Base
   def render_not_found(path = nil)
     @no_design_blocks = true
     @path ||= request.path
-    render :template => 'shared/not_found.html.erb', :status => 404, :layout => get_layout
+    # force html template even if the browser asked for a image
+    render template: 'shared/not_found', status: 404, layout: get_layout, formats: [:html]
   end
   alias :render_404 :render_not_found
 
@@ -191,7 +208,8 @@ class ApplicationController < ActionController::Base
     @no_design_blocks = true
     @message = message
     @title = title
-    render :template => 'shared/access_denied.html.erb', :status => 403
+    # force html template even if the browser asked for a image
+    render template: 'shared/access_denied', status: 403, formats: [:html]
   end
 
   def load_category
@@ -209,28 +227,7 @@ class ApplicationController < ActionController::Base
   end
 
   include SearchTermHelper
-
-  private
-
-  def autocomplete asset, scope, query, paginate_options={:page => 1}, options={:field => 'name'}
-    plugins.dispatch_first(:autocomplete, asset, scope, query, paginate_options, options) ||
-    fallback_autocomplete(asset, scope, query, paginate_options, options)
-  end
-
-  def fallback_autocomplete asset, scope, query, paginate_options, options
-    field = options[:field]
-    query = query.downcase
-    scope.where([
-      "LOWER(#{field}) ILIKE ? OR #{field}) ILIKE ?", "#{query}%", "% #{query}%"
-    ])
-    {:results => scope.paginate(paginate_options)}
-  end
-
-  def find_by_contents(asset, context, scope, query, paginate_options={:page => 1}, options={})
-    search = plugins.dispatch_first(:find_by_contents, asset, scope, query, paginate_options, options)
-    register_search_term(query, scope.count, search[:results].count, context, asset)
-    search
-  end
+  include FindByContents
 
   def find_suggestions(query, context, asset, options={})
     plugins.dispatch_first(:find_suggestions, query, context, asset, options)
@@ -239,4 +236,40 @@ class ApplicationController < ActionController::Base
   def private_environment?
     @environment.enabled?(:restrict_to_members)
   end
+
+  def redirect_to_current_user
+    if params[:profile] == '~'
+      if logged_in?
+        redirect_to url_for(params.merge profile: user.identifier)
+      else
+        render_not_found
+      end
+    end
+  end
+
+  cattr_accessor :controller_path_class
+  self.controller_path_class = {}
+
+  def default_url_options options={}
+    #if @domain or (@profile and @profile.default_protocol)
+    #protocol = if @profile then @profile.default_protocol else @domain.protocol end
+    #options.merge! :protocol => protocol if protocol != 'http'
+    #end
+    options[:protocol] ||= '//'
+
+    # Only use profile's custom domains for the profiles and the account controllers.
+    # This avoids redirects and multiple URLs for one specific resource
+    if controller_path = options[:controller] || self.class.controller_path
+      controller = (self.class.controller_path_class[controller_path] ||= "#{controller_path}_controller".camelize.constantize rescue nil)
+      profile_needed = controller.profile_needed rescue false
+      if controller and not profile_needed and not controller == AccountController
+        options.merge! :host => environment.default_hostname, :only_path => false
+      end
+    end
+
+    options
+  end
+
+  include UrlHelper
+
 end

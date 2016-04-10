@@ -9,13 +9,24 @@ if RUBY_ENGINE == 'ruby' and RUBY_VERSION >= '2.1.0' and RUBY_VERSION < '2.2.0'
   end
 end
 
-begin
-  require 'rack/cache'
-  require 'redis-rack-cache'
-  use Rack::Cache,
-    metastore: 'redis://localhost:6379/0/metastore',
-    entitystore: "redis://#{Rails.root}/tmp/rack.cache"
-rescue LoadError
+use Rack::Cors do
+  allow do
+    origins '*'
+    resource '/api/*', :headers => :any, :methods => [:get, :post]
+  end
 end
 
-run Noosfero::Application
+rails_app = Rack::Builder.new do
+  if ENV['RAILS_RELATIVE_URL_ROOT']
+    map ENV['RAILS_RELATIVE_URL_ROOT'] do
+      run Noosfero::Application
+    end
+  else
+    run Noosfero::Application
+  end
+end
+
+run Rack::Cascade.new([
+  Noosfero::API::API,
+  rails_app
+])

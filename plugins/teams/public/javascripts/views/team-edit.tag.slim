@@ -1,0 +1,123 @@
+team-edit.col-lg-12
+
+  input.name.form-control type='text' required='' value='{team.name}' onchange='{updateName}'
+
+  .members-title.row
+    h4.col-md-6
+      |{tm.t('views.member.title')}
+    .col-md-6.pull-right
+      input.add-person.form-control type='text' placeholder="{window.teams.t('views.team.add_member')}"
+
+  .clear
+
+  table.team-members-list
+    tr.team-member each='{member in team.members}' data='{member}'
+      td.image
+        img src='{member.image_url}'
+      td
+        span
+        |{member.name}
+      td
+        button.btn.btn-default.btn-danger.pull-right onclick='{removeMember}'
+          |{tm.t('views.member.remove')}
+      .clear
+
+  button.btn.btn-default.btn-danger onclick='{delete}'
+    |{tm.t('views.teams.delete')}
+
+  javascript:
+    this.tm = window.teams
+    this.context = this.parent.context
+    this.team = opts.team
+
+    updateName (e) {
+      this.team.name = e.target.value
+      this.save()
+    }
+
+    save () {
+      var updateUrl = Routes.teams_plugin_teams_path({profile: noosfero.profile, action: 'update', id: this.team.id})
+      var self = this
+      $.post(updateUrl, {context: this.context, team: this.team}, function () {
+        display_notice(self.tm.t('views.teams.saved'))
+      })
+    }
+
+    removeMember (e) {
+      var member = e.item.member
+      var destroyUrl = Routes.teams_plugin_members_path({profile: noosfero.profile, action: 'destroy', team_id: this.team.id})
+      var self = this
+      $.ajax({url: destroyUrl, type: 'DELETE', data: {context: this.context, id: member.id},
+        success: function () {
+          var index = self.team.members.indexOf(member)
+          self.team.members.splice(index, 1)
+          self.update()
+        },
+      })
+    }
+
+    delete () {
+      if (!confirm(this.tm.t('views.teams.confirm_delete', {team: this.team.name}))) return
+
+      var destroyUrl = Routes.teams_plugin_teams_path({profile: noosfero.profile, action: 'destroy', id: this.team.id})
+      var self = this
+      $.ajax({url: destroyUrl, type: 'DELETE', data: {context: this.context, id: this.team.id},
+        success: function () {
+          var index = self.parent.teams.indexOf(self.team)
+          self.parent.teams.splice(index, 1)
+          self.parent.list()
+        },
+      })
+    }
+
+    this.on('mount', function () {
+      $(this.root).hide()
+    })
+
+    this.on('update', function () {
+      if (this.team) {
+        this.addUrl = Routes.teams_plugin_members_path({profile: noosfero.profile, action: 'add', context: this.context, team_id: this.team.id})
+        this.searchUrl = Routes.teams_plugin_members_path({profile: noosfero.profile, action: 'search', context: this.context, team_id: this.team.id})+'&query=%QUERY'
+        this.typeaheadInit()
+      }
+    })
+
+    typeaheadInit () {
+      var self = this
+      var input = $(self.root).find('.add-person')
+      input.typeahead('destroy')
+      input.off('typeahead:selected')
+
+      self.source = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: this.searchUrl,
+      })
+      self.source.initialize()
+
+      input.typeahead({
+        minLength: 2, highlight: true,
+      }, {
+        displayKey: 'name',
+        source: self.source.ttAdapter(),
+      })
+
+      input.on('typeahead:selected', function(e, item) {
+        $.post(self.addUrl, {id: item.id}, function(member) {
+          input.val('')
+          self.team.members.push(member)
+          self.update()
+        })
+      })
+    }
+
+  scss:
+    team-edit {
+
+      .team-member {
+        td.image {
+          width: 60px;
+        }
+      }
+    }
+

@@ -9,7 +9,11 @@ class TinyMceArticle < TextArticle
   def self.description
     _('Add a new text article.')
   end
-  
+
+  def self.refuse_blocks
+    true
+  end
+
   xss_terminate :only => [  ]
 
   xss_terminate :only => [ :name, :abstract, :body ], :with => 'white_list', :on => 'validation'
@@ -25,6 +29,10 @@ class TinyMceArticle < TextArticle
   end
 
   def tiny_mce?
+    true
+  end
+
+  def can_display_media_panel?
     true
   end
 

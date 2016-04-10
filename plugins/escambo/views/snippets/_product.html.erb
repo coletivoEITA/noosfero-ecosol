@@ -1,0 +1,38 @@
+<% profile = product.enterprise %>
+
+<div class="escambo-snippet product-snippet">
+  <div class="first-column" <%= (product.image.blank? ? "" : "style=\"background-image: url('" + product.image.public_filename + "')\"") %> >
+    <div class="label">
+      <%= _('Offer') %>
+    </div>
+  </div>
+
+  <div class="second-column">
+    <%= _('%{profile} offers %{product}') % {
+      :profile => link_to(profile.name, profile.url),
+      :product => link_to(product.name, product.url),
+      } %>
+
+    <div class="description">
+      <p><%= product.description %></p>
+    </div>
+
+    <%= render :partial => 'snippets/local', :locals => {:profile => profile} %>
+  </div>
+
+  <div class="third-column">
+    <% if profile != @active_organization %>
+      <%= render :partial => 'exchange_plugin_shared/start_exchange', :locals => {:profile => profile, :object_id => product.id, :object_type => "Product"} %>
+    <% else %>
+      <%= link_to _("Edit"), {:controller => :manage_products, :action => :show, :profile => profile.identifier, :id => product.id}, :class => 'exchange' %>
+      <%= link_to _("Remove"), {:controller => :manage_products, :action => :destroy, :profile => profile.identifier, :id => product.id}, :class => 'exchange',
+        :confirm => _('Are you sure you want to remove this product?') %>
+    <% end %>
+  </div>
+
+
+
+
+  <div class="clean"></div>
+</div>
+

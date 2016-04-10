@@ -81,7 +81,7 @@ module ActionTracker
     module InstanceMethods
       def time_spent_doing(verb, conditions = {})
         time = 0
-        tracked_actions.all(:conditions => conditions.merge({ :verb => verb.to_s })).each do |t|
+        tracked_actions.where(conditions.merge verb: verb.to_s).each do |t|
           time += t.updated_at - t.created_at
         end
         time.to_f
@@ -123,13 +123,7 @@ module ActionTracker
 
   module ViewHelper
     def describe(ta)
-      "".tap do |result|
-        if ta.is_a?(ActionTracker::Record)
-          result << ta.description.gsub(/\{\{(.*?)\}\}/) { eval $1 }
-        else
-          result << ""
-        end
-      end
+      send "#{ta.verb}_description", ta if ta.is_a? ActionTracker::Record
     end
   end
 

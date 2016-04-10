@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../test_helper'
+require_relative '../../test_helper'
 
 class TrackListBlockTest < ActiveSupport::TestCase
 
@@ -20,7 +20,7 @@ class TrackListBlockTest < ActiveSupport::TestCase
   end
 
   should 'load more at another page default to false' do
-    assert !@block.more_another_page
+    refute @block.more_another_page
   end
 
   should 'list articles only of track type' do
@@ -31,7 +31,7 @@ class TrackListBlockTest < ActiveSupport::TestCase
 
   should 'list of articles be limited by block configuration' do
     (@block.limit + 1).times { |i| create_track("track#{i}", profile) }
-    assert_equal @block.limit, @block.tracks.size
+    assert_equal @block.limit, @block.tracks.to_a.size
   end
 
   should 'return more link if has more tracks to show' do
@@ -41,7 +41,7 @@ class TrackListBlockTest < ActiveSupport::TestCase
 
   should 'do not return more link if there is no more tracks to show' do
     (@block.limit-1).times { |i| create_track("track#{i}", profile) }
-    assert !@block.footer
+    refute @block.footer
   end
 
   should 'count all tracks' do
@@ -58,7 +58,7 @@ class TrackListBlockTest < ActiveSupport::TestCase
     @block.owner.articles.destroy_all
     (@block.limit+1).times { |i| create_track("track#{i}", profile) }
     assert @block.has_page?(2)
-    assert !@block.has_page?(3)
+    refute @block.has_page?(3)
   end
 
   should 'filter tracks by category' do
@@ -95,8 +95,8 @@ class TrackListBlockTest < ActiveSupport::TestCase
 
   should 'define expiration condition' do
     condition = CommunityTrackPlugin::TrackListBlock.expire_on
-    assert !condition[:profile].empty?
-    assert !condition[:environment].empty?
+    refute condition[:profile].empty?
+    refute condition[:environment].empty?
   end
 
   should 'return track list block categories' do

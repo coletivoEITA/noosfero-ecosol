@@ -8,7 +8,7 @@ class StatisticsBlock < Block
   settings_items :tag_counter, :default => true
   settings_items :comment_counter, :default => true
   settings_items :hit_counter, :default => false
-  settings_items :templates_ids_counter, Hash, :default => {}
+  settings_items :templates_ids_counter, type: Hash, default: {}
 
   attr_accessible :comment_counter, :community_counter, :user_counter, :enterprise_counter, :product_counter, :category_counter, :tag_counter, :hit_counter, :templates_ids_counter
 
@@ -61,15 +61,15 @@ class StatisticsBlock < Block
   end
 
   def templates
-    Community.templates(environment)
+    self.environment.community_templates
   end
 
   def is_template_counter_active? template_id
-    self.templates_ids_counter[template_id.to_s].to_s == 'true'
+    self.templates_ids_counter[template_id.to_s.to_sym].to_s == 'true'
   end
 
   def template_counter_count(template_id)
-    owner.communities.visible.count(:conditions => {:template_id => template_id})
+    owner.communities.visible.where(template_id: template_id).count
   end
 
   def users
@@ -128,11 +128,12 @@ class StatisticsBlock < Block
     end
   end
 
+  include Noosfero::Plugin::HotSpot
   def comments
     if owner.kind_of?(Environment) then
-      owner.profiles.joins(:articles).sum(:comments_count).to_i
+      owner.articles.sum(:comments_count).to_i + plugins.dispatch(:more_comments_count, owner).first.to_i
     elsif owner.kind_of?(Profile) then
-      owner.articles.sum(:comments_count)
+      owner.articles.sum(:comments_count) + plugins.dispatch(:more_comments_count, owner).first.to_i
     else
       0
     end

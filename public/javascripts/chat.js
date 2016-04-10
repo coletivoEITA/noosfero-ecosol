@@ -186,6 +186,7 @@ jQuery(function($) {
     },
     change_status: function(status_element, callback) {
       $('#chat-connect, #chat-disconnect, #chat-busy').removeClass('active')
+      $('#chat .simplemenu-submenu').hide();
       status_element.addClass('active')
       callback()
     },
@@ -245,6 +246,7 @@ jQuery(function($) {
         break;
         case Strophe.Status.CONNFAIL:
           log('failed to connect');
+          setTimeout(function(){Jabber.connect()}, 10000);
         break;
         case Strophe.Status.DISCONNECTING:
           log('disconnecting...');
@@ -256,6 +258,8 @@ jQuery(function($) {
         Jabber.update_chat_title();
         $('#buddy-list .toolbar').removeClass('small-loading-dark');
         $('textarea').prop('disabled', 'disabled');
+        if(Jabber.presence_status != 'offline')
+          Jabber.connect();
         break;
         case Strophe.Status.CONNECTED:
           log('connected');
@@ -597,6 +601,7 @@ jQuery(function($) {
   $('#chat-retry').live('click', function() {
     Jabber.presence_status = Jabber.presence_status || 'chat';
     Jabber.connect();
+    return false;
   });
 
   $('.conversation textarea').live('keydown', function(e) {

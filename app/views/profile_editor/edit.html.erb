@@ -1,6 +1,5 @@
 <h1><%= _('Profile settings for %s') % profile.name %></h1>
 
-<%= javascript_include_tag 'deactivate_profile' %>
 <%= error_messages_for :profile_data %>
 
 <%= labelled_form_for :profile_data, :html => { :id => 'profile-data', :multipart => true } do |f| %>
@@ -34,10 +33,13 @@
     </div>
   <% else %>
     <div>
-      <%= labelled_radio_button _('Public &mdash; show content of this group to all internet users'), 'profile_data[public_profile]', true, @profile.public_profile? %>
+      <%= labelled_check_box _("Secret &mdash; hide the community and all its contents for non members and other people can't join this community unless they are invited to."), 'profile_data[secret]', true, profile.secret, :class => "profile-secret-box" %>
     </div>
     <div>
-      <%= labelled_radio_button _('Private &mdash; show content of this group only to members'), 'profile_data[public_profile]', false, !@profile.public_profile? %>
+      <%= labelled_radio_button _('Public &mdash; show content of this group to all internet users'), 'profile_data[public_profile]', true, @profile.public_profile?, :class => "public-community-button" %>
+    </div>
+    <div>
+      <%= labelled_radio_button _('Private &mdash; show content of this group only to members'), 'profile_data[public_profile]', false, !@profile.public_profile?, :class => "private-community-button" %>
     </div>
   <% end %>
 
@@ -72,16 +74,27 @@
 
   <% if user && user.has_permission?('destroy_profile', profile) %>
     <% button_bar(:id => 'delete-profile') do %>
-      <%= button(:remove, _('Delete profile'), {:action => :destroy_profile}) %>
 
-      <% if environment.admins.include?(current_person) %>
+      <% if !environment.enabled?('forbid_destroy_profile') || user.is_admin?(environment) %>
+        <%= button(:remove, _('Delete profile'), {:action => :destroy_profile}) %>
+      <% end %>
 
+      <% if user.is_admin?(environment) %>
         <% if profile.visible? %>
-          <%= button(:remove, _('Deactivate profile'), {:action => :deactivate_profile, :id=>profile.id}, :id=>'deactivate_profile_button', :data => {:confirm=>_("Are you sure you want to deactivate this profile?")}) %>
+          <%= button(:remove, _('Deactivate profile'),
+            {:action => :deactivate_profile, :id=>profile.id},
+            :id=>'deactivate_profile_button',
+            :data => {:confirm=>_("Are you sure you want to deactivate this profile?")})
+          %>
         <% else %>
-          <%= button(:add, _('Activate profile'), {:action => :activate_profile, :id=>profile.id}, :data => {:confirm=>_("Are you sure you want to deactivate this profile?")}) %>
+          <%= button(:add, _('Activate profile'),
+            {:action => :activate_profile, :id=>profile.id},
+            :data => {:confirm=>_("Are you sure you want to activate this profile?")})
+          %>
         <% end %>
       <% end %>
     <% end %>
   <% end %>
 <% end %>
+
+<%= javascript_include_tag 'profile_editor' %>

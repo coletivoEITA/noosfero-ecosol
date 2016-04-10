@@ -1,5 +1,5 @@
 class CustomFormsPlugin::Answer < ActiveRecord::Base
-  set_table_name :custom_forms_plugin_answers
+  self.table_name = :custom_forms_plugin_answers
   belongs_to :field, :class_name => 'CustomFormsPlugin::Field'
   belongs_to :submission, :class_name => 'CustomFormsPlugin::Submission'
 
@@ -14,10 +14,14 @@ class CustomFormsPlugin::Answer < ActiveRecord::Base
     end
   end
 
-  def to_s
-    return value if value.blank? || field.alternatives.blank?
+  def to_text_list
+    return [value] if value.blank? || field.alternatives.blank?
     selected = value.split(',')
-    field.alternatives.select {|alt| selected.include? alt.id.to_s }.map(&:label).join(';')
+    field.alternatives.select {|alt| selected.include? alt.id.to_s }.map(&:label)
+  end
+
+  def to_s
+    to_text_list.join(';')
   end
 end
 

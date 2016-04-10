@@ -73,14 +73,14 @@ class ChatControllerTest < ActionController::TestCase
   end
 
   should 'not update presence status from non-ajax requests' do
-    @person.user.expects(:update_attributes).never
+    @person.user.expects(:update).never
     @controller.stubs(:current_user).returns(@person.user)
     get :update_presence_status
     assert_template nil
   end
 
   should 'update presence status from ajax requests' do
-    @person.user.expects(:update_attributes).once
+    @person.user.expects(:update).once
     @controller.stubs(:current_user).returns(@person.user)
     @request.stubs(:xhr?).returns(true)
     get :update_presence_status
@@ -100,7 +100,7 @@ class ChatControllerTest < ActionController::TestCase
     @request.stubs(:xhr?).returns(true)
 
     post :save_message, {:body =>'Hello!'}
-    assert ActiveSupport::JSON.decode(@response.body)['status'] == 1
+    assert_equal 3, ActiveSupport::JSON.decode(@response.body)['status']
   end
 
   should 'forbid to register a message without body' do
@@ -108,7 +108,7 @@ class ChatControllerTest < ActionController::TestCase
     @request.stubs(:xhr?).returns(true)
 
     post :save_message, {:to =>'mary'}
-    assert ActiveSupport::JSON.decode(@response.body)['status'] == 1
+    assert_equal 3, ActiveSupport::JSON.decode(@response.body)['status']
   end
 
   should 'forbid user to register a message to a stranger' do
@@ -116,7 +116,7 @@ class ChatControllerTest < ActionController::TestCase
     @request.stubs(:xhr?).returns(true)
 
     post :save_message, {:to =>'random', :body => 'Hello, stranger!'}
-    assert ActiveSupport::JSON.decode(@response.body)['status'] == 2
+    assert_equal 3, ActiveSupport::JSON.decode(@response.body)['status']
   end
 
   should 'register a message to a friend' do

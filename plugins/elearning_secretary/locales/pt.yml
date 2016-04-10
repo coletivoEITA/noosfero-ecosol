@@ -1,0 +1,20 @@
+
+pt: &pt
+  elearning_secretary_plugin:
+    lib:
+      plugin:
+        name: 'Secretaria EAD'
+        description: 'Monitoramento de acesso, notas e emissão de documentos para alunos'
+
+    views:
+      control_panel: 'Secretaria EAD'
+      sub_orgs:
+        all: 'Todos os alunos'
+      students:
+        name: 'Nome'
+        actions: 'Ações'
+        grades_export: 'Exportar notas'
+
+pt_BR:
+  <<: *pt
+

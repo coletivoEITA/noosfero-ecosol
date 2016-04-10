@@ -1,0 +1,6 @@
+<%= text_field_tag 'query', nil, :onkeyup =>
+  "escambo.search.do(this, '#{url_for :controller => :escambo_plugin_public, :action => :enterprise_search}', escambo.signup.enterprise.search);" %>
+
+<div id="enterprise-results">
+  <%= render :partial => 'escambo_plugin_public/enterprise_results' %>
+</div>

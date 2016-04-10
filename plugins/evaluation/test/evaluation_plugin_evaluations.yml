@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  evaluation_type: MyString
+  evaluation_id: 1
+  score: 9.99
+  text: MyText
+  evaluator_id: 1
+  evaluated_id: 1
+
+two:
+  evaluation_type: MyString
+  evaluation_id: 1
+  score: 9.99
+  text: MyText
+  evaluator_id: 1
+  evaluated_id: 1

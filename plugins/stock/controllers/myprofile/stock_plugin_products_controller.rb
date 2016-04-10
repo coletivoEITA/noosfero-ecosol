@@ -13,7 +13,7 @@ class StockPluginProductsController < MyProfileController
     @place = profile.stock_places.find params[:allocation][:place_id]
     @allocation = @product.stock_allocations.where(:place_id => @place.id).first
     @allocation ||= @product.stock_allocations.build :place => @place
-    @allocation.update_attributes! params[:allocation]
+    @allocation.update! params[:allocation]
     render :nothing => true
   end
 

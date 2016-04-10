@@ -46,7 +46,7 @@ class ClassifyMembersPlugin < Noosfero::Plugin
 
   def settings
     @settings ||= Noosfero::Plugin::Settings.new(
-      context.environment, ClassifyMembersPlugin
+      environment, ClassifyMembersPlugin
     )
   end
 

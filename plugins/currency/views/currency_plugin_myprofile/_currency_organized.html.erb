@@ -1,0 +1,25 @@
+<div class="currency-organized-item">
+  <div class="header">
+    <h3> <%= currency.name_with_symbol %> </h3>
+    <div class="buttons">
+      <%= link_to _('Edit'), {action: :edit, id: currency.id}, class: 'modal-toggle currency-action-button' %>
+      <%= link_to _('Disassociate'), {action: :disassociate, id: currency.id} , class: 'modal-toggle currency-action-button'%>
+    </div>
+  </div>
+
+  <div class="description">
+    <label> <%= _('Description') %> </label>
+    <div> <%= currency.description %> </div>
+  </div>
+
+  <div class="acceptors">
+    <label> <%= _('%{number} enterprise(s) accept this currency') % {number: currency.acceptors.size} %> </label>
+    <% currency.acceptors.each do |acceptor| %>
+      <div> <%= acceptor.name %> </div>
+    <% end %>
+  </div>
+
+  <div class="coverage">
+    <label> <%= _('Coverage (how many are circulating)') %> </label>
+  </div>
+</div>

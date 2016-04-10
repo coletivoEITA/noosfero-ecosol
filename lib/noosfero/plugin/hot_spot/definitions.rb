@@ -21,6 +21,16 @@ module Noosfero
           nil
         end
 
+        # -> Customize the way comments are counted for Profiles and Environment
+        # considering more than just articles comments
+        # Used on statistic block
+        # Ex: a plugin may want that Communities receive comments themselves
+        # as evaluations
+        # returns = the number of comments to be sum on the statistics
+        def more_comments_count owner
+          nil
+        end
+
         # -> Adds tabs to the profile
         # returns   = { :title => title, :id => id, :content => content, :start => start }
         #   title   = name that will be displayed.
@@ -73,6 +83,19 @@ module Noosfero
         # -> Adds content to add to each autocompleted item on search
         # returns = lambda block that creates html code
         def catalog_autocomplete_item_extras product
+          nil
+        end
+
+        # -> Filters the types of organizations that are shown on manage organizations
+        # returns a scope filtered by the specified type
+        def filter_manage_organization_scope type
+          nil
+        end
+
+        # -> Add new options for manage organization filters
+        # returns an array of new options
+        # i.e [[_('Type'), 'type'], [_('Type2'), 'type2']]
+        def organization_types_filter_options
           nil
         end
 
@@ -225,10 +248,17 @@ module Noosfero
           []
         end
 
-        # -> Adds aditional actions to article
-        # returns = lambda block that creates html code
-        def article_toolbar_actions article
-          nil
+        # -> Adds aditional action buttons to article
+        # returns = { :title => title, :icon => icon, :url => url, :html_options => {} }
+        #   title         = name that will be displayed.
+        #   icon          = css class name (for customized icons include them in a css file).
+        #   url           = url or route to which the button will redirect.
+        #   html_options  = Html options for customization
+        #
+        # Multiple values could be passed as parameter.
+        # returns = [{:title => title, :icon => icon}, {:title => title, :icon => icon}]
+        def article_extra_toolbar_buttons(article)
+          []
         end
 
         # -> Adds aditional content to article

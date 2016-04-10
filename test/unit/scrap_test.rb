@@ -3,8 +3,10 @@ require_relative "../test_helper"
 class ScrapTest < ActiveSupport::TestCase
 
   def setup
-    Person.delete_all
-    Scrap.delete_all
+    Person.destroy_all
+    Scrap.destroy_all
+    ActionTracker::Record.destroy_all
+    Delayed::Job.destroy_all
   end
 
   should "have the content" do
@@ -18,7 +20,7 @@ class ScrapTest < ActiveSupport::TestCase
 
     s.content = 'some content'
     s.valid?
-    assert !s.errors[:content.to_s].present?
+    refute s.errors[:content.to_s].present?
   end
 
   should "have the sender" do
@@ -28,7 +30,7 @@ class ScrapTest < ActiveSupport::TestCase
 
     s.sender_id = 1
     s.valid?
-    assert !s.errors[:sender_id.to_s].present?
+    refute s.errors[:sender_id.to_s].present?
   end
 
   should "have the receiver" do
@@ -38,7 +40,7 @@ class ScrapTest < ActiveSupport::TestCase
 
     s.receiver_id = 1
     s.valid?
-    assert !s.errors[:receiver_id.to_s].present?
+    refute s.errors[:receiver_id.to_s].present?
   end
 
   should "be associated to Person as sender" do
@@ -87,7 +89,8 @@ class ScrapTest < ActiveSupport::TestCase
   end
 
   should "create the leave_scrap action tracker verb on scrap creation of one user to another" do
-    p1 = create_user.person
+    User.current = create_user
+    p1 = User.current.person
     p2 = create_user.person
     s = Scrap.new
     s.sender= p1
@@ -104,7 +107,8 @@ class ScrapTest < ActiveSupport::TestCase
   end
 
   should "create the leave_scrap action tracker verb on scrap creation of one user to community" do
-    p = create_user.person
+    User.current = create_user
+    p = User.current.person
     c = fast_create(Community)
     s = Scrap.new
     s.sender= p
@@ -122,25 +126,27 @@ class ScrapTest < ActiveSupport::TestCase
   end
 
   should "notify leave_scrap action tracker verb to friends and itself" do
-    p1 = create_user.person
+    User.current = create_user
+    p1 = User.current.person
     p2 = create_user.person
     p1.add_friend(p2)
-    ActionTrackerNotification.delete_all
-    Delayed::Job.delete_all
+    process_delayed_job_queue
     s = Scrap.new
     s.sender= p1
     s.receiver= p2
     s.content = 'some content'
     s.save!
-    process_delayed_job_queue
-    assert_equal 2, ActionTrackerNotification.count
-    ActionTrackerNotification.all.map{|a|a.profile}.map do |profile|
+    assert_difference 'ActionTrackerNotification.count', 2 do
+      process_delayed_job_queue
+    end
+    ActionTrackerNotification.all.map(&:profile).map do |profile|
       assert [p1,p2].include?(profile)
     end
   end
 
   should "notify leave_scrap action tracker verb to members of the communities and the community itself" do
-    p = create_user.person
+    User.current = create_user
+    p = User.current.person
     c = fast_create(Community)
     c.add_member(p)
     ActionTrackerNotification.delete_all
@@ -150,7 +156,9 @@ class ScrapTest < ActiveSupport::TestCase
     s.receiver= c
     s.content = 'some content'
     s.save!
-    process_delayed_job_queue
+    assert_difference 'ActionTrackerNotification.count', 2 do
+      process_delayed_job_queue
+    end
     assert_equal 2, ActionTrackerNotification.count
     ActionTrackerNotification.all.map{|a|a.profile}.map do |profile|
       assert [p,c].include?(profile)
@@ -158,7 +166,8 @@ class ScrapTest < ActiveSupport::TestCase
   end
 
   should "create the leave_scrap_to_self action tracker verb on scrap creation of one user to itself" do
-    p = create_user.person
+    User.current = create_user
+    p = User.current.person
     s = Scrap.new
     s.sender= p
     s.receiver= p
@@ -172,7 +181,8 @@ class ScrapTest < ActiveSupport::TestCase
   end
 
   should "notify leave_scrap_to_self action tracker verb to friends and itself" do
-    p1 = create_user.person
+    User.current = create_user
+    p1 = User.current.person
     p2 = create_user.person
     p1.add_friend(p2)
     ActionTrackerNotification.delete_all
@@ -182,8 +192,9 @@ class ScrapTest < ActiveSupport::TestCase
     s.receiver= p1
     s.content = 'some content'
     s.save!
-    process_delayed_job_queue
-    assert_equal 2, ActionTrackerNotification.count
+    assert_difference 'ActionTrackerNotification.count', 2 do
+      process_delayed_job_queue
+    end
     ActionTrackerNotification.all.map{|a|a.profile}.map do |profile|
       assert [p1,p2].include?(profile)
     end
@@ -217,7 +228,7 @@ class ScrapTest < ActiveSupport::TestCase
 
   should "update the scrap on reply creation" do
     person = create_user.person
-    s = fast_create(Scrap, :updated_at => DateTime.parse('2010-01-01'))
+    s = create(Scrap, sender: person, receiver: person, updated_at: DateTime.parse('2010-01-01'))
     assert_equal DateTime.parse('2010-01-01'), s.updated_at.strftime('%Y-%m-%d')
     DateTime.stubs(:now).returns(DateTime.parse('2010-09-07'))
     s1 = create(Scrap, :content => 'some content', :sender => person, :receiver => person, :scrap_id => s.id)
@@ -257,7 +268,7 @@ class ScrapTest < ActiveSupport::TestCase
   should 'strip html before validate' do
     s, r = create_user.person, create_user.person
     s = build Scrap, :sender => s, :receiver => r, :content => "<p><b></b></p>"
-    assert !s.valid?
+    refute s.valid?
     s.content = "<p>Test</p>"
     assert s.valid?
   end
@@ -286,8 +297,9 @@ class ScrapTest < ActiveSupport::TestCase
   end
 
   should 'create activity with reply_scrap_on_self when top_root scrap receiver is the same as sender' do
-    s, r = create_user.person, create_user.person
-    root = fast_create(Scrap, :sender_id => s.id, :receiver_id => r.id)
+    User.current = create_user
+    s, r = User.current.person, create_user.person
+    root = create(Scrap, :sender_id => s.id, :receiver_id => r.id)
     assert_difference 'ActionTracker::Record.count', 1 do
       reply = create(Scrap, :sender => r, :receiver => s, :scrap_id => root.id, :content => 'sample')
     end

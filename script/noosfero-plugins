@@ -14,12 +14,10 @@ if [ -z "$NOOSFERO_DIR" ]; then
 fi
 
 # data
-plugins_public_dir="$NOOSFERO_DIR/public/plugins"
-plugins_features_dir="$NOOSFERO_DIR/features/plugins"
 available_plugins_dir="$NOOSFERO_DIR/plugins"
 enabled_plugins_dir="$NOOSFERO_DIR/config/plugins"
 base_plugins_dir="$NOOSFERO_DIR/baseplugins"
-available_plugins=$(find "$available_plugins_dir" -maxdepth 1 -mindepth 1 -type d -not -name 'template' -printf '%f\n' | sort)
+available_plugins=$(find -L "$available_plugins_dir" -maxdepth 1 -mindepth 1 -type d -not -name 'template' -printf '%f\n' | sort)
 enabled_plugins=$(find -L "$enabled_plugins_dir" -maxdepth 1 -mindepth 1 -type d -printf '%f\n' | sort)
 base_plugins=$(find -L "$base_plugins_dir" -maxdepth 1 -mindepth 1 -type d -printf '%f\n' | sort)
 
@@ -27,7 +25,7 @@ base_plugins=$(find -L "$base_plugins_dir" -maxdepth 1 -mindepth 1 -type d -prin
 quiet=false
 needs_migrate=false
 load_paths="$NOOSFERO_DIR/lib:$(echo $NOOSFERO_DIR/vendor/plugins/*/lib | tr ' ' :)"
-dependency_calc="$NOOSFERO_DIR/lib/noosfero/plugin/dependency_calc.rb"
+
 
 _list() {
   for plugin in $available_plugins; do
@@ -79,11 +77,17 @@ run(){
   fi
 }
 
+_install(){
+  # export so that recursive enables for dependencies inherit this option too
+  export BUNDLE_OPTS='install'
+  _enable "$1"
+}
+
 _enable(){
-  local plugin="$1"
+  plugin="$1"
 
   if [ -d "$available_plugins_dir/$plugin" ]; then
-    local source="$available_plugins_dir/$plugin"
+    source="$available_plugins_dir/$plugin"
   else
     if [ ! -d "$plugin" ]; then
       echo "E: $plugin not found (needs to be an existing directory)"
@@ -91,12 +95,12 @@ _enable(){
     fi
 
     # out-of-tree plugins
-    local source="$plugin"
-    local plugin=$(basename "$plugin")
+    source="$plugin"
+    plugin=$(basename "$plugin")
   fi
 
-  local target="$enabled_plugins_dir/$plugin"
-  local base="$base_plugins_dir/$plugin"
+  target="$enabled_plugins_dir/$plugin"
+  base="$base_plugins_dir/$plugin"
   run "$source/before_enable.rb"
   if [ -h "$target" -o -h "$base" ]; then
     _say "$plugin already enabled"
@@ -105,39 +109,29 @@ _enable(){
       echo "E: $plugin plugin does not exist!"
       return
     fi
-    local installation_ok=true
-    local installation_file="$source/install.rb"
+    installation_ok=true
+    installation_file="$source/install.rb"
     if ! run $installation_file; then
       installation_ok=false
     else
-      local dependencies_ok=true
-      local dependencies_file="$source/dependencies.rb"
-      #if [ -e $source/Gemfile ]; then
-        #gemfile=$(mktemp --tmpdir=.)
-        #cat Gemfile $source/Gemfile > $gemfile
-        #if ! RUBYOPT='' BUNDLE_GEMFILE="$gemfile" bundle --local --quiet; then
-          #dependencies_ok=false
-        #fi
-        #rm -f $gemfile $gemfile.lock
-      #fi
+      dependencies_ok=true
+      dependencies_file="$source/dependencies.rb"
+      if [ -e $source/Gemfile ]; then
+        gemfile=$(mktemp --tmpdir=.)
+        cat $NOOSFERO_DIR/Gemfile $source/Gemfile > $gemfile
+        if [ -z "$BUNDLE_OPTS" ]; then BUNDLE_OPTS="--local"; fi
+        if ! RUBYOPT='' BUNDLE_GEMFILE="$gemfile" bundle $BUNDLE_OPTS --quiet; then
+          dependencies_ok=false
+        else
+          mv "$gemfile".lock Gemfile.lock
+        fi
+        rm -f $gemfile
+      fi
       if ! run $dependencies_file; then
         dependencies_ok=false
       fi
     fi
     if [ "$installation_ok" = true ] && [ "$dependencies_ok" = true ]; then
-
-      # check dependencies
-      if [ -z "$plugin_dependencies" ]; then
-        plugin_dependencies=`$dependency_calc $plugin`
-        _say "Enabling dependencies: $plugin_dependencies"
-        if [ $? != 0 ]; then
-          exit $?
-        fi
-        for dependency in $plugin_dependencies; do
-          _enable $dependency
-        done
-      fi
-
       ln -s "$source" "$target"
       plugins_public_dir="$NOOSFERO_DIR/public/plugins"
       plugins_features_dir="$NOOSFERO_DIR/features/plugins"
@@ -149,11 +143,12 @@ _enable(){
     elif [ "$installation_ok" = false ]; then
       echo "W: failed to install $plugin; not enabling"
       echo
+      exit 1
     elif [ "$dependencies_ok" = false ]; then
       echo "W: failed to load dependencies for $plugin; not enabling"
       echo
+      exit 2
     fi
-
   fi
 }
 
@@ -261,7 +256,7 @@ case "$command" in
     fi
     _$command
     ;;
-  enable|disable|new)
+  enable|install|disable|new)
     for plugin in $@; do
       _$command "$plugin"
     done

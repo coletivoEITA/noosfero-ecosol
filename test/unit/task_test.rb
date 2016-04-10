@@ -114,7 +114,7 @@ class TaskTest < ActiveSupport::TestCase
     task1 = Task.create!
     task2 = build(Task, :code => task1.code)
 
-    assert !task2.valid?
+    refute task2.valid?
     assert task2.errors[:code.to_s].present?
   end
 
@@ -131,7 +131,7 @@ class TaskTest < ActiveSupport::TestCase
 
     task.cancel
 
-    assert_nil Task.find_by_code(task.code)
+    assert_equal [], Task.from_code(task.code)
   end
 
   should 'be able to find active tasks' do
@@ -139,7 +139,7 @@ class TaskTest < ActiveSupport::TestCase
     task.requestor = sample_user
     task.save!
 
-    assert_not_nil Task.find_by_code(task.code)
+    assert_not_nil Task.from_code(task.code)
   end
 
   should 'use 36-chars codes by default' do
@@ -317,7 +317,7 @@ class TaskTest < ActiveSupport::TestCase
     assert_includes Task.to(another_person), t4
   end
 
-  should 'filter tasks by type with named_scope' do
+  should 'filter tasks by type with scope' do
     class CleanHouse < Task; end
     class FeedDog < Task; end
     requestor = fast_create(Person)
@@ -391,15 +391,15 @@ class TaskTest < ActiveSupport::TestCase
     t = Task.new
     t.spam = true
     assert t.spam?
-    assert !t.ham?
+    refute t.ham?
 
     t.spam = false
     assert t.ham?
-    assert !t.spam?
+    refute t.spam?
 
     t.spam = nil
-    assert !t.spam?
-    assert !t.ham?
+    refute t.spam?
+    refute t.ham?
   end
 
   should 'be able to select non-spam tasks' do
@@ -430,6 +430,28 @@ class TaskTest < ActiveSupport::TestCase
     t1.ham!
     t1.reload
     assert t1.ham?
+  end
+
+  should 'be able to assign a responsible to a task' do
+    person = fast_create(Person)
+    task = fast_create(Task)
+    task.responsible = person
+    task.save!
+    assert_equal person, task.responsible
+  end
+
+  should 'store who finish the task' do
+    t = Task.create
+    person = fast_create(Person)
+    t.finish(person)
+    assert_equal person, t.reload.closed_by
+  end
+
+  should 'store who cancel the task' do
+    t = Task.create
+    person = fast_create(Person)
+    t.cancel(person)
+    assert_equal person, t.reload.closed_by
   end
 
   protected

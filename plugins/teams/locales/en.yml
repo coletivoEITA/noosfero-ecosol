@@ -1,0 +1,28 @@
+
+en: &en
+  teams_plugin:
+    lib:
+      plugin:
+        name: 'Teams'
+        description: 'Define teams for various contexts'
+
+    models:
+      team:
+        default_name: 'Team %{code}'
+
+    views:
+      teams:
+        title: 'Teams'
+        add: 'Add team'
+        saved: 'Team saved'
+        delete: 'Delete team'
+        confirm_delete: "Please confirm to delete the team '%{team}'"
+      team:
+        add_member: 'Add a person'
+      member:
+        title: "Team's members"
+        remove: 'Remove'
+
+en_US:
+  <<: *en
+

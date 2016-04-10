@@ -51,7 +51,7 @@ class Profile
 
     login_block = self.blocks.select{ |b| b.class.name == "LoginBlock" }.first
     if not login_block
-      box = self.boxes.first conditions: {position: 2}
+      box = self.boxes.where(position: 2).first
       login_block = LoginBlock.create! box: box
       login_block.move_to_top
     end
@@ -74,7 +74,7 @@ class Profile
 
     self.products.own.map do |p|
       next if p.to_products.from_supplier_id(self.id).present?
-      SuppliersPlugin::DistributedProduct.create! profile: self, from_products: [p]
+      SuppliersPlugin::DistributedProduct.create! profile: self, from_product: p
     end
   end
 

@@ -1,0 +1,16 @@
+en: &en
+
+  web_odf_plugin:
+    lib:
+      plugin:
+        name: "WebODF"
+        description: "Crie e edite documentos usando o WebODF"
+
+    models:
+      document:
+        short_description: 'ODF Document'
+        description: 'Edit an ODF Document using WebODF'
+
+en_US:
+  <<: *en
+

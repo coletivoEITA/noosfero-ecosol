@@ -19,7 +19,7 @@ module CatalogHelper
     @scope = params[:scope].to_s
     if @scope == 'all'
       @context = environment
-      @ar_scope = environment.products.enabled.public.unarchived
+      @ar_scope = environment.products.enabled.is_public.unarchived
     else
       @context = profile
       @ar_scope = profile.products.unarchived

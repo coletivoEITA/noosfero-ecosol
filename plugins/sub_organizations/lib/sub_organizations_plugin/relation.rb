@@ -1,5 +1,4 @@
-class SubOrganizationsPlugin::Relation < Noosfero::Plugin::ActiveRecord
-  record_timestamps = false
+class SubOrganizationsPlugin::Relation < ActiveRecord::Base
 
   belongs_to :parent, :polymorphic => true
   belongs_to :child, :polymorphic => true

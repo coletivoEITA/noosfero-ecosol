@@ -9,6 +9,6 @@ module CaptchaHelper
   end
 
   def hidden_captcha_field
-    "<input type='text' autocomplete='off' autofill='off' name='#{HiddenField}' class='#{HiddenField}'/>"
+    #"<input type='text' autocomplete='off' autofill='off' name='#{HiddenField}' class='#{HiddenField}'/>"
   end
 end

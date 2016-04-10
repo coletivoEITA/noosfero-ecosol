@@ -1,3 +1,5 @@
+raise "Responsive plugins requires ruby 2.0's prepend for sane monkey patches" if RUBY_VERSION < '2.0'
+
 class ResponsivePlugin < Noosfero::Plugin
 
   def self.plugin_name
@@ -6,10 +8,6 @@ class ResponsivePlugin < Noosfero::Plugin
 
   def self.plugin_description
     _("Responsive layout for Noosfero")
-  end
-
-  def stylesheet?
-    true
   end
 
   def js_files

@@ -1,9 +1,6 @@
 require_relative "../test_helper"
 require 'manage_products_controller'
 
-# Re-raise errors caught by the controller.
-class ManageProductsController; def rescue_action(e) raise e end; end
-
 class ManageProductsControllerTest < ActionController::TestCase
   all_fixtures
   def setup
@@ -23,7 +20,7 @@ class ManageProductsControllerTest < ActionController::TestCase
     login_as :user_test
     get 'index', :profile => @enterprise.identifier
     assert :success
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
   end
 
   should "get index" do
@@ -44,7 +41,7 @@ class ManageProductsControllerTest < ActionController::TestCase
     assert_difference 'Product.count' do
       post 'new', :profile => @enterprise.identifier, :product => {:name => 'test product'}, :selected_category_id => @product_category.id
       assert assigns(:product)
-      assert !assigns(:product).new_record?
+      refute assigns(:product).new_record?
     end
   end
 
@@ -86,7 +83,7 @@ class ManageProductsControllerTest < ActionController::TestCase
     post :edit, :profile => @enterprise.identifier, :product => {:name => 'new test product'}, :id => product.id, :field => 'name'
     assert_response :success
     assert assigns(:product)
-    assert ! assigns(:product).new_record?
+    refute  assigns(:product).new_record?
     assert_equal product, Product.find_by_name('new test product')
   end
 
@@ -95,7 +92,7 @@ class ManageProductsControllerTest < ActionController::TestCase
     post :edit, :profile => @enterprise.identifier, :product => {:description => 'A very good product!'}, :id => product.id, :field => 'info'
     assert_response :success
     assert assigns(:product)
-    assert ! assigns(:product).new_record?
+    refute  assigns(:product).new_record?
     assert_equal 'A very good product!', Product.find_by_name('test product').description
   end
 
@@ -104,7 +101,7 @@ class ManageProductsControllerTest < ActionController::TestCase
     post :edit, :profile => @enterprise.identifier, :product => { :image_builder => { :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png') } }, :id => product.id, :field => 'image'
     assert_response :success
     assert assigns(:product)
-    assert ! assigns(:product).new_record?
+    refute  assigns(:product).new_record?
     assert_equal 'rails.png', Product.find_by_name('test product').image.filename
   end
 
@@ -129,7 +126,7 @@ class ManageProductsControllerTest < ActionController::TestCase
       assert_response :redirect
       assert_redirected_to :action => 'index'
       assert assigns(:product)
-      assert ! Product.find_by_name('test product')
+      refute  Product.find_by_name('test product')
     end
   end
 
@@ -178,8 +175,8 @@ class ManageProductsControllerTest < ActionController::TestCase
 
   should 'filter html with white list from description of product' do
     product = fast_create(Product, :profile_id => @enterprise.id, :product_category_id => @product_category.id)
-    post 'edit', :profile => @enterprise.identifier, :id => product.id, :field => 'info', :product => { :name => 'name', :description => "<b id='html_descr'>descr bold</b>" }
-    assert_equal "<b>descr bold</b>", assigns(:product).description
+    post 'edit', :profile => @enterprise.identifier, :id => product.id, :field => 'info', :product => { :name => 'name', :description => "<b id=\"html_descr\">descr bold</b>" }
+    assert_equal "<b id=\"html_descr\">descr bold</b>", assigns(:product).description
   end
 
   should 'not let users in if environment do not let' do
@@ -343,7 +340,7 @@ class ManageProductsControllerTest < ActionController::TestCase
   end
 
   should 'render partial certifiers for selection' do
-    get :certifiers_for_selection, :profile => @enterprise.identifier
+    xhr :get, :certifiers_for_selection, :profile => @enterprise.identifier
     assert_template '_certifiers_for_selection'
   end
 
@@ -491,7 +488,7 @@ class ManageProductsControllerTest < ActionController::TestCase
     resp = ActiveSupport::JSON.decode(@response.body)
     assert_nil resp['name']
     assert_nil resp['id']
-    assert !resp['ok']
+    refute resp['ok']
     assert_match /blank/, resp['error_msg']
   end
 
@@ -501,7 +498,7 @@ class ManageProductsControllerTest < ActionController::TestCase
     resp = ActiveSupport::JSON.decode(@response.body)
     assert_nil resp['name']
     assert_nil resp['id']
-    assert !resp['ok']
+    refute resp['ok']
     assert_match /too long/, resp['error_msg']
   end
 

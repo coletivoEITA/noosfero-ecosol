@@ -12,6 +12,7 @@ module ArticleHelper
     @article = article
 
     visibility_options(@article, tokenized_children) +
+    topic_creation(@article) +
     content_tag('h4', _('Options')) +
     content_tag('div',
       (article.profile.has_members? ?
@@ -22,13 +23,11 @@ module ArticleHelper
       ) :
       '') +
 
-      (article.parent && article.parent.forum? && controller.action_name == 'new' ?
-      hidden_field_tag('article[accept_comments]', 1) :
       content_tag(
         'div',
         check_box(:article, :accept_comments) +
         content_tag('label', (article.parent && article.parent.forum? ? _('This topic is opened for replies') : _('I want to receive comments about this article')), :for => 'article_accept_comments')
-      )) +
+      ) +
 
       content_tag(
         'div',
@@ -55,14 +54,7 @@ module ArticleHelper
         'div',
         check_box(:article, :display_versions) +
         content_tag('label', _('I want this article to display a link to older versions'), :for => 'article_display_versions')
-      ) : '') +
-
-      (article.forum? && article.profile.community? ?
-      content_tag(
-        'div',
-        check_box(:article, :allows_members_to_create_topics) +
-        content_tag('label', _('Allow members to create topics'), :for => 'article_allows_members_to_create_topics')
-        ) : '')
+      ) : '')
     )
   end
 
@@ -81,6 +73,22 @@ module ArticleHelper
     )
   end
 
+  def topic_creation(article)
+    return '' unless article.forum?
+
+    general_options = Forum::TopicCreation.general_options(article)
+    slider_options = {:id => 'topic-creation-slider'}
+    slider_options = general_options.keys.inject(slider_options) do |result, option|
+      result.merge!({'data-'+option => general_options[option]})
+    end
+
+    content_tag('h4', _('Topic creation')) +
+    content_tag( 'small', _('Who will be able to create new topics on this forum?')) +
+    content_tag('div', '', slider_options) +
+    hidden_field_tag('article[topic_creation]', article.topic_creation) +
+    javascript_include_tag("#{Noosfero.root}/assets/topic-creation-config.js")
+  end
+
   def privacity_exceptions(article, tokenized_children)
     content_tag('div',
       content_tag('div',
@@ -97,7 +105,7 @@ module ArticleHelper
   end
 
   def add_option_to_followers(article, tokenized_children)
-    label_message = article.profile.organization? ? _('For all community members') : _('For all your friends')
+    label_message = article.profile.organization? ? _('Allow all community members to view this content') : _('Allow all your friends to view this content')
 
     check_box(
       :article,
@@ -115,7 +123,7 @@ module ArticleHelper
         'div',
         content_tag(
           'label',
-          _('Fill in the search field to add the exception members to see this content'),
+          _('Allow only community members entered below to view this content'),
           :id => "text-input-search-exception-users"
         ) +
         token_input_field_tag(
@@ -124,7 +132,7 @@ module ArticleHelper
           {:action => 'search_article_privacy_exceptions'},
           {
             :focus => false,
-            :hint_text => _('Type in a search term for a user'),
+            :hint_text => _('Type in a name of a community member'),
             :pre_populate => tokenized_children
           }
         )

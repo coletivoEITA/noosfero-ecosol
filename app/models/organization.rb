@@ -9,6 +9,30 @@ class Organization < Profile
     :display => %w[compact]
   }
 
+  # An Organization is considered visible to a given person if one of the
+  # following conditions are met:
+  #   1) The user is an environment administrator.
+  #   2) The user is an administrator of the organization.
+  #   3) The user is a member of the organization and the organization is
+  #   visible.
+  #   4) The user is not a member of the organization but the organization is
+  #   visible, public and enabled.
+  def self.visible_for_person(person)
+    joins('LEFT JOIN "role_assignments" ON ("role_assignments"."resource_id" = "profiles"."id"
+          AND "role_assignments"."resource_type" = \'Profile\') OR (
+          "role_assignments"."resource_id" = "profiles"."environment_id" AND
+          "role_assignments"."resource_type" = \'Environment\' )')
+    .joins('LEFT JOIN "roles" ON "role_assignments"."role_id" = "roles"."id"')
+    .where(
+      ['( (roles.key = ? OR roles.key = ?) AND role_assignments.accessor_type = ? AND role_assignments.accessor_id = ? )
+        OR
+        ( ( ( role_assignments.accessor_type = ? AND role_assignments.accessor_id = ? ) OR
+            ( profiles.public_profile = ? AND profiles.enabled = ? ) ) AND
+          ( profiles.visible = ? ) )',
+      'profile_admin', 'environment_administrator', Profile.name, person.id,
+      Profile.name, person.id,  true, true, true]
+    ).uniq
+  end
 
   settings_items :closed, :type => :boolean, :default => false
   def closed?
@@ -29,6 +53,8 @@ class Organization < Profile
   has_many :validations, :class_name => 'CreateEnterprise', :foreign_key => :target_id
 
   has_many :mailings, :class_name => 'OrganizationMailing', :foreign_key => :source_id, :as => 'source'
+
+  has_many :custom_roles, :class_name => 'Role', :foreign_key => :profile_id
 
   scope :more_popular, :order => 'members_count DESC'
 
@@ -59,7 +85,7 @@ class Organization < Profile
   end
 
   def find_pending_validation(code)
-    validations.pending.find(:first, :conditions => {:code => code})
+    validations.pending.where(code: code).first
   end
 
   def processed_validations
@@ -67,7 +93,7 @@ class Organization < Profile
   end
 
   def find_processed_validation(code)
-    validations.finished.find(:first, :conditions => {:code => code})
+    validations.finished.where(code: code).first
   end
 
   def is_validation_entity?
@@ -84,15 +110,15 @@ class Organization < Profile
     economic_activity
     management_information
     address
-    address_line2
-    address_reference
-    district
     zip_code
     city
     state
     country
     tag_list
     template_id
+    district
+    address_line2
+    address_reference
   ]
 
   def self.fields
@@ -116,7 +142,7 @@ class Organization < Profile
 
   settings_items :zip_code, :city, :state, :country
 
-  validates_format_of :foundation_year, :with => Noosfero::Constants::INTEGER_FORMAT
+  validates_numericality_of :foundation_year, only_integer: true, if: -> o { o.foundation_year.present? }
   validates_format_of :contact_email, :with => Noosfero::Constants::EMAIL_FORMAT, :if => (lambda { |org| !org.contact_email.blank? })
   validates_as_cnpj :cnpj
 
@@ -166,7 +192,7 @@ class Organization < Profile
   end
 
   def already_request_membership?(person)
-    self.tasks.pending.find_by_requestor_id(person.id, :conditions => { :type => 'AddMember' })
+    self.tasks.pending.where(type: 'AddMember', requestor_id: person.id).first
   end
 
   def jid(options = {})
@@ -193,4 +219,9 @@ class Organization < Profile
   def allow_invitation_from?(person)
     (followed_by?(person) && self.allow_members_to_invite) || person.has_permission?('invite-members', self)
   end
+
+  def is_admin?(user)
+    self.admins.where(:id => user.id).exists?
+  end
+
 end

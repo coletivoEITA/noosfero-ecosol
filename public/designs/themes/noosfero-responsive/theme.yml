@@ -1,5 +1,5 @@
-name: "Noosfero Responsive"
+name: "Noosfero responsive some Bootstrap styling"
 layout: "application-responsive"
-jquery_theme: "smoothness"
-responsive: true
 icon_theme: [awesome, pidgin]
+responsive: true
+

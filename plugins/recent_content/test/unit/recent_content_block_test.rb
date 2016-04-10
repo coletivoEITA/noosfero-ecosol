@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative '../test_helper'
 class RecentContentBlockTest < ActiveSupport::TestCase
 
   INVALID_KIND_OF_ARTICLE = [EnterpriseHomepage, RssFeed, UploadedFile, Gallery, Folder, Blog, Forum]
@@ -15,7 +15,7 @@ class RecentContentBlockTest < ActiveSupport::TestCase
 
   should 'blog_picture be false by default' do
     block = RecentContentBlock.new
-    assert !block.show_blog_picture
+    refute block.show_blog_picture
   end
 
   should 'blog_picture is being stored and restored from database as true' do
@@ -33,7 +33,7 @@ class RecentContentBlockTest < ActiveSupport::TestCase
     block.save
     block.reload
 
-    assert !block.show_blog_picture
+    refute block.show_blog_picture
   end
 
   should 'root be nil for new blocks' do

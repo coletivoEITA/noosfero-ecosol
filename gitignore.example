@@ -11,8 +11,9 @@ config/session.secret
 config/noosfero.yml
 config/mongrel_cluster.yml
 config/plugins
-config/thin.yml
+config/unicorn.rb
 config/local.rb
+config/initializers/local.rb
 index
 locale
 log
@@ -25,10 +26,10 @@ public/designs/themes/*
 public/designs/icons/default
 
 public/assets
-
 .sass-cache
 public/javascripts/cache*
 public/stylesheets/cache*
+public/javascripts/i18n
 
 public/plugins
 db/development.db
@@ -48,7 +49,8 @@ debian/files
 debian/noosfero/
 debian/noosfero-apache/
 features/plugins/*
+
+plugins/avaliacoes/config/database.yml
+plugins/fb_app/config.yml
 config/solr.yml
 /solr
-
-plugins/fb_app/config.yml

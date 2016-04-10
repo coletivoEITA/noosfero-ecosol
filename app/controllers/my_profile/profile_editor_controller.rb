@@ -5,10 +5,15 @@ class ProfileEditorController < MyProfileController
 
   before_filter :access_welcome_page, :only => [:welcome_page]
   before_filter :back_to
+  before_filter :forbid_destroy_profile, :only => [:destroy_profile]
+  before_filter :check_user_can_edit_header_footer, :only => [:header_footer]
   helper_method :has_welcome_page
+  helper CustomFieldsHelper
 
   def index
     @pending_tasks = Task.to(profile).pending.without_spam.select{|i| user.has_permission?(i.permission, profile)}
+    @show_appearance_option = @user_is_admin || environment.enabled?('enable_appearance')
+    @show_header_footer_option = @user_is_admin || !environment.enabled?('disable_header_and_footer')
   end
 
   helper :profile
@@ -23,7 +28,7 @@ class ProfileEditorController < MyProfileController
         Image.transaction do
           begin
             @plugins.dispatch(:profile_editor_transaction_extras)
-            @profile_data.update_attributes!(params[:profile_data])
+            @profile_data.update!(params[:profile_data])
             redirect_to :action => 'index', :profile => profile.identifier
           rescue Exception => ex
             profile.identifier = params[:profile] if profile.identifier.blank?
@@ -79,7 +84,7 @@ class ProfileEditorController < MyProfileController
       if @profile.destroy
         session[:notice] = _('The profile was deleted.')
         if(params[:return_to])
-          redirect_to params[:return_to]
+          redirect_to url_for(params[:return_to])
         else
           redirect_to :controller => 'home'
         end
@@ -93,7 +98,7 @@ class ProfileEditorController < MyProfileController
     @welcome_page = profile.welcome_page || TinyMceArticle.new(:name => 'Welcome Page', :profile => profile, :published => false)
     if request.post?
       begin
-        @welcome_page.update_attributes!(params[:welcome_page])
+        @welcome_page.update!(params[:welcome_page])
         profile.welcome_page = @welcome_page
         profile.save!
         session[:notice] = _('Welcome page saved successfully.')
@@ -109,7 +114,7 @@ class ProfileEditorController < MyProfileController
       profile = environment.profiles.find(params[:id])
       if profile.disable
         profile.save
-        session[:notice] = _("The profile '#{profile.name}' was deactivated.")
+        session[:notice] = _("The profile '%s' was deactivated.") % profile.name
       else
         session[:notice] = _('Could not deactivate profile.')
       end
@@ -123,11 +128,18 @@ class ProfileEditorController < MyProfileController
       profile = environment.profiles.find(params[:id])
 
       if profile.enable
-        session[:notice] = _("The profile '#{profile.name}' was activated.")
+        session[:notice] = _("The profile '%s' was activated.") % profile.name
       else
         session[:notice] = _('Could not activate the profile.')
       end
     end
+
+    redirect_to_previous_location
+  end
+
+  def reset_private_token
+    profile = environment.profiles.find(params[:id])
+    profile.user.generate_private_token!
 
     redirect_to_previous_location
   end
@@ -155,4 +167,15 @@ class ProfileEditorController < MyProfileController
     end
   end
 
+  def forbid_destroy_profile
+    if environment.enabled?('forbid_destroy_profile') && !current_person.is_admin?(environment)
+      session[:notice] = _('You can not destroy the profile.')
+      redirect_to_previous_location
+    end
+  end
+
+  def check_user_can_edit_header_footer
+    user_can_not_edit_header_footer = !user.is_admin?(environment) && environment.enabled?('disable_header_and_footer')
+    redirect_to back_to if user_can_not_edit_header_footer
+  end
 end

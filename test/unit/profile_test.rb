@@ -19,24 +19,24 @@ class ProfileTest < ActiveSupport::TestCase
 
     p.identifier = 'rightformat2007'
     p.valid?
-    assert ! p.errors[:identifier.to_s].present?
+    refute  p.errors[:identifier.to_s].present?
 
     p.identifier = 'rightformat'
     p.valid?
-    assert ! p.errors[:identifier.to_s].present?
+    refute  p.errors[:identifier.to_s].present?
 
     p.identifier = 'right_format'
     p.valid?
-    assert ! p.errors[:identifier.to_s].present?
+    refute  p.errors[:identifier.to_s].present?
 
     p.identifier = 'identifier-with-dashes'
     p.valid?
-    assert ! p.errors[:identifier.to_s].present?, 'Profile should accept identifier with dashes'
+    refute  p.errors[:identifier.to_s].present?, 'Profile should accept identifier with dashes'
   end
 
   def test_has_domains
     p = Profile.new
-    assert_kind_of Array, p.domains
+    assert p.domains.empty?
   end
 
   should 'be assigned to default environment if no environment is informed' do
@@ -63,11 +63,11 @@ class ProfileTest < ActiveSupport::TestCase
   should 'set default environment for users created' do
     user = create_user 'mytestuser'
     assert_equal 'mytestuser', user.login
-    assert !user.new_record?
+    refute user.new_record?
 
     p = user.person
 
-    assert !p.new_record?
+    refute p.new_record?
     assert_equal 'mytestuser', p.identifier
     e = p.environment
     assert_equal Environment.default, e
@@ -84,7 +84,7 @@ class ProfileTest < ActiveSupport::TestCase
     assert p.errors[:name.to_s].present?
     p.name = 'a very unprobable name'
     p.valid?
-    assert !p.errors[:name.to_s].present?
+    refute p.errors[:name.to_s].present?
   end
 
   def test_can_have_affiliated_people
@@ -178,7 +178,7 @@ class ProfileTest < ActiveSupport::TestCase
     top = profile.top_level_articles
     assert top.include?(p1)
     assert top.include?(p2)
-    assert !top.include?(child)
+    refute top.include?(child)
   end
 
   should 'be able to optionally reload the list of top level articles' do
@@ -254,6 +254,20 @@ class ProfileTest < ActiveSupport::TestCase
     profile.domains << Domain.new(:name => 'micojones.net')
 
     assert_equal({:host => 'micojones.net', :profile => nil, :controller => 'content_viewer', :action => 'view_page', :page => []}, profile.url)
+  end
+
+  should 'provide environment top URL when profile has not a domain' do
+    env = Environment.default
+    profile = fast_create(Profile, :environment_id => env.id)
+    assert_equal env.top_url, profile.top_url
+  end
+
+  should 'provide top URL to profile with domain' do
+    env = Environment.default
+    profile = fast_create(Profile, :environment_id => env.id)
+    domain = fast_create(Domain, :name => 'example.net')
+    profile.domains << domain
+    assert_equal 'http://example.net', profile.top_url
   end
 
   should 'help developers by adding a suitable port to url' do
@@ -420,15 +434,15 @@ class ProfileTest < ActiveSupport::TestCase
   should 'not advertise articles created together with the profile' do
     Profile.any_instance.stubs(:default_set_of_articles).returns([Article.new(:name => 'home'), RssFeed.new(:name => 'feed')])
     profile = create(Profile)
-    assert !profile.articles.find_by_path('home').advertise?
-    assert !profile.articles.find_by_path('feed').advertise?
+    refute profile.articles.find_by_path('home').advertise?
+    refute profile.articles.find_by_path('feed').advertise?
   end
 
   should 'advertise article after update' do
     Profile.any_instance.stubs(:default_set_of_articles).returns([Article.new(:name => 'home')])
     profile = create(Profile)
     article = profile.articles.find_by_path('home')
-    assert !article.advertise?
+    refute article.advertise?
     article.name = 'Changed name'
     article.save!
     assert article.advertise?
@@ -448,7 +462,25 @@ class ProfileTest < ActiveSupport::TestCase
     p1 = create(Profile, :public_profile => true)
     p2 = create(Profile, :public_profile => false)
 
-    result = Profile.find(:all, :conditions => {:public_profile => true})
+    result = Profile.where(public_profile: true).all
+    assert_includes result, p1
+    assert_not_includes result, p2
+  end
+
+  should 'be able to find the public profiles but not secret ones' do
+    p1 = create(Profile, :public_profile => true)
+    p2 = create(Profile, :public_profile => true, :secret => true)
+
+    result = Profile.is_public
+    assert_includes result, p1
+    assert_not_includes result, p2
+  end
+
+  should 'be able to find visible profiles but not secret ones' do
+    p1 = create(Profile, :visible => true)
+    p2 = create(Profile, :visible => true, :secret => true)
+
+    result = Profile.visible
     assert_includes result, p1
     assert_not_includes result, p2
   end
@@ -464,7 +496,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'not display private profile to unauthenticated user' do
-    assert !Profile.new(:public_profile => false).display_info_to?(nil)
+    refute Profile.new(:public_profile => false).display_info_to?(nil)
   end
 
   should 'display private profile for its owner' do
@@ -624,7 +656,7 @@ class ProfileTest < ActiveSupport::TestCase
   should 'accept only visible categories' do
     cat = ProductCategory.new
     cat.visible_for_profiles = false
-    assert !Profile.new.accept_category?(cat)
+    refute Profile.new.accept_category?(cat)
   end
 
   should 'query region for location' do
@@ -751,7 +783,7 @@ class ProfileTest < ActiveSupport::TestCase
   should 'nickname be able to be nil' do
     p = Profile.new()
     p.valid?
-    assert_blank p.errors[:nickname]
+    assert p.errors[:nickname].blank?
   end
 
   should 'filter html from nickname' do
@@ -866,7 +898,7 @@ class ProfileTest < ActiveSupport::TestCase
     p2 = fast_create(Profile, :public_profile => false)
 
     assert p1.public?
-    assert !p2.public?
+    refute p2.public?
   end
 
   should 'remove member with many roles' do
@@ -881,6 +913,8 @@ class ProfileTest < ActiveSupport::TestCase
 
   should 'copy set of articles from a template' do
     template = create_user('test_template').person
+    template.is_template = true
+    template.save
     template.articles.destroy_all
     a1 = fast_create(Article, :profile_id => template.id, :name => 'some xyz article')
     a2 = fast_create(Article, :profile_id => template.id, :name => 'some child article', :parent_id => a1.id)
@@ -899,6 +933,7 @@ class ProfileTest < ActiveSupport::TestCase
 
   should 'copy communities from person template' do
     template = create_user('test_template').person
+    template.is_template = true
     Environment.any_instance.stubs(:person_default_template).returns(template)
 
     c1 = fast_create(Community)
@@ -914,6 +949,8 @@ class ProfileTest < ActiveSupport::TestCase
 
   should 'copy homepage from template' do
     template = create_user('test_template').person
+    template.is_template = true
+    template.save
     template.articles.destroy_all
     a1 = fast_create(Article, :profile_id => template.id, :name => 'some xyz article')
     template.home_page = a1
@@ -929,6 +966,8 @@ class ProfileTest < ActiveSupport::TestCase
 
   should 'not advertise the articles copied from templates' do
     template = create_user('test_template').person
+    template.is_template = true
+    template.save
     template.articles.destroy_all
     a = fast_create(Article, :profile_id => template.id, :name => 'some xyz article')
 
@@ -938,11 +977,11 @@ class ProfileTest < ActiveSupport::TestCase
 
     a_copy = p.articles[0]
 
-    assert !a_copy.advertise
+    refute a_copy.advertise
   end
 
   should 'copy set of boxes from profile template' do
-    template = fast_create(Profile)
+    template = fast_create(Profile, :is_template => true)
     template.boxes.destroy_all
     template.boxes << Box.new
     template.boxes[0].blocks << Block.new
@@ -957,7 +996,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'copy layout template when applying template' do
-    template = fast_create(Profile)
+    template = fast_create(Profile, :is_template => true)
     template.layout_template = 'leftbar'
     template.save!
 
@@ -969,7 +1008,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'copy blocks when applying template' do
-    template = fast_create(Profile)
+    template = fast_create(Profile, :is_template => true)
     template.boxes.destroy_all
     template.boxes << Box.new
     template.boxes[0].blocks << Block.new
@@ -984,7 +1023,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'copy articles when applying template' do
-    template = fast_create(Profile)
+    template = fast_create(Profile, :is_template => true)
     template.articles.create(:name => 'template article')
     template.save!
 
@@ -996,7 +1035,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'rename existing articles when applying template' do
-    template = fast_create(Profile)
+    template = fast_create(Profile, :is_template => true)
     template.boxes.destroy_all
     template.boxes << Box.new
     template.boxes[0].blocks << Block.new
@@ -1013,7 +1052,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'copy header when applying template' do
-    template = fast_create(Profile)
+    template = fast_create(Profile, :is_template => true)
     template[:custom_header] = '{name}'
     template.save!
 
@@ -1027,7 +1066,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'copy footer when applying template' do
-    template = create(Profile, :address => 'Template address', :custom_footer => '{address}')
+    template = create(Profile, :address => 'Template address', :custom_footer => '{address}', :is_template => true)
 
     p = create(Profile, :address => 'Profile address')
     p.apply_template(template)
@@ -1038,7 +1077,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'ignore failing validation when applying template' do
-    template = create(Profile, :layout_template => 'leftbar', :custom_footer => 'my custom footer', :custom_header => 'my custom header')
+    template = create(Profile, :layout_template => 'leftbar', :custom_footer => 'my custom footer', :custom_header => 'my custom header', :is_template => true)
 
     p = create(Profile)
     def p.validate
@@ -1054,7 +1093,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'copy homepage when applying template' do
-    template = fast_create(Profile)
+    template = fast_create(Profile, :is_template => true)
     a1 = fast_create(Article, :profile_id => template.id, :name => 'some xyz article')
     template.home_page = a1
     template.save!
@@ -1089,11 +1128,28 @@ class ProfileTest < ActiveSupport::TestCase
     template.boxes[0].blocks << b
 
     p = create(Profile)
-    assert !b[:title].blank?
+    refute b[:title].blank?
 
     p.copy_blocks_from(template)
 
     assert_equal 'default title', p.boxes[0].blocks.first[:title]
+  end
+
+  should 'have blocks observer on template when applying template with mirror' do
+    template = fast_create(Profile)
+    template.boxes.destroy_all
+    template.boxes << Box.new
+    b = Block.new(:title => 'default title', :mirror => true)
+    template.boxes[0].blocks << b
+
+    p = create(Profile)
+    refute b[:title].blank?
+
+    p.copy_blocks_from(template)
+
+    assert_equal 'default title', p.boxes[0].blocks.first[:title]
+    assert_equal p.boxes[0].blocks.first, template.boxes[0].blocks.first.observers.first
+
   end
 
   TMP_THEMES_DIR = Rails.root.join('test', 'tmp', 'profile_themes')
@@ -1141,7 +1197,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'copy public/private setting from template' do
-    template = fast_create(Profile, :public_profile => false)
+    template = fast_create(Profile, :public_profile => false, :is_template => true)
     p = fast_create(Profile)
     p.apply_template(template)
     assert_equal false, p.public_profile
@@ -1162,7 +1218,7 @@ class ProfileTest < ActiveSupport::TestCase
     p1 = fast_create(Profile, :identifier => 'mytestprofile', :environment_id => env.id)
     p2 = build(Profile, :identifier => 'mytestprofile', :environment => env)
 
-    assert !p2.valid?
+    refute p2.valid?
     assert p2.errors[:identifier]
     assert_equal p1.environment, p2.environment
   end
@@ -1184,7 +1240,7 @@ class ProfileTest < ActiveSupport::TestCase
 
   should 'not has blog' do
     p = fast_create(Profile)
-    assert !p.has_blog?
+    refute p.has_blog?
   end
 
   should 'get nil when no blog' do
@@ -1332,35 +1388,37 @@ class ProfileTest < ActiveSupport::TestCase
     child = profile.articles.create!(:name => 'child', :parent => p1)
     profile.reload
     assert_equivalent [p1, p2], profile.folders
-    assert !profile.folders.include?(child)
+    refute profile.folders.include?(child)
   end
 
   should 'profile is invalid when image not valid' do
     profile = build(Profile, :image_builder => {:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png')})
     profile.image.expects(:valid?).returns(false).at_least_once
     profile.image.errors.add(:size, "fake error")
-    assert !profile.valid?
+    refute profile.valid?
   end
 
   should 'profile be valid when image is empty' do
     profile = build(Profile, :image_builder => {:uploaded_data => ""})
     profile.valid?
-    assert_blank profile.errors[:image]
+    assert profile.errors[:image].blank?
   end
 
   should 'profile be valid when has no image' do
     profile = Profile.new
     profile.valid?
-    assert_blank profile.errors[:image]
+    assert profile.errors[:image].blank?
   end
 
   should 'copy header and footer after create a person' do
     template = create_user('test_template').person
     template.custom_footer = "footer customized"
     template.custom_header = "header customized"
+    template.is_template = true
     Environment.any_instance.stubs(:person_default_template).returns(template)
 
     person = create_user_full('mytestuser').person
+    assert_equal person.environment.person_default_template, person.template
     assert_equal "footer customized", person.custom_footer
     assert_equal "header customized", person.custom_header
   end
@@ -1374,7 +1432,7 @@ class ProfileTest < ActiveSupport::TestCase
     template.is_template = true
     template.save!
     profile.valid?
-    assert !profile.errors[:template.to_s].present?
+    refute profile.errors[:template.to_s].present?
   end
 
   should 'be able to have a template' do
@@ -1400,6 +1458,71 @@ class ProfileTest < ActiveSupport::TestCase
     assert_includes environment.profiles.templates, t1
     assert_includes environment.profiles.templates, t2
     assert_not_includes environment.profiles.templates, profile
+  end
+
+  should 'return an specific template when specified' do
+    environment = Environment.default
+    t1 = fast_create(Profile, :is_template => true)
+    t2 = fast_create(Profile, :is_template => true)
+    profile = fast_create(Profile)
+
+    assert_equal [t1], environment.profiles.templates(t1)
+    assert_equal [t2], environment.profiles.templates(t2)
+  end
+
+  should 'not return a template when a non template is specified' do
+    environment = Environment.default
+    t1 = fast_create(Profile, :is_template => true)
+    t2 = fast_create(Profile, :is_template => true)
+    t3 = fast_create(Profile)
+
+    assert_equal [], environment.profiles.templates(t3)
+  end
+
+  should 'return profiles of specified template passing object' do
+    environment = Environment.default
+    t1 = fast_create(Profile, :is_template => true)
+    t2 = fast_create(Profile, :is_template => true)
+    p1 = fast_create(Profile, :template_id => t1.id)
+    p2 = fast_create(Profile, :template_id => t2.id)
+    p3 = fast_create(Profile, :template_id => t1.id)
+
+    assert_equivalent [p1,p3], environment.profiles.with_templates(t1)
+  end
+
+  should 'return profiles of specified template passing id' do
+    environment = Environment.default
+    t1 = fast_create(Profile, :is_template => true)
+    t2 = fast_create(Profile, :is_template => true)
+    p1 = fast_create(Profile, :template_id => t1.id)
+    p2 = fast_create(Profile, :template_id => t2.id)
+    p3 = fast_create(Profile, :template_id => t1.id)
+
+    assert_equivalent [p1,p3], environment.profiles.with_templates(t1.id)
+  end
+
+  should 'return profiles of a list of specified templates' do
+    environment = Environment.default
+    t1 = fast_create(Profile, :is_template => true)
+    t2 = fast_create(Profile, :is_template => true)
+    t3 = fast_create(Profile, :is_template => true)
+    p1 = fast_create(Profile, :template_id => t1.id)
+    p2 = fast_create(Profile, :template_id => t2.id)
+    p3 = fast_create(Profile, :template_id => t3.id)
+
+    assert_equivalent [p1,p2], environment.profiles.with_templates([t1,t2])
+  end
+
+  should 'return all profiles without any template if nil is passed as parameter' do
+    environment = Environment.default
+    Profile.delete_all
+    t1 = fast_create(Profile, :is_template => true)
+    t2 = fast_create(Profile, :is_template => true)
+    p1 = fast_create(Profile, :template_id => t1.id)
+    p2 = fast_create(Profile, :template_id => t2.id)
+    p3 = fast_create(Profile)
+
+    assert_equivalent [t1,t2,p3], environment.profiles.with_templates(nil)
   end
 
   should 'return a list of profiles that are not templates' do
@@ -1461,8 +1584,8 @@ class ProfileTest < ActiveSupport::TestCase
 
   should 'list all events' do
     profile = fast_create(Profile)
-    event1 = Event.new(:name => 'Ze Birthday', :start_date => Date.today)
-    event2 = Event.new(:name => 'Mane Birthday', :start_date => Date.today >> 1)
+    event1 = Event.new(:name => 'Ze Birthday', :start_date => DateTime.now)
+    event2 = Event.new(:name => 'Mane Birthday', :start_date => DateTime.now >> 1)
     profile.events << [event1, event2]
     assert_includes profile.events, event1
     assert_includes profile.events, event2
@@ -1471,7 +1594,7 @@ class ProfileTest < ActiveSupport::TestCase
   should 'list events by day' do
     profile = fast_create(Profile)
 
-    today = Date.today
+    today = DateTime.now
     yesterday_event = Event.new(:name => 'Joao Birthday', :start_date => today - 1.day)
     today_event = Event.new(:name => 'Ze Birthday', :start_date => today)
     tomorrow_event = Event.new(:name => 'Mane Birthday', :start_date => today + 1.day)
@@ -1484,7 +1607,7 @@ class ProfileTest < ActiveSupport::TestCase
   should 'list events by month' do
     profile = fast_create(Profile)
 
-    today = Date.new(2014, 03, 2)
+    today = DateTime.new(2014, 03, 2)
     yesterday_event = Event.new(:name => 'Joao Birthday', :start_date => today - 1.day)
     today_event = Event.new(:name => 'Ze Birthday', :start_date => today)
     tomorrow_event = Event.new(:name => 'Mane Birthday', :start_date => today + 1.day)
@@ -1497,7 +1620,7 @@ class ProfileTest < ActiveSupport::TestCase
   should 'list events in a range' do
     profile = fast_create(Profile)
 
-    today = Date.today
+    today = DateTime.now
     event_in_range = Event.new(:name => 'Noosfero Conference', :start_date => today - 2.day, :end_date => today + 2.day)
     event_in_day = Event.new(:name => 'Ze Birthday', :start_date => today)
 
@@ -1511,7 +1634,7 @@ class ProfileTest < ActiveSupport::TestCase
   should 'not list events out of range' do
     profile = fast_create(Profile)
 
-    today = Date.today
+    today = DateTime.now
     event_in_range1 = Event.new(:name => 'Foswiki Conference', :start_date => today - 2.day, :end_date => today + 2.day)
     event_in_range2 = Event.new(:name => 'Debian Conference', :start_date => today - 2.day, :end_date => today + 3.day)
     event_out_of_range = Event.new(:name => 'Ze Birthday', :start_date => today - 5.day, :end_date => today - 3.day)
@@ -1525,9 +1648,9 @@ class ProfileTest < ActiveSupport::TestCase
 
   should 'sort events by date' do
     profile = fast_create(Profile)
-    event1 = Event.new(:name => 'Noosfero Hackaton', :start_date => Date.today)
-    event2 = Event.new(:name => 'Debian Day', :start_date => Date.today - 1)
-    event3 = Event.new(:name => 'Fisl 10', :start_date => Date.today + 1)
+    event1 = Event.new(:name => 'Noosfero Hackaton', :start_date => DateTime.now)
+    event2 = Event.new(:name => 'Debian Day', :start_date => DateTime.now - 1)
+    event3 = Event.new(:name => 'Fisl 10', :start_date => DateTime.now + 1)
     profile.events << [event1, event2, event3]
     assert_equal [event2, event1, event3], profile.events
   end
@@ -1542,6 +1665,16 @@ class ProfileTest < ActiveSupport::TestCase
     p = create_user('identifier-test').person
     p = fast_create(Profile, :identifier => 'identifier-test')
     assert_equal false, Profile.is_available?('identifier-test', Environment.default)
+  end
+
+  should 'not be available if identifier match with custom exclusion pattern' do
+    NOOSFERO_CONF.stubs(:[]).with('exclude_profile_identifier_pattern').returns('identifier.*')
+    assert_equal false, Profile.is_available?('identifier-test', Environment.default)
+  end
+
+  should 'be available if identifier do not match with custom exclusion pattern' do
+    NOOSFERO_CONF.stubs(:[]).with('exclude_profile_identifier_pattern').returns('identifier.*')
+    assert_equal false, Profile.is_available?('test-identifier', Environment.default)
   end
 
   should 'not have long descriptions' do
@@ -1568,34 +1701,6 @@ class ProfileTest < ActiveSupport::TestCase
 
     assert_equal "<h1> Custom Header </h1>", profile.custom_header
     assert_equal "<strong> Custom Footer <strong>", profile.custom_footer
-  end
-
-  should 'escape malformed html tags' do
-    profile = Profile.new
-    profile.name = "<h1 Malformed >> html >>></a>< tag"
-    profile.nickname = "<h1 Malformed <<h1>>< html >< tag"
-    profile.address = "<h1><</h2< Malformed >> html >< tag"
-    profile.contact_phone = "<h1<< Malformed ><>>> html >< tag"
-    profile.description = "<h1<a> Malformed >> html ></a>< tag"
-    profile.valid?
-
-    assert_no_match /[<>]/, profile.name
-    assert_no_match /[<>]/, profile.nickname
-    assert_no_match /[<>]/, profile.address
-    assert_no_match /[<>]/, profile.contact_phone
-    assert_no_match /[<>]/, profile.description
-    assert_no_match /[<>]/, profile.custom_header
-    assert_no_match /[<>]/, profile.custom_footer
-  end
-
-  should 'escape malformed html tags in header and footer' do
-    profile = fast_create(Profile)
-    profile.custom_header = "<h1<a>><<> Malformed >> html ></a>< tag"
-    profile.custom_footer = "<h1> Malformed <><< html ></a>< tag"
-    profile.save
-
-    assert_no_match /[<>]/, profile.custom_header
-    assert_no_match /[<>]/, profile.custom_footer
   end
 
   should 'not sanitize html comments' do
@@ -1690,7 +1795,7 @@ class ProfileTest < ActiveSupport::TestCase
 
   should 'not have forum' do
     p = fast_create(Profile)
-    assert !p.has_forum?
+    refute p.has_forum?
   end
 
   should 'get nil when no forum' do
@@ -1727,7 +1832,7 @@ class ProfileTest < ActiveSupport::TestCase
   should 'know if url is the profile homepage' do
     profile = fast_create(Profile)
 
-    assert !profile.is_on_homepage?("/#{profile.identifier}/any_page")
+    refute profile.is_on_homepage?("/#{profile.identifier}/any_page")
     assert profile.is_on_homepage?("/#{profile.identifier}")
   end
 
@@ -1739,7 +1844,7 @@ class ProfileTest < ActiveSupport::TestCase
     profile.home_page = homepage
     profile.save
 
-    assert !profile.is_on_homepage?("/#{profile.identifier}/#{not_homepage.slug}",not_homepage)
+    refute profile.is_on_homepage?("/#{profile.identifier}/#{not_homepage.slug}",not_homepage)
     assert profile.is_on_homepage?("/#{profile.identifier}/#{homepage.slug}", homepage)
   end
 
@@ -1846,7 +1951,7 @@ class ProfileTest < ActiveSupport::TestCase
 
   def assert_invalid_identifier(id)
     profile = Profile.new(:identifier => id)
-    assert !profile.valid?
+    refute profile.valid?
     assert profile.errors[:identifier.to_s].present?
   end
 
@@ -1875,7 +1980,7 @@ class ProfileTest < ActiveSupport::TestCase
     Environment.login_redirection_options.keys.each do |redirection|
       profile.redirection_after_login = redirection
       profile.save
-      assert !profile.errors[:redirection_after_login.to_s].present?
+      refute profile.errors[:redirection_after_login.to_s].present?
     end
   end
 
@@ -1897,7 +2002,7 @@ class ProfileTest < ActiveSupport::TestCase
     profile = fast_create(Profile)
     profile.stubs(:active_fields).returns(['field'])
     profile.stubs(:public_fields).returns([])
-    assert !profile.may_display_field_to?('field', nil)
+    refute profile.may_display_field_to?('field', nil)
   end
 
   should 'not display field if field is active but not public and user is not friend' do
@@ -1906,7 +2011,7 @@ class ProfileTest < ActiveSupport::TestCase
     profile.expects(:public_fields).returns([])
     user = mock
     user.expects(:is_a_friend?).with(profile).returns(false)
-    assert !profile.may_display_field_to?('field', user)
+    refute profile.may_display_field_to?('field', user)
   end
 
   should 'display field if field is active and not public but user is profile owner' do
@@ -1945,7 +2050,7 @@ class ProfileTest < ActiveSupport::TestCase
     assert profile.may_display_location_to?(user)
 
     profile.stubs(:may_display_field_to?).with(Profile::LOCATION_FIELDS[0], user).returns(false)
-    assert !profile.may_display_location_to?(user)
+    refute profile.may_display_location_to?(user)
   end
 
   should 'destroy profile if its environment is destroyed' do
@@ -1962,10 +2067,10 @@ class ProfileTest < ActiveSupport::TestCase
     p3 = fast_create(Profile, :public_profile => false)
     p4 = fast_create(Profile, :visible => false, :public_profile => false)
 
-    assert_includes Profile.public, p1
-    assert_not_includes Profile.public, p2
-    assert_not_includes Profile.public, p3
-    assert_not_includes Profile.public, p4
+    assert_includes Profile.is_public, p1
+    assert_not_includes Profile.is_public, p2
+    assert_not_includes Profile.is_public, p3
+    assert_not_includes Profile.is_public, p4
   end
 
   should 'folder_types search for folders in the plugins' do
@@ -1987,13 +2092,13 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'not copy rss_feed' do
-    assert !fast_create(Profile).copy_article?(fast_create(RssFeed))
+    refute fast_create(Profile).copy_article?(fast_create(RssFeed))
   end
 
   should 'not copy template welcome_page' do
     template = fast_create(Person, :is_template => true)
     welcome_page = fast_create(TinyMceArticle, :slug => 'welcome-page', :profile_id => template.id)
-    assert !template.copy_article?(welcome_page)
+    refute template.copy_article?(welcome_page)
   end
 
   should 'return nil on welcome_page_content if template has no welcome page' do
@@ -2027,6 +2132,16 @@ class ProfileTest < ActiveSupport::TestCase
     assert_equal false, ProfileSuggestion.find(suggestion.id).enabled
   end
 
+  should 'destroy related suggestion if profile is destroyed' do
+    person = fast_create(Person)
+    suggested_person = fast_create(Person)
+    suggestion = ProfileSuggestion.create(:person => person, :suggestion => suggested_person, :enabled => true)
+
+    assert_difference 'ProfileSuggestion.find_all_by_suggestion_id(suggested_person.id).count', -1 do
+      suggested_person.destroy
+    end
+  end
+
   should 'enable profile visibility' do
     profile = fast_create(Profile)
 
@@ -2053,5 +2168,33 @@ class ProfileTest < ActiveSupport::TestCase
     assert_includes Profile.enabled, p1
     assert_includes Profile.enabled, p2
     assert_not_includes Profile.enabled, p3
+  end
+
+  should 'fetch profiles older than a specific date' do
+    p1 = fast_create(Profile, :created_at => Time.now)
+    p2 = fast_create(Profile, :created_at => Time.now - 1.day)
+    p3 = fast_create(Profile, :created_at => Time.now - 2.days)
+    p4 = fast_create(Profile, :created_at => Time.now - 3.days)
+
+    profiles = Profile.older_than(p2.created_at)
+
+    assert_not_includes profiles, p1
+    assert_not_includes profiles, p2
+    assert_includes profiles, p3
+    assert_includes profiles, p4
+  end
+
+  should 'fetch profiles younger than a specific date' do
+    p1 = fast_create(Profile, :created_at => Time.now)
+    p2 = fast_create(Profile, :created_at => Time.now - 1.day)
+    p3 = fast_create(Profile, :created_at => Time.now - 2.days)
+    p4 = fast_create(Profile, :created_at => Time.now - 3.days)
+
+    profiles = Profile.younger_than(p3.created_at)
+
+    assert_includes profiles, p1
+    assert_includes profiles, p2
+    assert_not_includes profiles, p3
+    assert_not_includes profiles, p4
   end
 end

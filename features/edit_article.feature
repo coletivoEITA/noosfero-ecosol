@@ -20,6 +20,7 @@ Feature: edit article
     And I fill in "Title" with "My Folder"
     And I press "Save"
     And I go to joaosilva's control panel
+    And I follow "Manage Content"
     Then I should see "My Folder"
 
   @selenium
@@ -41,6 +42,7 @@ Feature: edit article
     When I follow "Folder"
     And I fill in "Title" with "My Folder"
     And I choose "article_published_false"
+    And I uncheck "article_show_to_followers"
     And I press "Save"
     And I log off
     And I go to /freesoftware/my-folder

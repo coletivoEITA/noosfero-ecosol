@@ -5,7 +5,7 @@ class Profile < ActiveRecord::Base
 
   attr_accessible :name, :identifier, :public_profile, :nickname, :custom_footer, :custom_header, :address, :zip_code, :contact_phone, :image_builder, :description, :closed, :template_id, :environment, :lat, :lng, :is_template, :fields_privacy, :preferred_domain_id, :category_ids, :country, :city, :state, :national_region_code, :email, :contact_email, :redirect_l10n, :notification_time,
     :redirection_after_login, :custom_url_redirection,
-    :email_suggestions, :allow_members_to_invite, :invite_friends_only
+    :email_suggestions, :allow_members_to_invite, :invite_friends_only, :secret
 
   # use for internationalizable human type names in search facets
   # reimplement on subclasses
@@ -23,6 +23,8 @@ class Profile < ActiveRecord::Base
     :order => %w[more_recent],
     :display => %w[compact]
   }
+
+  NUMBER_OF_BOXES = 4
 
   def self.default_search_display
     'compact'
@@ -45,10 +47,10 @@ class Profile < ActiveRecord::Base
       find_role('editor', env_id)
     end
     def self.organization_member_roles(env_id)
-      all_roles(env_id).select{ |r| r.key.match(/^profile_/) unless r.key.blank? }
+      all_roles(env_id).select{ |r| r.key.match(/^profile_/) unless r.key.blank? || !r.profile_id.nil?}
     end
     def self.all_roles(env_id)
-      Role.all :conditions => { :environment_id => env_id }
+      Role.where(environment_id: env_id)
     end
     def self.method_missing(m, *args, &block)
       role = find_role(m, args[0])
@@ -71,24 +73,87 @@ class Profile < ActiveRecord::Base
     'manage_friends'       => N_('Manage friends'),
     'validate_enterprise'  => N_('Validate enterprise'),
     'perform_task'         => N_('Perform task'),
+    'view_tasks'           => N_('View tasks'),
     'moderate_comments'    => N_('Moderate comments'),
     'edit_appearance'      => N_('Edit appearance'),
     'view_private_content' => N_('View private content'),
     'publish_content'      => N_('Publish content'),
     'invite_members'       => N_('Invite members'),
     'send_mail_to_members' => N_('Send e-Mail to members'),
+    'manage_custom_roles'  => N_('Manage custom roles'),
   }
 
   acts_as_accessible
+  acts_as_customizable
 
   include Noosfero::Plugin::HotSpot
 
-  scope :memberships_of, lambda { |person| { :select => 'DISTINCT profiles.*', :joins => :role_assignments, :conditions => ['role_assignments.accessor_type = ? AND role_assignments.accessor_id = ?', person.class.base_class.name, person.id ] } }
+  scope :memberships_of, -> person {
+    select('DISTINCT profiles.*').
+    joins(:role_assignments).
+    where('role_assignments.accessor_type = ? AND role_assignments.accessor_id = ?', person.class.base_class.name, person.id)
+  }
   #FIXME: these will work only if the subclass is already loaded
-  scope :enterprises, lambda { {:conditions => (Enterprise.send(:subclasses).map(&:name) << 'Enterprise').map { |klass| "profiles.type = '#{klass}'"}.join(" OR ")} }
-  scope :communities, lambda { {:conditions => (Community.send(:subclasses).map(&:name) << 'Community').map { |klass| "profiles.type = '#{klass}'"}.join(" OR ")} }
-  scope :templates, {:conditions => {:is_template => true}}
-  scope :no_templates, {:conditions => {:is_template => false}}
+  scope :enterprises, -> {
+    where((Enterprise.send(:subclasses).map(&:name) << 'Enterprise').map { |klass| "profiles.type = '#{klass}'"}.join(" OR "))
+  }
+  scope :communities, -> {
+    where((Community.send(:subclasses).map(&:name) << 'Community').map { |klass| "profiles.type = '#{klass}'"}.join(" OR "))
+  }
+  scope :templates, -> template_id = nil {
+    s = where is_template: true
+    s = s.where id: template_id if template_id
+    s
+  }
+
+  scope :with_templates, -> templates {
+    where template_id: templates
+  }
+  scope :no_templates, -> { where is_template: false }
+
+  # Returns a scoped object to select profiles in a given location or in a radius
+  # distance from the given location center.
+  # The parameter can be the `request.params` with the keys:
+  # * `country`: Country code string.
+  # * `state`: Second-level administrative country subdivisions.
+  # * `city`: City full name for center definition, or as set by users.
+  # * `lat`: The latitude to define the center of georef search.
+  # * `lng`: The longitude to define the center of georef search.
+  # * `distance`: Define the search radius in kilometers.
+  # NOTE: This method may return an exception object, to inform filter error.
+  # When chaining scopes, is hardly recommended you to add this as the last one,
+  # if you can't be sure about the provided parameters.
+  def self.by_location(params)
+    params = params.with_indifferent_access
+    if params[:distance].blank?
+      where_code = []
+      [ :city, :state, :country ].each do |place|
+        unless params[place].blank?
+          # ... So we must to find on this named location
+          # TODO: convert location attrs to a table collumn
+          where_code << "(profiles.data like '%#{place}: #{params[place]}%')"
+        end
+      end
+      self.where where_code.join(' AND ')
+    else # Filter in a georef circle
+      unless params[:lat].blank? && params[:lng].blank?
+        lat, lng = [ params[:lat].to_f, params[:lng].to_f ]
+      end
+      if !lat
+        location = [ params[:city], params[:state], params[:country] ].compact.join(', ')
+        if location.blank?
+          return Exception.new (
+            _('You must to provide `lat` and `lng`, or `city` and `country` to define the center of the search circle, defined by `distance`.')
+          )
+        end
+        lat, lng = Noosfero::GeoRef.location_to_georef location
+      end
+      dist = params[:distance].to_f
+      self.where "#{Noosfero::GeoRef.sql_dist lat, lng} <= #{dist}"
+    end
+  end
+
+  include TimeScopes
 
   def members
     scopes = plugins.dispatch_scopes(:organization_members, self)
@@ -121,11 +186,12 @@ class Profile < ActiveRecord::Base
     Profile.column_names.map{|n| [Profile.table_name, n].join('.')}.join(',')
   end
 
-  scope :public, :conditions => { :visible => true, :public_profile => true }
-  scope :visible, :conditions => { :visible => true }
-  scope :invisible, :conditions => ['profiles.visible <> ?', true]
-  scope :enabled, :conditions => { :enabled => true }
-  scope :disabled, :conditions => ['profiles.enabled <> ?', true]
+  scope :visible, -> { where visible: true, secret: false }
+  scope :invisible, -> { where 'profiles.visible <> ?', true }
+  scope :is_public, -> { where visible: true, public_profile: true, secret: false }
+
+  scope :enabled, -> { where enabled: true }
+  scope :disabled, -> { where 'profiles.enabled <> ?', true }
 
   # Subclasses must override this method
   scope :more_popular
@@ -174,7 +240,7 @@ class Profile < ActiveRecord::Base
   validates_length_of :description, :maximum => 550, :allow_nil => true
 
   # Valid identifiers must match this format.
-  IDENTIFIER_FORMAT = /^#{Noosfero.identifier_format}$/
+  IDENTIFIER_FORMAT = /\A#{Noosfero.identifier_format}\Z/
 
   # These names cannot be used as identifiers for Profiles
   RESERVED_IDENTIFIERS = %w[
@@ -228,8 +294,8 @@ class Profile < ActiveRecord::Base
     end
   end
 
-  has_many :profile_categorizations, :conditions => [ 'categories_profiles.virtual = ?', false ]
-  has_many :categories, :through => :profile_categorizations, :conditions => ['categories.visible_for_profiles = ?', true]
+  has_many :profile_categorizations, -> { where 'categories_profiles.virtual = ?', false }
+  has_many :categories, -> { where 'categories.visible_for_profiles = ?', true }, through: :profile_categorizations
 
   has_many :profile_categorizations_including_virtual, :class_name => 'ProfileCategorization'
   has_many :categories_including_virtual, :through => :profile_categorizations_including_virtual, :source => :category
@@ -315,16 +381,25 @@ class Profile < ActiveRecord::Base
     @top_level_articles ||= Article.top_level_for(self)
   end
 
-  def self.is_available?(identifier, environment)
-    !(identifier =~ IDENTIFIER_FORMAT).nil? && !RESERVED_IDENTIFIERS.include?(identifier) && Profile.find(:first, :conditions => ['environment_id = ? and identifier = ?', environment.id, identifier]).nil?
+  def self.is_available?(identifier, environment, profile_id=nil)
+    return false unless identifier =~ IDENTIFIER_FORMAT &&
+      !RESERVED_IDENTIFIERS.include?(identifier) &&
+      (NOOSFERO_CONF['exclude_profile_identifier_pattern'].blank? || identifier !~ /#{NOOSFERO_CONF['exclude_profile_identifier_pattern']}/)
+    return true if environment.nil?
+
+    profiles = environment.profiles.where(:identifier => identifier)
+    profiles = profiles.where(['id != ?', profile_id]) if profile_id.present?
+    !profiles.exists?
   end
 
   validates_presence_of :identifier, :name
-  validates_format_of :identifier, :with => IDENTIFIER_FORMAT, :if => lambda { |profile| !profile.identifier.blank? }
-  validates_exclusion_of :identifier, :in => RESERVED_IDENTIFIERS
-  validates_uniqueness_of :identifier, :scope => :environment_id
   validates_length_of :nickname, :maximum => 40, :allow_nil => true
   validate :valid_template
+  validate :valid_identifier
+
+  def valid_identifier
+    errors.add(:identifier, _('is not available.')) unless Profile.is_available?(identifier, environment, id)
+  end
 
   def valid_template
     if template_id.present? && template && !template.is_template
@@ -350,7 +425,7 @@ class Profile < ActiveRecord::Base
     if template
       apply_template(template, :copy_articles => false)
     else
-      3.times do
+      NUMBER_OF_BOXES.times do
         self.boxes << Box.new
       end
 
@@ -378,6 +453,9 @@ class Profile < ActiveRecord::Base
         new_block = block.class.new(:title => block[:title])
         new_block.copy_from(block)
         new_box.blocks << new_block
+        if block.mirror?
+          block.add_observer(new_block)
+        end
       end
     end
   end
@@ -393,6 +471,7 @@ class Profile < ActiveRecord::Base
   alias_method_chain :template, :default
 
   def apply_template(template, options = {:copy_articles => true})
+    self.template = template
     copy_blocks_from(template)
     copy_articles_from(template) if options[:copy_articles]
     self.apply_type_specific_template(template)
@@ -442,14 +521,13 @@ class Profile < ActiveRecord::Base
     self.articles.recent(limit, options, pagination)
   end
 
-  def last_articles(limit = 10, options = {})
-    options = { :limit => limit,
-                :conditions => ["advertise = ? AND published = ? AND
-                                 ((articles.type != ? and articles.type != ? and articles.type != ?) OR
-                                 articles.type is NULL)",
-                                 true, true, 'UploadedFile', 'RssFeed', 'Blog'],
-                :order => 'articles.published_at desc, articles.id desc' }.merge(options)
-    self.articles.find(:all, options)
+  def last_articles limit = 10
+    self.articles.limit(limit).where(
+      "advertise = ? AND published = ? AND
+      ((articles.type != ? and articles.type != ? and articles.type != ?) OR
+      articles.type is NULL)",
+      true, true, 'UploadedFile', 'RssFeed', 'Blog'
+    ).order('articles.published_at desc, articles.id desc')
   end
 
   class << self
@@ -552,6 +630,14 @@ class Profile < ActiveRecord::Base
     options.merge(Noosfero.url_options)
   end
 
+  def top_url(scheme = 'http')
+    url = scheme + '://'
+    url << url_options[:host]
+    url << ':' << url_options[:port].to_s if url_options.key?(:port)
+    url << Noosfero.root('')
+    url
+  end
+
 private :generate_url, :url_options
 
   def default_domain
@@ -644,7 +730,7 @@ private :generate_url, :url_options
         num = num + 1
         new_name = original_article.name + ' ' + num.to_s
       end
-      original_article.update_attributes!(:name => new_name)
+      original_article.update!(:name => new_name)
     end
     article_copy = article.copy(:profile => self, :parent => parent, :advertise => false)
     if article.profile.home_page == article
@@ -727,7 +813,7 @@ private :generate_url, :url_options
   def short_name(chars = 40)
     if self[:nickname].blank?
       if chars
-        truncate self.name, :length => chars, :omission => '...'
+        truncate self.name, length: chars, omission: '...'
       else
         self.name
       end
@@ -887,7 +973,8 @@ private :generate_url, :url_options
 
   def members_cache_key(params = {})
     page = params[:npage] || '1'
-    cache_key + '-members-page-' + page
+    sort = (params[:sort] ==  'desc') ? params[:sort] : 'asc'
+    cache_key + '-members-page-' + page + '-' + sort
   end
 
   def more_recent_label
@@ -923,6 +1010,13 @@ private :generate_url, :url_options
 
   def profile_custom_icon(gravatar_default=nil)
     image.public_filename(:icon) if image.present?
+  end
+
+  #FIXME make this test
+  def profile_custom_image(size = :icon)
+    image_path = profile_custom_icon if size == :icon
+    image_path ||= image.public_filename(size) if image.present?
+    image_path
   end
 
   def jid(options = {})
@@ -1019,7 +1113,7 @@ private :generate_url, :url_options
   settings_items :custom_url_redirection, type: String, default: nil
 
   def remove_from_suggestion_list(person)
-    suggestion = person.profile_suggestions.find_by_suggestion_id self.id
+    suggestion = person.suggested_profiles.find_by_suggestion_id self.id
     suggestion.disable if suggestion
   end
 

@@ -1,6 +1,7 @@
 class MembershipsController < MyProfileController
 
   protect 'manage_memberships', :profile
+  helper CustomFieldsHelper
 
   def index
     @roles = environment.roles.select do |role|
@@ -40,7 +41,7 @@ class MembershipsController < MyProfileController
   end
 
   def suggest
-    @suggestions = profile.profile_suggestions.of_community.enabled.includes(:suggestion).limit(per_page)
+    @suggestions = profile.suggested_profiles.of_community.enabled.includes(:suggestion).limit(per_page)
   end
 
   def remove_suggestion
@@ -49,13 +50,13 @@ class MembershipsController < MyProfileController
     redirect_to :action => 'suggest' unless @community
     if @community && request.post?
       profile.remove_suggestion(@community)
-      @suggestions = profile.profile_suggestions.of_community.enabled.includes(:suggestion).limit(custom_per_page)
+      @suggestions = profile.suggested_profiles.of_community.enabled.includes(:suggestion).limit(custom_per_page)
       render :partial => 'shared/profile_suggestions_list', :locals => { :suggestions => @suggestions, :collection => :communities_suggestions, :per_page => custom_per_page}
     end
   end
 
   def connections
-    @suggestion = profile.profile_suggestions.of_community.enabled.find_by_suggestion_id(params[:id])
+    @suggestion = profile.suggested_profiles.of_community.enabled.find_by_suggestion_id(params[:id])
     if @suggestion
       @tags = @suggestion.tag_connections
       @profiles = @suggestion.profile_connections

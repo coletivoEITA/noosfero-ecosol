@@ -16,15 +16,12 @@ module BoxesHelper
             display_boxes(controller.boxes_holder, content)
         else
           content_tag(:div,
-                      content_tag('div',
-                                  content_tag('div',
-                                              content_tag('div', wrap_main_content(content), class: 'no-boxes-inner-2'),
-                                              class: 'no-boxes-inner-1'
-                                             ),
-                                             class: 'no-boxes col-lg-12 col-md-12 col-sm-12'
-                                 ),
-                                 class: 'row',
-                                 id: 'content')
+            content_tag(:div,
+              content_tag(:div,
+                content_tag(:div, wrap_main_content(content), class: 'no-boxes-inner-2'),
+                class: 'no-boxes-inner-1'),
+              class: 'no-boxes col-lg-12 col-md-12 col-sm-12'),
+            class: 'row', id: 'content')
         end +
         content_tag('div',
           maybe_display_custom_element(controller.boxes_holder, :custom_footer_expanded, id: 'profile-footer'),
@@ -68,6 +65,7 @@ module BoxesHelper
     extend ActiveSupport::Concern
     included { include ResponsiveMethods }
   end
+
 
 end
 

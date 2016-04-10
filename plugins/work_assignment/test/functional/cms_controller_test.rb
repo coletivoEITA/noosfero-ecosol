@@ -1,8 +1,5 @@
-require File.expand_path(File.dirname(__FILE__) + "/../../../../test/test_helper")
+require 'test_helper'
 require 'cms_controller'
-
-# Re-raise errors caught by the controller.
-class CmsController; def rescue_action(e) raise e end; end
 
 class CmsControllerTest < ActionController::TestCase
 
@@ -22,7 +19,7 @@ class CmsControllerTest < ActionController::TestCase
     work_assignment = create_work_assignment('Work Assignment', @organization, nil, nil)
     get :upload_files, :profile => @organization.identifier, :parent_id => work_assignment.id
     assert_response :forbidden
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
   end
 
   should 'allow members to upload submissions on work_assignment' do
@@ -67,6 +64,31 @@ class CmsControllerTest < ActionController::TestCase
     assert_equal false, other_work_assignment.publish_submissions
     post :upload_files, :profile => @organization.identifier, :parent_id => other_work_assignment.id, :uploaded_files => [fixture_file_upload('/files/test.txt', 'text/plain')]
     submission = UploadedFile.last
+    assert_equal other_work_assignment.publish_submissions, submission.published
+    assert_equal other_work_assignment.publish_submissions, submission.parent.published
+  end
+
+  should 'submission inherit Work Assignment "published" attribute and not be set as show_to_followers when it is not public' do
+    @organization.add_member(@person)
+    work_assignment = create_work_assignment('Work Assignment', @organization, false, nil)
+
+    assert !work_assignment.publish_submissions
+
+    post :upload_files, :profile => @organization.identifier, :parent_id => work_assignment.id, :uploaded_files => [fixture_file_upload('/files/test.txt', 'text/plain')]
+    submission = UploadedFile.last
+
+    assert !submission.show_to_followers?
+    assert_equal work_assignment.publish_submissions, submission.published
+    assert_equal work_assignment.publish_submissions, submission.parent.published
+
+    other_work_assignment = create_work_assignment('Other Work Assigment', @organization, true, nil)
+
+    assert_equal true, other_work_assignment.publish_submissions
+
+    post :upload_files, :profile => @organization.identifier, :parent_id => other_work_assignment.id, :uploaded_files => [fixture_file_upload('/files/test.txt', 'text/plain')]
+    submission = UploadedFile.last
+
+    assert submission.show_to_followers?
     assert_equal other_work_assignment.publish_submissions, submission.published
     assert_equal other_work_assignment.publish_submissions, submission.parent.published
   end

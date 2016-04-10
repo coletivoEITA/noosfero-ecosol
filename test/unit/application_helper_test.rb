@@ -360,6 +360,23 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal 'SIGNUP_FIELD', optional_field(enterprise, 'field', 'SIGNUP_FIELD')
   end
 
+  should 'display field on home for a not logged user' do
+    env = create(Environment, :name => 'env test')
+    stubs(:environment).returns(env)
+
+    controller = mock
+    stubs(:controller).returns(controller)
+    controller.stubs(:controller_name).returns('home')
+    controller.stubs(:action_name).returns('index')
+
+    stubs(:user).returns(nil)
+
+
+    person = Person.new
+    person.expects(:signup_fields).returns(['field'])
+    assert_equal 'SIGNUP_FIELD', optional_field(person, 'field', 'SIGNUP_FIELD')
+  end
+
   should 'display field on community creation' do
     env = create(Environment, :name => 'env test')
     stubs(:environment).returns(env)
@@ -463,13 +480,13 @@ class ApplicationHelperTest < ActionView::TestCase
 
   should 'base theme uses default icon theme' do
     stubs(:current_theme).returns('base')
-    assert_equal "/designs/icons/default/style.css", icon_theme_stylesheet_path.first
+    assert_equal "designs/icons/default/style.css", icon_theme_stylesheet_path.first
   end
 
   should 'base theme uses config to specify more then an icon theme' do
     stubs(:current_theme).returns('base')
-    assert_includes icon_theme_stylesheet_path, "/designs/icons/default/style.css"
-    assert_includes icon_theme_stylesheet_path, "/designs/icons/pidgin/style.css"
+    assert_includes icon_theme_stylesheet_path, "designs/icons/default/style.css"
+    assert_includes icon_theme_stylesheet_path, "designs/icons/pidgin/style.css"
   end
 
   should 'not display active field if only required' do
@@ -545,18 +562,6 @@ class ApplicationHelperTest < ActionView::TestCase
     stubs(:environment).returns(fast_create(Environment, :theme => 'new-theme'))
     stubs(:profile).returns(fast_create(Profile))
     assert_equal environment.theme, current_theme
-  end
-
-  should 'trunc to 15 chars the big filename' do
-    assert_equal 'AGENDA(...).mp3', short_filename('AGENDA_CULTURA_-_FESTA_DE_VAQUEIROS_PONTO_DE_SERRA_PRETA_BAIXA.mp3',15)
-  end
-
-  should 'trunc to default limit the big filename' do
-    assert_equal 'AGENDA_CULTURA_-_FESTA_DE_VAQUEIRO(...).mp3', short_filename('AGENDA_CULTURA_-_FESTA_DE_VAQUEIROS_PONTO_DE_SERRA_PRETA_BAIXA.mp3')
-  end
-
-  should 'does not trunc short filename' do
-    assert_equal 'filename.mp3', short_filename('filename.mp3')
   end
 
   should 'return nil when :show_balloon_with_profile_links_when_clicked is not enabled in environment' do
@@ -789,7 +794,7 @@ class ApplicationHelperTest < ActionView::TestCase
     article = fast_create(Article, :name => 'my article')
     response = content_id_to_str(article)
     assert_equal String, response.class
-    assert !response.empty?
+    refute response.empty?
   end
 
   should 'content_id_to_str return empty string when receiving nil' do
@@ -959,6 +964,83 @@ class ApplicationHelperTest < ActionView::TestCase
     stubs(:user).returns(profile)
     expects(:manage_link).with(profile.communities, :communities, _('My communities')).never
     assert_equal '', manage_communities
+  end
+
+  should 'include file from current theme out of a profile page' do
+    def profile; nil; end
+    def environment; e={}; def e.theme; 'env-theme'; end; e; end
+    def render(opt); opt; end
+    File.stubs(:exists?).returns(false)
+    file = Rails.root.join 'public/designs/themes/env-theme/somefile.html.erb'
+    assert_nil theme_include('somefile') # exists? = false
+    File.expects(:exists?).with(file).returns(true).at_least_once
+    assert_equal file, theme_include('somefile')[:file] # exists? = true
+  end
+
+  should 'include file from current theme inside a profile page' do
+    def profile; p={}; def p.theme; 'my-theme'; end; p; end
+    def render(opt); opt; end
+    File.stubs(:exists?).returns(false)
+    file = Rails.root.join 'public/designs/themes/my-theme/otherfile.html.erb'
+    assert_nil theme_include('otherfile') # exists? = false
+    File.expects(:exists?).with(file).returns(true).at_least_once
+    assert_equal file, theme_include('otherfile')[:file] # exists? = true
+  end
+
+  should 'include file from env theme' do
+    def profile; p={}; def p.theme; 'my-theme'; end; p; end
+    def environment; e={}; def e.theme; 'env-theme'; end; e; end
+    def render(opt); opt; end
+    File.stubs(:exists?).returns(false)
+    file = Rails.root.join 'public/designs/themes/env-theme/afile.html.erb'
+    assert_nil env_theme_include('afile') # exists? = false
+    File.expects(:exists?).with(file).returns(true).at_least_once
+    assert_equal file, env_theme_include('afile')[:file] # exists? = true
+  end
+
+  should 'include file from some theme' do
+    def render(opt); opt; end
+    File.stubs(:exists?).returns(false)
+    file = Rails.root.join 'public/designs/themes/atheme/afile.html.erb'
+    assert_nil from_theme_include('atheme', 'afile') # exists? = false
+    File.expects(:exists?).with(file).returns(true).at_least_once
+    assert_equal file, from_theme_include('atheme', 'afile')[:file] # exists? = true
+  end
+
+  should 'enable fullscreen buttons' do
+    html = fullscreen_buttons("#article")
+    assert html.include?("<script>fullscreenPageLoad('#article')</script>")
+    assert html.include?("class=\"button with-text icon-fullscreen\"")
+    assert html.include?("onClick=\"toggle_fullwidth('#article')\"")
+  end
+
+  should "return the related class string" do
+    assert_equal "Clone Folder", label_for_clone_article(Folder.new)
+    assert_equal "Clone Blog", label_for_clone_article(Blog.new)
+    assert_equal "Clone Event", label_for_clone_article(Event.new)
+    assert_equal "Clone Forum", label_for_clone_article(Forum.new)
+    assert_equal "Clone Article", label_for_clone_article(TinyMceArticle.new)
+  end
+
+  should "return top url of environment" do
+    env = Environment.default
+    request = mock()
+    request.expects(:scheme).returns('http')
+    stubs(:request).returns(request)
+    stubs(:environment).returns(env)
+    stubs(:profile).returns(nil)
+    assert_equal env.top_url('http'), top_url
+  end
+
+  should "return top url considering profile" do
+    env = Environment.default
+    c = fast_create(Community)
+    request = mock()
+    request.stubs(:scheme).returns('http')
+    stubs(:request).returns(request)
+    stubs(:environment).returns(env)
+    stubs(:profile).returns(c)
+    assert_equal c.top_url, top_url
   end
 
   protected

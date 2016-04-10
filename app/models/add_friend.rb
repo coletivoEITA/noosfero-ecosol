@@ -14,6 +14,9 @@ class AddFriend < Task
   alias :friend :target
   alias :friend= :target=
 
+  validates :requestor, :kind_of => { :kind => Person }
+  validates :target, :kind_of => { :kind => Person }
+
   after_create do |task|
     TaskMailer.invitation_notification(task).deliver unless task.friend
     remove_from_suggestion_list(task)
@@ -54,7 +57,7 @@ class AddFriend < Task
   end
 
   def remove_from_suggestion_list(task)
-    suggestion = task.requestor.profile_suggestions.find_by_suggestion_id task.target.id
+    suggestion = task.requestor.suggested_profiles.find_by_suggestion_id task.target.id
     suggestion.disable if suggestion
   end
 end

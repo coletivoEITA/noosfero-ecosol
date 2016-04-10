@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../../../../test/test_helper'
+require 'test_helper'
 
 class ShoppingCartPlugin::CartHelperTest < ActiveSupport::TestCase
 
@@ -42,4 +42,3 @@ class ShoppingCartPlugin::CartHelperTest < ActiveSupport::TestCase
   end
 
 end
-

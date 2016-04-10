@@ -26,9 +26,9 @@ class ProfileSuggestion < ActiveRecord::Base
   end
 
   validates_uniqueness_of :suggestion_id, :scope => [ :person_id ]
-  scope :of_person, :conditions => { :suggestion_type => 'Person' }
-  scope :of_community, :conditions => { :suggestion_type => 'Community' }
-  scope :enabled, :conditions => { :enabled => true }
+  scope :of_person, -> { where suggestion_type: 'Person' }
+  scope :of_community, -> { where suggestion_type: 'Community' }
+  scope :enabled, -> { where enabled: true }
 
   # {:category_type => ['category-icon', 'category-label']}
   CATEGORIES = {
@@ -55,13 +55,13 @@ class ProfileSuggestion < ActiveRecord::Base
       :threshold => 2, :weight => 1, :connection => 'Profile'
     },
     :people_with_common_tags => {
-      :threshold => 2, :weight => 1, :connection => 'ActsAsTaggableOn::Tag'
+      :threshold => 2, :weight => 1, :connection => 'Tag'
     },
     :communities_with_common_friends => {
       :threshold => 2, :weight => 1, :connection => 'Profile'
     },
     :communities_with_common_tags => {
-      :threshold => 2, :weight => 1, :connection => 'ActsAsTaggableOn::Tag'
+      :threshold => 2, :weight => 1, :connection => 'Tag'
     }
   }
 
@@ -113,31 +113,29 @@ class ProfileSuggestion < ActiveRecord::Base
     suggested_profiles = all_suggestions(person)
     return if suggested_profiles.nil?
 
-    already_suggested_profiles = person.profile_suggestions.map(&:suggestion_id).join(',')
+    already_suggested_profiles = person.suggested_profiles.map(&:suggestion_id).join(',')
     suggested_profiles = suggested_profiles.where("profiles.id NOT IN (#{already_suggested_profiles})") if already_suggested_profiles.present?
     #TODO suggested_profiles = suggested_profiles.order('score DESC')
     suggested_profiles = suggested_profiles.limit(N_SUGGESTIONS)
     return if suggested_profiles.blank?
 
     suggested_profiles.each do |suggested_profile|
-      suggestion = person.profile_suggestions.find_or_initialize_by_suggestion_id(suggested_profile.id)
+      suggestion = person.suggested_profiles.find_or_initialize_by_suggestion_id(suggested_profile.id)
       RULES.each do |rule, options|
         begin
           value = suggested_profile.send("#{rule}_count").to_i
         rescue NoMethodError
           next
         end
-        connections = suggested_profile.send("#{rule}_connections")
-        if connections.present?
-          connections = connections[1..-2].split(',')
-        else
-          connections = []
-        end
-        suggestion.send("#{rule}=", value)
+
+        connections = suggested_profile.send("#{rule}_connections") || []
+        connections = connections[1..-2] if connections.present?
         connections.each do |connection_id|
           next if SuggestionConnection.where(:suggestion_id => suggestion.id, :connection_id => connection_id, :connection_type => options[:connection]).present?
-           SuggestionConnection.create!(:suggestion => suggestion, :connection_id => connection_id, :connection_type => options[:connection])
+          SuggestionConnection.create!(:suggestion => suggestion, :connection_id => connection_id, :connection_type => options[:connection])
         end
+
+        suggestion.send("#{rule}=", value)
         suggestion.score += value * options[:weight]
       end
       suggestion.save!
@@ -273,7 +271,7 @@ class ProfileSuggestion < ActiveRecord::Base
   end
 
   def self.generate_profile_suggestions(person, force = false)
-    return if person.profile_suggestions.enabled.count >= MIN_LIMIT && !force
+    return if person.suggested_profiles.enabled.count >= MIN_LIMIT && !force
     Delayed::Job.enqueue ProfileSuggestionsJob.new(person.id) unless ProfileSuggestionsJob.exists?(person.id)
   end
 

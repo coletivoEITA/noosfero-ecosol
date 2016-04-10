@@ -101,6 +101,7 @@ class GalleryTest < ActiveSupport::TestCase
     i = UploadedFile.create!(:profile => p, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
 
     c = fast_create(Community)
+    c.add_member(p)
     gallery = fast_create(Gallery, :profile_id => c.id)
 
     a = create(ApproveArticle, :article => i, :target => c, :requestor => p, :article_parent => gallery)
@@ -130,15 +131,7 @@ class GalleryTest < ActiveSupport::TestCase
     gallery.body = '<p><!-- <asdf> << aasdfa >>> --> <h1> Wellformed html code </h1>'
     gallery.valid?
 
-    assert_match  /<!-- .* --> <h1> Wellformed html code <\/h1>/, gallery.body
-  end
-
-  should 'escape malformed html tags' do
-    gallery = Gallery.new
-    gallery.body = "<h1<< Description >>/h1>"
-    gallery.valid?
-
-    assert_no_match /[<>]/, gallery.body
+    assert_match  /<p><!-- .* --> <\/p><h1> Wellformed html code <\/h1>/, gallery.body
   end
 
   should 'accept uploads' do

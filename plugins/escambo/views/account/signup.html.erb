@@ -1,0 +1,8 @@
+<div id='signup-intro'>
+  <%= environment.signup_intro %>
+</div>
+
+<%= render 'signup_page' %>
+<%= javascript_tag do %>
+  escambo.signup.load('<%= _("Please select an enterprise") %>');
+<% end %>

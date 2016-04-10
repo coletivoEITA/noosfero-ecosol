@@ -1,10 +1,6 @@
 require_relative "../test_helper"
 require 'memberships_controller'
 
-
-# Re-raise errors caught by the controller.
-class MembershipsController; def rescue_action(e) raise e end; end
-
 class MembershipsControllerTest < ActionController::TestCase
 
   include ApplicationHelper
@@ -95,7 +91,7 @@ class MembershipsControllerTest < ActionController::TestCase
     assert_tag :tag => 'a', :attributes => { :href => "/myprofile/testuser/memberships/new_community" }
   end
 
-  should 'display destroy link only to communities' do
+  should 'display destroy link to communities and enterprise' do
     community = Community.create!(:name => 'A community to destroy')
     enterprise = fast_create(Enterprise, :name => 'A enterprise test')
 
@@ -106,7 +102,7 @@ class MembershipsControllerTest < ActionController::TestCase
     get :index, :profile => 'testuser'
 
     assert_tag :tag => 'a', :attributes => { :href => "/myprofile/#{community.identifier}/profile_editor/destroy_profile" }
-    assert_no_tag :tag => 'a', :attributes => { :href => "/myprofile/#{enterprise.identifier}/profile_editor/destroy_profile" }
+    assert_tag :tag => 'a', :attributes => { :href => "/myprofile/#{enterprise.identifier}/profile_editor/destroy_profile" }
   end
 
   should 'not display destroy link to normal members' do
@@ -331,35 +327,35 @@ class MembershipsControllerTest < ActionController::TestCase
 
   should 'display list suggestions button' do
     community = fast_create(Community)
-    profile.profile_suggestions.create(:suggestion => community)
+    profile.suggested_profiles.create(:suggestion => community)
     get :index, :profile => 'testuser'
     assert_tag :tag => 'a', :content => 'See some suggestions of communities...', :attributes => { :href => "/myprofile/testuser/memberships/suggest" }
   end
 
   should 'display communities suggestions' do
     community = fast_create(Community)
-    profile.profile_suggestions.create(:suggestion => community)
+    profile.suggested_profiles.create(:suggestion => community)
     get :suggest, :profile => 'testuser'
     assert_tag :tag => 'a', :content => "+ #{community.name}", :attributes => { :href => "/profile/#{community.identifier}/join" }
   end
 
   should 'display button to join on community suggestion' do
     community = fast_create(Community)
-    profile.profile_suggestions.create(:suggestion => community)
+    profile.suggested_profiles.create(:suggestion => community)
     get :suggest, :profile => 'testuser'
     assert_tag :tag => 'a', :attributes => { :href => "/profile/#{community.identifier}/join" }
   end
 
   should 'display button to remove community suggestion' do
     community = fast_create(Community)
-    profile.profile_suggestions.create(:suggestion => community)
+    profile.suggested_profiles.create(:suggestion => community)
     get :suggest, :profile => 'testuser'
     assert_tag :tag => 'a', :attributes => { :href => /\/myprofile\/testuser\/memberships\/remove_suggestion\/#{community.identifier}/ }
   end
 
   should 'remove suggestion of community' do
     community = fast_create(Community)
-    suggestion = profile.profile_suggestions.create(:suggestion => community)
+    suggestion = profile.suggested_profiles.create(:suggestion => community)
     post :remove_suggestion, :profile => 'testuser', :id => community.identifier
 
     assert_response :success

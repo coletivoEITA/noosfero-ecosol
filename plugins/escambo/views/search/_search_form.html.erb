@@ -1,0 +1,12 @@
+<div id='escambo-search-form'>
+
+<%= form_tag({ :controller => 'search', :action => @asset ? @asset : 'index', :asset => nil }, :method => 'get') do %>
+
+  <div class="search-field">
+    <%= text_field_tag 'query', @query, :id => 'search-input', :size => 50 %>
+    <%= javascript_tag "jQuery('#search-input').attr('title', \"#{hint}\").hint()" if defined?(hint) %>
+    <%= submit_tag '' %>
+  </div>
+
+<% end %>
+</div>

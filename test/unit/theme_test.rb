@@ -198,7 +198,7 @@ class ThemeTest < ActiveSupport::TestCase
   end
 
   should 'not be public by default' do
-    assert ! Theme.new('test').public
+    refute  Theme.new('test').public
   end
 
   should 'not crash with nil or invalid owner_type' do

@@ -5,7 +5,7 @@
 <%= required labelled_form_field _('Name'), f.text_field(:name) %>
 <%= labelled_form_field(_('What is the time limit for this form to be filled?'), (
   date_range_field('form[begining]', 'form[ending]', @form.begining, @form.ending,
-                   '%Y-%m-%d %H:%M',
+                   '%Y/%m/%d %H:%M',
                    { :time => true, :change_month => true, :change_year => true,
                      :date_format => 'yy-mm-dd', :time_format => 'hh:mm' },
                      { :size => 14 })
@@ -21,6 +21,27 @@
 <%= labelled_form_field c_('Description'), f.text_area(:description, :style => 'width: 100%', :class => 'mceEditor') %>
 
 <h2><%= c_('Fields') %></h2>
+
+<ul class='default-field-list'>
+  <li>
+    <fieldset class="field-box">
+      <legend>
+        <%= _('This field will be added automatically to your form') %>
+      </legend>
+      <%= required f.label :name, c_('Name:') %>
+      <%= _('Name') %>
+    </fieldset>
+  </li>
+  <li>
+    <fieldset class="field-box">
+      <legend>
+        <%= _('This field will be added automatically to your form') %>
+      </legend>
+      <%= required f.label :name, c_('Name:') %>
+      <%= _('Email') %>
+    </fieldset>
+  </li>
+</ul>
 
 <ul class='field-list'>
   <%= f.fields_for :fields do |builder| %>
@@ -39,4 +60,4 @@
   <%= submit_button :save, c_('Save'), :cancel => {:action => 'index'}%>
 <% end %>
 
-<%= javascript_include_tag '../plugins/custom_forms/field' %>
+<%= javascript_include_tag 'plugins/custom_forms/field' %>

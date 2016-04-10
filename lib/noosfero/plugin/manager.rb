@@ -65,7 +65,7 @@ class Noosfero::Plugin::Manager
   def pipeline(event, *args)
     each do |plugin|
       # result_for can't be used here and default must be returned to keep args
-      result = plugin.send event, *args
+      result = Array(plugin.send event, *args)
       result = result.kind_of?(Array) ? result : [result]
       raise ArgumentError, "Pipeline broken by #{plugin.class.name} on #{event} with #{result.length} arguments instead of #{args.length}." if result.length != args.length
       args = result

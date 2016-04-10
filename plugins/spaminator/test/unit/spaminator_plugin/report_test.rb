@@ -9,7 +9,7 @@ class SpaminatorPlugin::ReportTest < ActiveSupport::TestCase
 
     report.environment = Environment.default
     report.valid?
-    assert !report.errors.include?(:environment)
+    refute report.errors.include?(:environment)
   end
 
   should 'have scope of all reports from an environment' do
@@ -19,7 +19,7 @@ class SpaminatorPlugin::ReportTest < ActiveSupport::TestCase
     r3 = SpaminatorPlugin::Report.create(:environment => environment)
     r4 = SpaminatorPlugin::Report.create(:environment => fast_create(Environment))
 
-    reports = SpaminatorPlugin::Report.from(environment)
+    reports = SpaminatorPlugin::Report.from_environment(environment)
 
     assert_equal ActiveRecord::Relation, reports.class
     assert_includes reports, r1

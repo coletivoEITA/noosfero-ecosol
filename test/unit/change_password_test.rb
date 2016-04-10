@@ -16,8 +16,8 @@ class ChangePasswordTest < ActiveSupport::TestCase
     change.status = Task::Status::FINISHED
     change.password = 'right'
     change.password_confirmation = 'wrong'
-    assert !change.valid?
-    assert change.errors[:password.to_s].present?
+    refute change.valid?
+    assert change.errors[:password_confirmation].present?
 
     change.password_confirmation = 'right'
     assert change.valid?
@@ -29,7 +29,8 @@ class ChangePasswordTest < ActiveSupport::TestCase
     change.password_confirmation = 'newpass'
     change.finish
 
-    assert User.find(person.user.id).authenticated?('newpass')
+    person.user.activate
+    assert person.user.authenticated?('newpass')
   end
 
   should 'not require password and password confirmation when cancelling' do

@@ -1,9 +1,6 @@
 require_relative "../test_helper"
 require 'content_viewer_controller'
 
-# Re-raise errors caught by the controller.
-class ContentViewerController; def rescue_action(e) raise e end; end
-
 class ContentViewerControllerTest < ActionController::TestCase
 
   all_fixtures
@@ -124,6 +121,19 @@ class ContentViewerControllerTest < ActionController::TestCase
     assert_tag :tag => 'div', :attributes => { :id => 'article-tags' }, :descendant => { :content => /This article's tags:/ }
   end
 
+  should "display image label on article image" do
+    page = TinyMceArticle.create!(
+             :profile => profile,
+             :name => 'myarticle',
+             :image_builder => {
+               :uploaded_data => fixture_file_upload('/files/tux.png', 'image/png'),
+               :label => 'test-label'
+             }
+           )
+    get :view_page, page.url
+    assert_match /test-label/, @response.body
+  end
+
   should "not display current article's tags" do
     page = profile.articles.create!(:name => 'myarticle', :body => 'test article')
 
@@ -134,7 +144,7 @@ class ContentViewerControllerTest < ActionController::TestCase
 
   should 'not display forbidden articles' do
     profile.articles.create!(:name => 'test')
-    profile.update_attributes!({:public_content => false}, :without_protection => true)
+    profile.update!({:public_content => false}, :without_protection => true)
 
     Article.any_instance.expects(:display_to?).with(anything).returns(false)
     get :view_page, :profile => profile.identifier, :page => [ 'test' ]
@@ -143,7 +153,7 @@ class ContentViewerControllerTest < ActionController::TestCase
 
   should 'display allowed articles' do
     profile.articles.create!(:name => 'test')
-    profile.update_attributes!({:public_content => false}, :without_protection => true)
+    profile.update!({:public_content => false}, :without_protection => true)
 
     Article.any_instance.expects(:display_to?).with(anything).returns(true)
     get :view_page, :profile => profile.identifier, :page => [ 'test' ]
@@ -175,13 +185,13 @@ class ContentViewerControllerTest < ActionController::TestCase
     admin = fast_create(Person)
     community.add_member(admin)
 
-    folder = fast_create(Folder, :profile_id => community.id, :published => false)
+    folder = fast_create(Folder, :profile_id => community.id, :published => false, :show_to_followers => false)
     community.add_member(profile)
     login_as(profile.identifier)
 
     get :view_page, :profile => community.identifier, :page => [ folder.path ]
 
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
   end
 
   should 'show private content to profile moderators' do
@@ -257,34 +267,34 @@ class ContentViewerControllerTest < ActionController::TestCase
   end
 
   should 'not give access to private articles if logged off' do
-    profile = Profile.create!(:name => 'test profile', :identifier => 'test_profile')
+    profile = Community.create!(:name => 'test profile', :identifier => 'test_profile')
     intranet = Folder.create!(:name => 'my_intranet', :profile => profile, :published => false)
 
     get :view_page, :profile => 'test_profile', :page => [ 'my-intranet' ]
 
-    assert_template 'access_denied'
+    assert_template "shared/access_denied"
   end
 
   should 'not give access to private articles if logged in but not member' do
     login_as('testinguser')
-    profile = Profile.create!(:name => 'test profile', :identifier => 'test_profile')
+    profile = Community.create!(:name => 'test profile', :identifier => 'test_profile')
     intranet = Folder.create!(:name => 'my_intranet', :profile => profile, :published => false)
 
     get :view_page, :profile => 'test_profile', :page => [ 'my-intranet' ]
 
-    assert_template 'access_denied'
+    assert_template "profile/_private_profile"
   end
 
   should 'not give access to private articles if logged in and only member' do
     person = create_user('test_user').person
     profile = Profile.create!(:name => 'test profile', :identifier => 'test_profile')
-    intranet = Folder.create!(:name => 'my_intranet', :profile => profile, :published => false)
+    intranet = Folder.create!(:name => 'my_intranet', :profile => profile, :published => false, :show_to_followers => false)
     profile.affiliate(person, Profile::Roles.member(profile.environment.id))
     login_as('test_user')
 
     get :view_page, :profile => 'test_profile', :page => [ 'my-intranet' ]
 
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
   end
 
   should 'give access to private articles if logged in and moderator' do
@@ -788,6 +798,20 @@ class ContentViewerControllerTest < ActionController::TestCase
     assert_tag :tag => 'div', :attributes => { :class => 'short-post'}, :content => /The first paragraph of the article\. The second paragraph The third which is a really biiiiiiig paragraph jds ksajdhf ksdfkjhsdh fakdshf askdjhfsd lfhsdlkfa dslkfah dskjahsd faksdhfk sdfkas fkjshfk sdhjf sdkjf sdkj fkdsjhfal ksdjhflaksjdhdsghfg sjhfgsdjhf sdjhgf asdjf sadj fadjhs gfas dkjgf asdjhf asdjh fjkdsg fjsdgf asdjf sadjlgf jsçlkdsjhfdsa lksajsalj aldja lkja slkdjal aj dasldkjas lkjsdj kj \.\.\./
   end
 
+  should 'show only first paragraph with picture of posts if visualization_format is short+pic' do
+    login_as(profile.identifier)
+
+    blog = Blog.create!(:name => 'A blog test', :profile => profile, :visualization_format => 'short+pic')
+
+    blog.posts << TinyMceArticle.create!(:name => 'first post', :parent => blog, :profile => profile, :body => '<p>Content to be displayed.</p> <img src="pic.jpg">')
+
+    get :view_page, :profile => profile.identifier, :page => blog.path
+
+    assert_select '.blog-post .post-pic' do |el|
+      assert_match /background-image:url\(pic.jpg\)/, el.to_s
+    end
+  end
+
   should 'display link to edit blog for allowed' do
     blog = fast_create(Blog, :profile_id => profile.id, :path => 'blog')
     login_as(profile.identifier)
@@ -1144,9 +1168,9 @@ class ContentViewerControllerTest < ActionController::TestCase
 
   should 'add an zero width space every 4 caracters of comment urls' do
     url = 'www.an.url.to.be.splited.com'
-    a = fast_create(TextileArticle, :profile_id => @profile.id, :path => 'textile', :language => 'en')
+    a = fast_create(TextileArticle, :profile_id => @profile.id, :language => 'en')
     c = a.comments.create!(:author => @profile, :title => 'An url', :body => url)
-    get :view_page, :profile => @profile.identifier, :page => [ 'textile' ]
+    get :view_page, :profile => @profile.identifier, :page => a.path
     assert_tag :a, :attributes => { :href => "http://" + url}, :content => url.scan(/.{4}/).join('&#x200B;')
   end
 
@@ -1246,9 +1270,11 @@ class ContentViewerControllerTest < ActionController::TestCase
   should 'expire article actions button if any plugins says so' do
     class Plugin1 < Noosfero::Plugin
       def content_expire_edit(content); 'This button is expired.'; end
+      def content_expire_clone(content); 'This button is expired.'; end
     end
     class Plugin2 < Noosfero::Plugin
       def content_expire_edit(content); nil; end
+      def content_expire_clone(content); nil; end
     end
     Noosfero::Plugin.stubs(:all).returns([Plugin1.name, Plugin2.name])
 
@@ -1422,7 +1448,7 @@ class ContentViewerControllerTest < ActionController::TestCase
 
     article = TinyMceArticle.create(:name => 'Article to be shared with images',
                                     :body => 'This article should be shared with all social networks',
-                                    :profile => @profile,
+                                    :profile => community,
                                     :published => false,
                                     :show_to_followers => true)
     article.parent = blog
@@ -1444,4 +1470,165 @@ class ContentViewerControllerTest < ActionController::TestCase
 
     assert_no_tag :tag => 'h1', :attributes => { :class => /title/ }, :content => article.name
   end
+
+  should 'add extra toolbar actions on article from plugins' do
+    class Plugin1 < Noosfero::Plugin
+      def article_extra_toolbar_buttons(article)
+        {:title => 'some_title1', :icon => 'some_icon1', :url => {}}
+      end
+    end
+    Noosfero::Plugin.stubs(:all).returns([Plugin1.name])
+
+    Environment.default.enable_plugin(Plugin1.name)
+
+    page = profile.articles.create!(:name => 'myarticle', :body => 'the body of the text')
+
+    get :view_page, :profile => profile.identifier, :page => [ 'myarticle' ]
+    assert_tag :tag => 'div', :attributes => { :id => 'article-actions' }, :descendant => { :tag => 'a', :attributes => { :title => "some_title1" }}
+  end
+
+  should 'add more than one extra toolbar actions on article from plugins' do
+    class Plugin1 < Noosfero::Plugin
+      def article_extra_toolbar_buttons(article)
+        {:title => 'some_title1', :icon => 'some_icon1', :url => {}}
+      end
+    end
+    class Plugin2 < Noosfero::Plugin
+      def article_extra_toolbar_buttons(article)
+        {:title => 'some_title2', :icon => 'some_icon2', :url => {}}
+      end
+    end
+    Noosfero::Plugin.stubs(:all).returns([Plugin1.name, Plugin2.name])
+
+    Environment.default.enable_plugin(Plugin1.name)
+    Environment.default.enable_plugin(Plugin2.name)
+
+    page = profile.articles.create!(:name => 'myarticle', :body => 'the body of the text')
+
+    get :view_page, :profile => profile.identifier, :page => [ 'myarticle' ]
+    assert_tag :tag => 'div', :attributes => { :id => 'article-actions' }, :descendant => { :tag => 'a', :attributes => { :title => "some_title1" }}
+    assert_tag :tag => 'div', :attributes => { :id => 'article-actions' }, :descendant => { :tag => 'a', :attributes => { :title => "some_title2" }}
+  end
+
+  should 'add icon attribute in extra toolbar actions on article from plugins' do
+    class Plugin1 < Noosfero::Plugin
+      def article_extra_toolbar_buttons(article)
+        {:title => 'some_title', :icon => 'some_icon', :url => {}}
+      end
+    end
+    Noosfero::Plugin.stubs(:all).returns([Plugin1.name])
+
+    Environment.default.enable_plugin(Plugin1.name)
+
+    page = profile.articles.create!(:name => 'myarticle', :body => 'the body of the text')
+
+    get :view_page, :profile => profile.identifier, :page => [ 'myarticle' ]
+    assert_tag :tag => 'div', :attributes => { :id => 'article-actions' }, :descendant => { :tag => 'a', :attributes => { :class => /some_icon/ }}
+  end
+
+  should 'add url attribute in extra toolbar actions on article from plugins' do
+    class Plugin1 < Noosfero::Plugin
+      def article_extra_toolbar_buttons(article)
+        {:title => 'some_title', :icon => 'some_icon', :url => '/someurl'}
+      end
+    end
+    Noosfero::Plugin.stubs(:all).returns([Plugin1.name])
+
+    Environment.default.enable_plugin(Plugin1.name)
+
+    page = profile.articles.create!(:name => 'myarticle', :body => 'the body of the text')
+
+    get :view_page, :profile => profile.identifier, :page => [ 'myarticle' ]
+    assert_tag :tag => 'div', :attributes => { :id => 'article-actions' }, :descendant => { :tag => 'a', :attributes => { :href => "/someurl" }}
+  end
+
+  should 'use context method in extra toolbar actions on article from plugins' do
+    class Plugin1 < Noosfero::Plugin
+      def article_extra_toolbar_buttons(article)
+        if profile.public?
+          {:title => 'some_title', :icon => 'some_icon', :url => '/someurl'}
+        else
+          {:title => 'another_title', :icon => 'another_icon', :url => '/anotherurl'}
+        end
+       end
+    end
+    Noosfero::Plugin.stubs(:all).returns([Plugin1.name])
+
+    Environment.default.enable_plugin(Plugin1.name)
+
+    page = profile.articles.create!(:name => 'myarticle', :body => 'the body of the text')
+
+    profile.public_profile = false
+    profile.save
+    login_as(profile.identifier)
+    get :view_page, :profile => profile.identifier, :page => [ 'myarticle' ]
+    assert_tag :tag => 'div', :attributes => { :id => 'article-actions' }, :descendant => { :tag => 'a', :attributes => { :href => "/anotherurl" }}
+  end
+
+  should  'show lead,image and title in compact blog visualization' do
+    community = Community.create(:name => 'test-community')
+    community.add_member(@profile)
+    community.save!
+
+    blog = community.articles.find_by_name("Blog")
+    blog.visualization_format = 'compact'
+    blog.save!
+
+    article = TinyMceArticle.create(:name => 'Article to be shared with images',
+                                    :body => 'This article should be shared with all social networks',
+                                    :profile => @profile,
+                                    :published => false,
+                                    :abstract => "teste teste teste",
+                                    :show_to_followers => true,
+                                    :image_builder => { :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png')} )
+    article.parent = blog
+    article.save!
+
+    login_as(@profile.identifier)
+
+
+    get :view_page, :profile => community.identifier, "page" => 'blog'
+
+    assert_tag :tag => 'div', :attributes => { :class => 'article-compact-image' }
+    assert_tag :tag => 'div', :attributes => { :class => 'article-compact-abstract-with-image' }
+  end
+
+  should 'not count a visit twice for the same user' do
+    profile = create_user('someone').person
+    login_as(@profile.identifier)
+    page = profile.articles.build(:name => 'myarticle', :body => 'the body of the text')
+    page.save!
+
+    get :view_page, :profile => profile.identifier, :page => 'myarticle'
+    page.reload
+    assert_equal 1, page.hits
+
+    get :view_page, :profile => profile.identifier, :page => 'myarticle'
+    page.reload
+    assert_equal 1, page.hits
+  end
+
+  should 'not count a visit twice for unlogged users' do
+     profile = create_user('someone').person
+     page = profile.articles.build(:name => 'myarticle', :body => 'the body of the text')
+     page.save!
+
+     get :view_page, :profile => profile.identifier, :page => 'myarticle'
+     page.reload
+     assert_equal 1, page.hits
+
+     get :view_page, :profile => profile.identifier, :page => 'myarticle'
+     page.reload
+     assert_equal 1, page.hits
+  end
+
+  should 'show blog image only inside blog cover' do
+    blog = create(Blog, :profile_id => profile.id, :name=>'testblog', :image_builder => { :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png')})
+    blog.save!
+    get :view_page, :profile => profile.identifier, :page => [blog.path]
+
+    assert_select '.blog-cover > img', 1
+    assert_select '.article-body-img > img', 0
+  end
+
 end

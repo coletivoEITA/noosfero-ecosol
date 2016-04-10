@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative '../test_helper'
 
 class BreadcrumbsPluginTest < ActiveSupport::TestCase
 
@@ -7,11 +7,11 @@ class BreadcrumbsPluginTest < ActiveSupport::TestCase
   end
 
   should 'has a name' do
-    assert !BreadcrumbsPlugin.plugin_name.blank?
+    refute BreadcrumbsPlugin.plugin_name.blank?
   end
 
   should 'has a description' do
-    assert !BreadcrumbsPlugin.plugin_description.blank?
+    refute BreadcrumbsPlugin.plugin_description.blank?
   end
 
   should 'add a block' do
