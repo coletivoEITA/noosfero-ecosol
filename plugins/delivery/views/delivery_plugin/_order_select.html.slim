@@ -17,7 +17,7 @@ div.order-delivery-select id='order-#{order.id}'
   / do not render on confirmation email (@view) if supplier_delivery is pickup
   - unless @view and order.supplier_delivery_data[:delivery_type] == 'pickup'
     div.consumer-delivery-data
-      = f.fields_for :consumer_delivery_data, order.consumer_delivery_data do |ff|
+      = f.fields_for :consumer_delivery_data do |ff|
         = labelled_form_field _('Address (street and number)'),
           ff.text_field(:address, value: consumer_delivery_field_value(order, :address), readonly: readonly)
         = labelled_form_field _('Address completion'),
