@@ -6,8 +6,11 @@ div.order-delivery-select id='order-#{order.id}'
 
   div.supplier-delivery-data
     - if order.delivery_methods.size > 0
-      = labelled_form_field _('Option'),
-        f.select(:supplier_delivery_id, supplier_delivery_options(methods: methods, selected: order.supplier_delivery_id), {}, disabled: readonly,
+      - if readonly
+        = supplier_delivery_selected_method(methods: methods, selected: order.supplier_delivery_id)
+      - else
+        = labelled_form_field _('Option'),
+          f.select(:supplier_delivery_id, supplier_delivery_options(methods: methods, selected: order.supplier_delivery_id), {}, disabled: readonly,
           onchange: 'delivery.order.select.onChange(this)', onkeyup: 'delivery.order.select.onChange(this)') + content_tag('div', '', class: 'help-block instructions')
     - elsif (name = consumer_delivery_field_value order, :name).present?
       = labelled_form_field _('Option'),
