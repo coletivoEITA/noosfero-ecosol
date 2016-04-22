@@ -118,15 +118,19 @@ class OrdersPlugin::Order < ActiveRecord::Base
   serialize :data
 
   extend SerializedSyncedData::ClassMethods
-  sync_serialized_field :profile do |profile|
+  sync_serialized_field :profile do
     {name: profile.name, email: profile.contact_email, contact_phone: profile.contact_phone} if profile
   end
-  sync_serialized_field :consumer do |consumer|
+  sync_serialized_field :consumer do
     {name: consumer.name, email: consumer.contact_email, contact_phone: consumer.contact_phone} if consumer
   end
-  sync_serialized_field :supplier_delivery
-  sync_serialized_field :consumer_delivery do |consumer_delivery_data|
-    if self.consumer
+  sync_serialized_field :supplier_delivery do
+    SerializedSyncedData.prepare_data supplier_delivery.attributes
+  end
+  sync_serialized_field :consumer_delivery do
+    if consumer_delivery
+      SerializedSyncedData.prepare_data consumer_delivery.attributes
+    elsif self.consumer
       h = {}; Profile::LOCATION_FIELDS.each do |field|
         h[field.to_sym] = self.consumer.send(field)
       end
