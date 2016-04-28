@@ -3,7 +3,8 @@ class AddExchangePluginExchangeEnterprise < ActiveRecord::Migration
     create_table :exchange_plugin_exchange_enterprises do |t|
       t.integer :enterprise_id
       t.integer :exchange_id
-      t.time_stamps
+      t.datetime :created_at
+      t.datetime :updated_at
     end
   end
 

@@ -319,17 +319,17 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   should 'have administator role' do
-    Role.expects(:find_by_key_and_environment_id).with('profile_admin', Environment.default.id).returns(Role.new)
+    Role.expects(:find_by).with(key: 'profile_admin', environment_id: Environment.default.id).returns(Role.new)
     assert_kind_of Role, Profile::Roles.admin(Environment.default.id)
   end
 
   should 'have member role' do
-    Role.expects(:find_by_key_and_environment_id).with('profile_member', Environment.default.id).returns(Role.new)
+    Role.expects(:find_by).with(key: 'profile_member', environment_id: Environment.default.id).returns(Role.new)
     assert_kind_of Role, Profile::Roles.member(Environment.default.id)
   end
 
   should 'have moderator role' do
-    Role.expects(:find_by_key_and_environment_id).with('profile_moderator', Environment.default.id).returns(Role.new)
+    Role.expects(:find_by).with(key: 'profile_moderator', environment_id: Environment.default.id).returns(Role.new)
     assert_kind_of Role, Profile::Roles.moderator(Environment.default.id)
   end
 
@@ -434,14 +434,14 @@ class ProfileTest < ActiveSupport::TestCase
   should 'not advertise articles created together with the profile' do
     Profile.any_instance.stubs(:default_set_of_articles).returns([Article.new(:name => 'home'), RssFeed.new(:name => 'feed')])
     profile = create(Profile)
-    refute profile.articles.find_by_path('home').advertise?
-    refute profile.articles.find_by_path('feed').advertise?
+    refute profile.articles.find_by(path: 'home').advertise?
+    refute profile.articles.find_by(path: 'feed').advertise?
   end
 
   should 'advertise article after update' do
     Profile.any_instance.stubs(:default_set_of_articles).returns([Article.new(:name => 'home')])
     profile = create(Profile)
-    article = profile.articles.find_by_path('home')
+    article = profile.articles.find_by(path: 'home')
     refute article.advertise?
     article.name = 'Changed name'
     article.save!
@@ -1031,7 +1031,7 @@ class ProfileTest < ActiveSupport::TestCase
 
     p.apply_template(template)
 
-    assert_not_nil p.articles.find_by_name('template article')
+    assert_not_nil p.articles.find_by(name: 'template article')
   end
 
   should 'rename existing articles when applying template' do
@@ -1047,8 +1047,8 @@ class ProfileTest < ActiveSupport::TestCase
 
     p.apply_template(template)
 
-    assert_not_nil p.articles.find_by_name('some article 2')
-    assert_not_nil p.articles.find_by_name('some article')
+    assert_not_nil p.articles.find_by(name: 'some article 2')
+    assert_not_nil p.articles.find_by(name: 'some article')
   end
 
   should 'copy header when applying template' do
@@ -1324,7 +1324,7 @@ class ProfileTest < ActiveSupport::TestCase
     task2 = Task.create!(:requestor => person, :target => another)
 
     person.stubs(:is_admin?).with(other).returns(true)
-    Environment.find(:all).select{|i| i != other }.each do |env|
+    Environment.all.select{|i| i != other }.each do |env|
       person.stubs(:is_admin?).with(env).returns(false)
     end
 
@@ -1782,9 +1782,9 @@ class ProfileTest < ActiveSupport::TestCase
   should "destroy scrap if receiver was removed" do
     person = fast_create(Person)
     scrap = fast_create(Scrap, :receiver_id => person.id)
-    assert_not_nil Scrap.find_by_id(scrap.id)
+    assert_not_nil Scrap.find_by(id: scrap.id)
     person.destroy
-    assert_nil Scrap.find_by_id(scrap.id)
+    assert_nil Scrap.find_by(id: scrap.id)
   end
 
   should 'have forum' do
@@ -1818,6 +1818,21 @@ class ProfileTest < ActiveSupport::TestCase
     community.add_member(person)
 
     assert_equal [person], community.members
+  end
+
+  should 'return a list members by email of a community' do
+    someone = create_user('Someone', email:'someone@test.com.br')
+    someperson = create_user('Someperson',email:'someperson@test.com.br')
+
+    community = fast_create(Community)
+    community.add_member(someone.person)
+    community.add_member(someperson.person)
+
+    result = community.members_like 'email', '@test.com.br'
+
+    assert_includes result, someone.person
+    assert_includes result, someperson.person
+
   end
 
   should 'count unique members of a community' do
@@ -1917,13 +1932,13 @@ class ProfileTest < ActiveSupport::TestCase
   should 'merge members of plugins to original members' do
     class Plugin1 < Noosfero::Plugin
       def organization_members(profile)
-        Person.members_of(Community.find_by_identifier('community1'))
+        Person.members_of(Community.find_by(identifier: 'community1'))
       end
     end
 
     class Plugin2 < Noosfero::Plugin
       def organization_members(profile)
-        Person.members_of(Community.find_by_identifier('community2'))
+        Person.members_of(Community.find_by(identifier: 'community2'))
       end
     end
     Noosfero::Plugin.stubs(:all).returns(['ProfileTest::Plugin1', 'ProfileTest::Plugin2'])
@@ -2137,7 +2152,7 @@ class ProfileTest < ActiveSupport::TestCase
     suggested_person = fast_create(Person)
     suggestion = ProfileSuggestion.create(:person => person, :suggestion => suggested_person, :enabled => true)
 
-    assert_difference 'ProfileSuggestion.find_all_by_suggestion_id(suggested_person.id).count', -1 do
+    assert_difference 'ProfileSuggestion.where(suggestion_id: suggested_person.id).count', -1 do
       suggested_person.destroy
     end
   end

@@ -15,6 +15,12 @@ module ArticleHelper
     topic_creation(@article) +
     content_tag('h4', _('Options')) +
     content_tag('div',
+      content_tag(
+        'div',
+        check_box(:article, :archived) +
+        content_tag('label', _('Do not allow new content on this article and its children'), :for => 'article_archived_true')
+      ) +
+
       (article.profile.has_members? ?
       content_tag(
         'div',
@@ -63,13 +69,20 @@ module ArticleHelper
     content_tag('div',
       content_tag('div',
         radio_button(:article, :published, true) +
-          content_tag('label', _('Public (visible to other people)'), :for => 'article_published_true')
+          content_tag('span', '&nbsp;', :class => 'access-public-icon') +
+          content_tag('label', _('Public'), :for => 'article_published_true') +
+          content_tag('span', _('Visible to other people'), :class => 'access-note'),
+          :class => 'access-item'
            ) +
       content_tag('div',
         radio_button(:article, :published, false) +
-          content_tag('label', _('Private'), :for => 'article_published_false', :id => "label_private")
+          content_tag('span', '&nbsp;', :class => 'access-private-icon') +
+          content_tag('label', _('Private'), :for => 'article_published_false', :id => "label_private") +
+          content_tag('span', _('Limit visibility of this article'), :class => 'access-note'),
+          :class => 'access-item'
       ) +
-      privacity_exceptions(article, tokenized_children)
+      privacity_exceptions(article, tokenized_children),
+      :class => 'access-itens'
     )
   end
 
@@ -153,6 +166,49 @@ module ArticleHelper
 
   def cms_label_for_edit
     _('Edit')
+  end
+
+  def follow_button_text(article)
+    if article.event?
+      _('Attend')
+    else
+      _('Follow')
+    end
+  end
+
+  def unfollow_button_text(article)
+    if article.event?
+      _('Unattend')
+    else
+      _('Unfollow')
+    end
+  end
+
+  def following_button(page, user)
+    if !user.blank? and user != page.author
+      if page.is_followed_by? user
+        button :cancel, unfollow_button_text(page), {:controller => 'profile', :action => 'unfollow_article', :article_id => page.id, :profile => page.profile.identifier}
+      else
+        button :add, follow_button_text(page), {:controller => 'profile', :action => 'follow_article', :article_id => page.id, :profile => page.profile.identifier}
+      end
+    end
+  end
+
+  def filter_html(html, source)
+    if @plugins && source && source.has_macro?
+      html = convert_macro(html, source) unless @plugins.enabled_macros.blank?
+      #TODO This parse should be done through the macro infra, but since there
+      #     are old things that do not support it we are keeping this hot spot.
+      html = @plugins.pipeline(:parse_content, html, source).first
+    end
+    html && html.html_safe
+  end
+
+  def article_to_html(article, options = {})
+    options.merge!(:page => params[:npage])
+    content = article.to_html(options)
+    content = content.kind_of?(Proc) ? self.instance_exec(&content).html_safe : content.html_safe
+    filter_html(content, article)
   end
 
 end

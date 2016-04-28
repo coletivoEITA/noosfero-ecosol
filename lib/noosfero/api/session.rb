@@ -15,11 +15,19 @@ module Noosfero
       post "/login" do
         begin
           user ||= User.authenticate(params[:login], params[:password], environment)
-        rescue NoosferoExceptions::UserNotActivated => e
+        rescue User::UserNotActivated => e
           render_api_error!(e.message, 401)
         end
 
         return unauthorized! unless user
+        @current_user = user
+        present user, :with => Entities::UserLogin, :current_person => current_person
+      end
+
+      post "/login_from_cookie" do
+        return unauthorized! if cookies[:auth_token].blank?
+        user = User.where(remember_token: cookies[:auth_token]).first
+        return unauthorized! unless user && user.activated?
         @current_user = user
         present user, :with => Entities::UserLogin, :current_person => current_person
       end
@@ -65,7 +73,7 @@ module Noosfero
       # Example Request:
       #   PATCH /activate?activation_code=28259abd12cc6a64ef9399cf3286cb998b96aeaf
       patch "/activate" do
-        user = User.find_by_activation_code(params[:activation_code])
+        user = User.find_by activation_code: params[:activation_code]
         if user
           unless user.environment.enabled?('admin_must_approve_new_users')
             if user.activate
@@ -105,6 +113,22 @@ module Noosfero
         end
       end
 
+      # Resend activation code.
+      #
+      # Parameters:
+      #   value (required)                  - Email or login
+      # Example Request:
+      #   POST /resend_activation_code?value=some@mail.com
+      post "/resend_activation_code" do
+        requestors = fetch_requestors(params[:value])
+        not_found! if requestors.blank?
+        remote_ip = (request.respond_to?(:remote_ip) && request.remote_ip) || (env && env['REMOTE_ADDR'])
+        requestors.each do |requestor|
+          requestor.user.resend_activation_code
+        end
+        present requestors.map(&:user), :with => Entities::UserLogin
+      end
+
       params do
         requires :code, type: String, desc: _("Forgot password code")
       end
@@ -117,7 +141,7 @@ module Noosfero
       # Example Request:
       #   PATCH /new_password?code=xxxx&password=secret&password_confirmation=secret
       patch "/new_password" do
-        change_password = ChangePassword.find_by_code(params[:code])
+        change_password = ChangePassword.find_by code: params[:code]
         not_found! if change_password.nil?
 
         if change_password.update_attributes(:password => params[:password], :password_confirmation => params[:password_confirmation])

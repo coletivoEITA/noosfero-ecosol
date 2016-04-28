@@ -51,27 +51,26 @@ class ContentViewerControllerTest < ActionController::TestCase
     assert_response :missing
   end
 
-  should 'produce a download-link when article is a uploaded file' do
+  should 'produce a download-link when view page is true' do
     profile = create_user('someone').person
     html = UploadedFile.create! :uploaded_data => fixture_file_upload('/files/500.html', 'text/html'), :profile => profile
     html.save!
 
-    get :view_page, :profile => 'someone', :page => [ '500.html' ]
+    get :view_page, :profile => 'someone', :page => [ '500.html' ], :view => true
 
     assert_response :success
-    assert_match /#{html.public_filename}/, @response.body
+    assert_select "a[href=#{html.full_path}]"
   end
 
-  should 'download file when article is image' do
+  should 'download file when view page is blank' do
     profile = create_user('someone').person
     image = UploadedFile.create! :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :profile => profile
     image.save!
 
     get :view_page, :profile => 'someone', :page => [ 'rails.png' ]
 
-    assert_response :success
-    assert_not_nil assigns(:page).data
-    assert_match /image\/png/, @response.headers['Content-Type']
+    assert_response :redirect
+    assert_redirected_to image.public_filename
   end
 
   should 'display image on a page when article is image and has a view param' do
@@ -327,6 +326,27 @@ class ContentViewerControllerTest < ActionController::TestCase
     get :view_page, :profile => profile.identifier, :page => ['myarticle']
 
     assert_tag :content => /list my comment/
+  end
+
+  should 'order comments according to comments ordering option' do
+    article = fast_create(Article, :profile_id => profile.id)
+    for n in 1..24
+      article.comments.create!(:author => profile, :title => "some title #{n}", :body => "some body #{n}")
+    end
+
+    get 'view_page', :profile => profile.identifier, :page => article.path.split('/')
+
+    for i in 1..12
+      assert_tag :tag => 'div', :attributes => { :class => 'comment-details' }, :descendant => { :tag => 'h4', :content => "some title #{i}" }
+      assert_no_tag :tag => 'div', :attributes => { :class => 'comment-details' }, :descendant => { :tag => 'h4', :content => "some title #{i + 12}" }
+    end
+
+    xhr :get, :view_page, :profile => profile.identifier, :page => article.path.split('/'), :comment_page => 1, :comment_order => 'newest'
+
+    for i in 1..12
+      assert_no_tag :tag => 'div', :attributes => { :class => 'comment-details' }, :descendant => { :tag => 'h4', :content => "some title #{i}" }
+      assert_tag :tag => 'div', :attributes => { :class => 'comment-details' }, :descendant => { :tag => 'h4', :content => "some title #{i + 12}" }
+    end
   end
 
   should 'redirect to new article path under an old path' do
@@ -1286,18 +1306,6 @@ class ContentViewerControllerTest < ActionController::TestCase
     assert_tag :tag => 'div', :attributes => { :id => 'article-actions' }, :descendant => { :tag => 'a', :attributes => { :title => 'This button is expired.', :class => 'button with-text icon-edit disabled' } }
   end
 
-  should 'remove email from article followers when unfollow' do
-    profile = create_user('testuser').person
-    follower_email = 'john@doe.br'
-    article = profile.articles.create(:name => 'test')
-    article.followers = [follower_email]
-    article.save
-
-    assert_includes Article.find(article.id).followers, follower_email
-    post :view_page, :profile => profile.identifier, :page => [article.name], :unfollow => 'commit', :email => follower_email
-    assert_not_includes Article.find(article.id).followers, follower_email
-  end
-
   should 'not display comments marked as spam' do
     article = fast_create(Article, :profile_id => profile.id)
     ham = fast_create(Comment, :source_id => article.id, :source_type => 'Article', :title => 'some content')
@@ -1372,7 +1380,7 @@ class ContentViewerControllerTest < ActionController::TestCase
     assert_equal 15, article.comments.count
 
     get 'view_page', :profile => profile.identifier, :page => article.path.split('/')
-    assert_tag :tag => 'a', :attributes => { :href => "/#{profile.identifier}/#{article.path}?comment_page=2", :rel => 'next' }
+    assert_tag :tag => 'a', :attributes => { :href => "/#{profile.identifier}/#{article.path}?comment_order=oldest&amp;comment_page=2", :rel => 'next' }
   end
 
   should 'not escape acceptable HTML in list of blog posts' do
@@ -1444,7 +1452,7 @@ class ContentViewerControllerTest < ActionController::TestCase
     community.add_member(@profile)
     community.save!
 
-    blog = community.articles.find_by_name("Blog")
+    blog = community.articles.find_by(name: "Blog")
 
     article = TinyMceArticle.create(:name => 'Article to be shared with images',
                                     :body => 'This article should be shared with all social networks',
@@ -1570,7 +1578,7 @@ class ContentViewerControllerTest < ActionController::TestCase
     community.add_member(@profile)
     community.save!
 
-    blog = community.articles.find_by_name("Blog")
+    blog = community.articles.find_by(name: "Blog")
     blog.visualization_format = 'compact'
     blog.save!
 
@@ -1629,6 +1637,24 @@ class ContentViewerControllerTest < ActionController::TestCase
 
     assert_select '.blog-cover > img', 1
     assert_select '.article-body-img > img', 0
+  end
+
+  should 'render follow article button in another domain' do
+    d = Domain.new
+    d.name = "theresourcebasedeconomy.com"
+    d.save!
+    profile = fast_create(Community)
+    profile.domains << d
+
+    page = profile.articles.build(:name => 'myarticle', :body => 'the body of the text')
+    page.save!
+
+    login_as(create_user.login)
+    ActionController::TestRequest.any_instance.expects(:host).returns('theresourcebasedeconomy.com').at_least_once
+    get :view_page, :page => 'myarticle'
+
+    assert_equal profile, assigns(:profile)
+    assert_tag tag: 'a', attributes: {'title' => 'Follow'}
   end
 
 end

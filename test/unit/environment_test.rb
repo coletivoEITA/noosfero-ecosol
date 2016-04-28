@@ -365,16 +365,16 @@ class EnvironmentTest < ActiveSupport::TestCase
   end
 
   should 'have admin role' do
-    Role.expects(:find_by_key_and_environment_id).with('environment_administrator', Environment.default.id).returns(Role.new)
+    Role.expects(:find_by).with(key: 'environment_administrator', environment_id: Environment.default.id).returns(Role.new)
     assert_kind_of Role, Environment::Roles.admin(Environment.default.id)
   end
 
   should 'create environment and profile default roles' do
     env = Environment.default
-    assert_equal 'Environment', env.roles.find_by_key('environment_administrator').kind
-    assert_equal 'Profile', env.roles.find_by_key('profile_admin').kind
-    assert_equal 'Profile', env.roles.find_by_key('profile_member').kind
-    assert_equal 'Profile', env.roles.find_by_key('profile_moderator').kind
+    assert_equal 'Environment', env.roles.find_by(key: 'environment_administrator').kind
+    assert_equal 'Profile', env.roles.find_by(key: 'profile_admin').kind
+    assert_equal 'Profile', env.roles.find_by(key: 'profile_member').kind
+    assert_equal 'Profile', env.roles.find_by(key: 'profile_moderator').kind
   end
 
   should 'be able to add admins easily' do
@@ -1727,6 +1727,44 @@ class EnvironmentTest < ActiveSupport::TestCase
     environment.date_format = "past_time"
     environment.valid?
     refute environment.errors[:date_format.to_s].present?
+  end
+
+  should 'respond to enable_feed_proxy' do
+    assert_respond_to Environment.new, :enable_feed_proxy
+  end
+
+  should 'set enable_feed_proxy on environment' do
+    e = fast_create(Environment, :name => 'Enterprise test')
+    e.enable_feed_proxy = true
+    e.save
+    assert_equal true, e.enable_feed_proxy
+  end
+
+  should 'not enable feed proxy when enable by default' do
+    assert_equal false, Environment.new.enable_feed_proxy
+  end
+
+  should 'respond to disable_feed_ssl' do
+    assert_respond_to Environment.new, :disable_feed_ssl
+  end
+
+  should 'set disable_feed_ssl on environment' do
+    e = fast_create(Environment, :name => 'Enterprise test')
+    e.disable_feed_ssl = true
+    e.save
+    assert_equal true, e.disable_feed_ssl
+  end
+
+  should 'not disable feed ssl when enable by default' do
+    assert_equal false, Environment.new.disable_feed_ssl
+  end
+
+  should 'respond to http_feed_proxy' do
+    assert_respond_to Environment.new, :http_feed_proxy
+  end
+
+  should 'respond to https_feed_proxy' do
+    assert_respond_to Environment.new, :https_feed_proxy
   end
 
 end

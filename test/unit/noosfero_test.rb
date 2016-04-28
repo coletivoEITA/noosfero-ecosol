@@ -21,6 +21,7 @@ class NoosferoTest < ActiveSupport::TestCase
   should 'support setting default locale' do
     Noosfero.default_locale = 'pt_BR'
     assert_equal 'pt_BR', Noosfero.default_locale
+    Noosfero.default_locale = nil
   end
 
   should 'identifier format' do
@@ -29,7 +30,7 @@ class NoosferoTest < ActiveSupport::TestCase
     assert_match /^#{Noosfero.identifier_format}$/, 'with~tilde'
     assert_match /^#{Noosfero.identifier_format}$/, 'with|'
     assert_match /^#{Noosfero.identifier_format}$/, 'with:'
-    assert_match /^#{Noosfero.identifier_format}$/, 'with*'
+    assert_match /^#{Noosfero.identifier_format}$/, 'with*asterisk'
     assert_match /^#{Noosfero.identifier_format}$/, 'with.dot'
   end
 
@@ -51,7 +52,7 @@ class NoosferoTest < ActiveSupport::TestCase
   end
 
   should "use default hostname of default environment as hostname of Noosfero instance" do
-    Environment.default.domains << Domain.new(:name => 'thisisdefaulthostname.com').tap do |d| 
+    Environment.default.domains << Domain.new(:name => 'thisisdefaulthostname.com').tap do |d|
       d.is_default = true
     end
     assert_equal 'thisisdefaulthostname.com', Noosfero.default_hostname

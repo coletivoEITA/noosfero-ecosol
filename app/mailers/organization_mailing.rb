@@ -8,18 +8,18 @@ class OrganizationMailing < Mailing
     "#{person.name} <#{source.environment.noreply_email}>"
   end
 
-  def members_scope
-    source.members.order(:id)
-      .joins("LEFT OUTER JOIN mailing_sents m ON (m.mailing_id = #{id} AND m.person_id = profiles.id)")
-      .where("m.person_id" => nil)
-  end
+  def recipients(offset=0, limit=100)
+    result = source.members.order(:id).offset(offset).limit(limit)
 
-  def recipients
-    if self.recipient_ids
-      members_scope.where id: self.recipient_ids
-    else
-      members_scope
+    if data.present? and data.is_a?(Hash) and data[:members_filtered]
+      result = result.where('profiles.id IN (?)', data[:members_filtered])
     end
+
+    if result.blank?
+      result = result.joins("LEFT OUTER JOIN mailing_sents m ON (m.mailing_id = #{id} AND m.person_id = profiles.id)")
+      .where("m.person_id" => nil)
+    end
+    result
   end
 
   def each_recipient

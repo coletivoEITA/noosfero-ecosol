@@ -3,7 +3,6 @@ require 'noosfero/multi_tenancy'
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  before_filter :setup_multitenancy
   before_filter :detect_stuff_by_domain
   before_filter :init_noosfero_plugins
   before_filter :allow_cross_domain_access
@@ -139,10 +138,6 @@ class ApplicationController < ActionController::Base
     super || form_authenticity_token == request.headers['X-XSRF-TOKEN']
   end
 
-  def setup_multitenancy
-    Noosfero::MultiTenancy.setup!(request.host)
-  end
-
   def boxes_editor?
     false
   end
@@ -162,15 +157,14 @@ class ApplicationController < ActionController::Base
     # Sets text domain based on request host for custom internationalization
     FastGettext.text_domain = Domain.custom_locale(request.host)
 
-    @domain = Domain.find_by_name(request.host)
+    @domain = Domain.by_name(request.host)
     if @domain.nil?
       @environment = Environment.default
-      if @environment.nil? && Rails.env.development?
-        # This should only happen in development ...
+      # Avoid crashes on test and development setups
+      if @environment.nil? && !Rails.env.production?
         @environment = Environment.new
         @environment.name = "Noosfero"
         @environment.is_default = true
-        @environment.save!
       end
     else
       @environment = @domain.environment
@@ -182,7 +176,7 @@ class ApplicationController < ActionController::Base
 
       # Check if the requested profile belongs to another domain
       if @domain.profile and params[:profile].present? and params[:profile] != @domain.profile.identifier
-        @profile = @environment.profiles.find_by_identifier params[:profile]
+        @profile = @environment.profiles.find_by identifier: params[:profile]
         return render_not_found if @profile.blank?
         redirect_to url_for(params.merge host: @profile.default_hostname, protocol: @profile.default_protocol)
       end
@@ -215,7 +209,7 @@ class ApplicationController < ActionController::Base
   def load_category
     unless params[:category_path].blank?
       path = params[:category_path]
-      @category = environment.categories.find_by_path(path)
+      @category = environment.categories.find_by(path: path)
       if @category.nil?
         render_not_found(path)
       end

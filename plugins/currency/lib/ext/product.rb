@@ -2,9 +2,11 @@ require_dependency 'product'
 
 class Product
 
-  has_many :product_currencies, :class_name => 'CurrencyPlugin::ProductCurrency',
-    :include => :currency, :order => 'price IS NOT NULL, discount IS NOT NULL, id ASC'
-  has_many :currencies, :through => :product_currencies
+  has_many :product_currencies, -> {
+    includes(:currency).order('price IS NOT NULL, discount IS NOT NULL, id ASC')
+  }, class_name: 'CurrencyPlugin::ProductCurrency'
+
+  has_many :currencies, through: :product_currencies
 
   CurrencyFields = [:price, :discount]
 
@@ -24,7 +26,7 @@ class Product
       self.product_currencies.destroy_all
       currencies.each do |id, attrs|
         next unless attrs.values.select{ |v| v.empty? }.empty?
-        self.product_currencies.create attrs.merge(:currency_id => id)
+        self.product_currencies.create attrs.merge(currency_id: id)
       end
     end
   end

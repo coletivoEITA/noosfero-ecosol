@@ -1,4 +1,4 @@
-class Category < ActiveRecord::Base
+class Category < ApplicationRecord
 
   attr_accessible :name, :parent_id, :display_color, :display_in_menu, :image_builder, :environment, :parent
 
@@ -14,7 +14,7 @@ class Category < ActiveRecord::Base
   validates_uniqueness_of :slug,:scope => [ :environment_id, :parent_id ], :message => N_('{fn} is already being used by another category.').fix_i18n
   belongs_to :environment
 
-  scope :alphabetical, order: 'name ASC'
+  scope :alphabetical, -> { order 'name ASC' }
 
   # Finds all top level categories for a given environment.
   scope :top_level_for, -> environment {
@@ -98,7 +98,7 @@ class Category < ActiveRecord::Base
 
   def children_for_menu
     results = []
-    pending = children.where(display_in_menu: true).order('path ASC').all
+    pending = children.where(display_in_menu: true).order('path ASC').to_a
     while pending.present?
       cat = pending.shift
       results << cat

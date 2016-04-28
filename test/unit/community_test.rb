@@ -3,7 +3,8 @@ require_relative "../test_helper"
 class CommunityTest < ActiveSupport::TestCase
 
   def setup
-    @person = fast_create(Person)
+    @user = User.current = create_user
+    @person = @user.person
   end
 
   attr_reader :person
@@ -38,10 +39,10 @@ class CommunityTest < ActiveSupport::TestCase
     Community.any_instance.stubs(:default_set_of_articles).returns([blog])
     community = create(Community, :environment => Environment.default, :name => 'my new community')
 
-    assert_kind_of Blog, community.articles.find_by_path(blog.path)
-    assert community.articles.find_by_path(blog.path).published?
-    assert_kind_of RssFeed, community.articles.find_by_path(blog.feed.path)
-    assert community.articles.find_by_path(blog.feed.path).published?
+    assert_kind_of Blog, community.articles.find_by(path: blog.path)
+    assert community.articles.find_by(path: blog.path).published?
+    assert_kind_of RssFeed, community.articles.find_by(path: blog.feed.path)
+    assert community.articles.find_by(path: blog.feed.path).published?
   end
 
   should 'have contact_person' do
@@ -287,8 +288,8 @@ class CommunityTest < ActiveSupport::TestCase
 
   should "update the action of article creation when an community's article is commented" do
     ActionTrackerNotification.delete_all
-    p1 = Person.first
     community = fast_create(Community)
+    p1 = person
     p2 = create_user.person
     p3 = create_user.person
     community.add_member(p3)

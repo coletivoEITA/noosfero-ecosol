@@ -85,36 +85,6 @@ class PeopleBlockTest < ActionView::TestCase
   end
 
 
-  should 'list people from environment' do
-    owner = fast_create(Environment)
-    person1 = fast_create(Person, :environment_id => owner.id)
-    person2 = fast_create(Person, :environment_id => owner.id)
-
-    block = PeopleBlock.new
-
-    block.expects(:owner).returns(owner).at_least_once
-    expects(:profile_image_link).with(person1, :minor).returns(person1.name)
-    expects(:profile_image_link).with(person2, :minor).returns(person2.name)
-    expects(:block_title).with(anything).returns('')
-
-    content = instance_exec(&block.content)
-
-    assert_match(/#{person1.name}/, content)
-    assert_match(/#{person2.name}/, content)
-  end
-
-
-  should 'link to "all people"' do
-    env = fast_create(Environment)
-    block = PeopleBlock.new
-
-    instance_eval(&block.footer)
-    assert_select 'a.view-all' do |elements|
-      assert_select '[href=/search/people]'
-    end
-  end
-
-
   should 'count number of public and private people' do
     owner = fast_create(Environment)
     private_p = fast_create(Person, :public_profile => false, :environment_id => owner.id)
@@ -140,5 +110,76 @@ class PeopleBlockTest < ActionView::TestCase
 
   protected
   include NoosferoTestHelper
+
+end
+
+require 'boxes_helper'
+
+class PeopleBlockViewTest < ActionView::TestCase
+  include BoxesHelper
+
+  should 'list people from environment' do
+    owner = fast_create(Environment)
+    person1 = fast_create(Person, :environment_id => owner.id)
+    person2 = fast_create(Person, :environment_id => owner.id)
+
+    block = PeopleBlock.new
+
+    block.expects(:owner).returns(owner).at_least_once
+    ActionView::Base.any_instance.expects(:profile_image_link).with(person1, :minor).returns(person1.name)
+    ActionView::Base.any_instance.expects(:profile_image_link).with(person2, :minor).returns(person2.name)
+    ActionView::Base.any_instance.stubs(:block_title).returns("")
+
+    content = render_block_content(block)
+
+    assert_match(/#{person1.name}/, content)
+    assert_match(/#{person2.name}/, content)
+  end
+
+  should 'link to "all people"' do
+    env = fast_create(Environment)
+    block = PeopleBlock.new
+
+    render_block_footer(block)
+    assert_select 'a.view-all' do |elements|
+      assert_select '[href=/search/people]'
+    end
+  end
+
+  should 'not have a linear increase in time to display people block' do
+    owner = fast_create(Environment)
+    owner.boxes<< Box.new
+    block = PeopleBlock.create!(:box => owner.boxes.first)
+
+    ActionView::Base.any_instance.stubs(:profile_image_link).returns('some name')
+    ActionView::Base.any_instance.stubs(:block_title).returns("")
+
+    # no people
+    block.reload
+    time0 = (Benchmark.measure { 10.times { render_block_content(block) } })
+
+    # first 500
+    1.upto(50).map do
+      fast_create(Person, :environment_id => owner.id)
+    end
+    block.reload
+    time1 = (Benchmark.measure { 10.times { render_block_content(block) } })
+
+    # another 50
+    1.upto(50).map do
+      fast_create(Person, :environment_id => owner.id)
+    end
+    block.reload
+    time2 = (Benchmark.measure { 10.times { render_block_content(block) } })
+
+    # should not scale linearly, i.e. the inclination of the first segment must
+    # be a lot higher than the one of the segment segment. To compensate for
+    # small variations due to hardware and/or execution environment, we are
+    # satisfied if the the inclination of the first segment is at least twice
+    # the inclination of the second segment.
+    a1 = (time1.total - time0.total)/50.0
+    a2 = (time2.total - time1.total)/50.0
+    assert a1 > a2*NON_LINEAR_FACTOR, "#{a1} should be larger than #{a2} by at least a factor of #{NON_LINEAR_FACTOR}"
+  end
 
 end

@@ -108,6 +108,15 @@ class AccountControllerTest < ActionController::TestCase
     end
   end
 
+  def test_shoud_save_with_custom_field_on_signup
+    assert_difference 'User.count' do
+      assert_difference 'CustomFieldValue.count' do
+        CustomField.create!(:name => "zombies", :format=>"String", :default_value => "awrrr", :customized_type=>"Profile", :active => true, :required => true, :signup => true, :environment => Environment.default)
+        new_user({},{"profile_data"=> {"custom_values"=>{"zombies"=>{"value"=>"BRAINSSS"}}}})
+      end
+    end
+  end
+
   def test_should_logout
     login_as :johndoe
     get :logout
@@ -189,7 +198,7 @@ class AccountControllerTest < ActionController::TestCase
     post :change_password, :current_password => 'wrong', :new_password => 'blabla', :new_password_confirmation => 'blabla'
     assert_response :success
     assert_template 'change_password'
-    refute  User.find_by_login('ze').authenticated?('blabla')
+    refute  User.find_by(login: 'ze').authenticated?('blabla')
     assert_equal users(:ze), @controller.send(:current_user)
   end
 
@@ -225,6 +234,16 @@ class AccountControllerTest < ActionController::TestCase
 
     post :forgot_password, :value => 'test'
     assert_template 'password_recovery_sent'
+  end
+
+  should 'not respond to forgotten password change if captcha verification fails' do
+    create_user('test')
+    @controller.stubs(:verify_recaptcha).returns(false)
+    post :forgot_password, :value => 'test'
+    change = assigns(:change_password)
+    assert change.errors.has_key?(:base)
+    assert_response :success
+    assert_tag :tag => 'div', :attributes => { :id => 'errorExplanation', :class => 'errorExplanation' }
   end
 
   should 'respond to forgotten password change request with email' do
@@ -435,7 +454,7 @@ class AccountControllerTest < ActionController::TestCase
 
     ent.reload
 
-    assert_nil User.find_by_login('test_user')
+    assert_nil User.find_by(login: 'test_user')
     assert ent.blocked?
     assert_template 'blocked'
   end
@@ -618,7 +637,7 @@ class AccountControllerTest < ActionController::TestCase
     env.enable('skip_new_user_email_confirmation')
     env.save!
     new_user(:login => 'activated_user')
-    user = User.find_by_login('activated_user')
+    user = User.find_by(login: 'activated_user')
     assert user.activated?
   end
 
@@ -683,14 +702,14 @@ class AccountControllerTest < ActionController::TestCase
     end
     Noosfero::Plugin.stubs(:all).returns([Plugin1.name, Plugin2.name])
 
-    e = User.find_by_login('ze').environment
+    e = User.find_by(login: 'ze').environment
     e.enable_plugin(Plugin1.name)
     e.enable_plugin(Plugin2.name)
 
     login_as 'ze'
 
     xhr :get, :user_data
-    assert_equal User.find_by_login('ze').data_hash(@controller.gravatar_default).merge({ 'foo' => 'bar', 'test' => 5 }), ActiveSupport::JSON.decode(@response.body)
+    assert_equal User.find_by(login: 'ze').data_hash(@controller.gravatar_default).merge({ 'foo' => 'bar', 'test' => 5 }), ActiveSupport::JSON.decode(@response.body)
   end
 
   should 'activate user when activation code is present and correct' do

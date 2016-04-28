@@ -20,7 +20,7 @@ class AddCommentToExchangeElement < ActiveRecord::Migration
     rename_table :exchange_plugin_exchange_enterprises, :exchange_plugin_profile_exchanges
     rename_column :exchange_plugin_profile_exchanges, :enterprise_id, :profile_id
 
-    add_index :exchange_plugin_profile_exchanges, [:profile_id, :exchange_id]
+    add_index :exchange_plugin_profile_exchanges, [:profile_id, :exchange_id], name: :exchange_4ba6a222
   end
 
   def self.down

@@ -30,6 +30,7 @@ gem 'whenever', :require => false
 gem 'eita-jrails', '~> 0.10.0', require: 'jrails'
 gem 'diffy',                    '~> 3.0'
 gem 'slim'
+gem 'activerecord-session_store', ('1.0.0.pre' if RUBY_VERSION >= '2.3.0')
 
 gem 'will-paginate-i18n'
 gem 'utf8-cleaner'
@@ -86,10 +87,12 @@ end
 
 # API dependencies
 gem 'grape',                    '~> 0.12'
-gem 'grape-entity'
+gem 'grape-entity',             '0.4.8'
 gem 'grape_logging'
 gem 'rack-cors'
 gem 'rack-contrib'
+gem 'api-pagination',           '>= 4.1.1'
+gem 'liquid',                    '~> 3.0.3'
 
 # asset pipeline
 gem 'uglifier', '>= 1.0.3'
@@ -101,8 +104,6 @@ gem 'protected_attributes'
 gem 'rails-observers'
 gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'
-gem 'activerecord-session_store'
-gem 'activerecord-deprecated_finders', require: 'active_record/deprecated_finders'
 
 group :production do
   gem 'newrelic_rpm'
@@ -130,7 +131,7 @@ group :cucumber do
   gem 'cucumber'
   gem 'cucumber-rails',         '~> 1.4.2', :require => false
   gem 'database_cleaner',       '~> 1.3'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver',     '>= 2.50'
 end
 
 group :development do

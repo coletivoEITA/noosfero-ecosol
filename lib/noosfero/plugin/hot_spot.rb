@@ -1,5 +1,3 @@
-require_relative 'hot_spot/dispatchers'
-
 # This module must be included by classes that contain Noosfero plugin
 # hotspots.
 #
@@ -8,6 +6,7 @@ require_relative 'hot_spot/dispatchers'
 # Environment will be used to determine which plugins are enabled and therefore
 # which plugins should be instantiated.
 module Noosfero::Plugin::HotSpot
+  CALLBACK_HOTSPOTS =[:after_save, :after_destroy, :before_save, :before_destroy, :after_create, :before_create]
 
   # Returns an instance of Noosfero::Plugin::Manager.
   #
@@ -17,6 +16,26 @@ module Noosfero::Plugin::HotSpot
     @plugins ||= Noosfero::Plugin::Manager.new(environment, self)
   end
 
-  include Noosfero::Plugin::HotSpot::Dispatchers
+  def self.included(klass)
+    klass.extend(ClassMethods)
+  end
 
+  module ClassMethods
+    def self.extended base
+      CALLBACK_HOTSPOTS.each do |callback|
+        if base.respond_to?(callback)
+          base.class_eval do
+            self.send callback do |object|
+              current=self.class
+              while current.included_modules.include? Noosfero::Plugin::HotSpot do
+                callback_name = "#{current.name.underscore}_#{callback}_callback"
+                plugins.dispatch(callback_name, object)
+                current=current.superclass
+              end
+            end
+          end
+        end
+      end
+    end
+  end
 end

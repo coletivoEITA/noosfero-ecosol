@@ -1,7 +1,5 @@
 class Noosfero::Plugin::Manager
 
-  include Noosfero::Plugin::HotSpot::Dispatchers
-
   attr_reader :environment
   attr_reader :context
 
@@ -22,49 +20,43 @@ class Noosfero::Plugin::Manager
   # return [1,0,1,2,3]
   #
   def dispatch(event, *args)
-    flat_map{ |plugin| result_for plugin, event, *args }.compact
+    dispatch_without_flatten(event, *args).flatten
   end
 
   def fetch_plugins(event, *args)
-    flat_map{ |plugin| plugin.class if result_for plugin, event, *args }.compact
+    map { |plugin| plugin.class if plugin.send(event, *args) }.compact.flatten
   end
 
   def dispatch_without_flatten(event, *args)
-    map { |plugin| result_for plugin, event, *args }.compact
+    map { |plugin| plugin.send(event, *args) }.compact
   end
 
   alias :dispatch_scopes :dispatch_without_flatten
 
-  def default_for event, *args
-    Noosfero::Plugin.new.send event, *args
-  end
-
-  def result_for plugin, event, *args
-    # check if defined to avoid crash, as there is hotspots using method_missing
-    return unless plugin.respond_to? event
-    method = plugin.method event
-    method.call *args if method.owner != Noosfero::Plugin::HotSpot::Definitions
-  end
-
   def dispatch_first(event, *args)
+    default = Noosfero::Plugin.new.send(event, *args)
+    result = default
     each do |plugin|
-      result = result_for plugin, event, *args
-      return result if result.present?
+      result = plugin.send(event, *args)
+      break if result != default
     end
-    default_for event, *args
+    result
   end
 
   def fetch_first_plugin(event, *args)
+    default = Noosfero::Plugin.new.send(event, *args)
+    result = nil
     each do |plugin|
-      result = result_for plugin, event, *args
-      return plugin.class if result.present?
+      if plugin.send(event, *args) != default
+        result = plugin.class
+        break
+      end
     end
-    nil
+    result
   end
 
   def pipeline(event, *args)
     each do |plugin|
-      # result_for can't be used here and default must be returned to keep args
       result = Array(plugin.send event, *args)
       result = result.kind_of?(Array) ? result : [result]
       raise ArgumentError, "Pipeline broken by #{plugin.class.name} on #{event} with #{result.length} arguments instead of #{args.length}." if result.length != args.length
@@ -74,18 +66,7 @@ class Noosfero::Plugin::Manager
   end
 
   def filter(property, data)
-    inject(data){ |data, plugin| data = plugin.send(property, data) }
-  end
-
-  def enabled_plugins
-    @enabled_plugins ||= (Noosfero::Plugin.all & environment.enabled_plugins).map do |plugin|
-      Noosfero::Plugin.load_plugin_identifier(plugin).new context
-    end
-  end
-  alias_method :plugins, :enabled_plugins
-
-  def default_macro
-    @default_macro ||= Noosfero::Plugin::Macro.new(context)
+    inject(data) {|data, plugin| data = plugin.send(property, data)}
   end
 
   def parse_macro(macro_name, macro, source = nil)
@@ -93,8 +74,19 @@ class Noosfero::Plugin::Manager
     macro_instance.convert(macro, source)
   end
 
+  def enabled_plugins
+    environment_enabled_plugins = environment.present? ? environment.enabled_plugins : []
+    @enabled_plugins ||= (Noosfero::Plugin.all & environment_enabled_plugins).map do |plugin|
+      Noosfero::Plugin.load_plugin_identifier(plugin).new context
+    end
+  end
+
+  def default_macro
+    @default_macro ||= Noosfero::Plugin::Macro.new(context)
+  end
+
   def enabled_macros
-    @enabled_macros ||= plugins_macros.inject({}) do |memo, macro|
+    @enabled_macros ||= dispatch(:macros).inject({}) do |memo, macro|
       memo.merge!(macro.identifier => macro.new(context))
     end
   end

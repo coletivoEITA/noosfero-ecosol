@@ -16,15 +16,15 @@ module Noosfero::Factory
     attrs[:slug] = attrs[:name].to_slug if attrs[:name].present? && attrs[:slug].blank? && defaults[:slug].present?
     data = defaults_for(name.to_s.gsub('::',''), attrs).merge(attrs)
     klass = name.to_s.camelize.constantize
-    if klass.superclass != ActiveRecord::Base
-      data[:type] = klass.to_s
-    end
+
+    data[:type] = klass.to_s if klass.column_names.include? 'type'
+
     if options[:timestamps]
       fast_insert_with_timestamps(klass, data)
     else
       fast_insert(klass, data)
     end
-    obj = klass.last(:order => "id")
+    obj = klass.order(:id).last
     if options[:category]
       categories = options[:category]
       unless categories.is_a?(Array)
@@ -84,8 +84,8 @@ module Noosfero::Factory
 
   ###### old stuff to be rearranged
   def create_admin_user(env)
-    admin_user = User.find_by_login('adminuser') || create_user('adminuser', :email => 'adminuser@noosfero.org', :password => 'adminuser', :password_confirmation => 'adminuser', :environment => env)
-    admin_role = Role.find_by_name('admin_role') || Role.create!(:name => 'admin_role', :permissions => ['view_environment_admin_panel','edit_environment_features', 'edit_environment_design', 'manage_environment_categories', 'manage_environment_roles', 'manage_environment_trusted_sites', 'manage_environment_validators', 'manage_environment_users', 'manage_environment_organizations', 'manage_environment_templates', 'manage_environment_licenses', 'edit_appearance'])
+    admin_user = User.find_by(login: 'adminuser') || create_user('adminuser', :email => 'adminuser@noosfero.org', :password => 'adminuser', :password_confirmation => 'adminuser', :environment => env)
+    admin_role = Role.find_by(name: 'admin_role') || Role.create!(:name => 'admin_role', :permissions => ['view_environment_admin_panel','edit_environment_features', 'edit_environment_design', 'manage_environment_categories', 'manage_environment_roles', 'manage_environment_trusted_sites', 'manage_environment_validators', 'manage_environment_users', 'manage_environment_organizations', 'manage_environment_templates', 'manage_environment_licenses', 'edit_appearance'])
     create(RoleAssignment, :accessor => admin_user.person, :role => admin_role, :resource => env) unless admin_user.person.role_assignments.map{|ra|[ra.role, ra.accessor, ra.resource]}.include?([admin_role, admin_user, env])
     admin_user.login
   end
@@ -148,10 +148,10 @@ module Noosfero::Factory
 
   def fast_insert(klass, data)
     names = data.keys
-    values = names.map {|k| ActiveRecord::Base.send(:sanitize_sql_array, ['?', data[k]]) }
+    values = names.map {|k| ApplicationRecord.send(:sanitize_sql_array, ['?', data[k]]) }
     sql = 'insert into %s(%s) values (%s)' % [klass.table_name, names.join(','), values.join(',')]
     klass.connection.execute(sql)
-    klass.last(:order => 'id')
+    klass.order(:id).last
   end
 
   def fast_insert_with_timestamps(klass, data)
@@ -164,10 +164,10 @@ module Noosfero::Factory
   end
 
   def give_permission(user, permission, target)
-    user = Person.find_by_identifier(user) if user.kind_of?(String)
+    user = Person.find_by(identifier: user) if user.kind_of?(String)
     target ||= user
     i = 0
-    while Role.find_by_name('test_role' + i.to_s)
+    while Role.find_by(name: 'test_role' + i.to_s)
       i+=1
     end
 

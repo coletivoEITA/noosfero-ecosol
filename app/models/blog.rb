@@ -93,4 +93,21 @@ class Blog < Folder
     posts.no_feeds.latest.limit(limit)
   end
 
+  def total_number_of_posts(group_by, year = nil)
+    case group_by
+      when :by_year
+        posts.published.native_translations
+          .except(:order)
+          .group('EXTRACT(YEAR FROM published_at)')
+          .count
+          .sort_by{ |year, count| -year.to_i }
+      when :by_month
+        posts.published.native_translations
+          .except(:order)
+          .where('EXTRACT(YEAR FROM published_at)=?', year.to_i)
+          .group('EXTRACT(MONTH FROM published_at)')
+          .count
+          .sort_by {|month, count| -month.to_i}
+    end
+  end
 end

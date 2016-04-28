@@ -18,7 +18,7 @@ class ContentViewerController < ApplicationController
       @page = profile.home_page
       return if redirected_to_profile_index
     else
-      @page = profile.articles.find_by_path(path)
+      @page = profile.articles.find_by path: path
       return if redirected_page_from_old_path(path)
     end
 
@@ -67,22 +67,28 @@ class ContentViewerController < ApplicationController
 
     process_page_followers(params)
 
-    process_comments params
-    return render partial: 'comments_list' if request.xhr? and (params[:comment_order] or params[:comment_page])
+    process_comments(params)
 
-    return render action: 'slideshow', layout: 'slideshow' if params[:slideshow]
+    if request.xhr? and params[:comment_order]
+      return render :partial => 'comment/comments_with_pagination'
+    end
+
+    if params[:slideshow]
+      render :action => 'slideshow', :layout => 'slideshow'
+      return
+    end
     render :view_page, :formats => [:html]
   end
 
   def versions_diff
     path = params[:page]
-    @page = profile.articles.find_by_path(path)
-    @v1, @v2 = @page.versions.find_by_version(params[:v1]), @page.versions.find_by_version(params[:v2])
+    @page = profile.articles.find_by path: path
+    @v1, @v2 = @page.versions.find_by(version: params[:v1]), @page.versions.find_by(version: params[:v2])
   end
 
   def article_versions
     path = params[:page]
-    @page = profile.articles.find_by_path(path)
+    @page = profile.articles.find_by path: path
     return unless allow_access_to_page(path)
 
     render_access_denied unless @page.display_versions?
@@ -169,7 +175,7 @@ class ContentViewerController < ApplicationController
 
   def redirected_page_from_old_path(path)
     unless @page
-      page_from_old_path = profile.articles.find_by_old_path(path)
+      page_from_old_path = profile.articles.find_by_old_path path
       if page_from_old_path
         redirect_to profile.url.merge(:page => page_from_old_path.explode_path)
         return true
@@ -190,7 +196,7 @@ class ContentViewerController < ApplicationController
   end
 
   def rendered_versioned_article
-    @versioned_article = @page.versions.find_by_version(@version)
+    @versioned_article = @page.versions.find_by version: @version
     if @versioned_article && @page.versions.latest.version != @versioned_article.version
       render :template => 'content_viewer/versioned_article.html.erb'
       return true
@@ -201,14 +207,12 @@ class ContentViewerController < ApplicationController
 
   def rendered_file_download(view = nil)
     if @page.download? view
-      headers['Content-Type'] = @page.mime_type
-      headers.merge! @page.download_headers
       data = @page.data
 
-      if data.nil?
-        render_not_found
+      if @page.published && @page.uploaded_file?
+        redirect_to @page.public_filename
       else
-        render text: data, layout: false
+        send_data data, @page.download_headers
       end
 
       return true
@@ -236,8 +240,12 @@ class ContentViewerController < ApplicationController
 
   def get_posts(year = nil, month = nil)
     if year && month
-      filter_date = DateTime.parse("#{year}-#{month}-01")
-      return @page.posts.by_range(filter_date..filter_date.at_end_of_month)
+      begin
+        filter_date = DateTime.parse("#{year}-#{month}-01")
+        return @page.posts.by_range(filter_date..filter_date.at_end_of_month)
+      rescue ArgumentError
+        return @page.posts
+      end
     else
       return @page.posts
     end
@@ -268,9 +276,12 @@ class ContentViewerController < ApplicationController
     @comments = @page.comments.without_spam
     @comments = @plugins.filter(:unavailable_comments, @comments)
     @comments_count = @comments.count
-    @comments = @comments.reverse if @comment_order == 'oldest'
-    @comments = @comments.without_reply.paginate(:per_page => per_page, :page => params[:comment_page] )
-    @comment_order = params[:comment_order] || 'newest'
+    @comment_order = params[:comment_order].nil? ? 'oldest' : params[:comment_order]
+    @comments = @comments.without_reply
+    if @comment_order == 'newest'
+      @comments = @comments.reverse
+    end
+    @comments = @comments.paginate(:per_page => per_page, :page => params[:comment_page] )
   end
 
   private

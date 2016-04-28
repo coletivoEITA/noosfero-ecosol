@@ -164,9 +164,9 @@ class UserTest < ActiveSupport::TestCase
 
   def test_should_create_person_when_creating_user
     count = Person.count
-    refute Person.find_by_identifier('lalala')
+    refute Person.find_by(identifier: 'lalala')
     new_user(:login => 'lalala', :email => 'lalala@example.com')
-    assert Person.find_by_identifier('lalala')
+    assert Person.find_by(identifier: 'lalala')
   end
 
   should 'set the same environment for user and person objects' do
@@ -178,9 +178,9 @@ class UserTest < ActiveSupport::TestCase
 
   def test_should_destroy_person_when_destroying_user
     user = new_user(:login => 'lalala', :email => 'lalala@example.com')
-    assert Person.find_by_identifier('lalala')
+    assert Person.find_by(identifier: 'lalala')
     user.destroy
-    refute Person.find_by_identifier('lalala')
+    refute Person.find_by(identifier: 'lalala')
   end
 
   def test_should_encrypt_password_with_salted_sha1
@@ -509,6 +509,7 @@ class UserTest < ActiveSupport::TestCase
   should 'deliver e-mail with activation code after creation' do
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       new_user :email => 'pending@activation.com'
+      process_delayed_job_queue
     end
     assert_equal 'pending@activation.com', ActionMailer::Base.deliveries.last['to'].to_s
   end
@@ -639,6 +640,7 @@ class UserTest < ActiveSupport::TestCase
     env.save
 
     user = new_user :email => 'pending@activation.com'
+    process_delayed_job_queue
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       user.activate
       process_delayed_job_queue
@@ -659,6 +661,7 @@ class UserTest < ActiveSupport::TestCase
     env.save
 
     user = new_user :email => 'pending@activation.com'
+    process_delayed_job_queue
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       user.activate
       process_delayed_job_queue
@@ -678,6 +681,7 @@ class UserTest < ActiveSupport::TestCase
     env.save
 
     user = new_user :name => 'John Doe', :email => 'pending@activation.com'
+    process_delayed_job_queue
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       user.activate
       process_delayed_job_queue
@@ -731,6 +735,28 @@ class UserTest < ActiveSupport::TestCase
     user.generate_private_token!
 
     assert user.private_token, 'token'
+  end
+
+  should 'deliver e-mail with activation code when resend was requested and user was not activated' do
+    user = new_user :email => 'pending@activation.com'
+    activation_code = user.activation_code
+    Delayed::Job.destroy_all
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      user.resend_activation_code
+      process_delayed_job_queue
+    end
+    assert_not_equal activation_code, user.reload.activation_code
+    assert_equal 'pending@activation.com', ActionMailer::Base.deliveries.last['to'].to_s
+  end
+
+  should 'not deliver e-mail with activation code when resend was requested and user was activated' do
+    user = new_user :email => 'pending@activation.com'
+    user.activate
+    Delayed::Job.destroy_all
+    assert_no_difference 'ActionMailer::Base.deliveries.size' do
+      user.resend_activation_code
+      process_delayed_job_queue
+    end
   end
 
   protected

@@ -1,3 +1,4 @@
+require_relative '../../../../app/models/application_record'
 # FIXME without this the User#save crashes
 require 'noosfero/multi_tenancy'
 
@@ -85,7 +86,7 @@ module SolrPlugin
     end
   end
 
-  ActiveRecord::Base.send :extend, ActsAsSearchable::ClassMethods
-  ActiveRecord::Base.class_attribute :solr_extra_fields
-  ActiveRecord::Base.solr_extra_fields = []
+  ApplicationRecord.extend ActsAsSearchable::ClassMethods
+  ApplicationRecord.class_attribute :solr_extra_fields
+  ApplicationRecord.solr_extra_fields = []
 end
