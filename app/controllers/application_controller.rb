@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_admin
-    @user_is_admin = user and user.is_admin? environment
+    @user_is_admin = user && user.is_admin?(environment)
   end
 
   def allow_cross_domain_access
