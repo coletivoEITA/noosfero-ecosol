@@ -8,7 +8,7 @@ class RelevantContentPlugin < Noosfero::Plugin
     _("A plugin that lists the most accessed, most commented, most liked and most disliked contents.")
   end
 
-  def extra_blocks
+  def self.extra_blocks
     {
      RelevantContentPlugin::RelevantContentBlock => {}
     }

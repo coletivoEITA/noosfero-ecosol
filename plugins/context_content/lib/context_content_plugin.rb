@@ -8,7 +8,7 @@ class ContextContentPlugin < Noosfero::Plugin
     _("A plugin that display content based on page context.")
   end
 
-  def extra_blocks
+  def self.extra_blocks
     {
       ContextContentPlugin::ContextContentBlock => { :type => [Person, Community, Enterprise] }
     }

@@ -171,7 +171,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
     class CustomBlock9 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => Person, :position => [1]},
           CustomBlock2 => {:type => Person, :position => 1},
@@ -204,7 +204,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
     class CustomBlock8 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => Person, :position => 1},
           CustomBlock2 => {:type => Community, :position => 1},
@@ -546,7 +546,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
     class CustomBlock1 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {},
         }
@@ -574,7 +574,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
     class CustomBlock1 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => Person},
         }
@@ -602,7 +602,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
     class CustomBlock1 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => Community},
         }
@@ -630,7 +630,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
     class CustomBlock1 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => Enterprise},
         }
@@ -658,7 +658,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
     class CustomBlock1 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => Environment},
         }

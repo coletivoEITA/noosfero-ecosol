@@ -11,7 +11,7 @@ class ProfileMembersHeadlinesPlugin < Noosfero::Plugin
     _("A plugin that adds a block where you can display posts from members.")
   end
 
-  def extra_blocks
+  def self.extra_blocks
     { ProfileMembersHeadlinesBlock => { :type => [Community], :position =>
 ['1'] }}
   end
