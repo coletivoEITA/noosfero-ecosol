@@ -24,4 +24,4 @@ module AnalyticsPlugin
 
 end
 
-Browser::Bots.detect_empty_ua!
+Browser::Bot.detect_empty_ua!
