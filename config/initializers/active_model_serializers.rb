@@ -1,4 +1,4 @@
-ActiveModel::Serializer.config.adapter = ActiveModelSerializers::Adapter::Json
+ActiveModel::Serializer.config.adapter = ActiveModelSerializers::Adapter::Attributes
 
 class ActiveModel::Serializer
 
