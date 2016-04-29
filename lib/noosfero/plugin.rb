@@ -10,7 +10,7 @@ class Noosfero::Plugin
   end
 
   def environment
-    context.environment if self.context
+    context.send :environment if self.context
   end
 
   class << self
@@ -74,6 +74,7 @@ class Noosfero::Plugin
         [ config.autoload_paths, $:].each do |path|
           path << File.join(dir, 'models')
           path << File.join(dir, 'lib')
+          path << File.join(dir, 'serializers')
           # load vendor/plugins
           Dir.glob(File.join(dir, '/vendor/plugins/*')).each do |vendor_plugin|
             path << "#{vendor_plugin}/lib"
@@ -149,6 +150,7 @@ class Noosfero::Plugin
 
     def load_plugin_extensions(dir)
       ActionDispatch::Reloader.to_prepare do
+        ActiveSupport.run_load_hooks "#{File.basename dir}_plugin_extensions".to_sym
         Dir[File.join(dir, 'lib', 'ext', '**', '*.rb')].each{ |file| require_dependency file }
       end
     end
@@ -711,7 +713,7 @@ class Noosfero::Plugin
     # Example: article_after_create_callback
     elsif method.to_s =~ /^(.+)_#{Noosfero::Plugin::HotSpot::CALLBACK_HOTSPOTS.join('|')}_callback$/
       nil
-    elsif context.respond_to?(method)
+    elsif context.respond_to?(method, true)
       context.send(method)
     else
       super
