@@ -72,7 +72,7 @@ class EnterpriseRegistrationController < ApplicationController
   def creation
     if @create_enterprise.save
       @create_enterprise.perform
-      @enterprise = @create_enterprise.target.profiles.find_by_identifier(@create_enterprise.identifier)
+      @enterprise = @create_enterprise.target.profiles.find_by identifier: @create_enterprise.identifier
     end
   end
 

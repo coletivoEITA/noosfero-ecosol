@@ -4,7 +4,7 @@ noosfero.comments = {
     if (noosfero.comments.loaded) return
     noosfero.comments.loaded = true
 
-    var url = $("#page_url").val()
+    var url = window.location.href
     MessageBus.subscribe(url+'/new_comment', function (data) {
       if (data.user_login == noosfero.user_data.login) return
       noosfero.comments.receiveComment(data)

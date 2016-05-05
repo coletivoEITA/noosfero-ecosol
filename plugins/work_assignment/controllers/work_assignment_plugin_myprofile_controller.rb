@@ -46,7 +46,7 @@ class WorkAssignmentPluginMyprofileController < MyProfileController
   protected
 
   def protect_if
-    article = environment.articles.find_by_id(params[:article_id])
+    article = environment.articles.find_by id: params[:article_id]
     render_access_denied unless (user && !article.nil? && (user.is_member_of? article.profile) &&
     article.parent.allow_visibility_edition && article.folder? &&
     (article.author == user || user.has_permission?('view_private_content', profile)))

@@ -19,9 +19,9 @@ module ActsAsAccessible
     nil
   end
 
-  def affiliate(accessor, roles)
+  def affiliate(accessor, roles, attributes = {})
     roles = Array(roles)
-    roles.map {|role| accessor.add_role(role, self)}.any?
+    roles.map {|role| accessor.add_role(role, self, attributes)}.any?
   end
 
   def disaffiliate(accessor, roles)
@@ -32,7 +32,7 @@ module ActsAsAccessible
   end
 
   def roles
-    Role.find_all_by_environment_id(environment.id).select do |r|
+    Role.where(environment_id: environment.id).select do |r|
       r.permissions.any?{ |p| PERMISSIONS[self.class.base_class.name].include?(p) }
     end
   end

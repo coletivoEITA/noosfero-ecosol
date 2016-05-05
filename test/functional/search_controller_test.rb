@@ -27,6 +27,7 @@ class SearchControllerTest < ActionController::TestCase
     # By pass user validation on person creation
     user = mock()
     user.stubs(:id).returns(1)
+    user.stubs(:changes).returns(nil)
     user.stubs(:valid?).returns(true)
     user.stubs(:email).returns('some@test.com')
     user.stubs(:save!).returns(true)
@@ -540,6 +541,16 @@ class SearchControllerTest < ActionController::TestCase
     assert_equal [c2,c1,c3] , assigns(:searches)[:communities][:results]
   end
 
+  should "only admin can view invisible people" do
+    # assuming that all filters behave the same!
+    p1 = fast_create(Person, :visible => false)
+    admin = create_user('admin').person;
+    Environment.default.add_admin admin
+    login_as("admin")
+    get :people, :order => 'more_recent'
+    assert_includes assigns(:searches)[:people][:results], p1
+  end
+
   should "only include visible people in more_recent filter" do
     # assuming that all filters behave the same!
     p1 = fast_create(Person, :visible => false)
@@ -766,6 +777,30 @@ class SearchControllerTest < ActionController::TestCase
 
     get :communities, :template_id => nil
     assert_equivalent [t1,t2,c1,c2,c3,c4] , assigns(:searches)[:communities][:results]
+  end
+
+  should 'not raise an exception if tag query contains accented latin characters' do
+    tag_query = 'àáâãäå'
+    assert_nothing_raised(NoMethodError) { get :tag, :tag => tag_query }
+  end
+
+  should 'not allow query injection' do
+    injection = '<iMg SrC=x OnErRoR=document.documentElement.innerHTML=1>SearchParam'
+    get :tag, :tag => injection
+    tag = assigns(:tag)
+    assert !tag.upcase.include?('IMG')
+    assert tag.include?('SearchParam')
+  end
+
+  should 'not allow query injection in array' do
+    injection = ['<iMg SrC=x OnErRoR=document.documentElement.innerHTML=1>',
+                 '<script>document.innerHTML = \'x\'</script>']
+    get :tag, :tag => injection
+    tag = assigns(:tag)
+    tag.each { |t|
+      assert !t.upcase.include?('IMG')
+      assert !t.upcase.include?('SCRIPT')
+    }
   end
 
   protected

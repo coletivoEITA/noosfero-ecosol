@@ -18,6 +18,19 @@ class ProfileControllerTest < ActionController::TestCase
     assert assigns(:friends)
   end
 
+  should 'remove person from article followers when unfollow' do
+    profile = create_user('testuser').person
+    follower = create_user('follower').person
+    article = profile.articles.create(:name => 'test')
+    article.person_followers = [follower]
+    article.save
+    login_as('follower')
+    article.reload
+    assert_includes Article.find(article.id).person_followers, follower
+    post :unfollow_article, :article_id => article.id
+    assert_not_includes Article.find(article.id).person_followers, follower
+  end
+
   should 'point to manage friends in user is seeing his own friends' do
     login_as('testuser')
     get :friends
@@ -1338,6 +1351,24 @@ class ProfileControllerTest < ActionController::TestCase
     assert_equivalent [scrap,activity], assigns(:activities).map(&:activity)
   end
 
+  should "follow an article" do
+    article = TinyMceArticle.create!(:profile => profile, :name => 'An article about free software')
+    login_as(@profile.identifier)
+    post :follow_article, :profile => profile.identifier, :article_id => article.id
+    assert_includes article.person_followers, @profile
+  end
+
+  should "unfollow an article" do
+    article = TinyMceArticle.create!(:profile => profile, :name => 'An article about free software')
+    article.person_followers << @profile
+    article.save!
+    assert_includes article.person_followers, @profile
+
+    login_as(@profile.identifier)
+    post :unfollow_article, :profile => profile.identifier, :article_id => article.id
+    assert_not_includes article.person_followers, @profile
+  end
+
   should "be logged in to leave comment on an activity" do
     article = TinyMceArticle.create!(:profile => profile, :name => 'An article about free software')
     activity = ActionTracker::Record.last
@@ -1434,9 +1465,39 @@ class ProfileControllerTest < ActionController::TestCase
     create_user_with_permission('profile_moderator_user', 'send_mail_to_members', community)
     login_as('profile_moderator_user')
     @controller.stubs(:locale).returns('pt')
+
     assert_difference 'Delayed::Job.count', 1 do
       post :send_mail, :profile => community.identifier, :mailing => {:subject => 'Hello', :body => 'We have some news'}
     end
+  end
+
+  should 'send to members_filtered if available' do
+    community = fast_create(Community)
+    create_user_with_permission('profile_moderator_user', 'send_mail_to_members', community)
+    person = create_user('Any').person
+    community.add_member(person)
+    community.save!
+    login_as('profile_moderator_user')
+
+    post :send_mail, :profile => community.identifier, :mailing => {:subject => 'Hello', :body => 'We have some news'}
+    assert_equivalent community.members, OrganizationMailing.last.recipients
+
+    @request.session[:members_filtered] = [person.id]
+    post :send_mail, :profile => community.identifier, :mailing => {:subject => 'RUN!!', :body => 'Run to the hills!!'}
+    assert_equal [person], OrganizationMailing.last.recipients
+  end
+
+  should 'send email to all members if there is no valid member in members_filtered' do
+    community = fast_create(Community)
+    create_user_with_permission('profile_moderator_user', 'send_mail_to_members', community)
+    person = create_user('Any').person
+    community.add_member(person)
+    community.save!
+    login_as('profile_moderator_user')
+
+    @request.session[:members_filtered] = [Profile.last.id+1]
+    post :send_mail, :profile => community.identifier, :mailing => {:subject => 'RUN!!', :body => 'Run to the hills!!'}
+    assert_empty OrganizationMailing.last.recipients
   end
 
   should 'save mailing' do
@@ -1464,6 +1525,29 @@ class ProfileControllerTest < ActionController::TestCase
     @request.expects(:referer).returns("/profile/#{community.identifier}/members")
     post :send_mail, :profile => community.identifier, :mailing => {:subject => 'Hello', :body => 'We have some news'}
     assert_redirected_to :action => 'members'
+  end
+
+  should 'display email templates as an option to send mail' do
+    community = fast_create(Community)
+    create_user_with_permission('profile_moderator_user', 'send_mail_to_members', community)
+    login_as('profile_moderator_user')
+
+    template1 = EmailTemplate.create!(:owner => community, :name => "Template 1", :template_type => :organization_members)
+    template2 = EmailTemplate.create!(:owner => community, :name => "Template 2")
+
+    get :send_mail, :profile => community.identifier, :mailing => {:subject => 'Hello', :body => 'We have some news'}
+    assert_select '.template-selection'
+    assert_equal [template1], assigns(:email_templates)
+  end
+
+  should 'do not display email template selection when there is no template for organization members' do
+    community = fast_create(Community)
+    create_user_with_permission('profile_moderator_user', 'send_mail_to_members', community)
+    login_as('profile_moderator_user')
+
+    get :send_mail, :profile => community.identifier, :mailing => {:subject => 'Hello', :body => 'We have some news'}
+    assert_select '.template-selection'
+    assert assigns(:email_templates).empty?
   end
 
   should 'show all fields to anonymous user' do

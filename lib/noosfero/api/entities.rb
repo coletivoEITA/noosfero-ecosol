@@ -79,6 +79,18 @@ module Noosfero
         expose :parent_id
       end
 
+      class Block < Entity
+        root 'blocks', 'block'
+        expose :id, :type, :settings, :position, :enabled
+        expose :mirror, :mirror_block_id, :title
+      end
+
+      class Box < Entity
+        root 'boxes', 'box'
+        expose :id, :position
+        expose :blocks, :using => Block
+      end
+
       class Profile < Entity
         expose :identifier, :name, :id
         expose :created_at, :format_with => :timestamp
@@ -99,6 +111,7 @@ module Noosfero
         end
         expose :image, :using => Image
         expose :region, :using => Region
+        expose :type
       end
 
       class UserBasic < Entity
@@ -109,6 +122,16 @@ module Noosfero
       class Person < Profile
         root 'people', 'person'
         expose :user, :using => UserBasic, documentation: {type: 'User', desc: 'The user data of a person' }
+        expose :vote_count
+        expose :comments_count do |person, options|
+          person.comments.count
+        end
+        expose :following_articles_count do |person, options|
+          person.following_articles.count
+        end
+        expose :articles_count do |person, options|
+          person.articles.count
+        end
       end
 
       class Enterprise < Profile
@@ -148,6 +171,10 @@ module Noosfero
         expose :children_count
         expose :slug, :documentation => {:type => "String", :desc => "Trimmed and parsed name of a article"}
         expose :path
+        expose :followers_count
+        expose :votes_count
+        expose :comments_count
+        expose :type
       end
 
       class Article < ArticleBase
@@ -156,11 +183,16 @@ module Noosfero
         expose :children, :using => ArticleBase
       end
 
-      class Comment < Entity
-        root 'comments', 'comment'
+      class CommentBase < Entity
         expose :body, :title, :id
         expose :created_at, :format_with => :timestamp
         expose :author, :using => Profile
+        expose :reply_of, :using => CommentBase
+      end
+
+      class Comment < CommentBase
+        root 'comments', 'comment'
+        expose :children, as: :replies, :using => Comment
       end
 
       class User < Entity
@@ -188,7 +220,7 @@ module Noosfero
 
       class UserLogin < User
         root 'users', 'user'
-        expose :private_token, documentation: {type: 'String', desc: 'A valid authentication code for post/delete api actions'}
+        expose :private_token, documentation: {type: 'String', desc: 'A valid authentication code for post/delete api actions'}, if: lambda {|object, options| object.activated? }
       end
 
       class Task < Entity
@@ -206,7 +238,15 @@ module Noosfero
         expose :name
       end
 
-
+      class Activity < Entity
+        root 'activities', 'activity'
+        expose :id, :params, :verb, :created_at, :updated_at, :comments_count, :visible
+        expose :user, :using => Profile
+        expose :target do |activity, opts|
+          type_map = {Profile => ::Profile, ArticleBase => ::Article}.find {|h| activity.target.kind_of?(h.last)}
+          type_map.first.represent(activity.target) unless type_map.nil?
+        end
+      end
     end
   end
 end

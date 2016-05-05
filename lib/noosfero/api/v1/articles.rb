@@ -5,8 +5,11 @@ module Noosfero
 
         ARTICLE_TYPES = Article.descendants.map{|a| a.to_s}
 
+        MAX_PER_PAGE = 50
+
         resource :articles do
 
+          paginate max_per_page: MAX_PER_PAGE
           # Collect articles
           #
           # Parameters:
@@ -49,7 +52,7 @@ module Noosfero
             article = environment.articles.find(params[:id])
             return forbidden! unless article.allow_edit?(current_person)
             article.update_attributes!(params[:article])
-            present article, :with => Entities::Article, :fields => params[:fields]
+            present_partial article, :with => Entities::Article
           end
 
           desc 'Report a abuse and/or violent content in a article by id' do
@@ -71,7 +74,7 @@ module Noosfero
               current_person.register_report(abuse_report, profile)
 
               if !params[:content_type].blank?
-                abuse_report = AbuseReport.find_by_reporter_id_and_abuse_complaint_id(current_person.id, profile.opened_abuse_complaint.id)
+                abuse_report = AbuseReport.find_by reporter_id: current_person.id, abuse_complaint_id: profile.opened_abuse_complaint.id
                 Delayed::Job.enqueue DownloadReportedImagesJob.new(abuse_report, article)
               end
 
@@ -93,7 +96,7 @@ module Noosfero
           end
            #FIXME refactor this method
           get 'voted_by_me' do
-            present_articles(current_person.votes.collect(&:voteable))
+            present_articles(current_person.votes.where(:voteable_type => 'Article').collect(&:voteable))
           end
 
           desc 'Perform a vote on a article by id' do
@@ -108,8 +111,48 @@ module Noosfero
             # FIXME verify allowed values
             render_api_error!('Vote value not allowed', 400) unless [-1, 1].include?(value)
             article = find_article(environment.articles, params[:id])
-            vote = Vote.new(:voteable => article, :voter => current_person, :vote => value)
-            {:vote => vote.save}
+            begin
+              vote = Vote.new(:voteable => article, :voter => current_person, :vote => value)
+              {:vote => vote.save!}
+            rescue ActiveRecord::RecordInvalid => e
+              render_api_error!(e.message, 400)
+            end
+          end
+
+          desc "Returns the total followers for the article" do
+            detail 'Get the followers of a specific article by id'
+            failure [[403, 'Forbidden']]
+            named 'ArticleFollowers'
+          end
+          get ':id/followers' do
+            article = find_article(environment.articles, params[:id])
+            total = article.person_followers.count
+            {:total_followers => total}
+          end
+
+          desc "Return the articles followed by me"
+          get 'followed_by_me' do
+            present_articles_for_asset(current_person, 'following_articles')
+          end
+
+          desc "Add a follower for the article" do
+            detail 'Add the current user identified by private token, like a follower of a article'
+            params Noosfero::API::Entities::UserLogin.documentation
+            failure [[401, 'Unauthorized']]
+            named 'ArticleFollow'
+          end
+          post ':id/follow' do
+            authenticate!
+            article = find_article(environment.articles, params[:id])
+            if article.article_followers.exists?(:person_id => current_person.id)
+              {:success => false, :already_follow => true}
+            else
+              article_follower = ArticleFollower.new
+              article_follower.article = article
+              article_follower.person = current_person
+              article_follower.save!
+              {:success => true}
+            end
           end
 
           desc 'Return the children of a article identified by id' do
@@ -119,6 +162,7 @@ module Noosfero
             named 'ArticleChildren'
           end
 
+          paginate per_page: MAX_PER_PAGE, max_per_page: MAX_PER_PAGE
           get ':id/children' do
             article = find_article(environment.articles, params[:id])
 
@@ -146,7 +190,7 @@ module Noosfero
             article = find_article(environment.articles, params[:id])
             child = find_article(article.children, params[:child_id])
             child.hit
-            present child, :with => Entities::Article, :fields => params[:fields]
+            present_partial child, :with => Entities::Article
           end
 
           desc 'Suggest a article to another profile' do
@@ -169,7 +213,7 @@ module Noosfero
             unless suggest_article.save
               render_api_errors!(suggest_article.article_object.errors.full_messages)
             end
-            present suggest_article, :with => Entities::Task, :fields => params[:fields]
+            present_partial suggest_article, :with => Entities::Task
           end
 
           # Example Request:
@@ -200,12 +244,21 @@ module Noosfero
             if !article.save
               render_api_errors!(article.errors.full_messages)
             end
-            present article, :with => Entities::Article, :fields => params[:fields]
+            present_partial article, :with => Entities::Article
           end
 
         end
 
-        kinds = %w[community person enterprise]
+        resource :profiles do
+          get ':id/home_page' do
+            profiles = environment.profiles
+            profiles = profiles.visible_for_person(current_person)
+            profile = profiles.find_by id: params[:id]
+            present_partial profile.home_page, :with => Entities::Article
+          end
+        end
+
+        kinds = %w[profile community person enterprise]
         kinds.each do |kind|
           resource kind.pluralize.to_sym do
             segment "/:#{kind}_id" do
@@ -222,12 +275,12 @@ module Noosfero
                   profile = environment.send(kind.pluralize).find(params["#{kind}_id"])
 
                   if params[:path].present?
-                    article = profile.articles.find_by_path(params[:path])
+                    article = profile.articles.find_by path: params[:path]
                     if !article || !article.display_to?(current_person)
                       article = forbidden!
                     end
 
-                    present article, :with => Entities::Article, :fields => params[:fields]
+                    present_partial article, :with => Entities::Article
                   else
 
                     present_articles_for_asset(profile)

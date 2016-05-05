@@ -15,7 +15,11 @@ h2= _('Send e-mail to members')
     label#all_members name="all_members"
       input checked="true" onchange="send_mail.toggleAllMembers(this)" type="checkbox" value="1" /
       = _('Send to all members')
+
   = labelled_form_field(_('To:'), text_field_tag('mailing[recipient_ids]', nil))
+  .template-selection
+    - if @email_templates.present?
+      = labelled_form_field(_('Select a template:'), select_tag(:template, options_from_collection_for_select(@email_templates, :id, :name), include_blank: true, 'data-url' => url_for
 
   = labelled_form_field(_('Subject:'), f.text_field(:subject))
 

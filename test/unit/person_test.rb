@@ -180,10 +180,10 @@ class PersonTest < ActiveSupport::TestCase
     Person.any_instance.stubs(:default_set_of_articles).returns([blog])
     person = create(User).person
 
-    assert_kind_of Blog, person.articles.find_by_path(blog.path)
-    assert person.articles.find_by_path(blog.path).published?
-    assert_kind_of RssFeed, person.articles.find_by_path(blog.feed.path)
-    assert person.articles.find_by_path(blog.feed.path).published?
+    assert_kind_of Blog, person.articles.find_by(path: blog.path)
+    assert person.articles.find_by(path: blog.path).published?
+    assert_kind_of RssFeed, person.articles.find_by(path: blog.feed.path)
+    assert person.articles.find_by(path: blog.feed.path).published?
   end
 
   should 'create a default set of blocks' do
@@ -831,9 +831,9 @@ class PersonTest < ActiveSupport::TestCase
   should "destroy scrap if sender was removed" do
     person = fast_create(Person)
     scrap = fast_create(Scrap, :sender_id => person.id)
-    assert_not_nil Scrap.find_by_id(scrap.id)
+    assert_not_nil Scrap.find_by(id: scrap.id)
     person.destroy
-    assert_nil Scrap.find_by_id(scrap.id)
+    assert_nil Scrap.find_by(id: scrap.id)
   end
 
   should "the tracked action be notified to person friends and herself" do
@@ -1123,7 +1123,7 @@ class PersonTest < ActiveSupport::TestCase
     organization.add_admin(person)
 
     assert person.is_last_admin_leaving?(organization, [])
-    refute person.is_last_admin_leaving?(organization, [Role.find_by_key('profile_admin')])
+    refute person.is_last_admin_leaving?(organization, [Role.find_by(key: 'profile_admin')])
   end
 
   should 'return unique members of a community' do
@@ -1467,13 +1467,13 @@ class PersonTest < ActiveSupport::TestCase
   should 'merge memberships of plugins to original memberships' do
     class Plugin1 < Noosfero::Plugin
       def person_memberships(person)
-        Profile.memberships_of(Person.find_by_identifier('person1'))
+        Profile.memberships_of(Person.find_by(identifier: 'person1'))
       end
     end
 
     class Plugin2 < Noosfero::Plugin
       def person_memberships(person)
-        Profile.memberships_of(Person.find_by_identifier('person2'))
+        Profile.memberships_of(Person.find_by(identifier: 'person2'))
       end
     end
     Noosfero::Plugin.stubs(:all).returns(['PersonTest::Plugin1', 'PersonTest::Plugin2'])
@@ -1836,6 +1836,119 @@ class PersonTest < ActiveSupport::TestCase
     c3 = fast_create(Comment, :source_id => article.id, :author_id => p1.id)
 
     assert_equivalent [c1,c3], p1.comments
+  end
+
+  should 'get people of one community by moderator role' do
+    community = fast_create(Community)
+    p1 = fast_create(Person)
+    p2 = fast_create(Person)
+
+    community.add_member p1
+    community.add_moderator p2
+
+    assert_equivalent [p2], Person.with_role(Profile::Roles.moderator(community.environment.id).id)
+  end
+
+  should 'get people of one community by admin role' do
+    community = fast_create(Community)
+    p1 = fast_create(Person)
+    p2 = fast_create(Person)
+
+    community.add_admin p1
+    community.add_member p2
+
+    assert_equivalent [p1], Person.with_role(Profile::Roles.admin(community.environment.id).id)
+  end
+
+  should 'get people with admin role of any community' do
+    c1 = fast_create(Community)
+    p1 = fast_create(Person)
+    p2 = fast_create(Person)
+    c1.add_admin p1
+    c1.add_member p2
+
+    c2 = fast_create(Community)
+    p3 = fast_create(Person)
+    p4 = fast_create(Person)
+
+    c2.add_admin p4
+    c2.add_member p3
+
+    assert_equivalent [p1, p4], Person.with_role(Profile::Roles.admin(c1.environment.id).id)
+  end
+
+  should 'get distinct people with moderator role of any community' do
+    c1 = fast_create(Community)
+    p1 = fast_create(Person)
+    p2 = fast_create(Person)
+    c1.add_member p1
+    c1.add_moderator p2
+
+    c2 = fast_create(Community)
+    p3 = fast_create(Person)
+    p4 = fast_create(Person)
+
+    c2.add_member p4
+    c2.add_moderator p3
+    c2.add_moderator p2
+
+    assert_equivalent [p2, p3], Person.with_role(Profile::Roles.moderator(c1.environment.id).id)
+  end
+
+  should 'count members of a community collected by moderator' do
+    c1 = fast_create(Community)
+    p1 = fast_create(Person)
+    p2 = fast_create(Person)
+    p3 = fast_create(Person)
+    c1.add_member p1
+    c1.add_moderator p2
+    c1.add_member p3
+
+    assert_equal 1, c1.members.with_role(Profile::Roles.moderator(c1.environment.id).id).count
+  end
+
+  should 'count people of any community collected by moderator' do
+    c1 = fast_create(Community)
+    p1 = fast_create(Person)
+    p2 = fast_create(Person)
+    c1.add_member p1
+    c1.add_moderator p2
+
+    c2 = fast_create(Community)
+    p3 = fast_create(Person)
+    p4 = fast_create(Person)
+
+    c2.add_member p4
+    c2.add_moderator p3
+    c2.add_moderator p2
+
+    assert_equal 2, Person.with_role(Profile::Roles.moderator(c1.environment.id).id).count
+  end
+
+  should 'check if a person is added like a member of a community today' do
+    person = create_user('person').person
+    community = fast_create(Community)
+
+    community.add_member person
+
+    assert !person.member_relation_of(community).empty?, "Person '#{person.identifier}' is not a member of Community '#{community.identifier}'"
+    assert_equal Date.current, person.member_since_date(community), "Person '#{person.identifier}' is not added like a member of Community '#{community.identifier}' today"
+  end
+
+  should 'a person follows many articles' do
+    person = create_user('article_follower').person
+
+    1.upto(10).map do |n|
+      person.following_articles <<  fast_create(Article, :profile_id => fast_create(Person))
+    end
+    assert_equal 10, person.following_articles.count
+  end
+
+  should 'not save user after an update on person and user is not touched' do
+    user = create_user('testuser')
+    person = user.person
+    person.user.expects(:save!).never
+    person.save!
   end
 
 end

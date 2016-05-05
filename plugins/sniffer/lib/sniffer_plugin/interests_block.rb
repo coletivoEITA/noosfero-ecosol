@@ -18,14 +18,14 @@ class SnifferPlugin::InterestsBlock < Block
 
   def content(args = {})
     block = self
+    profile = block.owner
     proc do
       if block.owner.is_a?(Profile)
-        sniffer = SnifferPlugin::Profile.find_or_create(block.owner)
-        interests = sniffer.opportunities
-        interests |= sniffer.profile.inputs if sniffer.profile.enterprise?
+        interests = profile.snnifer_opportunities
+        interests |= profile.inputs if sniffer.profile.enterprise?
       else # Environment
-        interests = SnifferPlugin::Opportunity.product_categories :limit => 5, :order => 'created_at DESC'
-        interests += Input.all :limit => 5, :order => 'created_at DESC'
+        interests = SnifferPlugin::Opportunity.product_categories.limit(5).order('created_at DESC').all
+        interests += Input.limit(5).order('created_at DESC').all
         interests.sort{ |a, b| -1 * a.created_at.to_i <=> b.created_at.to_i }
       end
 

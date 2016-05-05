@@ -16,6 +16,7 @@ module SerializedSyncedData
       self.serialized_synced_fields ||= []
       self.serialized_synced_fields << field
 
+      attribute  = "#{field}_id"
       field_data = "#{field}_data".to_sym
       field_data_without_sync = "#{field_data}_without_sync".to_sym
 
@@ -55,23 +56,25 @@ module SerializedSyncedData
       define_method "#{field}_synced_data" do
         source = self.send field
         if block_given?
-          data = SerializedSyncedData.prepare_data instance_exec(source, &block)
-        elsif source.is_a? ActiveRecord::Base
+          data = SerializedSyncedData.prepare_data instance_exec(&block)
+        elsif source.is_a? ApplicationRecord
           data = SerializedSyncedData.prepare_data source.attributes
         elsif source.is_a? Array
-          data = source.map{ |source| SerializedSyncedData.prepare_data source.attributes }
+          data = source.map{ |s| SerializedSyncedData.prepare_data s.attributes }
         end || {}
       end
 
       define_method "sync_#{field_data}" do
-        value = self.send "#{field}_synced_data"
-        current = self.send field_data
-        value = current.deep_merge! value
-        self.send "#{field_data}=", value
+        value     = self.send "#{field}_synced_data"
+        current   = self.send field_data
+        # leave old fields unchanged
+        new_value = current.deep_merge value
+        self.send "#{field_data}=", new_value
       end
 
+      # fill and update data
       define_method "fill_#{field_data}" do
-        return if self.send(field_data_without_sync).present?
+        return unless self.send(field_data_without_sync).blank? or self.send("#{attribute}_changed?")
         self.send "sync_#{field_data}"
       end
 

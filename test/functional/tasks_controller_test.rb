@@ -4,6 +4,7 @@ require 'tasks_controller'
 class TasksControllerTest < ActionController::TestCase
 
   self.default_params = {profile: 'testuser'}
+
   def setup
     @controller = TasksController.new
     @request    = ActionController::TestRequest.new
@@ -27,6 +28,37 @@ class TasksControllerTest < ActionController::TestCase
     assert assigns(:tasks)
   end
 
+ should 'get filtered tasks to autocomplete text field' do
+
+   #Create a admin user and a simple user
+   profile_admin = create_user('admin_tester').person
+   Environment.default.add_admin(profile_admin)
+   user = fast_create(Person,:name => 'FakeUser')
+
+   #Create a task of type 'ModerateUserRegistration'
+   task_data = {
+       :target => Environment.default,
+       :spam => false,
+       :data => {:user_id => user.id,:name => user.name}
+   }
+   ModerateUserRegistration.create!(task_data)
+
+   #Use admin user to your profile with a pending task above
+   @controller.stubs(:profile).returns(profile_admin)
+   login_as profile_admin.identifier
+
+   #Perform a http request to 'search_task' action with params
+   post :search_tasks, :filter_type =>'ModerateUserRegistration', :filter_text => 'Fak'
+
+   assert_response :success
+
+   #Check if json response matches with a 'FakeUser'
+   json_response = ActiveSupport::JSON.decode(@response.body)
+   value = json_response[0]['value']
+
+   assert_equal value, 'FakeUser'
+ end
+
   should 'list pending tasks without spam' do
     requestor = fast_create(Person)
     task_spam = Task.create!(:requestor => requestor, :target => profile, :spam => true)
@@ -43,7 +75,8 @@ class TasksControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_template 'processed'
-    assert_kind_of Array, assigns(:tasks)
+    assert !assigns(:tasks).nil?
+    assert_kind_of ActiveRecord::Relation, assigns(:tasks)
   end
 
   should 'display task created_at' do
@@ -68,6 +101,17 @@ class TasksControllerTest < ActionController::TestCase
 
     post :close, :tasks => {t.id => {:decision => 'finish', :task => {}}}
     assert_redirected_to :action => 'index'
+
+    t.reload
+    ok('task should be finished') { t.status == Task::Status::FINISHED }
+  end
+
+  should 'keep filters after close a task' do
+    t = profile.tasks.build; t.save!
+
+    post :close, :tasks => {t.id => {:decision => 'finish', :task => {}}}, :filter_type => t.type
+    assert_redirected_to :action => 'index', :filter_type => t.type
+    assert_equal @controller.params[:filter_type], t.type
 
     t.reload
     ok('task should be finished') { t.status == Task::Status::FINISHED }
@@ -197,7 +241,7 @@ class TasksControllerTest < ActionController::TestCase
     t = ApproveArticle.create!(:name => 'test name', :article => article, :target => c, :requestor => profile)
 
     post :close, :tasks => {t.id => {:decision => 'finish', :task => {:name => 'new_name'}}}
-    assert_equal article, c.articles.find_by_name('new_name').reference_article
+    assert_equal article, c.articles.find_by(name: 'new_name').reference_article
   end
 
   should 'create published article in folder after finish approve article task' do
@@ -210,7 +254,7 @@ class TasksControllerTest < ActionController::TestCase
     t = ApproveArticle.create!(:name => 'test name', :article => article, :target => c, :requestor => profile)
 
     post :close, :tasks => {t.id => {:decision => 'finish', :task => {:name => 'new_name', :article_parent_id => folder.id}}}
-    assert_equal folder, c.articles.find_by_name('new_name').parent
+    assert_equal folder, c.articles.find_by(name: 'new_name').parent
   end
 
   should 'be highlighted if asked when approving a published article' do
@@ -223,7 +267,7 @@ class TasksControllerTest < ActionController::TestCase
     t = ApproveArticle.create!(:article => article, :target => c, :requestor => profile)
 
     post :close, :tasks => {t.id => {:decision => 'finish', :task => {:name => 'new_name', :article_parent_id => folder.id, :highlighted => true}}}
-    assert_equal true, c.articles.find_by_name('new_name').highlighted
+    assert_equal true, c.articles.find_by(name: 'new_name').highlighted
   end
 
   should 'create article of same class after choosing root folder on approve article task' do
@@ -235,7 +279,7 @@ class TasksControllerTest < ActionController::TestCase
     t = ApproveArticle.create!(:article => article, :target => c, :requestor => profile)
 
     post :close, :tasks => {t.id => {:decision => 'finish', :task => {:name => 'new_name', :article_parent_id => ""}}}
-    assert_not_nil c.articles.find_by_name('new_name')
+    assert_not_nil c.articles.find_by(name: 'new_name')
   end
 
   should 'handle blank names for published articles' do
@@ -255,7 +299,7 @@ class TasksControllerTest < ActionController::TestCase
     assert_difference 'article.class.count' do
       post :close, :tasks => {a.id => {:decision => 'finish', :task => {:name => "", :highlighted => "0", :article_parent_id => c_blog2.id.to_s}}}
     end
-    assert p_article = article.class.find_by_reference_article_id(article.id)
+    assert p_article = article.class.find_by(reference_article_id: article.id)
     assert_includes c_blog2.children(true), p_article
   end
 
@@ -295,7 +339,7 @@ class TasksControllerTest < ActionController::TestCase
     t = SuggestArticle.create!(:article => {:name => 'test name', :body => 'test body'}, :name => 'some name', :email => 'test@localhost.com', :target => c)
 
     post :close, :tasks => {t.id => { :task => {}, :decision => "finish"}}
-    assert_not_nil TinyMceArticle.find(:first)
+    assert_not_nil TinyMceArticle.first
   end
 
   should "change the article's attributes on suggested article task approval" do
@@ -311,11 +355,11 @@ class TasksControllerTest < ActionController::TestCase
     t.save!
 
     post :close, :tasks => {t.id => { :task => {:article => {:name => 'new article name', :body => 'new body', :source => 'http://www.noosfero.com', :source_name => 'new source'}, :name => 'new name'}, :decision => "finish"}}
-    assert_equal 'new article name', TinyMceArticle.find(:first).name
-    assert_equal 'new name', TinyMceArticle.find(:first).author_name
-    assert_equal 'new body', TinyMceArticle.find(:first).body
-    assert_equal 'http://www.noosfero.com', TinyMceArticle.find(:first).source
-    assert_equal 'new source', TinyMceArticle.find(:first).source_name
+    assert_equal 'new article name', TinyMceArticle.first.name
+    assert_equal 'new name', TinyMceArticle.first.author_name
+    assert_equal 'new body', TinyMceArticle.first.body
+    assert_equal 'http://www.noosfero.com', TinyMceArticle.first.source
+    assert_equal 'new source', TinyMceArticle.first.source_name
   end
 
   should "display name from article suggestion when requestor was not setted" do
@@ -327,6 +371,19 @@ class TasksControllerTest < ActionController::TestCase
 
     get :index
     assert_select "#tasks_#{t.id}_task_name"
+  end
+
+  should "not crash when article suggestion task fails" do
+    TinyMceArticle.destroy_all
+    c = fast_create(Community)
+    c.affiliate(profile, Profile::Roles.all_roles(profile.environment.id))
+    @controller.stubs(:profile).returns(c)
+    t = SuggestArticle.create!(:article => {:name => 'test name', :abstract => 'test abstract', :body => 'test body'}, :name => 'some name', :email => 'test@localhost.com', :target => c)
+
+    SuggestArticle.any_instance.stubs(:perform).raises('erro')
+    assert_nothing_raised do
+      post :close, :tasks => {t.id => { :task => {}, :decision => "finish"}}
+    end
   end
 
   should "append hidden tag with type value from article suggestion" do
@@ -413,13 +470,13 @@ class TasksControllerTest < ActionController::TestCase
     t2 = CleanHouse.create!(:requestor => requestor, :target => profile)
     t3 = FeedDog.create!(:requestor => requestor, :target => profile)
 
-    get :index, :filter_type => t1.type, :filter_text => 'test'
+    post :index, :filter_type => t1.type, :filter_text => 'test'
 
     assert_includes assigns(:tasks), t1
     assert_not_includes assigns(:tasks), t2
     assert_not_includes assigns(:tasks), t3
 
-    get :index
+    post :index
 
     assert_includes assigns(:tasks), t1
     assert_includes assigns(:tasks), t2
@@ -644,6 +701,92 @@ class TasksControllerTest < ActionController::TestCase
     t = profile.tasks.build; t.save!
     post :close, :tasks => {t.id => {:decision => 'finish', :task => {}}}
     assert_equal profile, t.reload.closed_by
+  end
+
+  should 'list custom field details in moderation user tasks when moderation_tasks is true' do
+    person_custom_field = CustomField.create(:name => "great_field", :format=>"string", :default_value => "value for person", :customized_type=>"Person", :active => true, :environment => Environment.default, :moderation_task => true, :required => true)
+    p1 = create_user("great_person").person
+    p1.custom_values = {"great_field" => "new_value!"}
+    p1.save!
+    p1.reload
+    admin = create_user("admin").person
+    Environment.default.add_admin(admin)
+    @controller.stubs(:profile).returns(admin)
+    login_as "admin"
+
+    ModerateUserRegistration.create!(:requestor => p1, :name => "great_person", :email => "alo@alo.alo", :target => Environment.default)
+
+    get :index
+
+    assert_tag :tag=> 'div', :attributes => { :class => 'field-name' }, :content => /great_field: new_value!/
+  end
+
+  should 'list custom field details in moderation of community creation tasks when moderation_tasks is true' do
+    community_custom_field = CustomField.create(:name => "great_field", :format=>"string", :default_value => "value for community", :customized_type=>"Community", :active => true, :environment => Environment.default, :moderation_task => true, :required => true)
+    p1 = create_user("great_person").person
+    p1.save!
+    admin = create_user("admin").person
+    Environment.default.add_admin(admin)
+    @controller.stubs(:profile).returns(admin)
+    login_as "admin"
+
+    CreateCommunity.create!(:requestor => p1, :name => "great_community", :target => Environment.default, :custom_values => {"great_field" => {"value" => "new value for community!"}})
+
+    get :index
+
+    assert_tag :tag=> 'div', :attributes => { :class => 'field-name' }, :content => /great_field: new value for community!/
+  end
+
+  should "display email template selection when accept a task" do
+    community = fast_create(Community)
+    @controller.stubs(:profile).returns(community)
+    person = create_user_with_permission('taskviewer', 'view_tasks', community)
+    login_as person.user.login
+
+    email_template = EmailTemplate.create!(:name => 'template', :owner => community, :template_type => :task_acceptance)
+    task = ApproveArticle.create!(:requestor => person, :target => community, :responsible => person)
+    get :index
+    assert_select "#on-accept-information-#{task.id} .template-selection"
+    assert_equal [email_template], assigns(:acceptance_email_templates)
+  end
+
+  should "display email template selection when reject a task" do
+    community = fast_create(Community)
+    @controller.stubs(:profile).returns(community)
+    person = create_user_with_permission('taskviewer', 'view_tasks', community)
+    login_as person.user.login
+
+    email_template = EmailTemplate.create!(:name => 'template', :owner => community, :template_type => :task_rejection)
+    task = ApproveArticle.create!(:requestor => person, :target => community, :responsible => person)
+    get :index
+    assert_select "#on-reject-information-#{task.id} .template-selection"
+    assert_equal [email_template], assigns(:rejection_email_templates)
+  end
+
+  should 'filter processed tasks by all filters' do
+    requestor = fast_create(Person)
+    closed_by = fast_create(Person)
+    class AnotherTask < Task; end
+
+    created_date = DateTime.now
+    processed_date = DateTime.now
+
+    task_params = {:status => Task::Status::FINISHED, :requestor => requestor, :target => profile, :created_at => created_date, :end_date => processed_date, :closed_by => closed_by, :data => {:field => 'some data field'}}
+
+    task = create(AnotherTask, task_params)
+    create(Task, task_params)
+    create(AnotherTask, task_params.clone.merge(:status => Task::Status::CANCELLED))
+    create(AnotherTask, task_params.clone.merge(:created_at => created_date - 1.day))
+    create(AnotherTask, task_params.clone.merge(:created_at => created_date + 1.day))
+    create(AnotherTask, task_params.clone.merge(:end_date => processed_date - 1.day))
+    create(AnotherTask, task_params.clone.merge(:end_date => processed_date + 1.day))
+    create(AnotherTask, task_params.clone.merge(:requestor => fast_create(Person, :name => 'another-requestor')))
+    create(AnotherTask, task_params.clone.merge(:closed_by => fast_create(Person, :name => 'another-closer')))
+    create(AnotherTask, task_params.clone.merge(:data => {:field => "other data field"}))
+
+    get :processed, :filter => {:type => AnotherTask, :status => Task::Status::FINISHED, :created_from => created_date, :created_until => created_date, :closed_from => processed_date, :closed_until => processed_date, :requestor => requestor.name, :closed_by => closed_by.name, :text => "some data field"}
+    assert_response :success
+    assert_equal [task], assigns(:tasks)
   end
 
 end

@@ -56,10 +56,10 @@ class SubOrganizationsPlugin < Noosfero::Plugin
   end
 
   def self.limit(organizations)
-    organizations.all(:limit => DISPLAY_LIMIT, :order => 'updated_at DESC').sort_by{ rand }
+    organizations.limit(DISPLAY_LIMIT).order('updated_at DESC').sort_by{ rand }
   end
 
-  def extra_blocks
+  def self.extra_blocks
     {
       RelatedOrganizationsBlock => {:type => [Enterprise, Community], :position => ['1', '2', '3']}
     }

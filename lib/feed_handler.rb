@@ -31,7 +31,7 @@ class FeedHandler
     end
   end
 
-  def fetch(address)
+  def fetch(address, header = {})
     begin
       content = ""
       block = lambda { |s| content = s.read }
@@ -42,7 +42,8 @@ class FeedHandler
           if !valid_url?(address)
             raise InvalidUrl.new("\"%s\" is not a valid URL" % address)
           end
-          open(address, "User-Agent" => "Noosfero/#{Noosfero::VERSION}", &block)
+          header.merge!("User-Agent" => "Noosfero/#{Noosfero::VERSION}")
+          open(address, header, &block)
         end
       return content
     rescue Exception => ex
@@ -50,10 +51,21 @@ class FeedHandler
     end
   end
 
+  def fetch_through_proxy(address, environment)
+    header = {}
+    if address.starts_with?("https://")
+      header.merge!(:proxy => environment.https_feed_proxy) if environment.https_feed_proxy
+    else
+      header.merge!(:proxy => environment.http_feed_proxy) if environment.http_feed_proxy
+    end
+    header.merge!(:ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE) if environment.disable_feed_ssl
+    fetch(address, header)
+  end
+
   def process(container)
     begin
       container.class.transaction do
-        if container.update_errors > FeedHandler.max_errors && container.fetched_at < (Time.now - FeedHandler.disabled_period)
+        if failed_too_many_times(container) && enough_time_since_last_failure(container)
           container.enabled = true
           container.update_errors = 0
           container.save
@@ -90,7 +102,11 @@ class FeedHandler
 
   def actually_process_container(container)
     container.clear
-    content = fetch(container.address)
+    if container.environment.enable_feed_proxy
+      content = fetch_through_proxy(container.address, container.environment)
+    else
+      content = fetch(container.address)
+    end
     container.fetched_at = Time.now
     parsed_feed = parse(content)
     container.feed_title = parsed_feed.title
@@ -101,6 +117,14 @@ class FeedHandler
 
   def valid_url?(url)
     url =~ URI.regexp('http') || url =~ URI.regexp('https')
+  end
+
+  def failed_too_many_times(container)
+    container.update_errors > FeedHandler.max_errors
+  end
+
+  def enough_time_since_last_failure(container)
+    container.fetched_at.nil? || container.fetched_at < (Time.now - FeedHandler.disabled_period)
   end
 
 end

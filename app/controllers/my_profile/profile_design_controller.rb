@@ -6,6 +6,7 @@ class ProfileDesignController < BoxOrganizerController
 
   before_filter :protect_uneditable_block, :only => [:save]
   before_filter :protect_fixed_block, :only => [:move_block]
+  include CategoriesHelper
 
   def protect_uneditable_block
     block = boxes_holder.blocks.find(params[:id].gsub(/^block-/, ''))
@@ -25,19 +26,19 @@ class ProfileDesignController < BoxOrganizerController
   def available_blocks
     blocks = [ ArticleBlock, TagsBlock, RecentDocumentsBlock, ProfileInfoBlock, LinkListBlock, MyNetworkBlock, FeedReaderBlock, ProfileImageBlock, LocationBlock, SlideshowBlock, ProfileSearchBlock, HighlightsBlock ]
 
-    blocks += plugins_extra_blocks
+    blocks += plugins.dispatch(:extra_blocks)
 
     # blocks exclusive to people
     if profile.person?
       blocks << FavoriteEnterprisesBlock
       blocks << CommunitiesBlock
       blocks << EnterprisesBlock
-      blocks += plugins_extra_blocks :type => Person
+      blocks += plugins.dispatch(:extra_blocks, :type => Person)
     end
 
     # blocks exclusive to communities
     if profile.community?
-      blocks += plugins_extra_blocks :type => Community
+      blocks += plugins.dispatch(:extra_blocks, :type => Community)
     end
 
     # blocks exclusive for enterprises
@@ -47,7 +48,7 @@ class ProfileDesignController < BoxOrganizerController
       blocks << ProductCategoriesBlock
       blocks << FeaturedProductsBlock
       blocks << FansBlock
-      blocks += plugins_extra_blocks :type => Enterprise
+      blocks += plugins.dispatch(:extra_blocks, :type => Enterprise)
     end
 
     # product block exclusive for enterprises in environments that permits it
@@ -64,9 +65,12 @@ class ProfileDesignController < BoxOrganizerController
       blocks << RawHTMLBlock
     end
 
-    blocks += @plugins.dispatch :profile_blocks, profile
-
     blocks
+  end
+
+  def update_categories
+    @object = params[:id] ? @profile.blocks.find(params[:id]) : Block.new
+    render_categories 'block'
   end
 
 end

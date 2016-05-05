@@ -1,6 +1,6 @@
 class ScopeCmsLearningPluginLearningClass < ActiveRecord::Migration
   def self.up
-    Article.update_all ["type = 'CmsLearningPlugin::Learning'"], {:type => 'CmsLearningPluginLearning'}
+    Article.where(type: 'CmsLearningPluginLearning').update_all type: 'CmsLearningPlugin::Learning'
   end
 
   def self.down

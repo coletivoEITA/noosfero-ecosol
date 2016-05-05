@@ -7,7 +7,7 @@
 
 require 'uri'
 require 'cgi'
-require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
+require_relative '../support/paths'
 
 module WithinHelpers
   def with_scope(locator)
@@ -39,7 +39,15 @@ end
 
 When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, selector|
   with_scope(selector) do
-    click_link(link, :match => :prefer_exact)
+    link   = find :link_or_button, link, match: :prefer_exact
+    # If the link has child elements, then $(link).click() has no effect,
+    # so find the first child and click on it.
+    if Capybara.default_driver == :selenium
+      target = link.all('*').first || link
+    else
+      target = link
+    end
+    target.click
   end
 end
 
@@ -196,7 +204,7 @@ Then /^the "([^"]*)" field(?: within "([^"]*)")? should not contain "([^"]*)"$/ 
   end
 end
 
-Then /^the "([^"]*)" checkbox(?: within "([^"]*)")? should be checked$/ do |label, selector|
+Then /^the "([^"]*)" (?:checkbox|radio button)(?: within "([^"]*)")? should be checked$/ do |label, selector|
   with_scope(selector) do
     field_checked = find_field(label)['checked']
     if field_checked.respond_to? :should
@@ -207,7 +215,7 @@ Then /^the "([^"]*)" checkbox(?: within "([^"]*)")? should be checked$/ do |labe
   end
 end
 
-Then /^the "([^"]*)" checkbox(?: within "([^"]*)")? should not be checked$/ do |label, selector|
+Then /^the "([^"]*)" (?:checkbox|radio button)(?: within "([^"]*)")? should not be checked$/ do |label, selector|
   with_scope(selector) do
     field_checked = find_field(label)['checked']
     if field_checked.respond_to? :should
@@ -261,6 +269,21 @@ Then /^display "([^\"]*)"$/ do |element|
   evaluate_script("jQuery('#{element}').show() && false;")
 end
 
+Then /^I fill in tinyMCE "(.*?)" with "(.*?)"$/ do |field, content|
+  n = 0
+  begin
+    execute_script("tinymce.editors['#{field}'].setContent('#{content}')")
+  rescue Selenium::WebDriver::Error::JavascriptError
+    n += 1
+    if n < 5
+      sleep 1
+      retry
+    else
+      raise
+    end
+  end
+end
+
 Then /^there should be a div with class "([^"]*)"$/ do |klass|
   should have_selector("div.#{klass}")
 end
@@ -270,3 +293,8 @@ When /^(?:|I )follow exact "([^"]*)"(?: within "([^"]*)")?$/ do |link, selector|
     find("a", :text => /\A#{link}\z/).click
   end
 end
+
+When /^(?:|I )wait ([^ ]+) seconds?(?:| .+)$/ do |seconds|
+  sleep seconds.to_f
+end
+

@@ -1,5 +1,7 @@
 class LinkListBlock < Block
 
+  include SanitizeHelper
+
   attr_accessible :links
 
   ICONS = [
@@ -59,17 +61,6 @@ class LinkListBlock < Block
     _('Link list')
   end
 
-  def content(args={})
-    block = self
-    list = links.select{ |i| i[:name].present? and i[:address].present? }
-    lambda do |context|
-      render file: 'blocks/link_list_block', locals: {block: block, links: list}
-    end
-  end
-
-  def link_html(link)
-  end
-
   def expand_address(address)
     add = if owner.respond_to?(:identifier)
       address.gsub('{profile}', owner.identifier)
@@ -95,12 +86,5 @@ class LinkListBlock < Block
       "<span title=\"#{i[1]}\" class=\"icon-#{i[0]}\" onclick=\"changeIcon(this, '#{i[0]}')\"></span>".html_safe
     end
   end
-
-  def sanitize_link html
-    sanitizer = HTML::WhiteListSanitizer.new
-    sanitizer.sanitize html
-  end
-
-  private
 
 end

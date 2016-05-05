@@ -1,11 +1,11 @@
 # A Profile is the representation and web-presence of an individual or an
 # organization. Every Profile is attached to its Environment of origin,
 # which by default is the one returned by Environment:default.
-class Profile < ActiveRecord::Base
+class Profile < ApplicationRecord
 
   attr_accessible :name, :identifier, :public_profile, :nickname, :custom_footer, :custom_header, :address, :zip_code, :contact_phone, :image_builder, :description, :closed, :template_id, :environment, :lat, :lng, :is_template, :fields_privacy, :preferred_domain_id, :category_ids, :country, :city, :state, :national_region_code, :email, :contact_email, :redirect_l10n, :notification_time,
     :redirection_after_login, :custom_url_redirection,
-    :email_suggestions, :allow_members_to_invite, :invite_friends_only, :secret
+    :email_suggestions, :allow_members_to_invite, :invite_friends_only, :secret, :profile_admin_mail_notification
 
   # use for internationalizable human type names in search facets
   # reimplement on subclasses
@@ -49,6 +49,9 @@ class Profile < ActiveRecord::Base
     def self.organization_member_roles(env_id)
       all_roles(env_id).select{ |r| r.key.match(/^profile_/) unless r.key.blank? || !r.profile_id.nil?}
     end
+    def self.organization_custom_roles(env_id, profile_id)
+      all_roles(env_id).where('profile_id = ?', profile_id)
+    end
     def self.all_roles(env_id)
       Role.where(environment_id: env_id)
     end
@@ -59,7 +62,7 @@ class Profile < ActiveRecord::Base
     end
     private
     def self.find_role(name, env_id)
-      ::Role.find_by_key_and_environment_id("profile_#{name}", env_id)
+      ::Role.find_by key: "profile_#{name}", environment_id: env_id
     end
   end
 
@@ -81,6 +84,7 @@ class Profile < ActiveRecord::Base
     'invite_members'       => N_('Invite members'),
     'send_mail_to_members' => N_('Send e-Mail to members'),
     'manage_custom_roles'  => N_('Manage custom roles'),
+    'manage_email_templates' => N_('Manage Email Templates'),
   }
 
   acts_as_accessible
@@ -89,7 +93,7 @@ class Profile < ActiveRecord::Base
   include Noosfero::Plugin::HotSpot
 
   scope :memberships_of, -> person {
-    select('DISTINCT profiles.*').
+    distinct.select('profiles.*').
     joins(:role_assignments).
     where('role_assignments.accessor_type = ? AND role_assignments.accessor_id = ?', person.class.base_class.name, person.id)
   }
@@ -110,6 +114,9 @@ class Profile < ActiveRecord::Base
     where template_id: templates
   }
   scope :no_templates, -> { where is_template: false }
+
+  scope :recent, -> limit=nil { order('id DESC').limit(limit) }
+
 
   # Returns a scoped object to select profiles in a given location or in a radius
   # distance from the given location center.
@@ -155,23 +162,23 @@ class Profile < ActiveRecord::Base
 
   include TimeScopes
 
-  def members
+  def members(by_field = '')
     scopes = plugins.dispatch_scopes(:organization_members, self)
-    scopes << Person.members_of(self)
+    scopes << Person.members_of(self,by_field)
     return scopes.first if scopes.size == 1
     ScopeTool.union *scopes
   end
 
-  def members_by_name
-    members.order('profiles.name')
+  def members_by(field,value = nil)
+    if value and !value.blank?
+      members_like(field,value).order('profiles.name')
+    else
+      members.order('profiles.name')
+    end
   end
 
-  class << self
-    def count_with_distinct(*args)
-      options = args.last || {}
-      count_without_distinct(:id, {:distinct => true}.merge(options))
-    end
-    alias_method_chain :count, :distinct
+  def members_like(field,value)
+    members(field).where("LOWER(#{field}) LIKE ?", "%#{value.downcase}%") if value
   end
 
   def members_by_role(roles)
@@ -193,21 +200,22 @@ class Profile < ActiveRecord::Base
   scope :enabled, -> { where enabled: true }
   scope :disabled, -> { where 'profiles.enabled <> ?', true }
 
-  # Subclasses must override this method
-  scope :more_popular
-
-  scope :more_active,  :order => 'activities_count DESC'
-  scope :more_recent, :order => "created_at DESC"
+  # subclass specific
+  scope :more_popular, -> { }
+  scope :more_active, -> { order 'activities_count DESC' }
+  scope :more_recent, -> { order "created_at DESC" }
 
   acts_as_trackable :dependent => :destroy
 
   has_many :profile_activities
   has_many :action_tracker_notifications, :foreign_key => 'profile_id'
-  has_many :tracked_notifications, :through => :action_tracker_notifications, :source => :action_tracker, :order => 'updated_at DESC'
-  has_many :scraps_received, :class_name => 'Scrap', :foreign_key => :receiver_id, :order => "updated_at DESC", :dependent => :destroy
+  has_many :tracked_notifications, -> { order 'updated_at DESC' }, through: :action_tracker_notifications, source: :action_tracker
+  has_many :scraps_received, -> { order 'updated_at DESC' }, class_name: 'Scrap', foreign_key: :receiver_id, dependent: :destroy
   belongs_to :template, :class_name => 'Profile', :foreign_key => 'template_id'
 
   has_many :comments_received, :class_name => 'Comment', :through => :articles, :source => :comments
+
+  has_many :email_templates, :foreign_key => :owner_id
 
   # Although this should be a has_one relation, there are no non-silly names for
   # a foreign key on article to reference the template to which it is
@@ -236,6 +244,7 @@ class Profile < ActiveRecord::Base
   settings_items :description
   settings_items :fields_privacy, :type => :hash, :default => {}
   settings_items :email_suggestions, :type => :boolean, :default => false
+  settings_items :profile_admin_mail_notification, :type => :boolean, :default => true
 
   validates_length_of :description, :maximum => 550, :allow_nil => true
 
@@ -284,7 +293,7 @@ class Profile < ActiveRecord::Base
 
   has_many :tasks, :dependent => :destroy, :as => 'target'
 
-  has_many :events, :source => 'articles', :class_name => 'Event', :order => 'start_date'
+  has_many :events, -> { order 'start_date' }, source: 'articles', class_name: 'Event'
 
   def find_in_all_tasks(task_id)
     begin
@@ -390,6 +399,10 @@ class Profile < ActiveRecord::Base
     profiles = environment.profiles.where(:identifier => identifier)
     profiles = profiles.where(['id != ?', profile_id]) if profile_id.present?
     !profiles.exists?
+  end
+
+  def self.visible_for_person(person)
+    self.all
   end
 
   validates_presence_of :identifier, :name
@@ -530,6 +543,10 @@ class Profile < ActiveRecord::Base
     ).order('articles.published_at desc, articles.id desc')
   end
 
+  def to_liquid
+    HashWithIndifferentAccess.new :name => name, :identifier => identifier
+  end
+
   class << self
 
     # finds a profile by its identifier. This method is a shortcut to
@@ -540,7 +557,7 @@ class Profile < ActiveRecord::Base
     #  person = Profile['username']
     #  org = Profile.['orgname']
     def [](identifier)
-      self.find_by_identifier(identifier)
+      self.find_by identifier: identifier
     end
 
   end
@@ -685,15 +702,15 @@ private :generate_url, :url_options
   after_create :insert_default_article_set
   def insert_default_article_set
     if template
-      copy_articles_from template
+      self.save! if copy_articles_from template
     else
       default_set_of_articles.each do |article|
         article.profile = self
         article.advertise = false
         article.save!
       end
+      self.save!
     end
-    self.save!
   end
 
   # Override this method in subclasses of Profile to create a default article
@@ -714,19 +731,21 @@ private :generate_url, :url_options
   end
 
   def copy_articles_from other
+    return false if other.top_level_articles.empty?
     other.top_level_articles.each do |a|
       copy_article_tree a
     end
     self.articles.reload
+    true
   end
 
   def copy_article_tree(article, parent=nil)
     return if !copy_article?(article)
-    original_article = self.articles.find_by_name(article.name)
+    original_article = self.articles.find_by name: article.name
     if original_article
       num = 2
       new_name = original_article.name + ' ' + num.to_s
-      while self.articles.find_by_name(new_name)
+      while self.articles.find_by name: new_name
         num = num + 1
         new_name = original_article.name + ' ' + num.to_s
       end
@@ -747,13 +766,13 @@ private :generate_url, :url_options
   end
 
   # Adds a person as member of this Profile.
-  def add_member(person)
+  def add_member(person, attributes={})
     if self.has_members?
       if self.closed? && members.count > 0
         AddMember.create!(:person => person, :organization => self) unless self.already_request_membership?(person)
       else
-        self.affiliate(person, Profile::Roles.admin(environment.id)) if members.count == 0
-        self.affiliate(person, Profile::Roles.member(environment.id))
+        self.affiliate(person, Profile::Roles.admin(environment.id), attributes) if members.count == 0
+        self.affiliate(person, Profile::Roles.member(environment.id), attributes)
       end
       person.tasks.pending.of("InviteMember").select { |t| t.data[:community_id] == self.id }.each { |invite| invite.cancel }
       remove_from_suggestion_list person
@@ -781,10 +800,6 @@ private :generate_url, :url_options
     else
       raise _("%s can't has moderators") % self.class.name
     end
-  end
-
-  def self.recent(limit = nil)
-    self.find(:all, :order => 'id desc', :limit => limit)
   end
 
   # returns +true+ if the given +user+ can see profile information about this
@@ -879,7 +894,7 @@ private :generate_url, :url_options
   has_many :blogs, :source => 'articles', :class_name => 'Blog'
 
   def blog
-    self.has_blog? ? self.blogs.first(:order => 'id') : nil
+    self.has_blog? ? self.blogs.order(:id).first : nil
   end
 
   def has_blog?
@@ -889,7 +904,7 @@ private :generate_url, :url_options
   has_many :forums, :source => 'articles', :class_name => 'Forum'
 
   def forum
-    self.has_forum? ? self.forums.first(:order => 'id') : nil
+    self.has_forum? ? self.forums.order(:id).first : nil
   end
 
   def has_forum?
@@ -1106,6 +1121,10 @@ private :generate_url, :url_options
     end
   end
 
+  def can_view_field? current_person, field
+    display_private_info_to?(current_person) || (public_fields.include?(field) && public?)
+  end
+
   validates_inclusion_of :redirection_after_login, :in => Environment.login_redirection_options.keys, :allow_nil => true
   def preferred_login_redirection
     redirection_after_login.blank? ? environment.redirection_after_login : redirection_after_login
@@ -1113,7 +1132,7 @@ private :generate_url, :url_options
   settings_items :custom_url_redirection, type: String, default: nil
 
   def remove_from_suggestion_list(person)
-    suggestion = person.suggested_profiles.find_by_suggestion_id self.id
+    suggestion = person.suggested_profiles.find_by suggestion_id: self.id
     suggestion.disable if suggestion
   end
 

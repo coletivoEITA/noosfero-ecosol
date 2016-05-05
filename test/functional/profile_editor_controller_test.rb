@@ -623,6 +623,17 @@ class ProfileEditorControllerTest < ActionController::TestCase
     assert_tag :tag => 'a', :attributes => { :href => '/myprofile/default_user/cms' }
   end
 
+  should 'display email template link for organizations in control panel' do
+    profile = fast_create(Organization)
+    get :index, :profile => profile.identifier
+    assert_tag :tag => 'a', :attributes => { :href => "/myprofile/#{profile.identifier}/profile_email_templates" }
+  end
+
+  should 'not display email template link in control panel for person' do
+    get :index, :profile => profile.identifier
+    assert_no_tag :tag => 'a', :attributes => { :href => "/myprofile/#{profile.identifier}/email_templates" }
+  end
+
   should 'offer to create blog in control panel' do
     get :index, :profile => profile.identifier
     assert_tag :tag => 'a', :attributes => { :href => "/myprofile/default_user/cms/new?type=Blog" }
@@ -1211,6 +1222,13 @@ class ProfileEditorControllerTest < ActionController::TestCase
   should 'not display button to manage roles on control panel of person' do
     get :index, :profile => profile.identifier
     assert_no_tag :tag => 'a', :attributes => { :href => "/myprofile/default_user/profile_roles" }
+  end
+
+  should 'save profile admin option to receive email for every task' do
+    comm = fast_create(Community)
+    assert comm.profile_admin_mail_notification
+    post :edit, :profile => comm.identifier, :profile_data => { :profile_admin_mail_notification => '0' }
+    refute comm.reload.profile_admin_mail_notification
   end
 
 end

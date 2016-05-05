@@ -9,7 +9,7 @@
 # This class has a +data+ field of type <tt>text</tt>, where you can store any
 # type of data (as serialized Ruby objects) you need for your subclass (which
 # will need to declare <ttserialize</tt> itself).
-class Task < ActiveRecord::Base
+class Task < ApplicationRecord
 
   acts_as_having_settings :field => :data
 
@@ -31,6 +31,8 @@ class Task < ActiveRecord::Base
     end
   end
 
+  include Noosfero::Plugin::HotSpot
+
   belongs_to :requestor, :class_name => 'Profile', :foreign_key => :requestor_id
   belongs_to :target, :foreign_key => :target_id, :polymorphic => true
   belongs_to :responsible, :class_name => 'Person', :foreign_key => :responsible_id
@@ -40,6 +42,8 @@ class Task < ActiveRecord::Base
   validates_presence_of :code
 
   attr_protected :status
+
+  settings_items :email_template_id, :type => :integer
 
   def initialize(*args)
     super
@@ -67,11 +71,21 @@ class Task < ActiveRecord::Base
       begin
         target_msg = task.target_notification_message
         if target_msg && task.target && !task.target.notification_emails.empty?
-          TaskMailer.target_notification(task, target_msg).deliver
+          if target_profile_accepts_notification?(task)
+            TaskMailer.target_notification(task, target_msg).deliver
+          end
         end
       rescue NotImplementedError => ex
         Rails.logger.info ex.to_s
       end
+    end
+  end
+
+  def target_profile_accepts_notification?(task)
+    if task.target.kind_of? Organization
+      return task.target.profile_admin_mail_notification
+    else
+      true
     end
   end
 
@@ -123,9 +137,9 @@ class Task < ActiveRecord::Base
       group = klass.to_s.downcase.pluralize
       id = attribute.to_s + "_id"
       if environment.respond_to?(group)
-        attrb = value || environment.send(group).find_by_id(record.send(id))
+        attrb = value || environment.send(group).find_by(id: record.send(id))
       else
-        attrb = value || klass.find_by_id(record.send(id))
+        attrb = value || klass.find_by(id: record.send(id))
       end
       if attrb.respond_to?(klass.to_s.downcase + "?")
         unless attrb.send(klass.to_s.downcase + "?")
@@ -169,6 +183,10 @@ class Task < ActiveRecord::Base
   end
 
   def reject_details
+    false
+  end
+
+  def custom_fields_moderate
     false
   end
 
@@ -237,6 +255,7 @@ class Task < ActiveRecord::Base
   end
 
   def environment
+    return target if target.kind_of?(Environment)
     self.target.environment unless self.target.nil?
   end
 
@@ -259,15 +278,37 @@ class Task < ActiveRecord::Base
     end
   end
 
+  def email_template
+    @email_template ||= email_template_id.present? ? EmailTemplate.find_by_id(email_template_id) : nil
+  end
+
+  def to_liquid
+    HashWithIndifferentAccess.new({
+      :requestor => requestor,
+      :reject_explanation => reject_explanation,
+      :code => code
+    })
+  end
+
   scope :pending, -> { where status: Task::Status::ACTIVE }
   scope :hidden, -> { where status: Task::Status::HIDDEN }
   scope :finished, -> { where status: Task::Status::FINISHED }
   scope :canceled, -> { where status: Task::Status::CANCELLED }
   scope :closed, -> { where status: [Task::Status::CANCELLED, Task::Status::FINISHED] }
   scope :opened, -> { where status: [Task::Status::ACTIVE, Task::Status::HIDDEN] }
-  scope :of, -> type { where "type LIKE ?", type if type }
-  scope :order_by, -> attribute, ord { order "#{attribute} #{ord}" }
-  scope :like, -> field, value { where "LOWER(#{field}) LIKE ?", "%#{value.downcase}%" if value }
+  scope :of, -> type { where :type => type  if type }
+  scope :order_by, -> attribute, ord {
+      if ord.downcase.include? 'desc'
+        order attribute.to_sym => :desc
+      else
+        order attribute.to_sym
+      end
+  }
+  scope :like, -> field, value {
+      if value and Task.column_names.include? field
+        where "LOWER(#{field}) LIKE ?", "%#{value.downcase}%"
+      end
+  }
   scope :pending_all, -> profile, filter_type, filter_text {
     self.to(profile).without_spam.pending.of(filter_type).like('data', filter_text)
   }
@@ -285,8 +326,28 @@ class Task < ActiveRecord::Base
     where [environment_condition, organization_condition, profile_condition].compact.join(' OR ')
   }
 
+  scope :from_closed_date, -> closed_from {
+    where('tasks.end_date >= ?', closed_from.beginning_of_day) unless closed_from.blank?
+  }
+
+  scope :until_closed_date, -> closed_until {
+    where('tasks.end_date <= ?', closed_until.end_of_day) unless closed_until.blank?
+  }
+
+  scope :from_creation_date, -> created_from {
+    where('tasks.created_at >= ?', created_from.beginning_of_day) unless created_from.blank?
+  }
+
+  scope :until_creation_date, -> created_until {
+    where('tasks.created_at <= ?', created_until.end_of_day) unless created_until.blank?
+  }
+
   def self.pending_types_for(profile)
     Task.to(profile).pending.select('distinct type').map { |t| [t.class.name, t.title] }
+  end
+
+  def self.closed_types_for(profile)
+    Task.to(profile).closed.select('distinct type').map { |t| [t.class.name, t.title] }
   end
 
   def opened?

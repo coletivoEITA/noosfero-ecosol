@@ -2,9 +2,12 @@ module Noosfero
   module API
     module V1
       class Comments < Grape::API
+        MAX_PER_PAGE = 20
+
         before { authenticate! }
 
         resource :articles do
+          paginate max_per_page: MAX_PER_PAGE
           # Collect comments from articles
           #
           # Parameters:
@@ -17,8 +20,10 @@ module Noosfero
           get ":id/comments" do
             article = find_article(environment.articles, params[:id])
             comments = select_filtered_collection_of(article, :comments, params)
-
-            present comments, :with => Entities::Comment, :current_person => current_person
+            comments = comments.without_spam
+            comments = comments.without_reply if(params[:without_reply].present?)
+            comments = plugins.filter(:unavailable_comments, comments)
+            present paginate(comments), :with => Entities::Comment, :current_person => current_person
           end
 
           get ":id/comments/:comment_id" do
@@ -31,7 +36,12 @@ module Noosfero
           post ":id/comments" do
             article = find_article(environment.articles, params[:id])
             options = params.select { |key,v| !['id','private_token'].include?(key) }.merge(:author => current_person, :source => article)
-            present Comment.create(options), :with => Entities::Comment, :current_person => current_person
+            begin
+              comment = Comment.create!(options)
+            rescue ActiveRecord::RecordInvalid => e
+              render_api_error!(e.message, 400)
+            end
+            present comment, :with => Entities::Comment, :current_person => current_person
           end
         end
 

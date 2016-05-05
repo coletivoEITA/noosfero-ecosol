@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150921140802) do
+ActiveRecord::Schema.define(version: 20160408011720) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,18 @@ ActiveRecord::Schema.define(version: 20150921140802) do
   add_index "action_tracker_notifications", ["action_tracker_id"], name: "index_action_tracker_notifications_on_action_tracker_id", using: :btree
   add_index "action_tracker_notifications", ["profile_id", "action_tracker_id"], name: "index_action_tracker_notif_on_prof_id_act_tracker_id", unique: true, using: :btree
   add_index "action_tracker_notifications", ["profile_id"], name: "index_action_tracker_notifications_on_profile_id", using: :btree
+
+  create_table "article_followers", force: :cascade do |t|
+    t.integer  "person_id"
+    t.integer  "article_id"
+    t.datetime "since"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "article_followers", ["article_id"], name: "index_article_followers_on_article_id", using: :btree
+  add_index "article_followers", ["person_id", "article_id"], name: "index_article_followers_on_person_id_and_article_id", unique: true, using: :btree
+  add_index "article_followers", ["person_id"], name: "index_article_followers_on_person_id", using: :btree
 
   create_table "article_privacy_exceptions", id: false, force: :cascade do |t|
     t.integer "article_id"
@@ -154,6 +166,8 @@ ActiveRecord::Schema.define(version: 20150921140802) do
     t.integer  "author_id"
     t.integer  "created_by_id"
     t.boolean  "show_to_followers",    default: true
+    t.integer  "followers_count",      default: 0
+    t.boolean  "archived",             default: false
   end
 
   add_index "articles", ["comments_count"], name: "index_articles_on_comments_count", using: :btree
@@ -193,6 +207,7 @@ ActiveRecord::Schema.define(version: 20150921140802) do
     t.boolean  "mirror",          default: false
     t.integer  "mirror_block_id"
     t.integer  "observers_id"
+    t.string   "subtitle",        default: ""
   end
 
   add_index "blocks", ["box_id"], name: "index_blocks_on_box_id", using: :btree
@@ -310,6 +325,7 @@ ActiveRecord::Schema.define(version: 20150921140802) do
     t.integer  "environment_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "moderation_task", default: false
   end
 
   add_index "custom_fields", ["customized_type", "name", "environment_id"], name: "index_custom_field", unique: true, using: :btree
@@ -343,6 +359,17 @@ ActiveRecord::Schema.define(version: 20150921140802) do
   add_index "domains", ["owner_id", "owner_type", "is_default"], name: "index_domains_on_owner_id_and_owner_type_and_is_default", using: :btree
   add_index "domains", ["owner_id", "owner_type"], name: "index_domains_on_owner_id_and_owner_type", using: :btree
 
+  create_table "email_templates", force: :cascade do |t|
+    t.string   "name"
+    t.string   "template_type"
+    t.string   "subject"
+    t.text     "body"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "environments", force: :cascade do |t|
     t.string   "name"
     t.string   "contact_email"
@@ -363,6 +390,10 @@ ActiveRecord::Schema.define(version: 20150921140802) do
     t.string   "noreply_email"
     t.string   "redirection_after_signup",     default: "keep_on_same_page"
     t.string   "date_format",                  default: "month_name_with_year"
+    t.boolean  "enable_feed_proxy",            default: false
+    t.string   "http_feed_proxy"
+    t.string   "https_feed_proxy"
+    t.boolean  "disable_feed_ssl",             default: false
   end
 
   create_table "external_feeds", force: :cascade do |t|
@@ -458,6 +489,7 @@ ActiveRecord::Schema.define(version: 20150921140802) do
     t.string   "locale"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "data"
   end
 
   create_table "national_region_types", force: :cascade do |t|
@@ -639,12 +671,14 @@ ActiveRecord::Schema.define(version: 20150921140802) do
   end
 
   create_table "role_assignments", force: :cascade do |t|
-    t.integer "accessor_id",   null: false
-    t.string  "accessor_type"
-    t.integer "resource_id"
-    t.string  "resource_type"
-    t.integer "role_id",       null: false
-    t.boolean "is_global"
+    t.integer  "accessor_id",   null: false
+    t.string   "accessor_type"
+    t.integer  "resource_id"
+    t.string   "resource_type"
+    t.integer  "role_id",       null: false
+    t.boolean  "is_global"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -736,7 +770,7 @@ ActiveRecord::Schema.define(version: 20150921140802) do
   create_table "tasks", force: :cascade do |t|
     t.text     "data"
     t.integer  "status"
-    t.date     "end_date"
+    t.datetime "end_date"
     t.integer  "requestor_id"
     t.integer  "target_id"
     t.string   "code",           limit: 40

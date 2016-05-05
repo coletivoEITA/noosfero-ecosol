@@ -1,4 +1,4 @@
-class OrdersPlugin::Item < ActiveRecord::Base
+class OrdersPlugin::Item < ApplicationRecord
 
   attr_accessible :order, :sale, :purchase,
     :product, :product_id,
@@ -62,7 +62,7 @@ class OrdersPlugin::Item < ActiveRecord::Base
   scope :ordered, -> { joins(:order).where 'orders_plugin_orders.status = ?', 'ordered' }
   scope :for_product, -> (product) { where product_id: product.id }
 
-  default_scope include: [:product]
+  default_scope -> { includes :product }
 
   validate :has_order
   validates_presence_of :product

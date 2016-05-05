@@ -1,7 +1,7 @@
 require_relative '../test_helper'
 require_relative '../../lib/solr_plugin/acts_as_faceted'
 
-class TestModel < ActiveRecord::Base
+class TestModel < ApplicationRecord
   def self.f_type_proc(facet, id_count_arr)
     id_count_arr.map do |type, count|
       h = {
