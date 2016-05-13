@@ -125,7 +125,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
     {name: consumer.name, email: consumer.contact_email, contact_phone: consumer.contact_phone} if consumer
   end
   sync_serialized_field :supplier_delivery do
-    SerializedSyncedData.prepare_data supplier_delivery.attributes
+    SerializedSyncedData.prepare_data supplier_delivery.nil? ? [] : supplier_delivery.attributes
   end
   sync_serialized_field :consumer_delivery do
     if consumer_delivery
@@ -352,7 +352,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
   end
 
   extend CurrencyHelper::ClassMethods
-  instance_exec &OrdersPlugin::Item::DefineTotals
+  instance_exec(&OrdersPlugin::Item::DefineTotals)
 
   # total_price considering last state
   def total_price actor_name = :consumer, admin = false

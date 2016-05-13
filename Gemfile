@@ -48,8 +48,6 @@ gem 'sprockets-es6'
 #############################################
 
 platform :ruby do
-  gem 'unicorn'
-
   gem 'unicode'
 
   group :performance do
@@ -67,6 +65,8 @@ platform :ruby do
   end
 
   group :production do
+    gem 'unicorn',  '~> 4.9'
+    #gem 'rainbows'
     gem 'unicorn-worker-killer'
   end
 end
