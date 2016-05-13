@@ -15,9 +15,9 @@
   ul.article-comments-list
     - if @comments.present?
       = render partial: 'comment/comment', collection: @comments
-      = pagination_links @comments, param_name: 'comment_page'
+      = pagination_links @comments, param_name: 'comment_page', params: { comment_order: @comment_order }
 
-  - if @comment_order == 'oldest' and @page.accept_comments?
+  - if !@page.archived? and @comment_order == 'oldest' and @page.accept_comments?
     #page-comment-form.page-comment-form
       = render 'comment/comment_form', url: {controller: :comment, action: :create}, display_link: true, cancel_triggers_hide: true
 

@@ -1,5 +1,6 @@
 @import 'cms/fetch-external-feed';
 @import 'cms/media-panel';
+@import 'cms/access-options';
 
 table.cms-articles {
   table-layout: fixed;
@@ -164,6 +165,12 @@ table.cms-articles .icon:hover {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.controller-cms td.article-name {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .controller-cms .article-controls {

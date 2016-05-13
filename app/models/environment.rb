@@ -1,7 +1,7 @@
 # A Environment is like a website to be hosted in the platform. It may
 # contain multiple Profile's and can be identified by several different
 # domains.
-class Environment < ActiveRecord::Base
+class Environment < ApplicationRecord
 
   attr_accessible :name, :is_default, :signup_welcome_text_subject,
                   :signup_welcome_text_body, :terms_of_use,
@@ -13,7 +13,9 @@ class Environment < ActiveRecord::Base
                   :reports_lower_bound, :noreply_email,
                   :signup_welcome_screen_body, :members_whitelist_enabled,
                   :members_whitelist, :highlighted_news_amount,
-                  :portal_news_amount, :date_format, :signup_intro
+                  :portal_news_amount, :date_format, :signup_intro,
+                  :enable_feed_proxy, :http_feed_proxy, :https_feed_proxy,
+                  :disable_feed_ssl
 
   has_many :users
 
@@ -25,6 +27,7 @@ class Environment < ActiveRecord::Base
   has_many :tasks, :dependent => :destroy, :as => 'target'
   has_many :search_terms, :as => :context
   has_many :custom_fields, :dependent => :destroy
+  has_many :email_templates, :foreign_key => :owner_id
 
   IDENTIFY_SCRIPTS = /(php[0-9s]?|[sp]htm[l]?|pl|py|cgi|rb)/
 
@@ -54,11 +57,13 @@ class Environment < ActiveRecord::Base
     'manage_environment_licenses' => N_('Manage environment licenses'),
     'manage_environment_trusted_sites' => N_('Manage environment trusted sites'),
     'edit_appearance'      => N_('Edit appearance'),
+    'edit_raw_html_block'      => N_('Edit Raw HTML block'),
+    'manage_email_templates' => N_('Manage Email Templates'),
   }
 
   module Roles
     def self.admin(env_id)
-      Role.find_by_key_and_environment_id('environment_administrator', env_id)
+      Role.find_by(key: 'environment_administrator', environment_id: env_id)
     end
   end
 
@@ -247,7 +252,7 @@ class Environment < ActiveRecord::Base
 
   acts_as_accessible
 
-  has_many :units, :order => 'position'
+  has_many :units, -> { order 'position' }
   has_many :production_costs, :as => :owner
 
   def superior_intances
@@ -717,7 +722,7 @@ class Environment < ActiveRecord::Base
   end
 
   def default_domain
-    @default_domain ||= self.domains.find_by_is_default(true) || self.domains.find(:first, :order => 'id')
+    @default_domain ||= self.domains.find_by(is_default: true) || self.domains.order(:id).first
   end
 
   def default_protocol
@@ -826,7 +831,7 @@ class Environment < ActiveRecord::Base
   end
 
   def community_default_template
-    template = Community.find_by_id settings[:community_template_id]
+    template = Community.find_by id: settings[:community_template_id]
     template if template && template.is_template?
   end
 
@@ -839,7 +844,7 @@ class Environment < ActiveRecord::Base
   end
 
   def person_default_template
-    template = Person.find_by_id settings[:person_template_id]
+    template = Person.find_by id: settings[:person_template_id]
     template if template && template.is_template?
   end
 
@@ -852,7 +857,7 @@ class Environment < ActiveRecord::Base
   end
 
   def enterprise_default_template
-    template = Enterprise.find_by_id settings[:enterprise_template_id]
+    template = Enterprise.find_by id: settings[:enterprise_template_id]
     template if template && template.is_template?
   end
   alias_method :enterprise_template, :enterprise_default_template
@@ -862,7 +867,7 @@ class Environment < ActiveRecord::Base
   end
 
   def inactive_enterprise_template
-    template = Enterprise.find_by_id settings[:inactive_enterprise_template_id]
+    template = Enterprise.find_by id: settings[:inactive_enterprise_template_id]
     template if template && template.is_template
   end
 
@@ -1029,6 +1034,10 @@ class Environment < ActiveRecord::Base
 
   def has_license?
     self.licenses.any?
+  end
+
+  def to_liquid
+    HashWithIndifferentAccess.new :name => name
   end
 
   private

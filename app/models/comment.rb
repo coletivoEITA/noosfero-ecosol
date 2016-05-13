@@ -1,4 +1,4 @@
-class Comment < ActiveRecord::Base
+class Comment < ApplicationRecord
 
   SEARCHABLE_FIELDS = {
     :title => {:label => _('Title'), :weight => 10},
@@ -6,13 +6,14 @@ class Comment < ActiveRecord::Base
     :body => {:label => _('Content'), :weight => 2},
   }
 
-  attr_accessible :body, :author, :name, :email, :title, :reply_of_id, :source
+  attr_accessible :body, :author, :name, :email, :title, :reply_of_id, :source, :follow_article
 
   validates_presence_of :body
 
   belongs_to :source, :counter_cache => true, :polymorphic => true
   alias :article :source
   alias :article= :source=
+  attr_accessor :follow_article
 
   belongs_to :author, :class_name => 'Person', :foreign_key => 'author_id'
   has_many :children, :class_name => 'Comment', :foreign_key => 'reply_of_id', :dependent => :destroy
@@ -34,6 +35,8 @@ class Comment < ActiveRecord::Base
       rec.errors.add(:name, _('{fn} can only be informed for unauthenticated authors').fix_i18n)
     end
   end
+
+  validate :article_archived?
 
   acts_as_having_settings
 
@@ -91,7 +94,7 @@ class Comment < ActiveRecord::Base
   end
 
   def self.recent(limit = nil)
-    self.find(:all, :order => 'created_at desc, id desc', :limit => limit)
+    self.order('created_at desc, id desc').limit(limit).all
   end
 
   def notification_emails
@@ -113,10 +116,9 @@ class Comment < ActiveRecord::Base
 
   after_create :new_follower
   def new_follower
-    if source.kind_of?(Article)
-      article.followers += [author_email]
-      article.followers -= article.profile.notification_emails
-      article.followers.uniq!
+    if source.kind_of?(Article) and !author.nil? and @follow_article
+      article.person_followers += [author]
+      article.person_followers.uniq!
       article.save
     end
   end
@@ -128,7 +130,15 @@ class Comment < ActiveRecord::Base
   end
 
   delegate :environment, :to => :profile
-  delegate :profile, :to => :source, :allow_nil => true
+
+  def environment
+    profile && profile.respond_to?(:environment) ? profile.environment : nil
+  end
+
+  def profile
+    return unless source
+    source.kind_of?(Profile) ? source : source.profile
+  end
 
   include Noosfero::Plugin::HotSpot
 
@@ -158,7 +168,7 @@ class Comment < ActiveRecord::Base
       if !notification_emails.empty?
         CommentNotifier.notification(self).deliver
       end
-      emails = article.followers - [author_email]
+      emails = article.person_followers_email_list - [author_email]
       if !emails.empty?
         CommentNotifier.mail_to_followers(self, emails).deliver
       end
@@ -221,6 +231,16 @@ class Comment < ActiveRecord::Base
 
   def can_be_updated_by?(user)
     user.present? && user == author
+  end
+
+  def archived?
+    self.source && self.source.is_a?(Article) && self.source.archived?
+  end
+
+  protected
+
+  def article_archived?
+    errors.add(:article, N_('associated with this comment is archived!')) if archived?
   end
 
 end

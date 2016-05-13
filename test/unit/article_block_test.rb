@@ -7,15 +7,6 @@ class ArticleBlockTest < ActiveSupport::TestCase
     assert_not_equal Block.description, ArticleBlock.description
   end
 
-  should "take article's content" do
-    block = ArticleBlock.new
-    article = mock
-    article.expects(:to_html).returns("Article content")
-    block.stubs(:article).returns(article)
-
-    assert_match(/Article content/, instance_eval(&block.content))
-  end
-
   should 'refer to an article' do
     profile = create_user('testuser').person
     article = profile.articles.build(:name => 'test article')
@@ -85,6 +76,31 @@ class ArticleBlockTest < ActiveSupport::TestCase
     assert_equal [a],block.available_articles
   end
 
+  protected
+    include NoosferoTestHelper
+
+end
+
+require 'boxes_helper'
+require 'block_helper'
+
+class ArticleBlockViewTest < ActionView::TestCase
+  include BoxesHelper
+
+  ActionView::Base.send :include, ArticleHelper
+  ActionView::Base.send :include, ButtonsHelper
+  ActionView::Base.send :include, BlockHelper
+
+  should "take article's content" do
+    block = ArticleBlock.new
+    article = mock
+    article.expects(:to_html).returns("Article content")
+    block.stubs(:article).returns(article)
+    ActionView::Base.any_instance.stubs(:block_title).returns("")
+
+    assert_match(/Article content/, render_block_content(block))
+  end
+
   should "display empty title if title is blank" do
     block = ArticleBlock.new
     article = mock
@@ -92,7 +108,9 @@ class ArticleBlockTest < ActiveSupport::TestCase
     block.expects(:title).returns('')
     block.stubs(:article).returns(article)
 
-    assert_equal "<h3 class=\"block-title empty\"><span></span></h3>Article content", instance_eval(&block.content)
+    assert_tag_in_string render_block_content(block),
+         :tag => 'h3', :attributes => {:class => 'block-title empty'},
+         :descendant => { :tag => 'span' }
   end
 
   should "display title if defined" do
@@ -102,7 +120,9 @@ class ArticleBlockTest < ActiveSupport::TestCase
     block.expects(:title).returns('Article title')
     block.stubs(:article).returns(article)
 
-    assert_equal "<h3 class=\"block-title\"><span>Article title</span></h3>Article content", instance_eval(&block.content)
+    assert_tag_in_string render_block_content(block),
+          :tag => 'h3', :attributes => {:class => 'block-title'},
+          :descendant => { :tag => 'span', :content => 'Article title' }
   end
 
   should 'display image if article is an image' do
@@ -113,7 +133,7 @@ class ArticleBlockTest < ActiveSupport::TestCase
     block.article = image
     block.save!
 
-    assert_tag_in_string instance_eval(&block.content),
+    assert_tag_in_string render_block_content(block),
         :tag => 'img',
         :attributes => {
             :src => image.public_filename(:display),
@@ -129,7 +149,7 @@ class ArticleBlockTest < ActiveSupport::TestCase
     block.article = image
     block.save!
 
-    assert_no_match(/Previous/, instance_eval(&block.content))
+    assert_no_match(/Previous/, render_block_content(block))
   end
 
   should 'display link to archive if article is an archive' do
@@ -140,10 +160,7 @@ class ArticleBlockTest < ActiveSupport::TestCase
     block.article = file
     block.save!
 
-    assert_tag_in_string instance_eval(&block.content), :tag => 'a', :content => _('Download')
+    UploadedFile.any_instance.stubs(:url).returns('myhost.mydomain/path/to/file')
+    assert_tag_in_string render_block_content(block), :tag => 'a', :content => _('Download')
   end
-
-  protected
-    include NoosferoTestHelper
-
 end

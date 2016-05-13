@@ -10,7 +10,7 @@ class StatisticsPlugin < Noosfero::Plugin
     _("A plugin that adds a block where you can see statistics of it's context.")
   end
 
-  def extra_blocks
+  def self.extra_blocks
     {
       StatisticsBlock => {}
     }

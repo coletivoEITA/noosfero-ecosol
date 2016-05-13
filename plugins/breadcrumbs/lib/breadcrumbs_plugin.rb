@@ -8,7 +8,7 @@ class BreadcrumbsPlugin < Noosfero::Plugin
     _("A plugin that add a block to display breadcrumbs.")
   end
 
-  def extra_blocks
+  def self.extra_blocks
     { BreadcrumbsPlugin::ContentBreadcrumbsBlock => {:type => [Community, Person, Enterprise] } }
   end
 

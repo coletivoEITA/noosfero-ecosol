@@ -18,7 +18,7 @@ class AccountController < ApplicationController
   end
 
   def activate
-    @user = User.find_by_activation_code(params[:activation_code]) if params[:activation_code]
+    @user = User.find_by(activation_code: params[:activation_code]) if params[:activation_code]
     if @user
       unless @user.environment.enabled?('admin_must_approve_new_users')
         if @user.activate
@@ -119,7 +119,7 @@ class AccountController < ApplicationController
           end
           @user.community_to_join = session[:join]
           @user.signup!
-          owner_role = Role.find_by_name('owner')
+          owner_role = Role.find_by(name: 'owner')
           @user.person.affiliate(@user.person, [owner_role]) if owner_role
           invitation = Task.from_code(@invitation_code).first
           if invitation
@@ -191,6 +191,11 @@ class AccountController < ApplicationController
 
     if request.post?
       begin
+        unless verify_recaptcha
+          @change_password.errors.add(:base, _('Please type the captcha text correctly'))
+          return false
+        end
+
         requestors = fetch_requestors(params[:value])
         raise ActiveRecord::RecordNotFound if requestors.blank? || params[:value].blank?
 
@@ -311,7 +316,7 @@ class AccountController < ApplicationController
   end
 
   def check_email
-    if User.find_by_email_and_environment_id(params[:address], environment.id).nil?
+    if User.find_by(email: params[:address], environment_id: environment.id).nil?
       @status = _('This e-mail address is available')
       @status_class = 'validated'
     else
@@ -514,7 +519,7 @@ class AccountController < ApplicationController
   def check_join_in_community(user)
     profile_to_join = session[:join]
     unless profile_to_join.blank?
-     environment.profiles.find_by_identifier(profile_to_join).add_member(user.person)
+     environment.profiles.find_by(identifier: profile_to_join).add_member(user.person)
      session.delete(:join)
     end
   end

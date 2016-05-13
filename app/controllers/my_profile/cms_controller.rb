@@ -3,6 +3,7 @@ class CmsController < MyProfileController
   protect 'edit_profile', :profile, :only => [:set_home_page]
 
   include ArticleHelper
+  include CategoriesHelper
 
   def search_tags
     arg = params[:term].downcase
@@ -32,7 +33,8 @@ class CmsController < MyProfileController
   end
 
   protect_if :only => [:new, :upload_files] do |c, user, profile|
-    parent = profile.articles.find_by_id(c.params[:parent_id])
+    parent_id = c.params[:article].present? ? c.params[:article][:parent_id] : c.params[:parent_id]
+    parent = profile.articles.find_by(id: parent_id)
     user && user.can_post_content?(profile, parent)
   end
 
@@ -57,11 +59,10 @@ class CmsController < MyProfileController
 
   def index
     @article = nil
-    @articles = profile.top_level_articles.paginate(
-      :order => "case when type = 'Folder' then 0 when type ='Blog' then 1 else 2 end, updated_at DESC",
-      :per_page => per_page,
-      :page => params[:npage]
-    )
+    @articles = profile.top_level_articles
+      .order("case when type = 'Folder' then 0 when type ='Blog' then 1 else 2 end, updated_at DESC")
+      .paginate(per_page: per_page, page: params[:npage])
+
     render :action => 'view'
   end
 
@@ -255,12 +256,7 @@ class CmsController < MyProfileController
 
   def update_categories
     @object = params[:id] ? @profile.articles.find(params[:id]) : Article.new
-    @categories = @toplevel_categories = environment.top_level_categories
-    if params[:category_id]
-      @current_category = Category.find(params[:category_id])
-      @categories = @current_category.children.alphabetical
-    end
-    render :template => 'shared/update_categories', :locals => { :category => @current_category, :object_name => 'article' }
+    render_categories 'article'
   end
 
   def search_communities_to_publish

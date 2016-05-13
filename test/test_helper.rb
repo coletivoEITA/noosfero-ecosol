@@ -19,6 +19,7 @@ require_relative 'support/controller_test_case'
 require_relative 'support/authenticated_test_helper'
 require_relative 'support/action_tracker_test_helper'
 require_relative 'support/noosfero_doc_test'
+require_relative 'support/performance_helper'
 require_relative 'support/noosfero_test_helper'
 
 plugins_factories = Dir.glob(File.join(Rails.root, 'config', 'plugins', '*','test', 'factories.rb'))
@@ -62,6 +63,8 @@ class ActiveSupport::TestCase
   include Noosfero::Factory
 
   include AuthenticatedTestHelper
+
+  include PerformanceHelper
 
   extend Test::Should
 
@@ -181,20 +184,20 @@ class ActiveSupport::TestCase
   end
 
   def process_delayed_job_queue
-    silence_stream(STDOUT) do
+    silence_stream STDOUT do
       Delayed::Worker.new.work_off
     end
   end
 
   def uses_postgresql(schema_name = 'test_schema')
-    adapter = ActiveRecord::Base.connection.class
+    adapter = ApplicationRecord.connection.class
     adapter.any_instance.stubs(:adapter_name).returns('PostgreSQL')
     adapter.any_instance.stubs(:schema_search_path).returns(schema_name)
     Noosfero::MultiTenancy.stubs(:on?).returns(true)
   end
 
   def uses_sqlite
-    adapter = ActiveRecord::Base.connection.class
+    adapter = ApplicationRecord.connection.class
     adapter.any_instance.stubs(:adapter_name).returns('SQLite')
     Noosfero::MultiTenancy.stubs(:on?).returns(false)
   end

@@ -1,4 +1,4 @@
-class OrdersPlugin::Order < ActiveRecord::Base
+class OrdersPlugin::Order < ApplicationRecord
 
   # if abstract_class is true then it will trigger https://github.com/rails/rails/issues/20871
   #self.abstract_class = true
@@ -68,7 +68,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
     where cond
   end
 
-  scope :latest, order: 'created_at DESC'
+  scope :latest, -> { order 'created_at DESC' }
 
   scope :draft,     -> { where status: 'draft' }
   scope :planned,   -> { where status: 'planned' }

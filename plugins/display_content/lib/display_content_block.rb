@@ -26,9 +26,10 @@ class DisplayContentBlock < Block
   settings_items :display_folder_children, :type => :boolean, :default => true
   settings_items :types, :type => Array, :default => ['TextileArticle', 'TinyMceArticle', 'RawHTMLArticle']
   settings_items :order_by_recent, :type => :boolean, :default => :true
+  settings_items :content_with_translations, :type => :boolean, :default => :true
   settings_items :limit_to_show, :type => :integer, :default => 6
 
-  attr_accessible :sections, :checked_nodes, :display_folder_children, :types, :order_by_recent, :limit_to_show
+  attr_accessible :sections, :checked_nodes, :display_folder_children, :types, :order_by_recent, :limit_to_show, :content_with_translations
 
   def self.description
     _('Display your contents')
@@ -120,19 +121,28 @@ class DisplayContentBlock < Block
   def content(args={})
     block = self
 
-    nodes_conditions = nodes.blank? ? '' : " AND articles.id IN(:nodes) "
-    nodes_conditions += ' OR articles.parent_id IN(:nodes) ' if !nodes.blank? && display_folder_children
-
     order_string = "published_at"
     order_string += " DESC" if order_by_recent
 
     limit_final = [limit_to_show, 0].max
 
-    docs = owner.articles.order(order_string).where(["articles.type IN(:types) #{nodes.blank? ? '' : nodes_conditions}", {:nodes => self.nodes, :types => self.types}]).includes(:profile, :image, :tags)
-    docs = docs.limit(limit_final) if display_folder_children
+    docs = owner.articles.order(order_string)
+      .where(articles: {type: self.types})
+      .includes(:profile, :image, :tags)
+    if nodes.present?
+      nodes_conditions  = 'articles.id IN(:nodes)'
+      nodes_conditions << ' OR articles.parent_id IN(:nodes) ' if display_folder_children
+      docs = docs.where nodes_conditions, nodes: nodes
+    end
+    docs = docs.limit limit_final if display_folder_children
+
+    if content_with_translations
+      docs = docs.native_translations
+      docs.replace docs.map{ |p| p.get_translation_to(FastGettext.locale) }.compact
+    end
 
     proc do
-      block.block_title(block.title) +
+      block.block_title(block.title, block.subtitle) +
         content_tag('ul', docs.map {|item|
         if !item.folder? && item.class != RssFeed
           content_sections = ''

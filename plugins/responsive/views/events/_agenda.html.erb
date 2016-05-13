@@ -3,12 +3,10 @@
     <%= render :partial => 'events/events' %>
   </div>
   <div class='agenda-calendar col-lg-6 col-md-6 col-sm-6 col-lg-pull-6 col-md-pull-6 col-sm-pull-6'>
-    <table class='noborder current-month'>
-      <caption>
         <h2><%= show_month(params[:year], params[:month]) %></h2>
         <%= link_to_previous_month(params[:year], params[:month], show_month(params[:year], params[:month], :previous => true, :only_month => true)) %>
         <%= link_to_next_month(params[:year], params[:month], show_month(params[:year], params[:month], :next => true, :only_month => true)) %>
-      </caption>
+    <table class='noborder current-month'>
       <%= render :partial => 'events/month', :locals => {:calendar => @calendar, :abbreviated => true} %>
     </table>
     <br clear='both'/>

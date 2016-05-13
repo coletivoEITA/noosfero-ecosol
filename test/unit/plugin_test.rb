@@ -32,8 +32,8 @@ class PluginTest < ActiveSupport::TestCase
 
   should 'returns empty array for instance method extra_blocks by default if no blocks are defined on plugin' do
     class Plugin1 < Noosfero::Plugin
-       def extra_blocks
-       end
+      def self.extra_blocks
+      end
     end
     p = Plugin1.new
     plugins.stubs(:enabled_plugins).returns([p])
@@ -42,9 +42,9 @@ class PluginTest < ActiveSupport::TestCase
 
   should 'returns empty array for instance method extra_blocks by default if nil is returned' do
     class Plugin1 < Noosfero::Plugin
-       def extra_blocks
-         nil
-       end
+      def self.extra_blocks
+        nil
+      end
     end
     p = Plugin1.new
     plugins.stubs(:enabled_plugins).returns([p])
@@ -56,7 +56,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock2 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {},
           CustomBlock2 => {}
@@ -77,7 +77,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock5 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => 'person'},
           CustomBlock2 => {},
@@ -101,7 +101,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock5 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => 'community'},
           CustomBlock2 => {},
@@ -125,7 +125,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock5 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => 'enterprise'},
           CustomBlock2 => {},
@@ -149,7 +149,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock5 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => 'environment'},
           CustomBlock2 => {},
@@ -173,7 +173,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock5 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => 'person'},
           CustomBlock2 => {:type => 'person'},
@@ -198,7 +198,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock6 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => 'person'},
           CustomBlock2 => {:type => 'environment'},
@@ -224,7 +224,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock6 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => 'person'},
           CustomBlock2 => {:type => 'environment'},
@@ -249,7 +249,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock4 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => ['person', 'environment']},
           CustomBlock2 => {:type => 'environment'},
@@ -272,7 +272,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock5 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => ['person', 'environment']},
           CustomBlock2 => {:type => 'environment'},
@@ -292,7 +292,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock1 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => 'undefined_type'},
         }
@@ -313,7 +313,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock4 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:position => 1},
           CustomBlock2 => {},
@@ -335,7 +335,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock4 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:position => 2},
           CustomBlock2 => {},
@@ -357,7 +357,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock4 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:position => 3},
           CustomBlock2 => {},
@@ -379,7 +379,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock4 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:position => 1 },
           CustomBlock2 => {:position => 1 },
@@ -407,7 +407,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock10 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => Person, :position => 1 },
           CustomBlock2 => {:type => Community, :position => 1 },
@@ -435,7 +435,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock4 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:position => 1 },
           CustomBlock2 => {:position => 2},
@@ -456,7 +456,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock3 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:position => [1, 2]},
           CustomBlock2 => {:position => 2},
@@ -478,7 +478,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock5 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:position => [1, '2']},
           CustomBlock2 => {:position => '2'},
@@ -498,7 +498,7 @@ class PluginTest < ActiveSupport::TestCase
     class CustomBlock1 < Block; end;
 
     class Plugin1 < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => 'undefined_type'},
         }

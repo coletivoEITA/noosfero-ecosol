@@ -320,7 +320,7 @@ class UploadedFileTest < ActiveSupport::TestCase
   should 'use gallery as target for action tracker' do
     gallery = fast_create(Gallery, :profile_id => profile.id)
     image = create(UploadedFile, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :parent => gallery, :profile => profile)
-    activity = ActionTracker::Record.find_last_by_verb 'upload_image'
+    activity = ActionTracker::Record.where(verb: 'upload_image').last
     assert_equal gallery, activity.target
   end
 
@@ -329,10 +329,10 @@ class UploadedFileTest < ActiveSupport::TestCase
     gallery = fast_create(Gallery, :profile_id => profile.id)
 
     image1 = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :parent => gallery, :profile => profile)
-    assert_equal 1, ActionTracker::Record.find_all_by_verb('upload_image').count
+    assert_equal 1, ActionTracker::Record.where(verb: 'upload_image').count
 
     image2 = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/other-pic.jpg', 'image/jpg'), :parent => gallery, :profile => profile)
-    assert_equal 1, ActionTracker::Record.find_all_by_verb('upload_image').count
+    assert_equal 1, ActionTracker::Record.where(verb: 'upload_image').count
   end
 
   {
@@ -355,6 +355,27 @@ class UploadedFileTest < ActiveSupport::TestCase
   should 'max_size should always return an integer' do
     NOOSFERO_CONF.expects(:[]).with('max_upload_size').returns("0.5 GB").at_least_once
     assert_instance_of Fixnum, UploadedFile.max_size
+  end
+
+  should 'add file to dbm if it becomes private' do
+    require 'sdbm'
+    public_file = create(UploadedFile, :uploaded_data => fixture_file_upload('/files/test.txt', 'text/plain'), :profile => profile, :published => true)
+    private_file = create(UploadedFile, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :profile => profile, :published => false)
+
+    dbm = SDBM.open(UploadedFile::DBM_PRIVATE_FILE)
+    assert !dbm.has_key?(public_file.public_filename)
+    assert dbm.has_key?(private_file.public_filename)
+    dbm.close
+
+    public_file.published = false
+    public_file.save!
+    private_file.published = true
+    private_file.save!
+
+    dbm = SDBM.open(UploadedFile::DBM_PRIVATE_FILE)
+    assert dbm.has_key?(public_file.public_filename)
+    assert !dbm.has_key?(private_file.public_filename)
+    dbm.close
   end
 
 end

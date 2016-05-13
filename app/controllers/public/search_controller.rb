@@ -3,8 +3,11 @@ class SearchController < PublicController
   helper TagsHelper
   include SearchHelper
   include ActionView::Helpers::NumberHelper
+  include SanitizeParams
 
   before_filter :redirect_to_environment_domain
+
+  before_filter :sanitize_params
   before_filter :redirect_asset_param, :except => [:assets, :suggestions]
   before_filter :load_category, :except => :suggestions
   before_filter :load_search_assets, :except => :suggestions
@@ -142,7 +145,8 @@ class SearchController < PublicController
 
   def tag
     @tag = params[:tag]
-    @tag_cache_key = "tag_#{CGI.escape(@tag.to_s)}_env_#{environment.id.to_s}_page_#{params[:npage]}"
+    tag_str = @tag.kind_of?(Array) ? @tag.join(" ") : @tag.to_str
+    @tag_cache_key = "tag_#{CGI.escape(tag_str)}_env_#{environment.id.to_s}_page_#{params[:npage]}"
     if is_cache_expired?(@tag_cache_key)
       @searches[@asset] = {:results => environment.articles.tagged_with(@tag).paginate(paginate_options)}
     end
@@ -163,7 +167,7 @@ class SearchController < PublicController
 
   def redirect_to_environment_domain
     return unless Rails.env.production?
-    redirect_to params.merge host: environment.default_hostname if request.host != environment.default_hostname
+    redirect_to url_for(params.merge host: environment.default_hostname) if request.host != environment.default_hostname
   end
 
   def load_query
@@ -180,7 +184,7 @@ class SearchController < PublicController
       render_not_found if params[:action] == 'category_index'
     else
       path = params[:category_path]
-      @category = environment.categories.find_by_path(path)
+      @category = environment.categories.find_by path: path
       if @category.nil?
         render_not_found(path)
       else
@@ -190,14 +194,14 @@ class SearchController < PublicController
   end
 
   def available_searches
-    @available_searches ||= ActiveSupport::OrderedHash[
-      :articles, _('Contents'),
-      :people, _('People'),
-      :communities, _('Communities'),
-      :enterprises, _('Enterprises'),
-      :products, _('Products and Services'),
-      :events, _('Events'),
-    ]
+    @available_searches ||= {
+      articles:    _('Contents'),
+      people:      _('People'),
+      communities: _('Communities'),
+      enterprises: _('Enterprises'),
+      products:    _('Products and Services'),
+      events:      _('Events'),
+    }
   end
 
   def load_search_assets
@@ -258,7 +262,11 @@ class SearchController < PublicController
   def visible_profiles(klass, *extra_relations)
     relations = [:image, :domains, :environment, :preferred_domain]
     relations += extra_relations
-    @environment.send(klass.name.underscore.pluralize).visible.includes(relations)
+    if current_user && current_user.person.is_admin?
+      @environment.send(klass.name.underscore.pluralize).includes(relations)
+    else
+      @environment.send(klass.name.underscore.pluralize).visible.includes(relations)
+    end
   end
 
   def per_page
@@ -266,13 +274,13 @@ class SearchController < PublicController
   end
 
   def available_assets
-    assets = ActiveSupport::OrderedHash[
-      :articles, _('Contents'),
-      :enterprises, _('Enterprises'),
-      :people, _('People'),
-      :communities, _('Communities'),
-      :products, _('Products and Services'),
-    ]
+    assets = {
+      articles:    _('Contents'),
+      enterprises: _('Enterprises'),
+      people:      _('People'),
+      communities: _('Communities'),
+      products:    _('Products and Services'),
+    }
   end
 
 end

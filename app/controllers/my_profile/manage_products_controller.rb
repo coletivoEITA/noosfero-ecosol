@@ -40,7 +40,7 @@ class ManageProductsController < ApplicationController
   end
 
   def categories_for_selection
-    @category = environment.categories.find_by_id params[:category_id]
+    @category = environment.categories.find_by id: params[:category_id]
     @object_name = params[:object_name]
     if @category
       @categories = @category.children
@@ -108,7 +108,7 @@ class ManageProductsController < ApplicationController
   def search_categories
     @term = params[:term].downcase
     conditions = ['LOWER(name) LIKE ? OR LOWER(name) LIKE ?', "#{@term}%", "% #{@term}%"]
-    @categories = ProductCategory.all :conditions => conditions, :limit => 10
+    @categories = ProductCategory.where(conditions).limit(10)
     render :json => (@categories.map do |category|
       {:label => category.name, :value => category.id}
     end)
@@ -174,7 +174,7 @@ class ManageProductsController < ApplicationController
 
   def edit_input
     if request.xhr?
-      @input = @profile.inputs.find_by_id(params[:id])
+      @input = @profile.inputs.find_by id: params[:id]
       if @input
         if request.post?
           if @input.update(params[:input])
@@ -211,7 +211,7 @@ class ManageProductsController < ApplicationController
   end
 
   def certifiers_for_selection
-    @qualifier = Qualifier.exists?(params[:id]) ? Qualifier.find(params[:id]) : nil
+    @qualifier = Qualifier.exists?(:id => params[:id]) ? Qualifier.find(params[:id]) : nil
     render :update do |page|
       page.replace_html params[:certifier_area], :partial => 'certifiers_for_selection'
     end

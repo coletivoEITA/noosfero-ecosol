@@ -83,7 +83,7 @@ class BoxTest < ActiveSupport::TestCase
 
   should 'list plugin block as allowed for box at position 1' do
     class SomePlugin < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         { PluginBlock => {:position => 1} }
       end
     end
@@ -98,7 +98,7 @@ class BoxTest < ActiveSupport::TestCase
 
   should 'list plugin block as allowed for box at position 2' do
     class SomePlugin < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         { PluginBlock => {:position => 2} }
       end
     end
@@ -113,7 +113,7 @@ class BoxTest < ActiveSupport::TestCase
 
   should 'list plugin block as allowed for the right holder' do
     class SomePlugin < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         { PluginBlock => {:position => 1, :type => [Person, Enterprise]} }
       end
     end

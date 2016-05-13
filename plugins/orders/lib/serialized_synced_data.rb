@@ -57,7 +57,7 @@ module SerializedSyncedData
         source = self.send field
         if block_given?
           data = SerializedSyncedData.prepare_data instance_exec(&block)
-        elsif source.is_a? ActiveRecord::Base
+        elsif source.is_a? ApplicationRecord
           data = SerializedSyncedData.prepare_data source.attributes
         elsif source.is_a? Array
           data = source.map{ |s| SerializedSyncedData.prepare_data s.attributes }
