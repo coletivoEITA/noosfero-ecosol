@@ -4,6 +4,9 @@ Feature: cycle_purchases
 
   Background:
     Given "OrdersCycle" plugin is enabled
+    Given "Orders" plugin is enabled
+    Given "Suppliers" plugin is enabled
+    Given "ConsumersCoop" plugin is enabled
     And feature "products_for_enterprises" is enabled on environment
     And the following product_categories
       | name        |
@@ -24,35 +27,40 @@ Feature: cycle_purchases
       | identifier  | name       | owner   |
       | collective  | Collective | manager |
     And "Manager" is admin of "Collective"
+    And consumer is member of collective
     And the consumers coop is enabled on "Collective"
     And "supplier" is a supplier of "Collective"
     And I am logged in as "manager"
-    And I am on collective's home
-    And I follow "Orders' cycles"
+    And I am on collective's homepage
+    And I follow "Orders' Cycles"
     And I follow "New cycle"
-    And I fill "Name" with 'Test cycle 1'
-    And I fill "cycle[start_finish_range]"                   with 'Wednesday, May 11, 2016 6:28 PM to Wednesday, May 18, 2016 6:28 PM'
-    And I fill "cycle[delivery_start_delivery_finish_range]" with 'Wednesday, May 19, 2016 4:00 PM to Wednesday, May 19, 2016 6:00 PM'
-    And I follow "Create and open orders"
-    And delayed jobs are processed
+    And I fill in "Name" with "Test cycle 1"
+    And I fill in "cycle[start_finish_range]" with "Wednesday, May 11, 2016 6:28 PM to Wednesday, May 18, 2016 6:28 PM"
+    And I press "Apply"
+    And I fill in "cycle[delivery_start_delivery_finish_range]" with "Wednesday, May 19, 2016 4:00 PM to Wednesday, May 19, 2016 6:00 PM"
+    And I press "Apply"
+    And I press "Create and open orders"
+    #And I should see "Close orders"
+    And there are no pending jobs
     And I am logged in as "consumer"
-    And I am on collective's home
-    And I follow "See orders' cycle"
+    And I am on collective's homepage
+    And I press "see orders' cycle"
     And I follow "New order"
-    And I click "French fries"
-    And I fill "item[quantity_consumer_ordered]" with '2'
+    And I add cycle product "French fries"
+    And I fill in "item[quantity_consumer_ordered]" with "2"
     And I follow "OK"
-    And I follow "Confirm order"
-    And delayed jobs are processed
+    And I press "Confirm order"
+    And I confirm the browser dialog
+    And there are no pending jobs
 
   @selenium
   Scenario: view purchases
     Given I am logged in as "manager"
-    And I am on collective's home
-    And I follow "Orders' cycles"
+    And I am on collective's homepage
+    And I follow "Orders' Cycles"
     And I follow "Test cycle 1"
     And I follow "Purchases"
-    And I click "supplier"
-    Then I should see "French fried"
+    And I open the order with "Supplier"
+    Then I should see "French fries"
     And  I should not see "Duff"
 
