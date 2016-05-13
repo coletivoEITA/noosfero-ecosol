@@ -1,1 +1,2 @@
 gem 'geocoder'
+gem 'pry'
