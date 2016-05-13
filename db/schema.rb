@@ -226,20 +226,23 @@ ActiveRecord::Schema.define(version: 20160408011720) do
   create_table "categories", force: :cascade do |t|
     t.string  "name"
     t.string  "slug"
-    t.text    "path",                      default: ""
+    t.text    "path",                           default: ""
     t.integer "environment_id"
     t.integer "parent_id"
     t.string  "type"
     t.float   "lat"
     t.float   "lng"
-    t.boolean "display_in_menu",           default: false
-    t.integer "children_count",            default: 0
-    t.boolean "accept_products",           default: true
+    t.boolean "display_in_menu",                default: false
+    t.integer "children_count",                 default: 0
+    t.boolean "accept_products",                default: true
     t.integer "image_id"
     t.string  "acronym"
     t.string  "abbreviation"
-    t.string  "display_color",   limit: 6
+    t.string  "display_color",        limit: 6
     t.text    "ancestry"
+    t.boolean "visible_for_articles",           default: true
+    t.boolean "visible_for_profiles",           default: true
+    t.boolean "choosable",                      default: true
   end
 
   add_index "categories", ["parent_id"], name: "index_categories_on_parent_id", using: :btree
@@ -489,7 +492,7 @@ ActiveRecord::Schema.define(version: 20160408011720) do
     t.string   "locale"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "data"
+    t.text     "data",        default: "--- {}\n"
   end
 
   create_table "national_region_types", force: :cascade do |t|
