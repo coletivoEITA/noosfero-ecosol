@@ -5,7 +5,7 @@ class AddNewBoxToEveryEnvironmentAndProfile < ActiveRecord::Migration
       end
 
       Profile.find_each do |profile|
-        #profile.boxes << Box.new if profile.boxes.count < 4
+        profile.boxes << Box.new if profile.boxes.count < 4
       end
     end
 
