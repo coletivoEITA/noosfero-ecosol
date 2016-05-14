@@ -1,11 +1,13 @@
 require 'grape'
+require 'base64'
+require 'tempfile'
 require_relative '../../find_by_contents'
 
-  module Noosfero;
-    module API
-      module APIHelpers
+module Noosfero;
+  module API
+    module APIHelpers
       PRIVATE_TOKEN_PARAM = :private_token
-      DEFAULT_ALLOWED_PARAMETERS = [:parent_id, :from, :until, :content_type, :author_id, :identifier]
+      DEFAULT_ALLOWED_PARAMETERS = [:parent_id, :from, :until, :content_type, :author_id, :identifier, :archived]
 
       include SanitizeParams
       include Noosfero::Plugin::HotSpot
@@ -23,11 +25,17 @@ require_relative '../../find_by_contents'
       def current_user
         private_token = (params[PRIVATE_TOKEN_PARAM] || headers['Private-Token']).to_s
         @current_user ||= User.find_by private_token: private_token
+        @current_user ||= plugins.dispatch("api_custom_login", request).first
         @current_user
       end
 
       def current_person
         current_user.person unless current_user.nil?
+      end
+
+      def is_admin?(environment)
+        return false unless current_user
+        return current_person.is_admin?(environment)
       end
 
       def logout
@@ -92,9 +100,6 @@ require_relative '../../find_by_contents'
         end
       end
 
-      ARTICLE_TYPES = ['Article'] + Article.descendants.map{|a| a.to_s}
-      TASK_TYPES = ['Task'] + Task.descendants.map{|a| a.to_s}
-
       def find_article(articles, id)
         article = articles.find(id)
         article.display_to?(current_person) ? article : forbidden!
@@ -103,8 +108,8 @@ require_relative '../../find_by_contents'
       def post_article(asset, params)
         return forbidden! unless current_person.can_post_content?(asset)
 
-        klass_type= params[:content_type].nil? ? TinyMceArticle.name : params[:content_type]
-        return forbidden! unless ARTICLE_TYPES.include?(klass_type)
+        klass_type = params[:content_type] || params[:article].delete(:type) || TinyMceArticle.name
+        return forbidden! unless klass_type.constantize <= Article
 
         article = klass_type.constantize.new(params[:article])
         article.last_changed_by = current_person
@@ -119,7 +124,7 @@ require_relative '../../find_by_contents'
 
       def present_article(asset)
         article = find_article(asset.articles, params[:id])
-        present_partial article, :with => Entities::Article
+        present_partial article, :with => Entities::Article, :params => params
       end
 
       def present_articles_for_asset(asset, method = 'articles')
@@ -128,7 +133,7 @@ require_relative '../../find_by_contents'
       end
 
       def present_articles(articles)
-        present_partial paginate(articles), :with => Entities::Article
+        present_partial paginate(articles), :with => Entities::Article, :params => params
       end
 
       def find_articles(asset, method = 'articles')
@@ -148,7 +153,7 @@ require_relative '../../find_by_contents'
 
       def post_task(asset, params)
         klass_type= params[:content_type].nil? ? 'Task' : params[:content_type]
-        return forbidden! unless TASK_TYPES.include?(klass_type)
+        return forbidden! unless klass_type.constantize <= Task
 
         task = klass_type.constantize.new(params[:task])
         task.requestor_id = current_person.id
@@ -228,7 +233,7 @@ require_relative '../../find_by_contents'
         else
           created_at = scope.find(reference_id).created_at
           scope.send("#{params.key?(:oldest) ? 'older_than' : 'younger_than'}", created_at)
-         end
+        end
       end
 
       def by_categories(scope, params)
@@ -260,6 +265,13 @@ require_relative '../../find_by_contents'
         unauthorized! unless current_user
       end
 
+      def profiles_for_person(profiles, person)
+        if person
+          profiles.listed_for_person(person)
+        else
+          profiles.visible
+        end
+      end
 
       # Checks the occurrences of uniqueness of attributes, each attribute must be present in the params hash
       # or a Bad Request error is invoked.
@@ -358,6 +370,30 @@ require_relative '../../find_by_contents'
         not_found! if Noosfero::API::API.endpoint_unavailable?(self, @environment)
       end
 
+      def asset_with_image params
+        if params.has_key? :image_builder
+          asset_api_params = params
+          asset_api_params[:image_builder] = base64_to_uploadedfile(asset_api_params[:image_builder])
+          return asset_api_params
+        end
+          params
+      end
+
+      def base64_to_uploadedfile(base64_image)
+        tempfile = base64_to_tempfile base64_image
+        converted_image = base64_image
+        converted_image[:tempfile] = tempfile
+        return {uploaded_data: ActionDispatch::Http::UploadedFile.new(converted_image)}
+      end
+
+      def base64_to_tempfile base64_image
+        base64_img_str = base64_image[:tempfile]
+        decoded_base64_str = Base64.decode64(base64_img_str)
+        tempfile = Tempfile.new(base64_image[:filename])
+        tempfile.write(decoded_base64_str.encode("ascii-8bit").force_encoding("utf-8"))
+        tempfile.rewind
+        tempfile
+      end
       private
 
       def parser_params(params)
@@ -384,7 +420,6 @@ require_relative '../../find_by_contents'
         end_period = until_date.nil? ? DateTime.now : until_date
         begin_period..end_period
       end
-
     end
   end
 end

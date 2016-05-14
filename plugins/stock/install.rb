@@ -1,3 +1,3 @@
-system "script/noosfero-plugins -q enable orders"
-system "script/noosfero-plugins -q enable suppliers"
+system 'script/noosfero-plugins -q enable products orders suppliers'
+exit $?.exitstatus
 

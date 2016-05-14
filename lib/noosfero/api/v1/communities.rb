@@ -2,7 +2,6 @@ module Noosfero
   module API
     module V1
       class Communities < Grape::API
-        before { authenticate! }
 
         resource :communities do
 
@@ -18,8 +17,8 @@ module Noosfero
           #  GET /communities?reference_id=10&limit=10&oldest
           get do
             communities = select_filtered_collection_of(environment, 'communities', params)
-            communities = communities.visible_for_person(current_person)
-            communities = communities.by_location(params) # Must be the last. May return Exception obj.
+            communities = profiles_for_person(communities, current_person)
+            communities = communities.by_location(params) # Must be the last. May return Exception obj
             present communities, :with => Entities::Community, :current_person => current_person
           end
 
@@ -28,6 +27,7 @@ module Noosfero
           #  POST api/v1/communties?private_token=234298743290432&community[name]=some_name
           #  for each custom field for community, add &community[field_name]=field_value to the request
           post do
+            authenticate!
             params[:community] ||= {}
 
             params[:community][:custom_values]={}
@@ -49,7 +49,7 @@ module Noosfero
           end
 
           get ':id' do
-            community = environment.communities.visible_for_person(current_person).find_by id: params[:id]
+            community = profiles_for_person(environment.communities, current_person).find_by_id(params[:id])
             present community, :with => Entities::Community, :current_person => current_person
           end
 
@@ -63,6 +63,10 @@ module Noosfero
 
               get do
                 person = environment.people.find(params[:person_id])
+
+                not_found! if person.blank?
+                forbidden! if !person.display_info_to?(current_person)
+
                 communities = select_filtered_collection_of(person, 'communities', params)
                 communities = communities.visible
                 present communities, :with => Entities::Community, :current_person => current_person

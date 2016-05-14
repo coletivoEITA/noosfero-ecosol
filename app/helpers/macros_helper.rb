@@ -34,7 +34,7 @@ module MacrosHelper
           }
         });
       }"
-    end
+    end.html_safe
   end
 
   def include_macro_js_files

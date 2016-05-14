@@ -46,10 +46,6 @@ class Article < ApplicationRecord
     'full'
   end
 
-  def self.refuse_blocks
-    true
-  end
-
   #FIXME This is necessary because html is being generated on the model...
   include ActionView::Helpers::TagHelper
 
@@ -836,11 +832,13 @@ class Article < ApplicationRecord
   end
 
   def body_images_paths
-    Nokogiri::HTML.fragment(self.body.to_s).css('img[src]').collect do |i|
+    paths = Nokogiri::HTML.fragment(self.body.to_s).css('img[src]').collect do |i|
       src = i['src']
       src = URI.escape src if self.new_record? # xss_terminate runs on save
       (self.profile && self.profile.environment) ? URI.join(self.profile.environment.top_url, src).to_s : src
     end
+    paths.unshift(URI.join(self.profile.environment.top_url, self.image.public_filename).to_s) if self.image.present?
+    paths
   end
 
   def more_comments_label
@@ -891,6 +889,10 @@ class Article < ApplicationRecord
 
   def to_liquid
     HashWithIndifferentAccess.new :name => name, :abstract => abstract, :body => body, :id => id, :parent_id => parent_id, :author => author
+  end
+
+  def self.can_display_blocks?
+    false
   end
 
   private

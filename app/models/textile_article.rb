@@ -9,8 +9,8 @@ class TextileArticle < TextArticle
     _('Textile format.')
   end
 
-  def self.refuse_blocks
-    true
+  def self.can_display_blocks?
+    false
   end
 
   def to_html(options ={})
@@ -31,6 +31,10 @@ class TextileArticle < TextArticle
 
   def can_display_media_panel?
     true
+  end
+
+  def self.can_display_blocks?
+    false
   end
 
   protected

@@ -9,13 +9,18 @@ module Noosfero
       PERMISSIONS = {
         :admin => 0,
         :self  => 10,
-        :friend => 20,
+        :private_content => 20,
         :logged_user => 30,
         :anonymous => 40
       }
 
-      def self.can_display? profile, options, field, permission = :friend
-        return true if profile.public_fields.map{|f| f.to_sym}.include?(field.to_sym)
+      def self.can_display_profile_field? profile, options, permission_options={}
+        permissions={:field => "", :permission => :private_content}
+        permissions.merge!(permission_options)
+        field = permissions[:field]
+        permission = permissions[:permission]
+        return true if profile.public? && profile.public_fields.map{|f| f.to_sym}.include?(field.to_sym)
+
         current_person = options[:current_person]
 
         current_permission = if current_person.present?
@@ -23,8 +28,8 @@ module Noosfero
             :admin
           elsif current_person == profile
             :self
-          elsif current_person.friends.include?(profile)
-            :friend
+          elsif profile.display_private_info_to?(current_person)
+            :private_content
           else
             :logged_user
           end
@@ -83,6 +88,7 @@ module Noosfero
         root 'blocks', 'block'
         expose :id, :type, :settings, :position, :enabled
         expose :mirror, :mirror_block_id, :title
+        expose :api_content, if: lambda { |object, options| options[:display_api_content] || object.display_api_content_by_default? }
       end
 
       class Box < Entity
@@ -103,7 +109,7 @@ module Noosfero
 
           private_values = profile.custom_field_values - profile.public_values
           private_values.each do |value|
-            if Entities.can_display?(profile,options,:custom_field)
+            if Entities.can_display_profile_field?(profile,options)
               hash[value.custom_field.name]=value.value
             end
           end
@@ -112,6 +118,8 @@ module Noosfero
         expose :image, :using => Image
         expose :region, :using => Region
         expose :type
+        expose :custom_header
+        expose :custom_footer
       end
 
       class UserBasic < Entity
@@ -141,11 +149,23 @@ module Noosfero
       class Community < Profile
         root 'communities', 'community'
         expose :description
-        expose :admins do |community, options|
+        expose :admins, :if => lambda { |community, options| community.display_info_to? options[:current_person]} do |community, options|
           community.admins.map{|admin| {"name"=>admin.name, "id"=>admin.id, "username" => admin.identifier}}
         end
         expose :categories, :using => Category
-        expose :members, :using => Person
+        expose :members, :using => Person , :if => lambda{ |community, options| community.display_info_to? options[:current_person] }
+      end
+
+      class CommentBase < Entity
+        expose :body, :title, :id
+        expose :created_at, :format_with => :timestamp
+        expose :author, :using => Profile
+        expose :reply_of, :using => CommentBase
+      end
+
+      class Comment < CommentBase
+        root 'comments', 'comment'
+        expose :children, as: :replies, :using => Comment
       end
 
       class ArticleBase < Entity
@@ -174,25 +194,19 @@ module Noosfero
         expose :followers_count
         expose :votes_count
         expose :comments_count
+        expose :archived, :documentation => {:type => "Boolean", :desc => "Defines if a article is readonly"}
         expose :type
+        expose :comments, using: CommentBase, :if => lambda{|obj,opt| opt[:params] && ['1','true',true].include?(opt[:params][:show_comments])}
+        expose :published
+        expose :accept_comments?, as: :accept_comments
       end
 
       class Article < ArticleBase
         root 'articles', 'article'
         expose :parent, :using => ArticleBase
-        expose :children, :using => ArticleBase
-      end
-
-      class CommentBase < Entity
-        expose :body, :title, :id
-        expose :created_at, :format_with => :timestamp
-        expose :author, :using => Profile
-        expose :reply_of, :using => CommentBase
-      end
-
-      class Comment < CommentBase
-        root 'comments', 'comment'
-        expose :children, as: :replies, :using => Comment
+        expose :children, :using => ArticleBase do |article, options|
+          article.children.published.limit(Noosfero::API::V1::Articles::MAX_PER_PAGE)
+        end
       end
 
       class User < Entity
@@ -203,11 +217,11 @@ module Noosfero
 
         attrs.each do |attribute|
           name = aliases.has_key?(attribute) ? aliases[attribute] : attribute
-          expose attribute, :as => name, :if => lambda{|user,options| Entities.can_display?(user.person, options, attribute)}
+          expose attribute, :as => name, :if => lambda{|user,options| Entities.can_display_profile_field?(user.person, options, {:field =>  attribute})}
         end
 
-        expose :person, :using => Person
-        expose :permissions, :if => lambda{|user,options| Entities.can_display?(user.person, options, :permissions, :self)} do |user, options|
+        expose :person, :using => Person, :if => lambda{|user,options| user.person.display_info_to? options[:current_person]}
+        expose :permissions, :if => lambda{|user,options| Entities.can_display_profile_field?(user.person, options, {:field => :permissions, :permission => :self})} do |user, options|
           output = {}
           user.person.role_assignments.map do |role_assigment|
             if role_assigment.resource.respond_to?(:identifier) && !role_assigment.role.nil?
@@ -231,6 +245,9 @@ module Noosfero
 
       class Environment < Entity
         expose :name
+        expose :id
+        expose :description
+        expose :settings, if: lambda { |instance, options| options[:is_admin] }
       end
 
       class Tag < Entity

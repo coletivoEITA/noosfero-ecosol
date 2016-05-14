@@ -3,6 +3,7 @@ require_relative 'test_helper'
 class ArticlesTest < ActiveSupport::TestCase
 
   def setup
+    create_and_activate_user
     login_api
   end
 
@@ -195,6 +196,31 @@ class ArticlesTest < ActiveSupport::TestCase
     assert_equal 400, last_response.status
   end
 
+  should 'not perform a vote in a archived article' do
+    article = fast_create(Article, :profile_id => @person.id, :name => "Some thing", :archived => true)
+    @params[:value] = 1
+    post "/api/v1/articles/#{article.id}/vote?#{params.to_query}"
+    assert_equal 400, last_response.status
+  end
+
+  should 'not update hit attribute of a specific child if a article is archived' do
+    folder = fast_create(Folder, :profile_id => user.person.id, :archived => true)
+    article = fast_create(Article, :parent_id => folder.id, :profile_id => user.person.id)
+    get "/api/v1/articles/#{folder.id}/children/#{article.id}?#{params.to_query}"
+    json = JSON.parse(last_response.body)
+    assert_equal 0, json['article']['hits']
+  end
+
+  should 'find archived articles' do
+    article1 = fast_create(Article, :profile_id => user.person.id, :name => "Some thing")
+    article2 = fast_create(Article, :profile_id => user.person.id, :name => "Some thing", :archived => true)
+    params[:archived] = true
+    get "/api/v1/articles/?#{params.to_query}"
+    json = JSON.parse(last_response.body)
+    assert_not_includes json["articles"].map { |a| a["id"] }, article1.id
+    assert_includes json["articles"].map { |a| a["id"] }, article2.id
+  end
+
   should "update body of article created by me" do
     new_value = "Another body"
     params[:article] = {:body => new_value}
@@ -382,6 +408,18 @@ class ArticlesTest < ActiveSupport::TestCase
       assert_kind_of TextArticle, Article.last
     end
 
+    should "#{kind} create article with type passed as parameter" do
+      profile = fast_create(kind.camelcase.constantize, :environment_id => environment.id)
+      Person.any_instance.stubs(:can_post_content?).with(profile).returns(true)
+
+      Article.delete_all
+      params[:article] = {:name => "Title", :type => 'TextArticle'}
+      post "/api/v1/#{kind.pluralize}/#{profile.id}/articles?#{params.to_query}"
+      json = JSON.parse(last_response.body)
+
+      assert_kind_of TextArticle, Article.last
+    end
+
     should "#{kind}: create article of TinyMceArticle type if no content type is passed as parameter" do
       profile = fast_create(kind.camelcase.constantize, :environment_id => environment.id)
       Person.any_instance.stubs(:can_post_content?).with(profile).returns(true)
@@ -526,6 +564,23 @@ class ArticlesTest < ActiveSupport::TestCase
     assert_equal ['title'], json['articles'].first.keys
   end
 
+  should "create article child" do
+    article = fast_create(Article, :profile_id => user.person.id, :name => "Some thing")
+    params[:article] = {:name => "Title"}
+    post "/api/v1/articles/#{article.id}/children?#{params.to_query}"
+    json = JSON.parse(last_response.body)
+    assert_equal article.id, json["article"]["parent"]["id"]
+  end
+
+  should "do not create article child if user has no permission to post content" do
+    profile = fast_create(Profile, :environment_id => environment.id)
+    article = fast_create(Article, :profile_id => profile.id, :name => "Some thing")
+    give_permission(user.person, 'invite_members', profile)
+    params[:article] = {:name => "Title"}
+    post "/api/v1/articles/#{article.id}/children?#{params.to_query}"
+    assert_equal 403, last_response.status
+  end
+
   should 'suggest article children' do
     article = fast_create(Article, :profile_id => user.person.id, :name => "Some thing")
     params[:target_id] = user.person.id
@@ -653,7 +708,7 @@ class ArticlesTest < ActiveSupport::TestCase
     assert_equal json['articles'].count, 2
   end
 
-  ARTICLE_ATTRIBUTES = %w(votes_count comments_count)
+  ARTICLE_ATTRIBUTES = %w(followers_count votes_count comments_count)
 
   ARTICLE_ATTRIBUTES.map do |attribute|
 
@@ -664,4 +719,29 @@ class ArticlesTest < ActiveSupport::TestCase
       assert_not_nil json['article'][attribute]
     end
   end
+
+  should 'only show article comments when show_comments is present' do
+    person = fast_create(Person)
+    article = fast_create(Article, :profile_id => person.id, :name => "Some thing")
+    article.comments.create!(:body => "another comment", :author => person)
+
+    get "/api/v1/articles/#{article.id}/?#{params.merge(:show_comments => '1').to_query}"
+    json = JSON.parse(last_response.body)
+    assert_includes json["article"].keys, "comments"
+    assert_equal json["article"]["comments"].first["body"], "another comment"
+
+    get "/api/v1/articles/#{article.id}/?#{params.to_query}"
+    json = JSON.parse(last_response.body)
+    assert_not_includes json["article"].keys, "comments"
+  end
+
+  should 'not list private child when get the parent article' do
+    person = fast_create(Person, :environment_id => environment.id)
+    article = fast_create(Article, :profile_id => person.id, :name => "Some thing")
+    child = fast_create(Article, :parent_id => article.id, :profile_id => person.id, :name => "Some thing", :published => false)
+    get "/api/v1/articles/#{article.id}?#{params.to_query}"
+    json = JSON.parse(last_response.body)
+    assert_not_includes json['article']['children'].map {|a| a['id']}, child.id
+  end
+
 end

@@ -7,7 +7,7 @@ module TinymceHelper
     output += javascript_include_tag 'tinymce/js/tinymce/jquery.tinymce.min.js'
     output += javascript_include_tag 'tinymce.js'
     output += include_macro_js_files.to_s
-    output
+    output.html_safe
   end
 
   def tinymce_init_js options = {}
@@ -39,7 +39,7 @@ module TinymceHelper
     #cleanup non tinymce options
     options = options.except :mode
 
-    "noosfero.tinymce.init(#{options.to_json})"
+    "noosfero.tinymce.init(#{options.to_json})".html_safe
   end
 
   def apply_etherpadlite_options options

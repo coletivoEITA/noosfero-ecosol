@@ -46,17 +46,15 @@ module ApplicationHelper
 
   include LayoutHelper
 
-  include PluginsHelper
-
   include Noosfero::Gravatar
-
-  include CatalogHelper
 
   include TokenHelper
 
   include CaptchaHelper
 
   include ChatHelper
+
+  include PluginsHelper
 
   include ButtonsHelper
 
@@ -65,6 +63,8 @@ module ApplicationHelper
   include ThemeLoaderHelper
 
   include TaskHelper
+
+  include MembershipsHelper
 
   def locale
     (@page && !@page.language.blank?) ? @page.language : FastGettext.locale
@@ -109,7 +109,6 @@ module ApplicationHelper
   #
   # TODO: implement correcly the 'Help' button click
   def help(content = nil, link_name = nil, options = {}, &block)
-
     link_name ||= _('Help')
 
     @help_message_id ||= 1
@@ -132,7 +131,7 @@ module ApplicationHelper
     button = link_to_function(content_tag('span', link_name), "Element.show('#{help_id}')", options )
     close_button = content_tag("div", link_to_function(_("Close"), "Element.hide('#{help_id}')", :class => 'close_help_button'))
 
-    text = content_tag('div', button + content_tag('div', content_tag('div', content) + close_button, :class => 'help_message', :id => help_id, :style => 'display: none;'), :class => 'help_box')
+    text = content_tag('div', button + content_tag('div', content_tag('div', content.html_safe) + close_button, :class => 'help_message', :id => help_id, :style => 'display: none;'), :class => 'help_box')
 
     unless block.nil?
       concat(text)
@@ -372,8 +371,8 @@ module ApplicationHelper
   def popover_menu(title,menu_title,links,html_options={})
     html_options[:class] = "" unless html_options[:class]
     html_options[:class] << " menu-submenu-trigger"
-    html_options[:onclick] = "toggleSubmenu(this, '#{menu_title}', #{CGI::escapeHTML(links.to_json)}); return false"
 
+    html_options[:onclick] = "toggleSubmenu(this, '#{menu_title}', #{CGI::escapeHTML(links.to_json)}); return false".html_safe
     link_to(content_tag(:span, title), '#', html_options)
   end
 
@@ -480,9 +479,9 @@ module ApplicationHelper
       map(&:role)
     names = []
     roles.each do |role|
-      names << content_tag('span', role.name, :style => "color: #{role_color(role, resource.environment.id)}")
+      names << content_tag('span', role.name, :style => "color: #{role_color(role, resource.environment.id)}").html_safe
     end
-    names.join(', ')
+    safe_join(names, ', ')
   end
 
   def role_color(role, env_id)
@@ -800,7 +799,7 @@ module ApplicationHelper
     return "" if categories.blank?
     content_tag(:ul) do
       categories.map do |category|
-        category_path = category.kind_of?(ProductCategory) ? {:controller => 'search', :action => 'assets', :asset => 'products', :product_category => category.id} : { :controller => 'search', :action => 'category_index', :category_path => category.explode_path }
+        category_path = { :controller => 'search', :action => 'category_index', :category_path => category.explode_path }
         if category.display_in_menu?
           content_tag(:li) do
             if !category.is_leaf_displayable_in_menu?
@@ -918,7 +917,8 @@ module ApplicationHelper
   end
 
   def admin_link
-    user.is_admin?(environment) ? link_to('<i class="icon-menu-admin"></i><strong>' + _('Administration') + '</strong>', environment.admin_url, :title => _("Configure the environment"), :class => 'admin-link') : ''
+    admin_icon = '<i class="icon-menu-admin"></i><strong>' + _('Administration') + '</strong>'
+    user.is_admin?(environment) ? link_to(admin_icon.html_safe, environment.admin_url, :title => _("Configure the environment"), :class => 'admin-link') : ''
   end
 
   def usermenu_logged_in
@@ -927,23 +927,39 @@ module ApplicationHelper
     if count > 0
       pending_tasks_count = link_to(count.to_s, user.tasks_url, :id => 'pending-tasks-count', :title => _("Manage your pending tasks"))
     end
-
-    (_("<span class='welcome'>Welcome,</span> %s") % link_to("<i style='background-image:url(#{user.profile_custom_icon(gravatar_default)})'></i><strong>#{user.identifier}</strong>", user.url, :id => "homepage-link", :title => _('Go to your homepage'))) +
-    render_environment_features(:usermenu) +
-    admin_link +
-    manage_enterprises +
-    manage_communities +
-    link_to('<i class="icon-menu-ctrl-panel"></i><strong>' + _('Control panel') + '</strong>', user.admin_url, :class => 'ctrl-panel', :title => _("Configure your personal account and content")) +
-    pending_tasks_count +
-    link_to('<i class="icon-menu-logout"></i><strong>' + _('Logout') + '</strong>', { :controller => 'account', :action => 'logout'} , :id => "logout", :title => _("Leave the system"))
+    user_identifier = "<i style='background-image:url(#{user.profile_custom_icon(gravatar_default)})'></i><strong>#{user.identifier}</strong>"
+    welcome_link = link_to(user_identifier.html_safe, user.public_profile_url, :id => "homepage-link", :title => _('Go to your homepage'))
+    welcome_span = _("<span class='welcome'>Welcome,</span> %s") % welcome_link.html_safe
+    ctrl_panel_icon = '<i class="icon-menu-ctrl-panel"></i>'
+    ctrl_panel_section = '<strong>' + ctrl_panel_icon + _('Control panel') + '</strong>'
+    ctrl_panel_link = link_to(ctrl_panel_section.html_safe, user.admin_url, :class => 'ctrl-panel', :title => _("Configure your personal account and content"))
+    logout_icon = '<i class="icon-menu-logout"></i><strong>' + _('Logout') + '</strong>'
+    logout_link = link_to(logout_icon.html_safe, { :controller => 'account', :action => 'logout'} , :id => "logout", :title => _("Leave the system"))
+    join_result = safe_join(
+      [welcome_span.html_safe, render_environment_features(:usermenu).html_safe, admin_link.html_safe,
+        manage_enterprises.html_safe, manage_communities.html_safe, ctrl_panel_link.html_safe,
+        pending_tasks_count.html_safe, logout_link.html_safe], "")
+    join_result
   end
 
+  def usermenu_notlogged_in
+    login_str = '<i class="icon-menu-login"></i><strong>' + _('Login') + '</strong>'
+    ret = _("<span class='login'>%s</span>") % modal_inline_link_to(login_str.html_safe, login_url, '#inlineLoginBox', :id => 'link_login')
+    return ret.html_safe
+  end
+
+  def usermenu_signup
+    signup_str = '<strong>' + _('Sign up') + '</strong>'
+    ret = _("<span class='or'>or</span> <span class='signup'>%s</span>") % link_to(signup_str.html_safe, :controller => 'account', :action => 'signup')
+    return ret.html_safe
+
+  end
   def limited_text_area(object_name, method, limit, text_area_id, options = {})
-    content_tag(:div, [
+    content_tag(:div, safe_join([
       text_area(object_name, method, { :id => text_area_id, :onkeyup => "limited_text_area('#{text_area_id}', #{limit})" }.merge(options)),
       content_tag(:p, content_tag(:span, limit) + ' ' + _(' characters left'), :id => text_area_id + '_left'),
       content_tag(:p, _('Limit of characters reached'), :id => text_area_id + '_limit', :style => 'display: none')
-    ].join, :class => 'limited-text-area')
+    ]), :class => 'limited-text-area')
   end
 
   def expandable_text_area(object_name, method, text_area_id, options = {})
@@ -977,12 +993,12 @@ module ApplicationHelper
 
   def task_information(task)
     values = {}
+    values.merge!(task.information[:variables]) if task.information[:variables]
     values.merge!({requestor: link_to(task.requestor.name, task.requestor.url)}) if task.requestor
     values.merge!({target: link_to(task.target.name, task.target.url)}) if task.target
     values.merge!({:subject => content_tag('span', task.subject, :class=>'task_target')}) if task.subject
     values.merge!({:linked_subject => link_to(content_tag('span', task.linked_subject[:text], :class => 'task_target'), task.linked_subject[:url])}) if task.linked_subject
-    values.merge!(task.information[:variables]) if task.information[:variables]
-    task.information[:message] % values
+    (task.information[:message] % values).html_safe
   end
 
   def add_zoom_to_article_images
@@ -1040,26 +1056,24 @@ module ApplicationHelper
   end
 
   def render_tabs(tabs)
-    titles = tabs.inject(''){ |result, tab| result << content_tag(:li, link_to(tab[:title], '#'+tab[:id]), :class => 'tab') }
-    contents = tabs.inject(''){ |result, tab| result << content_tag(:div, tab[:content], :id => tab[:id]) }
+    titles = tabs.inject(''.html_safe){ |result, tab| result << content_tag(:li, link_to(tab[:title], '#'+tab[:id]), :class => 'tab') }
+    contents = tabs.inject(''.html_safe){ |result, tab| result << content_tag(:div, tab[:content], :id => tab[:id]) }
 
     content_tag(:div, content_tag(:ul, titles) + raw(contents), :class => 'ui-tabs')
   end
 
   def delete_article_message(article)
-    CGI.escapeHTML(
-      if article.folder?
-        _("Are you sure that you want to remove the folder \"%s\"? Note that all the items inside it will also be removed!") % article.name
-      else
-        _("Are you sure that you want to remove the item \"%s\"?") % article.name
-      end
-    )
+    if article.folder?
+      _("Are you sure that you want to remove the folder \"%s\"? Note that all the items inside it will also be removed!") % article.name
+    else
+      _("Are you sure that you want to remove the item \"%s\"?") % article.name
+    end
   end
 
   def expirable_link_to(expired, content, url, options = {})
     if expired
       options[:class] = (options[:class] || '') + ' disabled'
-      content_tag('a', '&nbsp;'+content_tag('span', content), options)
+      content_tag('a', '&nbsp;'.html_safe+content_tag('span', content), options)
     else
       if options[:modal]
         options.delete(:modal)
@@ -1092,7 +1106,7 @@ module ApplicationHelper
 
     radios = templates.map do |template|
       content_tag('li', labelled_radio_button(link_to(template.name, template.url, :target => '_blank'), "#{field_name}[template_id]", template.id, environment.is_default_template?(template)))
-    end.join("\n")
+    end.join("\n").html_safe
 
     content_tag('div', content_tag('label', _('Profile organization'), :for => 'template-options', :class => 'formlabel') +
       content_tag('p', _('Your profile will be created according to the selected template. Click on the options to view them.'), :style => 'margin: 5px 15px;padding: 0px 10px;') +
@@ -1132,7 +1146,7 @@ module ApplicationHelper
     content_tag(:div, :class => 'errorExplanation', :id => 'errorExplanation') do
       content_tag(:h2, _('Errors while saving')) +
       content_tag(:ul) do
-        errors.map { |err| content_tag(:li, err) }.join
+        safe_join(errors.map { |err| content_tag(:li, err) })
       end
     end
   end
@@ -1242,6 +1256,7 @@ module ApplicationHelper
       :href=>"#",
       :title=>_("Exit full screen mode")
     })
+    content.html_safe
   end
 
 end

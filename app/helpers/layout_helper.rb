@@ -43,7 +43,8 @@ module LayoutHelper
 
     output += template_javascript_ng.to_s
 
-    output
+    # This output should be safe!
+    output.html_safe
   end
 
   def noosfero_stylesheets
@@ -68,7 +69,9 @@ module LayoutHelper
       output << stylesheet_link_tag(global_css_pub)
     end
     output << stylesheet_link_tag(theme_stylesheet_path)
-    output.join "\n"
+
+    # This output should be safe!
+    output.join("\n").html_safe
   end
 
   def noosfero_layout_features
@@ -98,9 +101,8 @@ module LayoutHelper
   end
 
   def addthis_javascript
-    if NOOSFERO_CONF['addthis_enabled']
-      "<script src='//s7.addthis.com/js/300/addthis_widget.js#pubid=#{NOOSFERO_CONF['addthis_pub']}'></script>"
-    end
+    return unless NOOSFERO_CONF['addthis_enabled']
+    javascript_include_tag "//s7.addthis.com/js/300/addthis_widget.js#pubid=#{NOOSFERO_CONF['addthis_pub']}"
   end
 
 end
