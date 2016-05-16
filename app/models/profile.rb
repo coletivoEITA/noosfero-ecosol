@@ -1101,6 +1101,11 @@ private :generate_url, :url_options
     self.data[:fields_privacy]
   end
 
+  # abstract
+  def active_fields
+    []
+  end
+
   def public_fields
     self.active_fields
   end

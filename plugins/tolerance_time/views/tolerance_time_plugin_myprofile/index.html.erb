@@ -17,7 +17,7 @@
 
   <%= content_tag( 'small', _('Empty means unlimited and zero means right away.') ) %>
 
-  <% button_bar do %>
+  <%= button_bar do %>
     <%= submit_button('save', c_('Save'))%>
     <%= button('back', c_('Back'), {:controller => 'profile_editor'})%>
   <% end %>

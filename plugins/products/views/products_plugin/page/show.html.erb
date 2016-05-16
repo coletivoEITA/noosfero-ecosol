@@ -92,7 +92,7 @@ show_supplier = false unless defined? show_supplier
 <!-- END PRODUCT -->
 <%= add_zoom_to_images %>
 
-<% button_bar do %>
+<%= button_bar do %>
   <%= button_to_function :back, _('Back to the product listing'), "catalog.product.back(#{params[:rank]})" %>
   <% if user and (@user_is_admin or user.is_admin? profile) %>
     <%= button :add, _('Add product or service'), controller: :manage_products, action: :new, profile: profile.identifier %>

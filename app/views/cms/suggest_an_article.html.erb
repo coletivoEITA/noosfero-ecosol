@@ -23,7 +23,7 @@
 
   <%= render 'shared/captcha' unless logged_in? %>
 
-  <% button_bar do %>
+  <%= button_bar do %>
     <%= submit_button :save, _('Save') %>
     <%= button :cancel, _('Cancel'), @back_to %>
   <% end %>
