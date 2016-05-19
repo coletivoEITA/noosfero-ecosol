@@ -18,11 +18,6 @@ class Category
     {solr_name_sortable: :string},
   ]
 
-  # we don't need this with NRT from solr 5
-  #handle_asynchronously :solr_save
-  # solr_destroy don't work with delayed_job, as AR won't be found
-  #handle_asynchronously :solr_destroy
-
   private
 
   def solr_name_sortable
