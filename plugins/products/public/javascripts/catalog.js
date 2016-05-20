@@ -316,27 +316,29 @@ jQuery('ul#product-list .float-box').live('click', function () {
 jQuery(document).ready(function() {
   var catalog_w = jQuery(window);
   var catalog_catOptions = jQuery("#catalog-options");
-  var catalog_originalTop = catalog_catOptions.offset().top + catalog_catOptions.height();
-  var catalog_originalWidth = catalog_catOptions.width() / catalog_w.width();
-  var catalog_originalLeft = catalog_catOptions.offset().left / catalog_w.width();
-  jQuery(window).bind("scroll", function() {
-    var catalog_originalRight = 1 - (catalog_originalLeft + catalog_originalWidth);
-    var top = jQuery(window).scrollTop();
-    var above_top = (top >= catalog_originalTop);
-    if (above_top) {
-      catalog_catOptions
-        .addClass("catalog-fixed")
-        .css({'padding-left': 100*catalog_originalLeft + '%',
-          'padding-right': 100*catalog_originalRight + '%',
-          'width': '100%'
-        });
-    } else {
-      catalog_catOptions
-        .removeClass("catalog-fixed")
-        .css({'padding-left': '0',
-          'padding-right': '0',
-          'width': '100%'
-        });
-    }
-  });
+  if (catalog_catOptions.length) {
+    var catalog_originalTop   = catalog_catOptions.offset().top + catalog_catOptions.height();
+    var catalog_originalWidth = catalog_catOptions.width() / catalog_w.width();
+    var catalog_originalLeft  = catalog_catOptions.offset().left / catalog_w.width();
+    jQuery(window).bind("scroll", function() {
+      var catalog_originalRight = 1 - (catalog_originalLeft + catalog_originalWidth);
+      var top = jQuery(window).scrollTop();
+      var above_top = (top >= catalog_originalTop);
+      if (above_top) {
+        catalog_catOptions
+          .addClass("catalog-fixed")
+          .css({'padding-left': 100*catalog_originalLeft + '%',
+            'padding-right': 100*catalog_originalRight + '%',
+            'width': '100%'
+          });
+      } else {
+        catalog_catOptions
+          .removeClass("catalog-fixed")
+          .css({'padding-left': '0',
+            'padding-right': '0',
+            'width': '100%'
+          });
+      }
+    });
+  }
 });
