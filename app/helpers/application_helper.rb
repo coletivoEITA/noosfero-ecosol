@@ -610,7 +610,7 @@ module ApplicationHelper
       end
     else
       if profile.active_fields.include?(name)
-        content_tag :div, class: 'field-with-privacy-selector' do
+        result = content_tag :div, class: 'field-with-privacy-selector' do
           [field_html, profile_field_privacy_selector(profile, name)].safe_join
         end
       end
@@ -618,10 +618,6 @@ module ApplicationHelper
 
     if is_required
       result = required(result)
-    end
-
-    if block
-      concat(result)
     end
 
     result
@@ -989,8 +985,8 @@ module ApplicationHelper
   def task_information(task)
     values = {}
     values.merge!(task.information[:variables]) if task.information[:variables]
-    values.merge!({requestor: link_to(task.requestor.name, task.requestor.url)}) if task.requestor
-    values.merge!({target: link_to(task.target.name, task.target.url)}) if task.target
+    values.merge!({:requestor => link_to(task.requestor.name, task.requestor.url)}) if task.requestor
+    values.merge!({:target => link_to(task.target.name, task.target.url)}) if (task.target && task.target.respond_to?(:url))
     values.merge!({:subject => content_tag('span', task.subject, :class=>'task_target')}) if task.subject
     values.merge!({:linked_subject => link_to(content_tag('span', task.linked_subject[:text], :class => 'task_target'), task.linked_subject[:url])}) if task.linked_subject
     (task.information[:message] % values).html_safe
