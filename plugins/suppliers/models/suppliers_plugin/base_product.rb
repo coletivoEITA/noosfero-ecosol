@@ -2,6 +2,11 @@
 # cycle.products will go to an infinite loop
 class SuppliersPlugin::BaseProduct < ProductsPlugin::Product
 
+  # undo ProductsPlugin::Product
+  def self.sti_name
+    self.name
+  end
+
   attr_accessible :default_margin_percentage, :margin_percentage, :default_unit, :unit_detail,
     :supplier_product_attributes
 
