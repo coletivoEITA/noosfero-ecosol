@@ -8,7 +8,9 @@ class VolunteersPlugin::Period < ApplicationRecord
 
   belongs_to :owner, polymorphic: true
 
-  has_many :assignments, class_name: 'VolunteersPlugin::Assignment', foreign_key: :period_id, include: [:profile], dependent: :destroy
+  has_many :assignments, -> {
+    includes :profile
+  }, class_name: 'VolunteersPlugin::Assignment', foreign_key: :period_id, dependent: :destroy
 
   validates_presence_of :owner
   validates_presence_of :name
