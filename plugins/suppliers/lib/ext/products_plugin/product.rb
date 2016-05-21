@@ -51,7 +51,7 @@ module ProductsPlugin
     scope :fp_name_like, -> (name) { where "from_products_products.name ILIKE ?", "%#{name}%" }
     scope :fp_with_product_category_id, -> (id) { where 'from_products_products.product_category_id = ?', id }
 
-    # prefer distributed_products has_many to use DistributedProduct scopes and eager loading
+    # prefer #distributed_products has_many to use DistributedProduct scopes and eager loading
     scope :distributed, -> { where type: 'SuppliersPlugin::DistributedProduct'}
     scope :own, -> { where type: nil }
     scope :supplied, -> {
