@@ -37,7 +37,7 @@ module ConsumersCoopPlugin::LayoutHelper
       end
 
       link_to label, url, class: "menu-button #{"menu-selected" if selected}"
-    end.join
+    end.safe_join
   end
 
   def consumers_coop_header
