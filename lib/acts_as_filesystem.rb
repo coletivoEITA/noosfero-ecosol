@@ -33,7 +33,7 @@ module ActsAsFileSystem
   module ClassMethods
 
     def build_ancestry(parent_id = nil, ancestry = '')
-      ApplicationRecord.transaction do
+      ActiveRecord::Base.transaction do
         self.base_class.where(parent_id: parent_id).each do |node|
           node.update_column :ancestry, ancestry
 
@@ -119,7 +119,7 @@ module ActsAsFileSystem
     end
 
     def top_ancestor
-      if has_ancestry? and !ancestry.nil?
+      if has_ancestry? and !ancestry.blank?
         self.class.base_class.find_by id: self.top_ancestor_id
       else
         self.hierarchy.first
@@ -263,5 +263,5 @@ module ActsAsFileSystem
   end
 end
 
-ApplicationRecord.extend ActsAsFileSystem::ActsMethods
+ActiveRecord::Base.extend ActsAsFileSystem::ActsMethods
 

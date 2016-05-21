@@ -94,7 +94,7 @@ class ApplicationController < ActionController::Base
   def set_locale
     FastGettext.available_locales = environment.available_locales
     FastGettext.default_locale = environment.default_locale || :en_US
-    FastGettext.locale = (params[:lang] || session[:lang] || environment.default_locale || request.env['HTTP_ACCEPT_LANGUAGE'] || :en_US)
+    FastGettext.locale = ENV['LANG'] || params[:lang] || session[:lang] || environment.default_locale || request.env['HTTP_ACCEPT_LANGUAGE'] || :en_US
     I18n.locale = FastGettext.locale
     I18n.default_locale = FastGettext.default_locale
     if params[:lang]

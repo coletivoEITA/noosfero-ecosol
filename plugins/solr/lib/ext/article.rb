@@ -109,9 +109,4 @@ class Article
     boost: -> (a) { 10 if a.profile && a.profile.enabled },
     if: -> (a) { not a.class.name.in? ['RssFeed'] }
 
-  # we don't need this with NRT from solr 5
-  #handle_asynchronously :solr_save
-  # solr_destroy don't work with delayed_job, as AR won't be found
-  #handle_asynchronously :solr_destroy
-
 end

@@ -9,8 +9,8 @@ class Event < Article
     _('Event')
   end
 
-  def self.refuse_blocks
-    true
+  def self.can_display_blocks?
+    false
   end
 
   settings_items :address, :type => :string
@@ -136,6 +136,10 @@ class Event < Article
 
   def can_display_media_panel?
     true
+  end
+
+  def self.can_display_blocks?
+    false
   end
 
   include Noosfero::TranslatableContent

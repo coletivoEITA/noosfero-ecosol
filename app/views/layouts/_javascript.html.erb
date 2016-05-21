@@ -8,8 +8,8 @@
 <% end %>
 
 <script type="text/javascript">
-  DEFAULT_LOADING_MESSAGE = <%="'#{ _('loading...') }'" %>
-  noosfero.profile = <%= (@profile.identifier if @profile).to_json %>
-  I18n.locale = <%= I18n.locale.to_json %>
+  DEFAULT_LOADING_MESSAGE = <%="'#{ _('loading...') }'".html_safe %>
+  noosfero.profile = <%= (@profile.identifier if @profile).to_json.html_safe %>
+  I18n.locale = <%= I18n.locale.to_json.html_safe %>
 </script>
 

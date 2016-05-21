@@ -12,8 +12,8 @@ class WebODFPlugin::Document < Article
     I18n.t'web_odf_plugin.models.document.description'
   end
 
-  def self.refuse_blocks
-    true
+  def self.can_display_blocks?
+    false
   end
 
   # #body method override will crash due to binary on db adapter, so use #odf

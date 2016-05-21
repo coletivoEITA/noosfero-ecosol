@@ -50,9 +50,10 @@ class Person < Profile
     .joins('LEFT JOIN "friendships" ON "friendships"."friend_id" = "profiles"."id"')
     .where(
       ['( roles.key = ? AND role_assignments.accessor_type = ? AND role_assignments.accessor_id = ? ) OR (
-        ( ( friendships.person_id = ? ) OR (profiles.public_profile = ?)) AND (profiles.visible = ?) )', 'environment_administrator', Profile.name, person.id, person.id,  true, true]
+        ( ( friendships.person_id = ? ) OR (profiles.public_profile = ?)) AND (profiles.visible = ?) )',
+         'environment_administrator', Profile.name, person.id, person.id,  true, true]
     ).uniq
-    }
+  }
 
   def has_permission_with_admin?(permission, resource)
     return true if resource.blank? || resource.admins.include?(self)
@@ -374,7 +375,7 @@ class Person < Profile
     ['%s@%s' % [self.identifier, self.email_domain] ]
   end
 
-  def display_info_to?(user)
+  def display_private_info_to?(user)
     if friends.include?(user)
       true
     else

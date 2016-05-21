@@ -1,6 +1,7 @@
 <h1><%= h profile.short_name(50) %></h1>
 
-<%= render :partial => 'members_filter' %>
+<%# shoud integrate bootstrap table members' list %>
+<%# render :partial => 'members_filter' %>
 
 <%= form_tag 'profile_members/send_mail', :method => 'post' do %>
   <div id="members-list">
