@@ -6,7 +6,7 @@
   span.box-field.quantity-available= p.quantity_localized || '∞'
   = edit_arrow "", false, onclick: 'return false;', class: "box-field cycle-product-actions"
 
-.box-edit style=("display: none")
+.box-edit style="display: none"
   = form_for p, as: :product, remote: true, url: {controller: :orders_cycle_plugin_product, action: :cycle_edit, id: p.id } do |f|
     .cycle-product-line
       = labelled_field f, :price, t('views.product._cycle_edit.sell_price'), f.number_field(:price, step: 'any', onkeyup: 'orders_cycle.offered_product.pmsync(this, false)', oninput: 'this.onkeyup()')
@@ -30,7 +30,7 @@
     |&emsp;
     = link_to t('views.product._cycle_edit.remove_from_cycle'), {controller: :orders_cycle_plugin_product, action: :cycle_destroy, id: p.id }, remote: true, data: {update: "#cycle-product-#{p.id}", confirm: if p.items.blank? then nil else t('views.product._cycle_edit.all_ordered_products') end}
     |&emsp;
-    = link_to t('views.product._cycle_edit.edit_product'), {controller: :manage_products, action: :show, id: p.id}, target: '_blank'
+    = link_to t('views.product._cycle_edit.edit_product'), {controller: 'products_plugin/page', action: :show, id: p.id}, target: '_blank'
     |&emsp;
   .clean
 .clean
