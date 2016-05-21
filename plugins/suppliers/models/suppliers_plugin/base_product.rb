@@ -1,6 +1,6 @@
 # for some unknown reason, if this is named SuppliersPlugin::Product then
 # cycle.products will go to an infinite loop
-class SuppliersPlugin::BaseProduct < Product
+class SuppliersPlugin::BaseProduct < ProductsPlugin::Product
 
   attr_accessible :default_margin_percentage, :margin_percentage, :default_unit, :unit_detail,
     :supplier_product_attributes
