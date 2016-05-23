@@ -322,12 +322,12 @@ class Task < ApplicationRecord
     if profile.person?
       envs_ids = Environment.all.select{ |env| profile.is_admin?(env) }.map{ |env| "target_id = #{env.id}"}.join(' OR ')
       environment_condition = envs_ids.blank? ? nil : "(target_type = 'Environment' AND (#{envs_ids}))"
-      orgs_ids = profile.memberships.select{ |org| org.admins.include? profile }.map { |org| "target_id = #{org.id}"}.join(' OR ')
-      organization_condition = orgs_ids.blank? ? nil : "(target_type = 'Profile' AND (#{orgs_ids}))"
+      #orgs_ids = profile.memberships.select{ |org| org.admins.include? profile }.map { |org| "target_id = #{org.id}"}.join(' OR ')
+      #organization_condition = orgs_ids.blank? ? nil : "(target_type = 'Profile' AND (#{orgs_ids}))"
     end
     profile_condition = "(target_type = 'Profile' AND target_id = #{profile.id})"
 
-    where [environment_condition, organization_condition, profile_condition].compact.join(' OR ')
+    where [environment_condition, profile_condition].compact.join(' OR ')
   }
 
   scope :from_closed_date, -> closed_from {
