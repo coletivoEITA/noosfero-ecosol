@@ -34,11 +34,9 @@ module UrlHelper
   end
 
   def default_url_options options={}
-    #if @domain or (@profile and @profile.default_protocol)
-    #protocol = if @profile then @profile.default_protocol else @domain.protocol end
-    #options.merge! :protocol => protocol if protocol != 'http'
-    #end
     options[:protocol] ||= '//'
+
+    options[:override_user] = params[:override_user] if params[:override_user].present?
 
     # Only use profile's custom domains for the profiles and the account controllers.
     # This avoids redirects and multiple URLs for one specific resource
@@ -64,20 +62,8 @@ module UrlHelper
     end
   end
 
-  def default_url_options
-    {protocol: '//'}
-  end
-
   def back_url
     'javascript:history.back()'
-  end
-
-  def default_url_options
-    options = {}
-
-    options[:override_user] = params[:override_user] if params[:override_user].present?
-
-    options
   end
 
 end
