@@ -17,6 +17,13 @@ class ApplicationController < ActionController::Base
   before_filter :authorize_profiler if defined? Rack::MiniProfiler
   around_filter :set_time_zone
 
+  before_filter :set_session_theme
+  def set_session_theme
+    if params[:theme]
+      session[:theme] = environment.theme_ids.include?(params[:theme]) ? params[:theme] : nil
+    end
+  end
+
   def require_login_for_environment
     login_required
   end
