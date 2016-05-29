@@ -22,7 +22,6 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
       was_enabled = profile.consumers_coop_settings.enabled
 
       profile.update! params[:profile_data]
-      profile.consumers_coop_header_image_save
 
       if !was_enabled and profile.consumers_coop_settings.enabled
         profile.consumers_coop_enable

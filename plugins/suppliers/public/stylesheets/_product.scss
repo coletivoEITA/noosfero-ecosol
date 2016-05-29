@@ -2,6 +2,10 @@
 
 #supplier-our-products {
 
+	.subtitle {
+		font-size: 13px;
+	}
+
   .sortable-table {
 
     .box-field {
@@ -75,6 +79,7 @@
             padding: $padding;
             padding-top: $padding - 2*$border;
             padding-right: $padding - 2*$border;
+            background-color: transparent;
             margin: 0;
 
             &:last-child {

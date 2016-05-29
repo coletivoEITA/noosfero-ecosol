@@ -274,7 +274,7 @@ pt-BR: &pt-BR
           no_margin_set: "Sem margem definida"
           products: Produtos
           supplier: "%{terms.supplier.singular.capitalize}"
-          info: "Esta é a lista de produtos %{terms.profile.from_which_article.singular} distribuí. Os produtos se dividem entre ativos e inativos."
+          info: "Esta é a lista de produtos %{terms.profile.from_which_article.singular} distribui."
           the_products: "Os produtos"
           name: "Nome"
           whose_qty_available_i: "cuja qtd disponível é"

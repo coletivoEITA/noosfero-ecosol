@@ -4,7 +4,6 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   include ConsumersCoopPlugin::ControllerHelper
   include OrdersCyclePlugin::TranslationHelper
 
-  no_design_blocks
   before_filter :login_required, except: [:index]
 
   helper OrdersCyclePlugin::TranslationHelper

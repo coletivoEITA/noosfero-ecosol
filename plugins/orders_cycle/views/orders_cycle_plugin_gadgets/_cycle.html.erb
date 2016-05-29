@@ -5,21 +5,19 @@
       <%= t('views.gadgets._cycle.orders_open_b_cycle') % {:cycle => cycle.name_with_code} %>
     </h2>
 
-    <table>
-      <tr>
-        <td class='first-column'>
-          <%= render :partial => 'orders_cycle_plugin_cycle/view_dates',
-            :locals => {:cycle => cycle, :happening => false} %>
-        </td>
-        <td class='second-column'>
-          <div class="subtitle"><%= cycle.description %></div>
-        </td>
-        <td class='third-column'>
-          <%= button_to t('views.gadgets._cycle.see_orders_cycle'), {:controller => :orders_cycle_plugin_order, :action => :edit, :cycle_id => cycle.id}, :class => "action-button" %>
-          <%# button_to t('views.gadgets._cycle.place_an_order'), {:controller => :orders_cycle_plugin_order, :action => :new, :cycle_id => cycle.id} %>
-          <div class='clean'></div>
-        </td>
-      <tr>
-    </table>
+    <div class=row>
+      <div class='first-column col-md-6 col-xs-12 col-lg-6'>
+        <%= render :partial => 'orders_cycle_plugin_cycle/view_dates',
+          :locals => {:cycle => cycle, :happening => false} %>
+      </div>
+      <div class='second-column col-xs-12 col-md-6 col-lg-5'>
+        <div class="subtitle"><%= cycle.description %></div>
+      </div>
+      <div class='third-column col-xs-12 col-lg-1'>
+        <%= button_to t('views.gadgets._cycle.see_orders_cycle'), {:controller => :orders_cycle_plugin_order, :action => :edit, :cycle_id => cycle.id}, :class => "action-button" %>
+        <%# button_to t('views.gadgets._cycle.place_an_order'), {:controller => :orders_cycle_plugin_order, :action => :new, :cycle_id => cycle.id} %>
+        <div class='clean'></div>
+      </div>
+    </div>
   </div>
 </div>

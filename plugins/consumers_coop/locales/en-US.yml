@@ -7,10 +7,13 @@ en-US: &en-US
         description: "Make an organization a consumers cooperative"
       layout_helper:
         orders: Orders
-        start: Start
+        orders_cycles: Orders Cycles
         products: Products
-        administration: Administration
         volunteering: Volunteering
+        leave: Leave community
+        suppliers: Suppliers
+        consumers: Consumers
+        settings: Settings
     controllers:
       myprofile:
         distribution_settings: "Distribution settings saved."
