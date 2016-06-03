@@ -32,7 +32,7 @@ Feature: cycle_purchases
     And "supplier" is a supplier of "Collective"
     And I am logged in as "manager"
     And I am on collective's homepage
-    And I follow "Orders' Cycles"
+    And I follow "Orders Cycles"
     And I follow "New cycle"
     And I fill in "Name" with "Test cycle 1"
     And I fill in "cycle[start_finish_range]" with "Wednesday, May 11, 2016 6:28 PM to Wednesday, May 18, 2020 6:28 PM"
@@ -57,7 +57,7 @@ Feature: cycle_purchases
   Scenario: view purchases
     Given I am logged in as "manager"
     And I am on collective's homepage
-    And I follow "Orders' Cycles"
+    And I follow "Orders Cycles"
     And I follow "Test cycle 1"
     And I follow "Purchases"
     And I open the order with "Supplier"
