@@ -1,6 +1,5 @@
 module UrlHelper
 
-  # FIXME move to a monkey patch in all controllers' init
   mattr_accessor :controller_path_class
   self.controller_path_class = {}
 
@@ -30,6 +29,24 @@ module UrlHelper
     super options
   end
 
+  def default_url_options options={}
+    options[:protocol] ||= '//'
+
+    options[:override_user] = params[:override_user] if params[:override_user].present?
+
+    # Only use profile's custom domains for the profiles and the account controllers.
+    # This avoids redirects and multiple URLs for one specific resource
+    if controller_path = options[:controller] || self.class.controller_path
+      controller = (UrlHelper.controller_path_class[controller_path] ||= "#{controller_path}_controller".camelize.constantize rescue nil)
+      profile_needed = controller.profile_needed rescue false
+      if controller and not profile_needed and not controller == AccountController
+        options.merge! :host => environment.default_hostname, :only_path => false
+      end
+    end
+
+    options
+  end
+
   # the url_for above put or delete the :profile parameter as needed
   # :profile in _path_segments would always add it
   def url_options
@@ -39,10 +56,6 @@ module UrlHelper
       opts[:_recall].delete :profile if opts[:_recall]
       opts
     end
-  end
-
-  def default_url_options
-    {protocol: '//'}
   end
 
   def back_url

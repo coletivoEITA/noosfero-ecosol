@@ -17,6 +17,13 @@ class ApplicationController < ActionController::Base
   before_filter :authorize_profiler if defined? Rack::MiniProfiler
   around_filter :set_time_zone
 
+  before_filter :set_session_theme
+  def set_session_theme
+    if params[:theme]
+      session[:theme] = environment.theme_ids.include?(params[:theme]) ? params[:theme] : nil
+    end
+  end
+
   def require_login_for_environment
     login_required
   end
@@ -239,29 +246,6 @@ class ApplicationController < ActionController::Base
         render_not_found
       end
     end
-  end
-
-  cattr_accessor :controller_path_class
-  self.controller_path_class = {}
-
-  def default_url_options options={}
-    #if @domain or (@profile and @profile.default_protocol)
-    #protocol = if @profile then @profile.default_protocol else @domain.protocol end
-    #options.merge! :protocol => protocol if protocol != 'http'
-    #end
-    options[:protocol] ||= '//'
-
-    # Only use profile's custom domains for the profiles and the account controllers.
-    # This avoids redirects and multiple URLs for one specific resource
-    if controller_path = options[:controller] || self.class.controller_path
-      controller = (self.class.controller_path_class[controller_path] ||= "#{controller_path}_controller".camelize.constantize rescue nil)
-      profile_needed = controller.profile_needed rescue false
-      if controller and not profile_needed and not controller == AccountController
-        options.merge! :host => environment.default_hostname, :only_path => false
-      end
-    end
-
-    options
   end
 
   include UrlHelper
