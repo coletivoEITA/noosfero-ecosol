@@ -10,8 +10,8 @@ class TinyMceArticle < TextArticle
     _('Add a new text article.')
   end
 
-  def self.refuse_blocks
-    true
+  def self.can_display_blocks?
+    false
   end
 
   xss_terminate :only => [  ]
@@ -34,6 +34,10 @@ class TinyMceArticle < TextArticle
 
   def can_display_media_panel?
     true
+  end
+
+  def self.can_display_blocks?
+    false
   end
 
 end

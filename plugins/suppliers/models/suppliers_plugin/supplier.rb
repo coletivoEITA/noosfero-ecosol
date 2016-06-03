@@ -130,7 +130,7 @@ class SuppliersPlugin::Supplier < ApplicationRecord
 
     already_supplied = self.consumer.distributed_products.unarchived.from_supplier_id(self.id).all
 
-    self.profile.products.unarchived.each do |source_product|
+    self.profile.products.unarchived.map do |source_product|
       next if already_supplied.find{ |f| f.supplier_product == source_product }
 
       source_product.distribute_to_consumer self.consumer

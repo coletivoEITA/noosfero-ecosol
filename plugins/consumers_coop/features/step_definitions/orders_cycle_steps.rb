@@ -15,6 +15,7 @@ Given /^"([^""]*)" is a supplier of "([^""]*)"$/ do |supplier, consumer|
   supplier = Enterprise.find_by(name: supplier) || Enterprise[supplier]
   consumer = Profile.find_by(name: consumer) || Profile[consumer]
   consumer.add_supplier supplier
+  Delayed::Job.work_off
 end
 
 When /^I add cycle product "([^"]*)"$/ do |product|

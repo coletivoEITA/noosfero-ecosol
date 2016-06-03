@@ -741,18 +741,6 @@ class CmsControllerTest < ActionController::TestCase
     assert_tag :input, :attributes => { :id => 'article_link' }
   end
 
-  should 'not make enterprise homepage available to person' do
-    @controller.stubs(:profile).returns(profile)
-    @controller.stubs(:user).returns(profile)
-    assert_not_includes available_article_types, EnterpriseHomepage
-  end
-
-  should 'make enterprise homepage available to enterprises' do
-    @controller.stubs(:profile).returns(fast_create(Enterprise, :name => 'test_ent', :identifier => 'test_ent'))
-    @controller.stubs(:user).returns(profile)
-    assert_includes available_article_types, EnterpriseHomepage
-  end
-
   should 'update categories' do
     env = Environment.default
     top = env.categories.create!(:display_in_menu => true, :name => 'Top-Level category')
@@ -2003,6 +1991,39 @@ class CmsControllerTest < ActionController::TestCase
               :clone => true, :type => 'TinyMceArticle'
 
     assert_match main_article.body, @response.body
+  end
+
+  should 'set no_design_blocks as false when create a new document without type' do
+    get :new, profile: profile.identifier
+    assert !assigns(:no_design_blocks)
+  end
+
+  should 'set no_design_blocks as false when create a new document with invalid type' do
+    assert_raise RuntimeError do
+      get :new, profile: profile.identifier, type: 'InvalidType'
+      assert !assigns(:no_design_blocks)
+    end
+  end
+
+  [TextileArticle, Event, TinyMceArticle].each do |klass|
+    should "set no_design_blocks as true when create #{klass.name}" do
+      get :new, profile: profile.identifier, type: klass.name
+      assert assigns(:no_design_blocks)
+    end
+  end
+
+  should "set no_design_blocks as false when edit Article" do
+    article = fast_create(Article, profile_id: profile.id)
+    get :edit, profile: profile.identifier, id: article.id
+    assert !assigns(:no_design_blocks)
+  end
+
+  [TextileArticle, Event, TinyMceArticle].each do |klass|
+    should "set no_design_blocks as true when edit #{klass.name}" do
+      article = fast_create(klass, profile_id: profile.id)
+      get :edit, profile: profile.identifier, id: article.id
+      assert assigns(:no_design_blocks)
+    end
   end
 
   protected

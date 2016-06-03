@@ -652,7 +652,7 @@ class Profile < ApplicationRecord
     url << url_options[:host]
     url << ':' << url_options[:port].to_s if url_options.key?(:port)
     url << Noosfero.root('')
-    url
+    url.html_safe
   end
 
 private :generate_url, :url_options
@@ -1099,6 +1099,11 @@ private :generate_url, :url_options
   # field => privacy (e.g.: "address" => "public")
   def fields_privacy
     self.data[:fields_privacy]
+  end
+
+  # abstract
+  def active_fields
+    []
   end
 
   def public_fields

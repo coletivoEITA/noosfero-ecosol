@@ -53,7 +53,6 @@ class SearchController < PublicController
     [
       [ :people, _('People'), :recent_people ],
       [ :enterprises, _('Enterprises'), :recent_enterprises ],
-      [ :products, _('Products'), :recent_products ],
       [ :events, _('Upcoming events'), :upcoming_events ],
       [ :communities, _('Communities'), :recent_communities ],
       [ :articles, _('Contents'), :recent_articles ]
@@ -81,19 +80,15 @@ class SearchController < PublicController
     full_text_search
   end
 
-  def products
-    @scope = @environment.products.enabled.is_public.includes(
-      :product_category, :unit, :region, :image, {inputs: [:product_category]},
-      {product_qualifiers: [:qualifier, :certifier]},
-      {price_details: [:production_cost]},
-      {profile: [:domains]},
-    )
-    full_text_search
-  end
-
   def enterprises
     @scope = visible_profiles(Enterprise)
     full_text_search
+  end
+
+  # keep URL compatibility
+  def products
+    return render_not_found unless defined? ProductsPlugin
+    redirect_to url_for(params.merge controller: 'products_plugin/search', action: :products)
   end
 
   def communities
@@ -199,7 +194,6 @@ class SearchController < PublicController
       people:      _('People'),
       communities: _('Communities'),
       enterprises: _('Enterprises'),
-      products:    _('Products and Services'),
       events:      _('Events'),
     }
   end
@@ -274,12 +268,11 @@ class SearchController < PublicController
   end
 
   def available_assets
-    assets = {
+    {
       articles:    _('Contents'),
       enterprises: _('Enterprises'),
       people:      _('People'),
       communities: _('Communities'),
-      products:    _('Products and Services'),
     }
   end
 

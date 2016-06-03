@@ -62,18 +62,8 @@ module Noosfero::Factory
     object
  end
 
-  def defaults_for(name, attrs = {})
-    method_name = "defaults_for_#{name.to_s.underscore}"
-    if respond_to?(method_name)
-      m = method(method_name)
-      if m.arity == -1
-        m.call(attrs)
-      else
-        m.call
-      end
-    else
-      {}
-    end
+  def defaults_for(name)
+    send "defaults_for_#{name.to_s.underscore.tr '/', '_'}" rescue {}
   end
 
   def self.num_seq
@@ -335,7 +325,6 @@ module Noosfero::Factory
   end
 
   alias :defaults_for_region :defaults_for_category
-  alias :defaults_for_product_category :defaults_for_category
 
   ###############################################
   # Box
@@ -367,43 +356,11 @@ module Noosfero::Factory
   alias :defaults_for_email_activation :defaults_for_task
 
   ###############################################
-  # Product
-  ###############################################
-
-  def defaults_for_product
-    { :name => 'Product ' + factory_num_seq.to_s }
-  end
-
-  ###############################################
-  # Input
-  ###############################################
-
-  def defaults_for_input
-    { }
-  end
-
-  ###############################################
   # Contact
   ###############################################
 
   def defaults_for_contact
     { :subject => 'hello there', :message => 'here I come to SPAM you' }
-  end
-
-  ###############################################
-  # Qualifier
-  ###############################################
-
-  def defaults_for_qualifier
-    { :name => 'Qualifier ' + factory_num_seq.to_s, :environment_id => 1 }
-  end
-
-  ###############################################
-  # Certifier
-  ###############################################
-
-  def defaults_for_certifier
-    defaults_for_qualifier.merge({ :name => 'Certifier ' + factory_num_seq.to_s })
   end
 
   ###############################################
@@ -480,22 +437,6 @@ module Noosfero::Factory
   def defaults_for_comment(params = {})
     name = "comment_#{rand(1000)}"
     { :title => name, :body => "my own comment", :source_id => 1, :source_type => 'Article' }.merge(params)
-  end
-
-  ###############################################
-  # Unit
-  ###############################################
-
-  def defaults_for_unit
-    { :singular => 'Litre', :plural => 'Litres', :environment_id => 1 }
-  end
-
-  ###############################################
-  # Production Cost
-  ###############################################
-
-  def defaults_for_production_cost
-    { :name => 'Production cost ' + factory_num_seq.to_s }
   end
 
   ###############################################

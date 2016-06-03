@@ -35,7 +35,6 @@
 * views speficics
 *= require add-and-join.js
 *= require report-abuse.js
-*= require manage-products.js
 *= require autogrow.js
 *= require pagination.js
 *= require loading-overlay.js
@@ -249,8 +248,6 @@ function update_loading(message) {
 function redirect_to(url) {
   document.location=url;
 }
-
-/* Products edition  */
 
 function numbersonly(e, separator) {
   var key;

@@ -103,12 +103,10 @@ class CmsController < MyProfileController
         end
       end
     end
-
-    escape_fields @article
   end
 
   def new
-    # FIXME this method should share some logic wirh edit !!!
+    # FIXME this method should share some logic with edit !!!
 
     @success_back_to = params[:success_back_to]
     # user must choose an article type first
@@ -174,9 +172,6 @@ class CmsController < MyProfileController
         return
       end
     end
-
-    escape_fields @article
-
     render :action => 'edit'
   end
 
@@ -365,7 +360,7 @@ class CmsController < MyProfileController
   def search
     query = params[:q]
     results = find_by_contents(:uploaded_files, profile, profile.files.published, query)[:results]
-    render :text => article_list_to_json(results), :content_type => 'application/json'
+    render :text => article_list_to_json(results).html_safe, :content_type => 'application/json'
   end
 
   def search_article_privacy_exceptions
@@ -408,9 +403,6 @@ class CmsController < MyProfileController
     ]
     articles += special_article_types if params && params[:cms]
     parent_id = params ? params[:parent_id] : nil
-    if profile.enterprise?
-      articles << EnterpriseHomepage
-    end
     if @parent && @parent.blog?
       articles -= Article.folder_types.map(&:constantize)
     end
@@ -450,7 +442,7 @@ class CmsController < MyProfileController
   end
 
   def refuse_blocks
-    @no_design_blocks = true if @type.constantize.refuse_blocks
+    @no_design_blocks = @type.present? && valid_article_type?(@type) ? !@type.constantize.can_display_blocks? : false
   end
 
   def per_page
@@ -518,10 +510,4 @@ class CmsController < MyProfileController
     end
   end
 
-  def escape_fields article
-    unless article.kind_of?(RssFeed)
-      @escaped_body = CGI::escapeHTML(article.body || '')
-      @escaped_abstract = CGI::escapeHTML(article.abstract || '')
-    end
-  end
 end

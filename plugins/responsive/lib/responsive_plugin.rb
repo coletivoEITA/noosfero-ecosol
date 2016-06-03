@@ -1,5 +1,3 @@
-raise "Responsive plugins requires ruby 2.0's prepend for sane monkey patches" if RUBY_VERSION < '2.0'
-
 class ResponsivePlugin < Noosfero::Plugin
 
   def self.plugin_name
@@ -15,7 +13,7 @@ class ResponsivePlugin < Noosfero::Plugin
   end
 
   def head_ending
-    '<meta name="viewport" content="width=device-width, initial-scale=1">'
+    '<meta name="viewport" content="width=device-width, initial-scale=1">'.html_safe
   end
 
   def body_ending
