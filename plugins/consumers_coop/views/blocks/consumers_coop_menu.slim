@@ -1,0 +1,9 @@
+.profile-picture
+  a.picture href=url_for(block.owner.url) style="background-image: url(#{profile_icon(block.owner, :thumb)})"
+
+  a.name href=url_for(block.owner.url) #{h block.owner.short_name(nil)}
+
+
+.menu-buttons-container
+  = display_header_buttons
+

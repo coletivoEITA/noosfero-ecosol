@@ -31,7 +31,9 @@ body.consumers-coop {
   display: none;
 }
 */
-
+.consumers-coop-layout .subtitle {
+  font-size: 12px;
+}
 .consumers-coop-layout .page-title,
 .consumers-coop-enabled .page-title {
   display: none !important;
@@ -45,7 +47,6 @@ body.consumers-coop {
 .consumers-coop-layout #content h2 {
   color: #036475;
   margin-bottom: 7px;
-  height: 34px;
 }
 .consumers-coop-layout #content h2 a {
   text-decoration: none;
@@ -59,84 +60,6 @@ body.consumers-coop {
 
 .controller-profile_editor a.control-panel-consumers-coop {
   background-image: url(/plugins/consumers_coop/images/consumers-coop.png);
-}
-
-/* ----- header ----- */
-
-#consumers-coop-plugin-header {
-  margin-left: -$wireframe-padding;
-  margin-top: 2*$margin;
-  margin-bottom: $margin;
-  width: $wireframe + 2*$wireframe-padding;
-
-  #menu-title {
-    color: black;
-    text-align: left;
-    margin: 0;
-    padding-top: 55px;
-    font-size: 24px;
-    font-weight: lighter;
-  }
-
-  .menu-header {
-    background-color: #d9d2e4;
-    padding: 8px 0;
-    text-align: center;
-    text-transform: uppercase;
-  }
-  .menu-logo {
-    height: 90px;
-    padding-left: $wireframe-padding;
-    text-transform: capitalize;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-  }
-
-  .admin-submenu {
-
-    .menu-button-container {
-      border-top: 2px solid #787969;
-      padding: $half-padding;
-      padding-left: $wireframe-padding + $half-padding;
-
-      .menu-button {
-        padding: $half-padding;
-        text-transform: lowercase;
-      }
-    }
-  }
-
-  .menu-button-container {
-    background: #646158;
-    padding: $padding;
-    padding-left: $wireframe-padding + $half-padding;
-    @extend .container-clean;
-
-    .menu-button {
-      float: left;
-      padding: $padding $half-padding;
-      margin-right: $half-margin;
-      background-color: transparent;
-      color: white;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 5px;
-      -moz-border-radius: 5px;
-      -webkit-border-radius: 5px;
-      -o-border-radius: 5px;
-
-      &.menu-selected {
-        font-weight: bold;
-      }
-      &:hover,
-      &.menu-selected {
-        color: #646158;
-        background-color: white;
-      }
-    }
-  }
 }
 
 /* ----- general ----- */
@@ -236,6 +159,11 @@ body.consumers-coop {
     .field {
       width: 360px;
       margin-top: 5px;
+      margin-bottom: 10px;
+
+      label {
+        float: none;
+      }
     }
     input[type=text] {
       width: 100%;
@@ -249,31 +177,4 @@ body.consumers-coop {
     }
 
   }
-}
-#consumers-coop-plugin-header .menu-logo {
-  background-size: 100%;
-  background-repeat: no-repeat;
-}
-
-#consumers-coop-settings .color-purple,#consumers-coop-plugin-header .color-purple {
-  background-color: #705496;
-}
-#consumers-coop-settings .color-yellow,#consumers-coop-plugin-header .color-yellow {
-  background-color: #f5b900;
-}
-#consumers-coop-settings .color-beige,#consumers-coop-plugin-header .color-beige {
-  background-color: #c4bf66;
-}
-#consumers-coop-settings .color-blue,#consumers-coop-plugin-header .color-blue {
-  background-color: #0094c9;
-}
-#consumers-coop-settings .color-petro,#consumers-coop-plugin-header .color-petro {
-  background-color: #036475;
-}
-#consumers-coop-settings .color-green,#consumers-coop-plugin-header .color-green {
-  background-color: #4aa133;
-}
-
-#consumers-coop-settings .disabled {
-  background-color: gray;
 }

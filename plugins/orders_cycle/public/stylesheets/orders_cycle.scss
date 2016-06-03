@@ -38,6 +38,7 @@
 
       th {
         border-bottom: 0;
+        padding-left: 5px;
       }
     }
 
@@ -381,7 +382,7 @@
 }
 
 #cycle-dates th {
-  width: 80px;
+  width: 60px;
   vertical-align: top;
   border-bottom: 0;
 
@@ -517,43 +518,49 @@
   }
 }
 
-#cycles-gadget {
-  margin-bottom: 30px;
+#content #cycles-gadget {
+  margin-top: 20px;
+  margin-bottom: 20px;
 
   #all-cycles {
     float: right;
   }
   h2 {
     color: #036475;
+    background-color: transparent;
+    font-size: 25px;
   }
 
+  tr:hover td {
+    background-color: transparent;
+  }
   td {
     padding-right: 8px;
     vertical-align: top;
+    font-size: 13px;
   }
-  td.first-column {
-    width: 300px;
+  .second-column .subtitle {
+    font-size: 13px;
+    margin-top: 5px;
   }
-  td.second-column {
-    width: 400px;
-  }
-  td.third-column {
-    vertical-align: bottom;
-  }
-  td.third-column form {
+  .third-column form {
     float: right;
     clear: both;
   }
-  .cycle .happening {
-    background-color: #ffe546;
-    line-height: 20px;
-    text-transform: uppercase;
-    padding: 0 8px;
-  }
-  .cycle .info {
-    background: #DDF2C5;
-    padding: 8px;
-    padding-right: 0;
+  .cycle {
+    margin-bottom: 10px;
+
+    .happening {
+      background-color: #ffe546;
+      line-height: 20px;
+      text-transform: uppercase;
+      padding: 0 8px;
+      font-size: 15px;
+    }
+    .info {
+      background: #DDF2C5;
+      padding: 8px;
+    }
   }
 }
 

@@ -6,11 +6,16 @@ pt-BR: &pt-BR
         name: "Coletivo de consumo"
         description: "Torne uma organização em uma coletivo de consumo"
       layout_helper:
-        start: Início
         orders: Pedidos
+        orders_cycles: Feiras Virtuais
         products: Produtos
-        administration: Administração
         volunteering: Voluntariado
+        products: Produtos
+        volunteering: Voluntariado
+        leave: Sair da comunidade
+        suppliers: Fornecedores
+        consumers: Consumidores
+        settings: Configurações
 
     controllers:
       myprofile:

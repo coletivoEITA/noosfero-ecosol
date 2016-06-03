@@ -4,7 +4,7 @@
   listing = false if listing.nil?
 %>
 
-<h2>
+<h4>
   <% if cycle.new? %>
     <div class="cycle-edit-link"><%= t('views.cycle._title.new_cycle') %></div>
   <% else %>
@@ -12,7 +12,7 @@
   <% end %>
 
   <%= t('views.cycle._brief.confirmed_orders', :count => cycle.sales.ordered.count) if listing and not cycle.new? %>
-</h2>
+</h4>
 
 <%= render 'timeline', :cycle => cycle, :actions => actions, :listing => listing if timeline %>
 

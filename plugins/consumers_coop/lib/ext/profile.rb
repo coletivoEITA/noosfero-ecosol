@@ -5,7 +5,7 @@ require_dependency 'community'
 Profile.descendants.each do |subclass|
   subclass.class_eval do
     attr_accessible :consumers_coop_settings
-    attr_accessible :consumers_coop_header_image_builder
+    attr_accessible :volunteers_settings
   end
 end
 
@@ -18,28 +18,15 @@ class Profile
   end
   alias_method :consumers_coop_settings=, :consumers_coop_settings
 
-  # belongs_to only works with real attributes :(
-  def consumers_coop_header_image
-    @consumers_coop_header_image ||= ConsumersCoopPlugin::HeaderImage.find_by_id self.consumers_coop_header_image_id
-  end
-  delegate :consumers_coop_header_image_id, :consumers_coop_header_image_id=, to: :consumers_coop_settings
-  def consumers_coop_header_image_builder= img
-    image = self.consumers_coop_header_image
-
-    if image
-      image.attributes = img
-    else
-      build_consumers_coop_header_image.attributes = img
-    end unless img[:uploaded_data].blank?
-  end
-
   def consumers_coop_enable
     self.consumers_coop_add_own_members
     self.consumers_coop_add_own_products
     self.consumers_coop_enable_view
+    self.consumers_coop_add_own_blocks
   end
   def consumers_coop_disable
     self.consumers_coop_disable_view
+    self.consumers_coop_remove_own_blocks
   end
 
   def consumers_coop_enable_view
@@ -74,25 +61,28 @@ class Profile
 
     self.products.own.map do |p|
       next if p.to_products.from_supplier_id(self.id).present?
-      SuppliersPlugin::DistributedProduct.create! profile: self, from_product: p
+      #SuppliersPlugin::DistributedProduct.create! profile: self, from_product: p
     end
   end
 
-  def consumers_coop_header_image_save
-    return unless self.consumers_coop_header_image
-    self.consumers_coop_header_image.save!
-    self.consumers_coop_header_image_id = self.consumers_coop_header_image.id
-    self.save!
+  def consumers_coop_add_own_blocks
+    happening = OrdersCyclePlugin::OrdersCycleHappeningBlock.new title: "Order Cycles Happening", box: self.boxes.where(position: 1).first
+    happening.settings = {display:"home_page_only", display_user:"all", language:"all", edit_modes:"none", move_modes:"none"}
+    happening.save
+    happening.move_to_top
+    menu = ConsumersCoopPlugin::ConsumersCoopMenuBlock.new title: "Consumers Coop Menu", box: self.boxes.where(position: 2).first
+    menu.save
+    menu.move_to_top
+  end
+  def consumers_coop_remove_own_blocks
+    OrdersCyclePlugin::OrdersCycleHappeningBlock.where(title: "Order Cycles Happening", box: self.boxes).destroy_all
+  	ConsumersCoopPlugin::ConsumersCoopMenuBlock.where(title: "Consumers Coop Menu", box: self.boxes).destroy_all
   end
 
   protected
 
   def abbreviation_or_name
     self.consumers_coop_settings.name_abbreviation.blank? ? self.name : self.consumers_coop_settings.name_abbreviation
-  end
-
-  def build_consumers_coop_header_image
-    @consumers_coop_header_image = ConsumersCoopPlugin::HeaderImage.new
   end
 
 end

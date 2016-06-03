@@ -17,7 +17,7 @@ $sortable-table-negative-area: 3*$base;
 
   &.wireframe-size {
     > .table-header {
-      width: $wireframe + 2*$wireframe-padding;
+      width: $wireframe;
       margin-left: -$wireframe-padding;
       padding: 0 $wireframe-padding;
     }

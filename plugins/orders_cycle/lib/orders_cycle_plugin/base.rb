@@ -10,5 +10,10 @@ class OrdersCyclePlugin::Base < Noosfero::Plugin
     ['orders_cycle'].map{ |j| "javascripts/#{j}" }
   end
 
+  def self.extra_blocks
+    {
+      OrdersCyclePlugin::OrdersCycleHappeningBlock => {type: [Community]}
+    }
+  end
 end
 

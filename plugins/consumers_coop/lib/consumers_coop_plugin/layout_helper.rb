@@ -5,13 +5,17 @@ module ConsumersCoopPlugin::LayoutHelper
   include TermsHelper
 
   HeaderButtons = {
-    start: [-> { profile.url }, -> { on_homepage? }],
     orders: [{controller: :consumers_coop_plugin_order, action: :index}],
-    products: [{controller: :catalog, action: :index}, nil, -> { profile.enterprise? }],
     volunteering: [{controller: :consumers_coop_plugin_volunteers, action: :index}, nil, -> { profile.volunteers_settings.cycle_volunteers_enabled }],
-    administration: [{controller: :consumers_coop_plugin_myprofile, action: :index},
-     -> { @admin }, -> { profile.has_admin? user }],
+    #products: [{controller: :catalog, action: :index}, nil, -> { profile.enterprise? }],
+    separator: [{}],
+    orders_cycles: [{:controller => :consumers_coop_plugin_cycle, :action => :index}, nil, -> { profile.has_admin? user }],
+    products: [{:controller => :consumers_coop_plugin_product, :action => :index}, nil, -> { profile.has_admin? user }],
+    suppliers: [{:controller => :consumers_coop_plugin_supplier, :action => :index}, nil, -> { profile.has_admin? user }],
+    consumers: [{:controller => :consumers_coop_plugin_consumer, :action => :index}, nil, -> { profile.has_admin? user }],
+    settings: [{:controller => :consumers_coop_plugin_myprofile, :action => :settings}, nil, -> { profile.has_admin? user }],
   }
+  #TODO: Add leave/join and remove existing profile_info block
 
   def display_header_buttons
     # FIXME: call method on controller
@@ -20,23 +24,27 @@ module ConsumersCoopPlugin::LayoutHelper
     HeaderButtons.map do |key, (url, selected_proc, if_proc)|
       next if if_proc and not instance_exec(&if_proc)
 
-      label = t "consumers_coop_plugin.lib.layout_helper.#{key}"
-      if url.is_a? Proc
-        url = instance_exec &url
+      if key == :separator
+        content_tag 'hr'
       else
-        # necessary for profile with own domain
-        url[:profile] = profile.identifier
-      end
+        label = t "consumers_coop_plugin.lib.layout_helper.#{key}"
+        if url.is_a? Proc
+          url = instance_exec(&url)
+        else
+          # necessary for profile with own domain
+          url[:profile] = profile.identifier
+        end
 
-      if key != :administration and @admin
-        selected = false
-      elsif selected_proc
-        selected = instance_exec &selected_proc
-      else
-        selected = params[:controller].to_s == url[:controller].to_s
-      end
+        if key != :administration and @admin
+          selected = false
+        elsif selected_proc
+          selected = instance_exec(&selected_proc)
+        else
+          selected = params[:controller].to_s == url[:controller].to_s
+        end
 
-      link_to label, url, class: "menu-button #{"menu-selected" if selected}"
+        link_to label, url, class: "menu-button #{key} #{"selected" if selected}"
+      end
     end.safe_join
   end
 
