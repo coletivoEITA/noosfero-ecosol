@@ -157,6 +157,13 @@ module AuthenticatedSystem
       current_user params[:override_user]
     end
 
+    def override_user
+      return if params[:override_user].blank?
+      return unless logged_in? and user.is_admin? environment
+      @current_user = nil
+      current_user params[:override_user]
+    end
+
     # When called with before_filter :login_from_cookie will check for an :auth_token
     # cookie and log the user back in if apropriate
     def login_from_cookie
