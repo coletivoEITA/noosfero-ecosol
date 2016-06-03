@@ -10,8 +10,6 @@ module ApplicationHelper
 
   include PermissionNameHelper
 
-  include PaginationHelper
-
   include UrlHelper
 
   include TranslationsHelper
@@ -868,6 +866,11 @@ module ApplicationHelper
   end
   alias :browse_communities_menu :search_communities_menu
 
+  def pagination_links(collection, options={})
+    options = {:previous_label => content_tag(:span, '&laquo; '.html_safe, :class => 'previous-arrow') + _('Previous'), :next_label => _('Next') + content_tag(:span, ' &raquo;'.html_safe, :class => 'next-arrow'), :inner_window => 1, :outer_window => 0 }.merge(options)
+    will_paginate(collection, options)
+  end
+
   def render_environment_features(folder)
     result = ''
     environment.enabled_features.keys.each do |feature|
@@ -1137,7 +1140,7 @@ module ApplicationHelper
     content_tag(:div, :class => 'errorExplanation', :id => 'errorExplanation') do
       content_tag(:h2, _('Errors while saving')) +
       content_tag(:ul) do
-        safe_join(errors.map { |err| content_tag(:li, err) })
+        safe_join(errors.map { |err| content_tag(:li, err.html_safe) })
       end
     end
   end
