@@ -223,8 +223,14 @@
 #cycle-admin-page {
   @import 'field';
 
+  .hideable-help {
+    font-size: 13px;
+  }
+
   a.action-button {
     margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 12px;
   }
   #cycle-header-warning {
     background-color: #FECBCA;
