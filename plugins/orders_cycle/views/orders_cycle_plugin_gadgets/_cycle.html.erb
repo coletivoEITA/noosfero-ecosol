@@ -2,7 +2,7 @@
   <div class='happening'><%= t('views.gadgets._cycle.happening') %></div>
   <div class='info'>
     <h2>
-      <%= t('views.gadgets._cycle.orders_open_b_cycle') % {:cycle => cycle.name_with_code} %>
+      <%= (t('views.gadgets._cycle.orders_open_b_cycle') % {:cycle => cycle.name_with_code}).html_safe %>
     </h2>
 
     <div class=row>
@@ -11,7 +11,7 @@
           :locals => {:cycle => cycle, :happening => false} %>
       </div>
       <div class='second-column col-xs-12 col-md-6 col-lg-5'>
-        <div class="subtitle"><%= cycle.description %></div>
+        <div class="subtitle"><%= cycle.description.html_safe %></div>
       </div>
       <div class='third-column col-xs-12 col-lg-1'>
         <%= button_to t('views.gadgets._cycle.see_orders_cycle'), {:controller => :orders_cycle_plugin_order, :action => :edit, :cycle_id => cycle.id}, :class => "action-button" %>
