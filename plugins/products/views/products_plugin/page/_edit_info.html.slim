@@ -2,7 +2,7 @@
 
 = form_for @product, as: :product, remote: true,
   loading: "small_loading('product-info-form')",
-  url: {controller: 'manage_products', action: 'edit', id: @product, field: 'info'},
+  url: {controller: 'products_plugin/page', action: 'edit', id: @product, field: 'info'},
   html: {id: 'product-info-form', method: 'post', class: 'form-horizontal', data: {type: 'html', update: '#product-info'}} do |f|
 
   - if defined? SuppliersPlugin and @product.is_a? SuppliersPlugin::DistributedProduct

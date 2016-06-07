@@ -188,7 +188,7 @@ catalog = {
       content.find('#catalog-result-qtty-wrap')
         .replaceWith(results_html.find('#catalog-result-qtty-wrap'))
 
-      // Check if the list was loaded or if it is the first search (came from manage_products#show)
+      // Check if the list was loaded or if it is the first search (came from products_plugin/page#show)
       if (content.find('#catalog-results').length) {
         //products
         results_html.find('.product').each(function(index, product) {

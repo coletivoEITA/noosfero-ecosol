@@ -131,12 +131,12 @@ module ProductsPlugin::ProductsHelper
   end
 
   def edit_link(label, url, html_options = {})
-    return '' unless (user && user.has_permission?('manage_products', profile))
+    return '' unless (user && user.has_permission?('products_plugin/page', profile))
     link_to(label, url, html_options)
   end
 
   def edit_product_link_to_remote(product, field, label, html_options = {})
-    return '' unless (user && user.has_permission?('manage_products', profile))
+    return '' unless (user && user.has_permission?('products_plugin/page', profile))
     options = html_options.merge(id: 'link-edit-product-' + field)
     options[:class] = options[:class] ? options[:class] + ' link-to-remote' : 'link-to-remote'
 
@@ -149,7 +149,7 @@ module ProductsPlugin::ProductsHelper
   end
 
   def edit_button(type, label, url, html_options = {})
-    return '' unless (user && user.has_permission?('manage_products', profile))
+    return '' unless (user && user.has_permission?('products_plugin/page', profile))
     button(type, label, url, html_options)
   end
 
@@ -162,12 +162,12 @@ module ProductsPlugin::ProductsHelper
   end
 
   def edit_ui_button(label, url, html_options = {})
-    return '' unless (user && user.has_permission?('manage_products', profile))
+    return '' unless (user && user.has_permission?('products_plugin/page', profile))
     ui_button(label, url, html_options)
   end
 
   def edit_product_ui_button_to_remote(product, field, label, html_options = {})
-    return '' unless (user && user.has_permission?('manage_products', profile))
+    return '' unless (user && user.has_permission?('products_plugin/page', profile))
     id = 'edit-product-remote-button-ui-' + field
     options = html_options.merge(id: id)
 
@@ -181,14 +181,14 @@ module ProductsPlugin::ProductsHelper
   end
 
   def cancel_edit_product_link(product, field, html_options = {})
-    return '' unless (user && user.has_permission?('manage_products', profile))
+    return '' unless (user && user.has_permission?('products_plugin/page', profile))
     button_to_function(:cancel, _('Cancel'), nil, html_options) do |page|
       page.replace_html "product-#{field}", CGI::escapeHTML(render "products_plugin/page/display_#{field}", product: product)
     end
   end
 
   def edit_product_category_link(product, html_options = {})
-    return '' unless (user && user.has_permission?('manage_products', profile))
+    return '' unless (user && user.has_permission?('products_plugin/page', profile))
     options = html_options.merge(id: 'link-edit-product-category')
     link_to(_('Change category'), { action: 'edit_category', id: product.id}, options)
   end
