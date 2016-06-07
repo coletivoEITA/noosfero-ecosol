@@ -2,8 +2,10 @@ module ProductsPlugin
   class PageController < ProfileController
 
     helper ProductsHelper
+    include CatalogHelper
 
-    protect 'manage_products', :profile, except: [:show]
+
+    protect 'page', :profile, except: [:show]
     before_filter :login_required, except: [:show]
     before_filter :create_product?, only: [:new]
 
@@ -16,7 +18,7 @@ module ProductsPlugin
       catalog_load_index
       @product = @profile.products.find(params[:id])
       @inputs = @product.inputs
-      @allowed_user = user && user.has_permission?('manage_products', profile)
+      @allowed_user = user && user.has_permission?('products_plugin/page', profile)
     end
 
     def categories_for_selection
@@ -42,7 +44,7 @@ module ProductsPlugin
         if @product.save
           session[:notice] = _('Product succesfully created')
           render :partial => 'shared/redirect_via_javascript',
-            :locals => { :url => url_for(:controller => 'manage_products', :action => 'show', :id => @product) }
+            :locals => { :url => url_for(:controller => 'products_plugin/page', :action => 'show', :id => @product) }
         else
           render_dialog_error_messages 'product'
         end
@@ -73,7 +75,7 @@ module ProductsPlugin
       if request.post?
         if @product.update({:product_category_id => params[:selected_category_id]}, :without_protection => true)
           render :partial => 'shared/redirect_via_javascript',
-            :locals => { :url => url_for(:controller => 'manage_products', :action => 'show', :id => @product) }
+            :locals => { :url => url_for(:controller => 'products_plugin/page', :action => 'show', :id => @product) }
         else
           render_dialog_error_messages 'product'
         end

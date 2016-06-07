@@ -16,6 +16,6 @@
     <div id='input-<%= input.id %>-form' class='input-details-form'> </div>
   </div>
 
-  <% if user && user.has_permission?('manage_products', profile) %>
+  <% if user && user.has_permission?('products_plugin/page', profile) %>
     <%= javascript_tag "input_javascript_stuff(#{input.id})" %>
   <% end %>

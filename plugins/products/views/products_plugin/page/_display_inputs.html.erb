@@ -25,7 +25,7 @@
   <%= edit_link(_('Order inputs'), {action: 'order_inputs', id: @product.id}, class: "order-inputs", style: 'display:none') %>
 </div>
 
-<% if user && user.has_permission?('manage_products', profile) %>
+<% if user && user.has_permission?('products_plugin/page', profile) %>
   <% if @product.inputs.size > 1 %>
     <%= javascript_tag "input_javascript_ordering_stuff()" %>
   <% end %>
