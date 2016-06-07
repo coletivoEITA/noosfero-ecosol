@@ -2,7 +2,7 @@
   <h3><%= _('Offers from this enterprise') %></h3>
 
   <% if profile == @active_organization %>
-    <%= link_to _("Add"), {:controller => :manage_products, :action => :new}, :class => 'add action-button' %>
+    <%= link_to _("Add"), {:controller => "products_plugin/page", :action => :new}, :class => 'add action-button' %>
   <% end %>
 
   <% unless all %>

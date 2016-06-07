@@ -4,7 +4,7 @@ class StockPluginProductsController < MyProfileController
 
   no_design_blocks
 
-  protect 'manage_products', :profile
+  protect 'products_plugin/page', :profile
 
   helper StockPlugin::DisplayHelper
 

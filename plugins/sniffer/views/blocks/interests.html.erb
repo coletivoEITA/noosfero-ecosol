@@ -10,7 +10,7 @@
   <div>
     <% if logged_in? and (current_user.person.is_admin?(environment) or profile.admins.include?(current_user.person)) %>
       <%= _('Edit %{inputs} and %{block.interests}') % {
-        :inputs => link_to(_("products' inputs"), :controller => :manage_products, :action => :index),
+        :inputs => link_to(_("products' inputs"), :controller => "products_plugin/page", :action => :index),
         :interests => link_to(_('declared interests'), :controller => :sniffer_plugin_myprofile, :action => :edit),
       } %>
     <% end %>
