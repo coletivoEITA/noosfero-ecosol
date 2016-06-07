@@ -733,11 +733,11 @@ module ApplicationHelper
     options[:comments_link] ||= true
     options[:read_more_link] ||= true
     lead = if article.lead.respond_to?(:call) then instance_exec(&article.lead).to_s.html_safe else article.lead.to_s.html_safe end
+    lead_links = (options[:comments_link] ? link_to_comments(article) : '') + (options[:read_more_link] ? reference_to_article( _('Read more'), article) : '')
     html = content_tag('div',
              lead +
              content_tag('div',
-               (options[:comments_link] ? link_to_comments(article) : '') +
-               (options[:read_more_link] ? reference_to_article( _('Read more'), article) : ''),
+               lead_links.html_safe,
                :class => 'read-more'
              ),
              :class => 'short-post'
