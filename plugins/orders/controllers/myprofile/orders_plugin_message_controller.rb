@@ -1,7 +1,5 @@
 class OrdersPluginMessageController < MyProfileController
 
-  no_design_blocks
-
   #protect 'edit_profile', :profile
 
   include OrdersPlugin::TranslationHelper

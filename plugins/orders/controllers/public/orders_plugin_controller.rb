@@ -2,8 +2,6 @@ class OrdersPluginController < PublicController
 
   include OrdersPlugin::TranslationHelper
 
-  no_design_blocks
-
   helper OrdersPlugin::TranslationHelper
   helper OrdersPlugin::DisplayHelper
 

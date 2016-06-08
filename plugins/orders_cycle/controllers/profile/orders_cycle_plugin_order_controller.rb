@@ -13,7 +13,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     @current_year = DateTime.now.year.to_s
     @year = (params[:year] || @current_year).to_s
 
-    @years_with_cycles = profile.orders_cycles_without_order.years.collect &:year
+    @years_with_cycles = profile.orders_cycles_without_order.years.collect(&:year)
     @years_with_cycles.unshift @current_year unless @years_with_cycles.include? @current_year
 
     @cycles = profile.orders_cycles.by_year @year

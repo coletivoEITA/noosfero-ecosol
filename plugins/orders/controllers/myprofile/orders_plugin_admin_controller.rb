@@ -3,8 +3,6 @@ class OrdersPluginAdminController < MyProfileController
   include OrdersPlugin::Report
   include OrdersPlugin::TranslationHelper
 
-  no_design_blocks
-
   protect 'edit_profile', :profile
   before_filter :set_admin
 
