@@ -88,6 +88,9 @@ module Api
       expose :id, :type, :settings, :position, :enabled
       expose :mirror, :mirror_block_id, :title
       expose :api_content, if: lambda { |object, options| options[:display_api_content] || object.display_api_content_by_default? }
+      expose :permissions do |block, options|
+        Entities.permissions_for_entity(block, options[:current_person], :allow_edit?)
+      end
     end
 
     class Box < Entity
@@ -121,6 +124,10 @@ module Api
       expose :type
       expose :custom_header
       expose :custom_footer
+      expose :permissions do |profile, options|
+        Entities.permissions_for_entity(profile, options[:current_person],
+        :allow_post_content?, :allow_edit?, :allow_destroy?)
+      end
     end
 
     class UserBasic < Entity
