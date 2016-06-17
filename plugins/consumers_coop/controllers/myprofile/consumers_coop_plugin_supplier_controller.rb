@@ -1,4 +1,4 @@
-class ConsumersCoopPluginSupplierController < OrdersCyclePluginSupplierController
+class ConsumersCoopPluginSupplierController < MyProfileController
 
   include ConsumersCoopPlugin::TranslationHelper
 

@@ -1,0 +1,19 @@
+= javascript_include_tag 'plugins/suppliers/javascripts/consumers'
+
+= js_translations_include plugin: :suppliers
+
+.consumers-page
+  .row
+    div.col-xs-12
+      h1
+        = t("views.consumer.index.consumer")
+
+    .col-xs-12
+      p.page-description
+        = t("views.consumer.index.description")
+
+  consumer-page.row
+
+javascript:
+  riot.mount($('consumer-page'), #{SuppliersPlugin::ConsumersPageSerializer.new(profile, scope: self).to_json})
+

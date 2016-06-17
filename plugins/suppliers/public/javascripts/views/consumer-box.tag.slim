@@ -1,0 +1,21 @@
+consumer-box
+  div.consumer-box
+    .row
+      div.col-xs-9
+        div.picture-block
+          a.picture target='_blank' href='{consumerUrl}' style='background-image: url({consumer.profile_icon_thumb})'
+        div.name-block
+          div
+            a.name target='_blank' href='{consumerUrl}'
+              |{consumer.short_name}
+          div
+            a.email href='mailto:{consumer.contact_email}'
+              |{consumer.contact_email}
+      div.col-xs-3
+        button 
+          |{cs.t('views.consumer.index.detail')}
+
+  javascript:
+    this.cs = window.consumers
+    this.consumer = opts.consumer
+    this.consumerUrl = Routes.profile_path({profile: this.consumer.identifier})

@@ -339,6 +339,12 @@ en-US: &en-US
           name: Name
           suppliers: "%{terms.supplier.plural.capitalize}"
           this_is_the_list_of_s: "This is the list of %{terms.supplier.plural} associated %{terms.profile.to_article.singular}. It is possible to associate with existent %{terms.supplier.plural} or register %{terms.supplier.one}."
+      consumer:
+        index:
+          consumer: "Consumers"
+          description: "In this page you will find a list of consumers and its information. It will show a box with the user requests to enter the group to be accepted."
+          search: "search"
+          detail: "detail"
 
   orders_cycle_plugin:
     terms:

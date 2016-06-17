@@ -2,8 +2,6 @@ class SuppliersPluginMyprofileController < MyProfileController
 
   include SuppliersPlugin::TranslationHelper
 
-  no_design_blocks
-
   protect 'edit_profile', :profile
 
   before_filter :load_new, only: [:index, :new]

@@ -366,6 +366,12 @@ pt-BR: &pt-BR
           name: Nome
           suppliers: "%{terms.supplier.plural.capitalize}"
           this_is_the_list_of_s: "Esta é a lista de %{terms.supplier.plural} associados %{terms.profile.to_article.singular}. É possível associar %{terms.supplier.to.plural} existentes ou registrar %{terms.supplier.one}."
+      consumer:
+        index:
+          consumer: "Consumidores"
+          description: "Nesta página você encontrará a listagem de consumidores e suas informações. Pode aparecer também uma caixa com requisições de associação ao grupo a serem aprovadas"
+          search: "PESQUISAR ..."
+          detail: "detalhar"
 
   orders_cycle_plugin:
     terms:
