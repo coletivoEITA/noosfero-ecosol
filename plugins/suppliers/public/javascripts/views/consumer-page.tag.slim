@@ -1,25 +1,21 @@
 consumer-page
   .row
     .search.col-xs-12
-      input name='search' placeholder="{cs.t('views.consumer.index.search')}" onkeypress='{search}'
+      input name='search' placeholder="{cs.t('views.consumer.index.search')}" onkeyup='{search}'
 
   .consumers-listing.row
-    consumer-box.col-xs-12.col-md-6 each='{consumer in consumers}' consumer='{consumer}'
+    consumer-box each='{consumer in consumers}' consumer='{consumer}'
 
 
   javascript:
     this.cs = window.consumers;
-    this.allConsumers = opts.consumers;
     this.consumers = opts.consumers;
 
     search(e) {
       var needle = $(e.target).val().toLowerCase();
-      console.log($(e.target));
-      return;
-      this.consumers = $.extend({}, this.allConsumers);
-      for (var i in this.allConsumers) {
-        c = this.allConsumers[i];
-        if (c.name.indexOf(needle) === -1 && c.contact_email.indexOf(needle) === -1)
-          delete this.consumers[c];
+      console.log($(e.target).val());
+      for (var i in this.consumers) {
+        c = this.consumers[i];
+        this.consumers[i].selected = (c.name.indexOf(needle) > -1 || c.contact_email.indexOf(needle) > -1);
       }
     } 

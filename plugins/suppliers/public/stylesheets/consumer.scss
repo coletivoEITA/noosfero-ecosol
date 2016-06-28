@@ -1,73 +1,80 @@
-#content .main-block .consumers-page {
-
-  min-height: 100vh;
-  transition: all .4s ease;
-
-  h1 {
-    color: #BACB51;
-    font-weight: bold;
-    font-size: 25px;
-    text-transform: uppercase;
-    padding-left: 30px;
-    background-image: url(/plugins/consumers_coop/images/consumidores.png);
-    background-repeat: no-repeat;
-    background-size: 27px auto;
-  }
-
-  .search input {
-    border: none;
-    border-bottom: 2px solid $cirandas-header-bg;
-    background-color: transparent;
-    color: $cirandas-header-bg;
-    outline: none;
-    margin-bottom: 10px;
-    font-size: 16px;
-    width: 100%;
-    margin-bottom: 15px;
-  }
-  .consumer-box {
-    background-color: white;
-    &:hover {
-      background-color: #DBE2E1;
+.controller-consumer {
+  #content {
+    .box-container-1 {
+      background-color: #EFEFEF;
+      .main-block { background-color: #EFEFEF; }
     }
-    padding: 10px;
-    margin-bottom: 10px;
 
-    .picture-block {
-      float: left;
-      width: 75px;
-      height: 65px;
-    }
-    .name-block {
-      float: left;
-      width: auto;
-      .name, .email {
-        color: black;
-      }
-      .name {
-        font-size: 15px;
+    .main-block .consumers-page {
+      min-height: 100vh;
+
+      h1 {
+        color: #BACB51;
         font-weight: bold;
+        font-size: 25px;
+        text-transform: uppercase;
+        padding-left: 30px;
+        background-image: url(/plugins/consumers_coop/images/consumidores.png);
+        background-repeat: no-repeat;
+        background-size: 27px auto;
       }
-      .email { font-size: 13px; }
-    }
-    .picture {
-      width: 65px;
-      height: 65px;
-      border-radius: 50%;
-      -moz-border-radius: 50%;
-      -webkit-border-radius: 50%;
-      border: 2px solid #ECECEC;
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-size: cover;
-      display: inline-block;
-    }
-    button {
-      background-color: white;
-      color: #7C7C7C;
-      border: 2px solid #9C9C9C;
-      margin-top: 20px;
-      outline: none;
+
+      .search input {
+        border: none;
+        border-bottom: 2px solid $cirandas-header-bg;
+        background-color: transparent;
+        color: $cirandas-header-bg;
+        outline: none;
+        margin-bottom: 10px;
+        font-size: 16px;
+        width: 100%;
+        margin-bottom: 15px;
+      }
+      .consumer-box {
+        background-color: white;
+        &:hover {
+          background-color: #DBE2E1;
+        }
+        padding: 10px;
+        margin-bottom: 10px;
+
+        .picture-block {
+          float: left;
+          width: 75px;
+          height: 65px;
+        }
+        .name-block {
+          float: left;
+          width: auto;
+          .name, .email {
+            color: black;
+          }
+          .name {
+            font-size: 15px;
+            font-weight: bold;
+          }
+          .email { font-size: 13px; }
+        }
+        .picture {
+          width: 65px;
+          height: 65px;
+          border-radius: 50%;
+          -moz-border-radius: 50%;
+          -webkit-border-radius: 50%;
+          border: 2px solid #ECECEC;
+          background-repeat: no-repeat;
+          background-position: center center;
+          background-size: cover;
+          display: inline-block;
+        }
+        button {
+          background-color: white;
+          color: #7C7C7C;
+          border: 2px solid #9C9C9C;
+          margin-top: 20px;
+          outline: none;
+        }
+      }
     }
   }
 }

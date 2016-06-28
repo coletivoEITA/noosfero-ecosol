@@ -1,4 +1,4 @@
-consumer-box
+consumer-box.col-xs-12.col-md-6 show='{consumer.selected}'
   div.consumer-box
     .row
       div.col-xs-9
@@ -19,3 +19,4 @@ consumer-box
     this.cs = window.consumers
     this.consumer = opts.consumer
     this.consumerUrl = Routes.profile_path({profile: this.consumer.identifier})
+    this.consumer.selected = true;
