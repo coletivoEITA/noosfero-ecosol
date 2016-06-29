@@ -27,12 +27,15 @@ class UserMailer < ApplicationMailer
     @redirection = (true if user.return_to)
     @join = (user.community_to_join if user.community_to_join)
 
-    mail_with_template(
+    # FIXME: template_params is leaking into the email
+    # and email servers are rejecting the email
+    #mail_with_template(
+    mail(
       from: "#{user.environment.name} <#{user.environment.contact_email}>",
       to: user.email,
       subject: _("[%s] Activate your account") % [user.environment.name],
-      template_params: {:environment => user.environment, :activation_code => @activation_code, :redirection => @redirection, :join => @join, :person => user.person, :url => @url},
-      email_template: user.environment.email_templates.find_by_template_type(:user_activation),
+      #template_params: {:environment => user.environment, :activation_code => @activation_code, :redirection => @redirection, :join => @join, :person => user.person, :url => @url},
+      #email_template: user.environment.email_templates.find_by_template_type(:user_activation),
     )
   end
 

@@ -10,16 +10,16 @@ class AnalyticsPlugin::PageView < ApplicationRecord
 
   acts_as_having_settings field: :options
 
-  belongs_to :visit, class_name: 'AnalyticsPlugin::Visit', touch: true
-  belongs_to :referer_page_view, class_name: 'AnalyticsPlugin::PageView'
+  belongs_to :profile, validate: true
+  belongs_to :visit, class_name: 'AnalyticsPlugin::Visit', touch: true, validate: true
 
-  belongs_to :user, class_name: 'Person'
-  belongs_to :session, primary_key: :session_id, foreign_key: :session_id, class_name: 'Session'
-  belongs_to :profile
+  belongs_to :referer_page_view, class_name: 'AnalyticsPlugin::PageView', validate: false
 
-  validates_presence_of :visit
-  validates_presence_of :request, on: :create
-  validates_presence_of :url
+  belongs_to :user, class_name: 'Person', validate: false
+  belongs_to :session, primary_key: :session_id, foreign_key: :session_id, class_name: 'Session', validate: false
+
+  validates :request, presence: true, on: :create
+  validates :url, presence: true
 
   before_validation :extract_request_data, on: :create
   before_validation :fill_referer_page_view, on: :create
@@ -75,7 +75,7 @@ class AnalyticsPlugin::PageView < ApplicationRecord
   end
 
   def browser
-    @browser ||= Browser.new ua: self.user_agent
+    @browser ||= Browser.new self.user_agent
   end
 
   protected
@@ -86,19 +86,23 @@ class AnalyticsPlugin::PageView < ApplicationRecord
     self.user_agent = self.request.headers['User-Agent']
     self.request_id = self.request.env['action_dispatch.request_id']
     self.remote_ip = self.request.remote_ip
+    true
   end
 
   def fill_referer_page_view
     self.referer_page_view = self.find_referer_page_view
+    true
   end
 
   def fill_visit
     self.visit = self.referer_page_view.visit if self.referer_page_view and self.referer_page_view.user_on_page?
     self.visit ||= AnalyticsPlugin::Visit.new profile: profile
+    true
   end
 
   def fill_is_bot
     self.is_bot = self.browser.bot?
+    true
   end
 
   def destroy_empty_visit

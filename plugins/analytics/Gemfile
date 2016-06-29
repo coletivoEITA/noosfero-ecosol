@@ -1,2 +1,2 @@
-gem 'browser'
+gem 'browser', '~> 2.2.0'
 
