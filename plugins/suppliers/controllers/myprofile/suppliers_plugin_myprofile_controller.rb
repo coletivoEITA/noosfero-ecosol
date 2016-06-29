@@ -75,6 +75,6 @@ class SuppliersPluginMyprofileController < MyProfileController
   end
 
   extend HMVC::ClassMethods
-  hmvc OrdersPlugin
+  hmvc SuppliersPlugin
 
 end
