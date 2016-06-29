@@ -93,7 +93,7 @@ module OrdersPlugin::Report
                     default,default,default, default]
 
         row = ep+1
-        ["A#{row}:B#{row}", "D#{row}::#{row}"].each{ |c| sheet.merge_cells c }
+        ["A#{row}:B#{row}", "D#{row}:E#{row}"].each{ |c| sheet.merge_cells c }
 
         sheet.add_row ['']
 
@@ -206,7 +206,7 @@ module OrdersPlugin::Report
         formula_values: [nil, nil, selled_sum, nil, nil, nil, nil],
         style: [redcell, redcell, currency, redcell, redcell, redcell, currency]
 
-      ["A#{sbs}:B#{sbs}", "D#{sbs}:F{sbs}"].each{ |c| sheet.merge_cells c }
+      ["A#{sbs}:B#{sbs}", "D#{sbs}:F#{sbs}"].each{ |c| sheet.merge_cells c }
 
       sheet.column_widths 15,30,30,9,8,10,11
     end # closes spreadsheet
