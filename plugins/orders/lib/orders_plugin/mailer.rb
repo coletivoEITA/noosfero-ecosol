@@ -49,31 +49,37 @@ class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
     @order = order
     @consumer = order.consumer
 
-    mail to: profile_recipients(order.consumer),
-      from: environment.noreply_email,
-      reply_to: profile_recipients(profile),
-      subject: t('lib.mailer.order_was_confirmed') % {name: profile.name}
+    to       = if order.is_a? OrdersPlugin::Purchase then order.profile else order.consumer end
+    reply_to = if order.is_a? OrdersPlugin::Purchase then order.consumer else order.profile end
+
+    mail \
+      to:       profile_recipients(to),
+      from:     environment.noreply_email,
+      reply_to: profile_recipients(reply_to),
+      subject:  t('lib.mailer.order_was_confirmed') % {name: profile.name}
   end
 
   def order_cancellation order
     profile = @profile = order.profile
-    self.environment = profile.environment
-    @order = order
-    @consumer = order.consumer
+    self.environment   = profile.environment
+    @order       = order
+    @consumer    = order.consumer
     @environment = profile.environment
 
-    mail to: profile_recipients(order.consumer),
-      from: environment.noreply_email,
-      reply_to: profile_recipients(profile),
+    to       = if order.is_a? OrdersPlugin::Purchase then order.profile else order.consumer end
+    reply_to = if order.is_a? OrdersPlugin::Purchase then order.consumer else order.profile end
+
+    mail \
+      to:       profile_recipients(to),
+      from:     environment.noreply_email,
+      reply_to: profile_recipients(reply_to),
       subject: t('lib.mailer.order_was_cancelled') % {name: profile.name}
   end
 
   protected
 
   def profile_recipients profile
-    if profile.person?
-      profile.contact_email
-    elsif profile.contact_email.present?
+    if profile.person? or profile.contact_email.present?
       profile.contact_email
     else
       profile.admins.map{ |p| p.contact_email }
