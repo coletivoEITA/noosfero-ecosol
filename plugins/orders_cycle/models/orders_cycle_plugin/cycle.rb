@@ -11,23 +11,23 @@ class OrdersCyclePlugin::Cycle < ApplicationRecord
 
   # which status the sales are on each cycle status
   SaleStatusMap = {
-    'edition' => nil,
-    'orders' => :ordered,
-    'purchases' => :accepted,
-    'receipts' => :accepted,
+    'edition'    => nil,
+    'orders'     => :ordered,
+    'purchases'  => :accepted,
+    'receipts'   => :accepted,
     'separation' => :accepted,
-    'delivery' => :separated,
-    'closing' => :delivered,
+    'delivery'   => :separated,
+    'closing'    => :delivered,
   }
   # which status the purchases are on each cycle status
   PurchaseStatusMap = {
-    'edition' => nil,
-    'orders' => nil,
-    'purchases' => :draft,
-    'receipts' => :ordered,
+    'edition'    => nil,
+    'orders'     => nil,
+    'purchases'  => :draft,
+    'receipts'   => :ordered,
     'separation' => :received,
-    'delivery' => :received,
-    'closing' => :received,
+    'delivery'   => :received,
+    'closing'    => :received,
   }
 
   belongs_to :profile
