@@ -19,5 +19,9 @@ module ProductsPlugin
     has_number_with_locale :own_stored
     has_number_with_locale :original_stored
 
+    def update_stored
+      self.stored = self.stock_allocations.sum(:quantity)
+      save
+    end
   end
 end
