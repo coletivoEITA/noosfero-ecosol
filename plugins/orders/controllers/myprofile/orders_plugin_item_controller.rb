@@ -38,13 +38,25 @@ class OrdersPluginItemController < MyProfileController
   def set_quantity_consumer_ordered value
     @quantity_consumer_ordered = CurrencyHelper.parse_localized_number value
 
+    # the item quantity ordered can be
+    # - less than minimum allowed
+    # - more than stock if has stock
+    # - between minimum and stock
+    # - stock is less than minimum?
     if @quantity_consumer_ordered > 0
       min = @item.product.minimum_selleable rescue nil
       if min and @quantity_consumer_ordered < min
         @quantity_consumer_ordered = min
         @quantity_consumer_ordered_less_than_minimum = @item.id || true
       end
-    elsif @item
+      if @item.product.default_stored && @item.product.stored.present?
+        if @quantity_consumer_ordered > @item.product.stored
+          @quantity_consumer_ordered = @item.product.stored
+          @quantity_consumer_ordered_more_than_stored = @item.id || true
+        end
+      end
+    end
+    if @quantity_consumer_ordered <= 0 && @item
       @quantity_consumer_ordered = nil
       destroy
       render action: :destroy

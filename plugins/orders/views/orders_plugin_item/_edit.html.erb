@@ -2,7 +2,11 @@
 
 <div id="item-<%=item.id%>" class="value-row item <%= 'product-unavailable' if item_data[:flags][:unavailable] %>" toggle-edit="orders.item.edit();">
 
-  <% if @quantity_consumer_ordered_less_than_minimum and @quantity_consumer_ordered_less_than_minimum == item.id %>
+  <% if @quantity_consumer_ordered_more_than_stored and @quantity_consumer_ordered_more_than_stored == item.id %>
+    <div class=distribution-error-message>
+      <%= t('orders_plugin.views.item._edit.ordered_more_than_in_stock') %>
+    </div>
+  <% elsif @quantity_consumer_ordered_less_than_minimum and @quantity_consumer_ordered_less_than_minimum == item.id %>
     <div class=distribution-error-message>
       <%= t('orders_plugin.views.item._edit.this_product_requires') % {:value => product.minimum_selleable_localized} %>
     </div>

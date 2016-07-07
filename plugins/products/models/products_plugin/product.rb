@@ -295,6 +295,7 @@ module ProductsPlugin
           when 75..99.999 then [75, _("75%")];
           when 100 then [100, _("100%")];
           end
+      p
     end
 
     delegate :enabled, :region, :region_id, :environment, :environment_id, to: :profile, allow_nil: true

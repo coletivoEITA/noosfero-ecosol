@@ -70,8 +70,13 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
       status = params[:order][:status]
       if status == 'ordered'
         if @order.items.size > 0
+          out_of_stock = @order.check_stock
           @order.update! params[:order]
-          session[:notice] = t('orders_plugin.controllers.profile.consumer.order_confirmed')
+          if out_of_stock
+            session[:notice] = t('orders_plugin.controllers.profile.consumer.order_confirmed_with_stock_changes')
+          else
+            session[:notice] = t('orders_plugin.controllers.profile.consumer.order_confirmed')
+          end
         else
           session[:notice] = t('orders_plugin.controllers.profile.consumer.can_not_confirm_your_')
         end

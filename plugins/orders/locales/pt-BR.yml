@@ -98,6 +98,7 @@ pt-BR: &pt-BR
           login_first: "Faça login primeiro"
           order_cancelled: "Pedido cancelado"
           order_confirmed: "Pedido confirmado"
+          order_confirmed_with_stock_changes: "Pedido confirmado, mas alguns items tiveram suas quantidades alteradas por falta de disponibilidade em estoque."
           order_removed: "Pedido removido"
           please_login_first: "Please login first"
           you_are_not_the_owner: "Você não é o autor desse pedido"
@@ -184,6 +185,7 @@ pt-BR: &pt-BR
           removed: 'removido'
           submit: 'OK'
           this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
+          ordered_more_than_in_stock: "A quantidade deste produto em estoque é menor do que foi pedido. A quantidade no seu pedido foi mudada para o máximo disponível no momento."
 
         _add:
           label: 'Adiciona produto'

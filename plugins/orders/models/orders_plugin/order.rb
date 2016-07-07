@@ -431,7 +431,6 @@ class OrdersPlugin::Order < ApplicationRecord
     # ignore when status is being rewinded
     return if (Statuses.index(self.status) <= Statuses.index(self.status_was) rescue false)
 
-    require'pry';binding.pry
     if self.status == 'ordered' and self.status_was != 'ordered'
       OrdersPlugin::Mailer.order_confirmation(self).deliver
     elsif self.status == 'cancelled' and self.status_was != 'cancelled'

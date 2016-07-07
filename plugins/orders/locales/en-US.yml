@@ -97,6 +97,7 @@ en-US: &en-US
           login_first: "Login first"
           order_cancelled: "Order cancelled"
           order_confirmed: "Order confirmed"
+          order_confirmed_with_stock_changes: "Order confirmed, but some items had its quantities changed by missing stock availability."
           order_removed: "Order removed"
           please_login_first: "Please login first"
           you_are_not_the_owner: "You are not the owner of this order"
@@ -183,6 +184,7 @@ en-US: &en-US
           removed: 'removed'
           submit: 'OK'
           this_product_requires: "This product requires a minimum of %{value}. The minimum was kept."
+          ordered_more_than_in_stock: "The quantity of this product in stock is less than what was asked. The quantity in your order was changed to the maximum of amount available at the moment."
 
         _add:
           label: 'Add product'
