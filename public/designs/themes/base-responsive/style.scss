@@ -2032,7 +2032,8 @@ table.cms-articles .article-name {
 /*PROVISORY!*/
 #product-owner { display:none; }
 
-.required-field {
+.required-field label:after{
+  content: '*';
   color: #E75252;
   font-weight: bold;
 }
@@ -2071,3 +2072,8 @@ a.btn, .block a.btn, a.btn:visited, .block a.btn:visited, a.btn:hover, .block a.
   font-size: 0.6em;
 }
 
+/* adjust in custom forms textarea size */
+
+.action-custom_forms_plugin_profile-show textarea {
+  height: 60px;
+}

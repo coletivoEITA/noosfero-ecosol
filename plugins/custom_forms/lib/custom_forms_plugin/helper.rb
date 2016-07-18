@@ -86,7 +86,7 @@ module CustomFormsPlugin::Helper
     value = answer.present? ? answer.value : field.default_value
     case field.show_as
     when 'textarea'
-      text_area form, "#{field.id}", :value => value, :disabled => display_disabled?(field, answer)
+      text_area form, "#{field.id}", :value => value, :disabled => display_disabled?(field, answer), :rows => 5
     when 'tinymce'
       text_area form, "#{field.id}", :value => value, :disabled => display_disabled?(field, answer), :class => 'mceEditor'
     else # includes 'input'
