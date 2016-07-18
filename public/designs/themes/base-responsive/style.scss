@@ -2032,7 +2032,7 @@ table.cms-articles .article-name {
 /*PROVISORY!*/
 #product-owner { display:none; }
 
-.required-field label:after{
+.required-field label.control-label:after{
   content: '*';
   color: #E75252;
   font-weight: bold;
