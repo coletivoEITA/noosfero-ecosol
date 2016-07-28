@@ -1,4 +1,4 @@
-class ElearningSecretaryPlugin::OrganizationSerializer < ActiveModel::Serializer
+class ElearningSecretaryPlugin::OrganizationSerializer < ApplicationSerializer
 
   attributes :id, :name
 

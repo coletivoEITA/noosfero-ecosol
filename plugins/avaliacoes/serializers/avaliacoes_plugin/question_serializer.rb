@@ -1,4 +1,4 @@
-class AvaliacoesPlugin::QuestionSerializer < ActiveModel::Serializer
+class AvaliacoesPlugin::QuestionSerializer < ApplicationSerializer
 
   attribute :index
 

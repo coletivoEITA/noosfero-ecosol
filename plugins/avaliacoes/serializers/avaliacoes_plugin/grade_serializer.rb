@@ -1,4 +1,4 @@
-class AvaliacoesPlugin::GradeSerializer < ActiveModel::Serializer
+class AvaliacoesPlugin::GradeSerializer < ApplicationSerializer
 
   attribute :grade
   attribute :answered

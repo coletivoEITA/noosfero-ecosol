@@ -1,4 +1,4 @@
-class AvaliacoesPlugin::DisciplineSerializer < ActiveModel::Serializer
+class AvaliacoesPlugin::DisciplineSerializer < ApplicationSerializer
 
   attribute :name
 

@@ -1,4 +1,4 @@
-class ElearningSecretaryPlugin::ContextSerializer < ActiveModel::Serializer
+class ElearningSecretaryPlugin::ContextSerializer < ApplicationSerializer
 
   has_many :sub_organizations, serializer: ElearningSecretaryPlugin::OrganizationSerializer
 

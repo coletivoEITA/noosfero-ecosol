@@ -1,4 +1,4 @@
-class ElearningSecretaryPlugin::DocumentSerializer < ActiveModel::Serializer
+class ElearningSecretaryPlugin::DocumentSerializer < ApplicationSerializer
 
   attributes :profile
   attributes :id, :name
