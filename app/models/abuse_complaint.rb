@@ -25,7 +25,7 @@ class AbuseComplaint < Task
   end
 
   def title
-    abuse_reports.count > 1 ? (_('Abuse complaint (%s)') % abuse_reports.count) :_('Abuse complaint')
+    abuse_reports.count > 1 ? (_('Abuse complaint (%s)').html_safe % abuse_reports.count) :_('Abuse complaint')
   end
 
   def linked_subject
@@ -56,20 +56,16 @@ class AbuseComplaint < Task
     reported.disable
   end
 
-  def reason
-    self.abuse_reports.last.reason
-  end
-
-  def reporter
-    self.abuse_reports.last.reporter
+  def task_activated_message
+    _('Your profile was reported by the users of %s due to inappropriate behavior. The administrators of the environment are now reviewing the report. To solve this misunderstanding, please contact the administrators.').html_safe % environment.name
   end
 
   def task_finished_message
-    _('Your profile was disabled by the administrators of %s due to inappropriate behavior. To solve this misunderstanding please contact them.') % environment.name
+    _('Your profile was disabled by the administrators of %s due to inappropriate behavior. To solve this misunderstanding please contact them.').html_safe % environment.name
   end
 
   def target_notification_description
-    _('%s was reported by an user') % self.reported.name
+    _('%s was reported due to inappropriate behavior.').html_safe % reported.name
   end
 
   def target_notification_message

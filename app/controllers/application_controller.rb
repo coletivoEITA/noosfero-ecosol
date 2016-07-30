@@ -18,6 +18,20 @@ class ApplicationController < ActionController::Base
   around_filter :set_time_zone
 
   before_filter :set_session_theme
+
+  # FIXME: only include necessary methods
+  include ApplicationHelper
+
+  # concerns
+  include PermissionCheck
+  include CustomDesign
+  include NeedsProfile
+
+  # implementations
+  include FindByContents
+  include Noosfero::Plugin::HotSpot
+  include SearchTermHelper
+
   def set_session_theme
     if params[:theme]
       session[:theme] = environment.theme_ids.include?(params[:theme]) ? params[:theme] : nil
@@ -67,8 +81,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  include ApplicationHelper
-
   layout :get_layout
   def get_layout
     return false if request.format == :js or request.xhr?
@@ -94,9 +106,6 @@ class ApplicationController < ActionController::Base
   helper :document
   helper :language
 
-  include DesignHelper
-  include PermissionCheck
-
   before_filter :set_locale
   def set_locale
     FastGettext.available_locales = environment.available_locales
@@ -108,8 +117,6 @@ class ApplicationController < ActionController::Base
       session[:lang] = params[:lang]
     end
   end
-
-  include NeedsProfile
 
   attr_reader :environment
 
@@ -139,6 +146,10 @@ class ApplicationController < ActionController::Base
     end
     @active_organization = nil unless @active_organization and @active_organization.members.include? user
     cookies[:active_organization] = @active_organization.id if @active_organization
+  end
+
+  def accept_only_post
+    return render_not_found if !request.post?
   end
 
   def verified_request?
@@ -190,8 +201,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  include Noosfero::Plugin::HotSpot
-
   # FIXME this filter just loads @plugins to children controllers and helpers
   def init_noosfero_plugins
     plugins
@@ -226,9 +235,6 @@ class ApplicationController < ActionController::Base
   def authorize_profiler
     Rack::MiniProfiler.authorize_request if @user_is_admin
   end
-
-  include SearchTermHelper
-  include FindByContents
 
   def find_suggestions(query, context, asset, options={})
     plugins.dispatch_first(:find_suggestions, query, context, asset, options)

@@ -14,7 +14,9 @@ class Article < ApplicationRecord
                   :author, :display_preview, :published_at, :person_followers,
                   :created_by, :last_changed_by
 
+  extend ActsAsHavingImage::ClassMethods
   acts_as_having_image
+
   include Noosfero::Plugin::HotSpot
 
   SEARCHABLE_FIELDS = {
@@ -93,7 +95,8 @@ class Article < ApplicationRecord
   has_many :article_categorizations_including_virtual, :class_name => 'ArticleCategorization'
   has_many :categories_including_virtual, :through => :article_categorizations_including_virtual, :source => :category
 
-  acts_as_having_settings :field => :setting
+  extend ActsAsHavingSettings::ClassMethods
+  acts_as_having_settings field: :setting
 
   settings_items :display_hits, :type => :boolean, :default => true
   settings_items :author_name, :type => :string, :default => ""
@@ -246,6 +249,7 @@ class Article < ApplicationRecord
   acts_as_taggable
   N_('Tag list')
 
+  extend ActsAsFilesystem::ActsMethods
   acts_as_filesystem
 
   acts_as_versioned
@@ -541,13 +545,13 @@ class Article < ApplicationRecord
 
   scope :display_filter, lambda {|user, profile|
     return published if (user.nil? && profile && profile.public?)
-    return [] if user.nil? || (profile && !profile.public? && !user.follows?(profile))
+    return [] if user.nil? || (profile && !profile.public? && !profile.in_social_circle?(user))
     where(
       [
        "published = ? OR last_changed_by_id = ? OR profile_id = ? OR ?
         OR  (show_to_followers = ? AND ? AND profile_id IN (?))", true, user.id, user.id,
         profile.nil? ?  false : user.has_permission?(:view_private_content, profile),
-        true, (profile.nil? ? true : user.follows?(profile)),  ( profile.nil? ? (user.friends.select('profiles.id')) : [profile.id])
+        true, (profile.nil? ? true : profile.in_social_circle?(user)),  ( profile.nil? ? (user.friends.select('profiles.id')) : [profile.id])
       ]
     )
   }

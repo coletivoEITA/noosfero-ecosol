@@ -73,6 +73,9 @@ module ProductsPlugin
     scope :with_available, -> (available) { where available: available }
     scope :with_price, -> { where 'products.price > 0' }
 
+    extend ActsAsHavingSettings::ClassMethods
+    acts_as_having_settings field: :data
+
     # FIXME: transliterate input and name column
     scope :name_like, -> (name) { where "name ILIKE ?", "%#{name}%" }
     scope :with_product_category_id, -> (id) { where product_category_id: id }
@@ -158,6 +161,9 @@ module ProductsPlugin
     def name_is_blank?
       self[:name].blank?
     end
+
+    extend ActsAsHavingImage::ClassMethods
+    acts_as_having_image
 
     def default_image(size='thumb')
       image ? image.public_filename(size) : '/images/icons-app/product-default-pic-%s.png' % (size || 'big')

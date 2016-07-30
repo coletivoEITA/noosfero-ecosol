@@ -23,6 +23,7 @@ class Category < ApplicationRecord
 
   scope :on_level, -> parent { where :parent_id => parent }
 
+  extend ActsAsFilesystem::ActsMethods
   acts_as_filesystem
 
   has_many :article_categorizations
@@ -37,6 +38,7 @@ class Category < ApplicationRecord
   has_many :people, :through => :profile_categorizations, :source => :profile, :class_name => 'Person'
   has_many :communities, :through => :profile_categorizations, :source => :profile, :class_name => 'Community'
 
+  extend ActsAsHavingImage::ClassMethods
   acts_as_having_image
 
   before_save :normalize_display_color
