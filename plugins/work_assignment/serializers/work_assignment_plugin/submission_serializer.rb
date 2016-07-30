@@ -1,4 +1,4 @@
-class WorkAssignmentPlugin::SubmissionSerializer < ActiveModel::Serializer
+class WorkAssignmentPlugin::SubmissionSerializer < ApplicationSerializer
 
   attributes :id, :name, :path, :may_delete, :can_download, :created_at,
     :read_by_names, :user_read

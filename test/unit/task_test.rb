@@ -324,24 +324,6 @@ class TaskTest < ActiveSupport::TestCase
     task.activate
   end
 
-  should 'filter tasks to a profile' do
-    requestor = fast_create(Person)
-    person = fast_create(Person)
-    another_person = fast_create(Person)
-    environment = Environment.default
-    environment.add_admin(person)
-    t1 = create(Task, :requestor => requestor, :target => person)
-    t2 = create(Task, :requestor => requestor, :target => person)
-    t3 = create(Task, :requestor => requestor, :target => environment)
-    t4 = create(Task, :requestor => requestor, :target => another_person)
-
-    assert_includes Task.to(person), t1
-    assert_includes Task.to(person), t2
-    assert_includes Task.to(person), t3
-    assert_not_includes Task.to(person), t4
-    assert_includes Task.to(another_person), t4
-  end
-
   should 'filter tasks by type with scope' do
     class CleanHouse < Task; end
     class FeedDog < Task; end
@@ -360,10 +342,10 @@ class TaskTest < ActiveSupport::TestCase
 
   should 'order tasks by some attribute correctly' do
     Task.destroy_all
-    t1 = fast_create(Task, :status => 4, :created_at => Time.now + 1.hour)
-    t2 = fast_create(Task, :status => 3, :created_at => Time.now + 2.hour)
-    t3 = fast_create(Task, :status => 2, :created_at => Time.now + 3.hour)
-    t4 = fast_create(Task, :status => 1, :created_at => Time.now + 4.hour)
+    t1 = fast_create(Task, :status => 4, :created_at => Time.now.in_time_zone + 1.hour)
+    t2 = fast_create(Task, :status => 3, :created_at => Time.now.in_time_zone + 2.hour)
+    t3 = fast_create(Task, :status => 2, :created_at => Time.now.in_time_zone + 3.hour)
+    t4 = fast_create(Task, :status => 1, :created_at => Time.now.in_time_zone + 4.hour)
 
     assert_equal [t1,t2,t3,t4], Task.order_by('created_at', 'asc')
     assert_equal [t4,t3,t2,t1], Task.order_by('created_at', 'desc')
@@ -477,6 +459,87 @@ class TaskTest < ActiveSupport::TestCase
     person = fast_create(Person)
     t.cancel(person)
     assert_equal person, t.reload.closed_by
+  end
+
+  should 'named scope to get tasks of a profile' do
+    requestor = fast_create(Person)
+    person = fast_create(Person)
+    another_person = fast_create(Person)
+    t1 = create(Task, :requestor => requestor, :target => person)
+    t2 = create(Task, :requestor => requestor, :target => another_person)
+    t3 = create(Task, :requestor => requestor, :target => person)
+
+    assert_equivalent [t1,t3], Task.to(person)
+  end
+
+  should 'named scope to get environment tasks if passed profile is environment admin' do
+    requestor = fast_create(Person)
+    person = fast_create(Person)
+    another_person = fast_create(Person)
+    environment = Environment.default
+    environment.add_admin(person)
+    t1 = create(Task, :requestor => requestor, :target => person)
+    t2 = create(Task, :requestor => requestor, :target => another_person)
+    t3 = create(Task, :requestor => requestor, :target => environment)
+
+    assert_equivalent [t1,t3], Task.to(person)
+  end
+
+  should 'named scope to not get environment tasks if passed profile is not environment admin' do
+    requestor = fast_create(Person)
+    person = fast_create(Person)
+    another_person = fast_create(Person)
+    environment = Environment.default
+    t1 = create(Task, :requestor => requestor, :target => person)
+    t2 = create(Task, :requestor => requestor, :target => another_person)
+    t3 = create(Task, :requestor => requestor, :target => environment)
+
+    assert_equivalent [t1], Task.to(person)
+  end
+
+  should 'named scope to get communities tasks if passed profile has perform_task permission' do
+    requestor = fast_create(Person)
+    person = fast_create(Person)
+    another_person = fast_create(Person)
+    community = fast_create(Community)
+    community.add_member(person)
+    person.expects(:has_permission?).with(:perform_task, community).returns(true)
+    t1 = create(Task, :requestor => requestor, :target => person)
+    t2 = create(Task, :requestor => requestor, :target => another_person)
+    t3 = create(Task, :requestor => requestor, :target => community)
+
+    assert_equivalent [t1, t3], Task.to(person)
+  end
+
+
+  should 'named scope to not get communities tasks if passed profile has no perform_task permission in community' do
+    requestor = fast_create(Person)
+    person = fast_create(Person)
+    another_person = fast_create(Person)
+    community = fast_create(Community)
+    community.add_member(person)
+    person.expects(:has_permission?).with(:perform_task, community).returns(false)
+    t1 = create(Task, :requestor => requestor, :target => person)
+    t2 = create(Task, :requestor => requestor, :target => another_person)
+    t3 = create(Task, :requestor => requestor, :target => community)
+
+    assert_equivalent [t1], Task.to(person)
+  end
+
+  should 'named scope to return environment, person and communities tasks if user has permission' do
+    requestor = fast_create(Person)
+    person = fast_create(Person)
+    another_person = fast_create(Person)
+    community = fast_create(Community)
+    community.add_member(person)
+    person.expects(:has_permission?).with(:perform_task, community).returns(true)
+    environment = Environment.default
+    environment.add_admin(person)
+    t1 = create(Task, :requestor => requestor, :target => person)
+    t2 = create(Task, :requestor => requestor, :target => another_person)
+    t3 = create(Task, :requestor => requestor, :target => community)
+    t4 = create(Task, :requestor => requestor, :target => environment)
+    assert_equivalent [t1,t3,t4], Task.to(person)
   end
 
   protected

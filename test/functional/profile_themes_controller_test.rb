@@ -7,8 +7,6 @@ class ProfileThemesControllerTest < ActionController::TestCase
 
   def setup
     @controller = ProfileThemesController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
 
     Theme.stubs(:user_themes_dir).returns(TMP_THEMES_DIR)
 

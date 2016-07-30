@@ -34,7 +34,7 @@ class OrganizationMailing < Mailing
   end
 
   def signature_message
-    _('Sent by community %s.') % source.name
+    _('Sent by community %s.').html_safe % source.name
   end
 
   include Rails.application.routes.url_helpers

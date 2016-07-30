@@ -1,4 +1,4 @@
-class TeamsPlugin::TeamSerializer < ActiveModel::Serializer
+class TeamsPlugin::TeamSerializer < ApplicationSerializer
 
   attributes :id, :name
 

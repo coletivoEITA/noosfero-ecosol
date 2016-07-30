@@ -1,4 +1,4 @@
-class AvaliacoesPlugin::StudentSerializer < ActiveModel::Serializer
+class AvaliacoesPlugin::StudentSerializer < ApplicationSerializer
 
   has_many :disciplines
 

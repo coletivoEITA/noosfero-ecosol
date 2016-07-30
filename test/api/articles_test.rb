@@ -335,10 +335,10 @@ class ArticlesTest < ActiveSupport::TestCase
     article_one = fast_create(Article, :profile_id => user.person.id, :name => "Another thing")
     article_two = fast_create(Article, :profile_id => user.person.id, :name => "Some thing")
 
-    article_one.updated_at = Time.now + 3.hours
+    article_one.updated_at = Time.now.in_time_zone + 3.hours
     article_one.save!
 
-    params[:timestamp] = Time.now + 1.hours
+    params[:timestamp] = Time.now.in_time_zone + 1.hours
     get "/api/v1/articles/?#{params.to_query}"
     json = JSON.parse(last_response.body)
 
@@ -388,6 +388,17 @@ class ArticlesTest < ActiveSupport::TestCase
       get "/api/v1/#{kind.pluralize}/#{profile.id}/articles?#{params.to_query}"
       json = JSON.parse(last_response.body)
       assert_equal article.id, json["article"]["id"]
+    end
+
+    should "return an empty array if theres id no article in path of #{kind}" do
+      profile = fast_create(kind.camelcase.constantize, :environment_id => environment.id)
+      parent_article = Folder.create!(:profile => profile, :name => "Parent Folder")
+      article = Article.create!(:profile => profile, :name => "Some thing", :parent => parent_article)
+
+      params[:path] = 'no-path'
+      get "/api/v1/#{kind.pluralize}/#{profile.id}/articles?#{params.to_query}"
+      json = JSON.parse(last_response.body)
+      assert_nil json["article"]
     end
 
     should "not return article by #{kind} and path if user has no permission to view it" do

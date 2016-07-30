@@ -97,7 +97,7 @@ module Api
       root 'boxes', 'box'
       expose :id, :position
       expose :blocks, :using => Block do |box, options|
-        box.blocks.select {|block| block.visible_to_user?(options[:current_person]) }
+        box.blocks.select {|block| block.visible_to_user?(options[:current_person]) || block.allow_edit?(options[:current_person]) }
       end
     end
 
@@ -109,6 +109,10 @@ module Api
         hash ={}
         profile.public_values.each do |value|
           hash[value.custom_field.name]=value.value
+        end
+
+        profile.public_fields.each do |field|
+          hash[field] = profile.send(field.to_sym)
         end
 
         private_values = profile.custom_field_values - profile.public_values
@@ -124,6 +128,7 @@ module Api
       expose :type
       expose :custom_header
       expose :custom_footer
+      expose :layout_template
       expose :permissions do |profile, options|
         Entities.permissions_for_entity(profile, options[:current_person],
         :allow_post_content?, :allow_edit?, :allow_destroy?)
@@ -169,6 +174,10 @@ module Api
       expose :created_at, :format_with => :timestamp
       expose :author, :using => Profile
       expose :reply_of, :using => CommentBase
+      expose :permissions do |comment, options|
+        Entities.permissions_for_entity(comment, options[:current_person],
+        :allow_destroy?)
+      end
     end
 
     class Comment < CommentBase
@@ -258,12 +267,28 @@ module Api
       root 'tasks', 'task'
       expose :id
       expose :type
+      expose :requestor, using: Profile
+      expose :status
+      expose :created_at
+      expose :data
+      expose :accept_details
+      expose :reject_details
+      expose :accept_disabled?, as: :accept_disabled
+      expose :reject_disabled?, as: :reject_disabled
+      expose :target do |task, options|
+        type_map = {Profile => ::Profile, Environment => ::Environment}.find {|h| task.target.kind_of?(h.last)}
+        type_map.first.represent(task.target) unless type_map.nil?
+      end
     end
 
     class Environment < Entity
       expose :name
       expose :id
       expose :description
+      expose :layout_template
+      expose :signup_intro
+      expose :terms_of_use
+      expose :top_url, as: :host
       expose :settings, if: lambda { |instance, options| options[:is_admin] }
     end
 
@@ -274,12 +299,26 @@ module Api
 
     class Activity < Entity
       root 'activities', 'activity'
-      expose :id, :params, :verb, :created_at, :updated_at, :comments_count, :visible
+      expose :id, :created_at, :updated_at
       expose :user, :using => Profile
+
       expose :target do |activity, opts|
         type_map = {Profile => ::Profile, ArticleBase => ::Article}.find {|h| activity.target.kind_of?(h.last)}
         type_map.first.represent(activity.target) unless type_map.nil?
       end
+      expose :params, :if => lambda { |activity, options| activity.kind_of?(ActionTracker::Record)}
+      expose :content, :if => lambda { |activity, options| activity.kind_of?(Scrap)}
+      expose :verb do |activity, options| 
+        activity.kind_of?(Scrap) ? 'leave_scrap' : activity.verb
+      end
+
+    end
+
+    class Role < Entity
+      root 'roles', 'role'
+      expose :id
+      expose :name
+      expose :key
     end
   end
 end

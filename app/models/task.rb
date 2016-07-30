@@ -11,7 +11,8 @@
 # will need to declare <ttserialize</tt> itself).
 class Task < ApplicationRecord
 
-  acts_as_having_settings :field => :data
+  extend ActsAsHavingSettings::ClassMethods
+  acts_as_having_settings field: :data
 
   module Status
     # the status of tasks just created
@@ -313,7 +314,7 @@ class Task < ApplicationRecord
         where "LOWER(#{field}) LIKE ?", "%#{value.downcase}%"
       end
   }
-  scope :pending_all, -> profile, filter_type, filter_text {
+  scope :pending_all_by_filter, -> profile, filter_type, filter_text {
     self.to(profile).without_spam.pending.of(filter_type).like('data', filter_text)
   }
 
@@ -327,7 +328,7 @@ class Task < ApplicationRecord
     end
     profile_condition = "(target_type = 'Profile' AND target_id = #{profile.id})"
 
-    where [environment_condition, profile_condition].compact.join(' OR ')
+    where [environment_condition, organization_conditions, profile_condition].compact.join(' OR ')
   }
 
   scope :from_closed_date, -> closed_from {

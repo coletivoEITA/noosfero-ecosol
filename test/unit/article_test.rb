@@ -235,7 +235,7 @@ class ArticleTest < ActiveSupport::TestCase
     p = create_user('usr1').person
     Article.destroy_all
 
-    now = Time.now
+    now = Time.now.in_time_zone
 
     first  = create(Article, :name => 'first',  :published => true, :created_at => now, :published_at => now, :profile_id => p.id)
     second = create(Article, :name => 'second', :published => true, :updated_at => now, :published_at => now + 1.second, :profile_id => p.id)
@@ -743,7 +743,7 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   should 'fill published_at with current date if not set' do
-    now = Time.now
+    now = Time.now.in_time_zone
     Time.stubs(:now).returns(now)
     a = create(Article, :name => 'Published at', :profile_id => profile.id)
     assert_equal now, a.published_at
@@ -1109,9 +1109,10 @@ class ArticleTest < ActiveSupport::TestCase
     assert_equal 3, ActionTrackerNotification.where(action_tracker_id: second_activity.id).count
   end
 
-  should 'create notifications to friends when creating an article' do
+  should 'create notifications to followers when creating an article' do
     friend = fast_create(Person)
-    profile.add_friend(friend)
+    circle = Circle.create!(:person=> friend, :name => "Zombies", :profile_type => 'Person')
+    friend.follow(profile, circle)
     Article.destroy_all
     ActionTracker::Record.destroy_all
     ActionTrackerNotification.destroy_all
@@ -1122,9 +1123,10 @@ class ArticleTest < ActiveSupport::TestCase
     assert_equal friend, ActionTrackerNotification.last.profile
   end
 
-  should 'create the notification to the friend when one friend has the notification and the other no' do
+  should 'create the notification to the follower when one follower has the notification and the other no' do
     f1 = fast_create(Person)
-    profile.add_friend(f1)
+    circle = Circle.create!(:person=> f1, :name => "Zombies", :profile_type => 'Person')
+    f1.follow(profile, circle)
 
     User.current = profile.user
     article = create TinyMceArticle, :name => 'Tracked Article 1', :profile_id => profile.id
@@ -1133,16 +1135,22 @@ class ArticleTest < ActiveSupport::TestCase
     assert_equal 2, ActionTrackerNotification.where(action_tracker_id: article.activity.id).count
 
     f2 = fast_create(Person)
-    profile.add_friend(f2)
+    circle2 = Circle.create!(:person=> f2, :name => "Zombies", :profile_type => 'Person')
+    f2.follow(profile, circle2)
+
     article2 = create TinyMceArticle, :name => 'Tracked Article 2', :profile_id => profile.id
     assert_equal 2, ActionTracker::Record.where(verb: 'create_article').count
     process_delayed_job_queue
     assert_equal 3, ActionTrackerNotification.where(action_tracker_id: article2.activity.id).count
   end
 
-  should 'destroy activity and notifications of friends when destroying an article' do
+  should 'destroy activity and notifications of followers when destroying an article' do
     friend = fast_create(Person)
-    profile.add_friend(friend)
+
+    circle = Circle.create!(:person=> friend, :name => "Zombies", :profile_type => 'Person')
+
+    friend.follow(profile, circle)
+
     Article.destroy_all
     ActionTracker::Record.destroy_all
     ActionTrackerNotification.destroy_all
@@ -1412,7 +1420,7 @@ class ArticleTest < ActiveSupport::TestCase
 
   should 'retrieve latest info from topic when has no comments' do
     forum = fast_create(Forum, :name => 'Forum test', :profile_id => profile.id)
-    post = fast_create(TextileArticle, :name => 'First post', :profile_id => profile.id, :parent_id => forum.id, :updated_at => Time.now, :author_id => profile.id)
+    post = fast_create(TextileArticle, :name => 'First post', :profile_id => profile.id, :parent_id => forum.id, :updated_at => Time.now.in_time_zone, :author_id => profile.id)
     assert_equal post.updated_at, post.info_from_last_update[:date]
     assert_equal profile.name, post.info_from_last_update[:author_name]
     assert_equal profile.url, post.info_from_last_update[:author_url]
@@ -1420,7 +1428,7 @@ class ArticleTest < ActiveSupport::TestCase
 
   should 'retrieve latest info from comment when has comments' do
     forum = fast_create(Forum, :name => 'Forum test', :profile_id => profile.id)
-    post = fast_create(TextileArticle, :name => 'First post', :profile_id => profile.id, :parent_id => forum.id, :updated_at => Time.now)
+    post = fast_create(TextileArticle, :name => 'First post', :profile_id => profile.id, :parent_id => forum.id, :updated_at => Time.now.in_time_zone)
     post.comments << build(Comment, :name => 'Guest', :email => 'guest@example.com', :title => 'test comment', :body => 'hello!')
     assert_equal post.comments.last.created_at, post.info_from_last_update[:date]
     assert_equal "Guest", post.info_from_last_update[:author_name]

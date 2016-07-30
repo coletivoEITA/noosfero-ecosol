@@ -34,6 +34,8 @@
 *= require pagination.js
 * views speficics
 *= require add-and-join.js
+*= require followers.js
+*= require manage-followers.js
 *= require report-abuse.js
 *= require autogrow.js
 *= require pagination.js
@@ -422,9 +424,15 @@ function loading_for_button(selector) {
 function customUserDataCallback() {
 };
 
-// override this to take action after user_data load
-function customUserDataCallback() {
-};
+function hide_loading_for_button(selector) {
+  selector.css("cursor","");
+  $(".small-loading").remove();
+}
+
+function new_qualifier_row(selector, select_qualifiers, delete_button) {
+  index = jQuery(selector + ' tr').size() - 1;
+  jQuery(selector).append("<tr><td>" + select_qualifiers + "</td><td id='certifier-area-" + index + "'><select></select>" + delete_button + "</td></tr>");
+}
 
 function userDataCallback(data) {
   noosfero.user_data = data;

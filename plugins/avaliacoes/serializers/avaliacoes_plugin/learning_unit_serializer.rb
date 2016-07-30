@@ -1,4 +1,4 @@
-class AvaliacoesPlugin::LearningUnitSerializer < ActiveModel::Serializer
+class AvaliacoesPlugin::LearningUnitSerializer < ApplicationSerializer
 
   attribute :name
 

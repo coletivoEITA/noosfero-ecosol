@@ -38,6 +38,7 @@ class Comment < ApplicationRecord
 
   validate :article_archived?
 
+  extend ActsAsHavingSettings::ClassMethods
   acts_as_having_settings
 
   xss_terminate :only => [ :body, :title, :name ], :on => 'validation'
@@ -223,6 +224,9 @@ class Comment < ApplicationRecord
     return if user.nil?
     user == author || user == profile || user.has_permission?(:moderate_comments, profile)
   end
+
+  # method used by the API
+  alias_method :allow_destroy?, :can_be_destroyed_by?
 
   def can_be_marked_as_spam_by?(user)
     return if user.nil?

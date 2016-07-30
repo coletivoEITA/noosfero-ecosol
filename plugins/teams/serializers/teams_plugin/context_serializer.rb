@@ -1,4 +1,4 @@
-class TeamsPlugin::ContextSerializer < ActiveModel::Serializer
+class TeamsPlugin::ContextSerializer < ApplicationSerializer
 
   attributes :context, :allow_edit
 
