@@ -2,19 +2,21 @@ require_dependency 'organization'
 
 class Organization
 
-  def add_member_with_consumer person
-    add_member_without_consumer person
+  module ConsumerMember
 
-    return unless self.consumers_coop_settings.enabled?
-    self.add_consumer person
-  end
-  def remove_member_with_consumer person
-    remove_member_without_consumer person
+    def affiliate person, *args
+      self.add_consumer person if self.consumers_coop_settings.enabled
 
-    return unless self.consumers_coop_settings.enabled?
-    self.remove_consumer person
+      super person, *args
+    end
+
+    def remove_member person
+      self.remove_consumer person if self.consumers_coop_settings.enabled
+
+      super person
+    end
   end
-  alias_method_chain :add_member, :consumer
-  alias_method_chain :remove_member, :consumer
+
+  prepend ConsumerMember
 
 end
