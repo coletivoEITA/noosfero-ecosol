@@ -50,9 +50,9 @@ module Noosfero::Factory
   end
 
   def build(name, attrs = {})
-    defaults = defaults_for(name, attrs)
+    defaults = defaults_for(name)
     attrs[:slug] = attrs[:name].to_slug if attrs[:name].present? && attrs[:slug].blank? && defaults[:slug].present?
-    data = defaults_for(name, attrs).merge(attrs)
+    data = defaults_for(name).merge(attrs)
     object = name.to_s.camelize.constantize.new
     if object.respond_to?(:assign_attributes)
       object.assign_attributes(data, :without_protection => true)
