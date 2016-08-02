@@ -29,8 +29,8 @@
             .field
               = f.label :stock, t('views.product._edit.stock')
             div.checkbox data-default-toggle=""
-              label name='default_stored'
-                = f.check_box :default_stored
+              label name='use_stock'
+                = f.check_box :use_stock
                 = t'views.product._edit.default_stock'
             div data-non-defaults=""
               span.field-secondary

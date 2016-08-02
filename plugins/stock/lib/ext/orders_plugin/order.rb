@@ -7,7 +7,7 @@ module OrdersPlugin
       has_out_of_stock_item = false
 
       self.items.each do |item|
-        if item.product.default_stored && item.product.stored.present?
+        if item.product.use_stock
           if item.quantity_consumer_ordered > item.product.stored
             item.quantity_consumer_ordered = item.product.stored
             has_out_of_stock_item = true

@@ -3,21 +3,19 @@ require_dependency 'products_plugin/product'
 module ProductsPlugin
   class Product
 
-    attr_accessible :default_stored, :stored
+    attr_accessible :stored, :use_stock
 
     has_many :stock_allocations, class_name: 'StockPlugin::Allocation'
     has_many :stock_places, through: :stock_allocations, source: :place
 
-    settings_items :stored, type: Float, default: nil
-
-    extend DefaultDelegate::ClassMethods
-    default_delegate_setting :stored, to: :supplier_product,
-      default_if: -> { self.own_stored.blank? or self.own_stored.zero? }
+    scope :in_stock, -> {where("use_stock is ? or (stored > 0)", nil)}
 
     extend CurrencyHelper::ClassMethods
     has_number_with_locale :stored
-    has_number_with_locale :own_stored
-    has_number_with_locale :original_stored
+
+    def in_stock?
+      !use_stock or (stored.present? && stored > 0)
+    end
 
     def update_stored
       self.stored = self.stock_allocations.sum(:quantity)

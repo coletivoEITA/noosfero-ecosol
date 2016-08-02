@@ -233,8 +233,11 @@ class OrdersCyclePlugin::Cycle < ApplicationRecord
 
   def add_products
     return if self.products.count > 0
+    scope = self.profile.products.supplied.unarchived.available
+    scope = scope.in_stock if defined? StockPlugin
+
     ApplicationRecord.transaction do
-      self.profile.products.supplied.unarchived.available.find_each batch_size: 20 do |product|
+      scope.find_each batch_size: 20 do |product|
         self.add_product product
       end
     end
