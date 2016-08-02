@@ -49,7 +49,6 @@ module ProductsPlugin
     has_many :product_qualifiers, dependent: :destroy
     has_many :qualifiers, through: :product_qualifiers
     has_many :certifiers, through: :product_qualifiers
-    acts_as_having_settings field: :data
 
     validates_uniqueness_of :name, scope: :profile_id, allow_nil: true, if: :validate_uniqueness_of_column_name?
 
