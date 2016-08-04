@@ -6,10 +6,16 @@ consumer-page
   .consumers-listing.row
     consumer-box each='{consumer in consumers}' consumer='{consumer}'
 
+  consumer-view
 
   javascript:
     this.cs = window.consumers;
     this.consumers = opts.consumers;
+    this.hubs = opts.hubs;
+    this.tasks = opts.tasks;
+    this.editView = this.tags['consumer-view']
+
+    var self = this;
 
     search(e) {
       var needle = $(e.target).val().toLowerCase();
@@ -18,4 +24,14 @@ consumer-page
         c = this.consumers[i];
         this.consumers[i].selected = (c.name.indexOf(needle) > -1 || c.contact_email.indexOf(needle) > -1);
       }
-    } 
+    }
+
+    edit(consumer) {
+      this.editView.setConsumer(consumer)
+      this.editView.update()
+    }
+
+    reset() {
+      $('consumer-view').modal('hide');
+      this.update();
+    }

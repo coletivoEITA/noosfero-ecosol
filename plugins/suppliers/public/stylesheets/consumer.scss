@@ -1,4 +1,6 @@
 .controller-consumers_coop_plugin_consumer, .controller-consumer {
+  .left { float: left; }
+
   #content {
     .box-container-1 {
       background-color: #EFEFEF;
@@ -8,7 +10,7 @@
     .main-block .consumers-page {
       min-height: 100vh;
 
-      h1 {
+      h1.title {
         color: #BACB51;
         font-weight: bold;
         font-size: 25px;
@@ -30,31 +32,10 @@
         width: 100%;
         margin-bottom: 15px;
       }
-      .consumer-box {
-        background-color: white;
-        &:hover {
-          background-color: #DBE2E1;
-        }
-        padding: 10px;
-        margin-bottom: 10px;
-
-        .picture-block {
-          float: left;
-          width: 75px;
-          height: 65px;
-        }
-        .name-block {
-          float: left;
-          width: auto;
-          .name, .email {
-            color: black;
-          }
-          .name {
-            font-size: 15px;
-            font-weight: bold;
-          }
-          .email { font-size: 13px; }
-        }
+      .picture-block {
+        float: left;
+        width: 75px;
+        height: 65px;
         .picture {
           width: 65px;
           height: 65px;
@@ -67,12 +48,138 @@
           background-size: cover;
           display: inline-block;
         }
+      }
+      .tasks {
+        border: 2px solid $cirandas-header-bg;
+        font-size: 15px;
+        width: 100%;
+        padding: 20px;
+        margin-bottom: 10px;
+
+        strong {
+          color: $cirandas-header-bg;
+          font-weight: bold;
+          display: block;
+        }
+
+      }
+      .consumer-box {
+        background-color: white;
+        &:hover {
+          background-color: #DBE2E1;
+        }
+        padding: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+
+        .name-block {
+          float: left;
+          width: auto;
+          .name, .email {
+            color: black;
+          }
+          .name {
+            font-size: 15px;
+            font-weight: bold;
+          }
+          .email { font-size: 13px; }
+        }
         button {
           background-color: white;
           color: #7C7C7C;
           border: 2px solid #9C9C9C;
           margin-top: 20px;
           outline: none;
+        }
+      }
+      a.cs-button {
+        padding: 8px;
+        text-transform: uppercase;
+        font-size: 14px;
+        font-weight: bold;
+        background-color: $cirandas-header-bg;
+        color: white;
+        margin-top: 5px;
+        display: inline-block;
+
+        &:focus {
+          background-color: white;
+          color: $cirandas-header-bg;
+        }
+      }
+      consumer-view {
+        z-index: 1041; // fix modal-backdrop over it https://github.com/twbs/bootstrap/issues/16148
+
+        hr {
+          width: 100%;
+          border-bottom: 1px solid $hr-green;
+        }
+        h1,h2 { background-color: transparent; }
+        h1 {
+          font-size: 18px;
+          font-weight: bold;
+          color: $cirandas-header-bg;
+          text-transform: uppercase;
+        }
+        h2 {
+          font-size: 16px;
+          font-weight: bold;
+          color: $cirandas-header-bg;
+          text-transform: uppercase;
+        }
+        .close-text {
+          font-size: 15px;
+          padding: 4px 8px 8px 0;
+        }
+        .close {
+          padding: 15px 0;
+          font-weight: normal;
+          opacity: 1;
+          float: right;
+        }
+        .form-group {
+          margin-bottom: 5px;
+
+          input,select {
+            border-radius: 0;
+            border: 0px;
+            border-bottom: 1px solid #555;
+            -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
+            box-shadow:         inset 0 0px 0px rgba(0, 0, 0, 0.075);
+
+            &:focus {
+              border: 1px solid #555;
+              -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 102, 102, 0.6);
+              box-shadow:         inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 102, 102, 0.6);
+            }
+          }
+        }
+        table.orders {
+          th {
+            background-color: $cirandas-header-bg;
+            color: white;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 15px;
+            text-align: center;
+          }
+          tr {
+            text-align: center;
+          }
+          td,th {
+            border: 1px solid black;
+          }
+        }
+        .picture-block {
+          width: 122px;
+          height: 112px;
+          .picture {
+            width: 112px;
+            height: 112px;
+          }
+        }
+        .title-box {
+          height: 73px;
         }
       }
     }

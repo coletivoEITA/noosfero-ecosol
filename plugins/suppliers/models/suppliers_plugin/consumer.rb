@@ -6,6 +6,8 @@ class SuppliersPlugin::Consumer < SuppliersPlugin::Supplier
   belongs_to :supplier, foreign_key: :profile_id
   alias_method :consumer, :profile
 
+  belongs_to :hub
+
   def name
     self.profile.name
   end

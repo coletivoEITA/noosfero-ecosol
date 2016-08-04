@@ -1,0 +1,153 @@
+consumer-view.modal.fade tabindex="-1" role="dialog"
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        .row
+          .col-xs-10
+            .picture-block.left
+              a.picture target='_blank' href='{consumerUrl}' style='background-image: url({consumer.profile_icon_thumb})'
+
+            .name_actions.left
+              .title-box
+                h1
+                  |{consumer.name}
+              a.cs-button href="" onclick='{remove}' 
+                |{cs.t("views.consumer.index.remove")}
+
+          .col-xs-2
+            button type="button" class="close left" data-dismiss="modal" aria-label="Close"
+              span.left.close-text
+                |{cs.t("views.consumer.index.close")}
+              span aria-hidden="true"
+                |&times;
+      .modal-body
+        h2
+          |{cs.t("views.consumer.index.general_information")}
+
+        .fields
+          form.form-horizontal
+            input type='hidden' name='id'
+
+            .form-group
+              label for="inputName" class="col-sm-2 control-label"
+                |{cs.t("views.consumer.index.name")}
+              .col-sm-10
+                input type="text" name='name' class="form-control" id="inputName" placeholder='{cs.t("views.consumer.index.name")}'
+
+            .form-group
+              label for="inputTelephone" class="col-sm-2 control-label"
+                |{cs.t("views.consumer.index.telephone")}
+              .col-sm-10
+                input type="tel" name='contact_phone' class="form-control" id="inputTelephone" placeholder='{cs.t("views.consumer.index.telephone")}'
+
+            .form-group
+              label for="inputCelular" class="col-sm-2 control-label"
+                |{cs.t("views.consumer.index.celular")}
+              .col-sm-10
+                input type="tel" name='celular' class="form-control" id="inputCelular" placeholder='{cs.t("views.consumer.index.celular")}'
+
+            .form-group
+              label for="inputEmail" class="col-sm-2 control-label"
+                |{cs.t("views.consumer.index.email")}
+              .col-sm-10
+                input type="email" name='contact_email' class="form-control" id="inputEmail" placeholder='{cs.t("views.consumer.index.email")}'
+
+            .form-group
+              label for="inputHub" class="col-sm-2 control-label"
+                |{cs.t("views.consumer.index.hub")}
+              .col-sm-10
+                select name='hub_id' class="form-control" id="inputHub"
+                  option each="{hubs}" value="{id}"
+                    |{name}
+
+            .form-group
+              label for="inputAddress" class="col-sm-2 control-label"
+                |{cs.t("views.consumer.index.address")}
+              .col-sm-10
+                input type="email" name='address' class="form-control" id="inputAddress" placeholder='{cs.t("views.consumer.index.address")}'
+
+            .form-group
+              label for="inputCity" class="col-sm-2 control-label"
+                |{cs.t("views.consumer.index.city")}
+              .col-sm-10
+                input type="text" name='city' class="form-control" id="inputCity" placeholder='{cs.t("views.consumer.index.city")}'
+
+            .form-group
+              label for="inputState" class="col-sm-2 control-label"
+                |{cs.t("views.consumer.index.state")}
+              .col-sm-10
+                input type="text" name='state' class="form-control" id="inputState" placeholder='{cs.t("views.consumer.index.state")}'
+
+            .form-group
+              label for="inputZip" class="col-sm-2 control-label"
+                |{cs.t("views.consumer.index.zip")}
+              .col-sm-10
+                input type="text" name='zip' class="form-control" id="inputZip" placeholder='{cs.t("views.consumer.index.zip")}'
+
+            .form-group
+              .col-sm-10
+                button type="submit" class="btn btn-default"
+                  |Save
+
+
+      .modal-footer
+        .orders_history if='{purchases.length == 0}'
+          h2
+            |{cs.t('views.consumer.index.no_orders')}
+
+        .orders_history if='{purchases.length > 0}'
+          h1
+            |{cs.t('views.consumer.index.orders_history')}
+
+          table.orders
+            tr
+              th
+                |{cs.t("views.consumer.index.date")}
+              th
+                |{cs.t("views.consumer.index.cycle")}
+              th
+                |{cs.t("views.consumer.index.value_ordered")}
+              th
+                |{cs.t("views.consumer.index.final_value")}
+              th
+                |{cs.t("views.consumer.index.status")}
+
+            tr each='{purchases}'
+              td
+                |{date}
+              td
+                |{cycle}
+              td
+                |{value_ordered}
+              td
+                |{final_value}
+              td
+                |{cs.t("views.consumer.index."+status)}
+
+
+
+  javascript:
+    this.cs = window.consumers;
+    this.hubs = this.parent.hubs;
+
+    setConsumer(consumer) {
+      if (!consumer) return false
+      this.consumer = consumer;
+      this.consumerUrl = Routes.profile_path({profile: this.consumer.identifier})
+      this.purchases = this.consumer.purchases
+    }
+    this.setConsumer(opts.consumer)
+
+    remove(e) {
+      if (!confirm(this.cs.t('views.consumer.index.confirm_remove', {consumer: this.consumer.name}))) return
+
+      var unassociateUrl = Routes.myprofile_path({profile: noosfero.profile, controller: 'profile_members', action: 'unassociate/'+this.consumer.consumer_id})
+      var self = this
+      $.ajax({url: unassociateUrl, type: 'POST', data: {},
+        success: function () {
+          var index = self.parent.consumers.indexOf(self.consumer)
+          self.parent.consumers.splice(index, 1)
+          self.parent.reset()
+        },
+      })
+    }

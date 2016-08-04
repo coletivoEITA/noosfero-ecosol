@@ -345,6 +345,32 @@ en-US: &en-US
           description: "In this page you will find a list of consumers and its information. It will show a box with the user requests to enter the group to be accepted."
           search: "search"
           detail: "detail"
+          general_information: "General informations"
+          close: Close
+          name: Name
+          telephone: Telephone
+          celular: Celular
+          email: Email
+          hub: Hub
+          address: Address
+          city: City
+          state: State
+          zip: Zip
+          orders_history: Orders history
+          no_orders: No orders to show
+          date: Date
+          cycle: Cycle
+          value_ordered: Value ordered
+          final_value: Final value
+          status: Situation
+          draft: Draft
+          accepted: Accepted
+          ordered: Ordered
+          received: Received
+          remove: Remove from group
+          confirm_remove: "Are you sure you want to remove '%{consumer}' membership?"
+          tasks: "%{people} are waiting for approval to enter the group"
+          manage: "Manage"
 
   orders_cycle_plugin:
     terms:

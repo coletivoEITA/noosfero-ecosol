@@ -8,6 +8,7 @@ class SuppliersPlugin::ConsumerController < MyProfileController
   helper SuppliersPlugin::DisplayHelper
 
   def index
+    @tasks_count = Task.to(profile).pending.without_spam.select{|i| user.has_permission?(i.permission, profile)}.count
   end
 
   protected

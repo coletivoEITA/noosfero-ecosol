@@ -372,6 +372,32 @@ pt-BR: &pt-BR
           description: "Nesta página você encontrará a listagem de consumidores e suas informações. Pode aparecer também uma caixa com requisições de associação ao grupo a serem aprovadas"
           search: "PESQUISAR ..."
           detail: "detalhar"
+          general_information: "Informações gerais"
+          close: Fechar
+          name: Nome
+          telephone: Telefone
+          celular: Celular
+          email: Email
+          hub: Núcleo
+          address: Endereço
+          city: Cidade
+          state: Estado
+          zip: CEP
+          orders_history: Histórico de pedidos
+          no_orders: Sem pedidos para mostrar
+          date: Data
+          cycle: Feira
+          value_ordered: Valor pedido
+          final_value: Valor final
+          status: Situação
+          draft: Rascunho
+          accepted: Aceito
+          ordered: Pedido
+          received: Recebido
+          remove: Remover do grupo
+          confirm_remove: "Você tem certeza de que quer remover '%{consumer}' do grupo?"
+          tasks: "<strong>%{people} pessoas</strong> aguardam aprovação para entrar no grupo"
+          manage: "Gerenciar"
 
   orders_cycle_plugin:
     terms:

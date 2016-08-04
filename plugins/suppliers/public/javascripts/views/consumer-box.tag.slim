@@ -1,4 +1,4 @@
-consumer-box.col-xs-12.col-md-6 show='{consumer.selected}'
+consumer-box.col-xs-12.col-md-6 show='{consumer.selected}' onclick="{detail}" data-toggle="modal" data-target="consumer-view"
   div.consumer-box
     .row
       div.col-xs-9
@@ -20,3 +20,8 @@ consumer-box.col-xs-12.col-md-6 show='{consumer.selected}'
     this.consumer = opts.consumer
     this.consumerUrl = Routes.profile_path({profile: this.consumer.identifier})
     this.consumer.selected = true;
+
+    detail(e) {
+      this.parent.edit(this.consumer)
+      return false
+    }

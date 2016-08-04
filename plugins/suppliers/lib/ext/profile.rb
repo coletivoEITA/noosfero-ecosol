@@ -22,6 +22,8 @@ class Profile
       .order('name ASC')
   }, class_name: 'SuppliersPlugin::Consumer', foreign_key: :profile_id, dependent: :destroy
 
+  has_many :hubs, class_name: 'SuppliersPlugin::Hub', dependent: :destroy
+
   def supplier_settings
     @supplier_settings ||= Noosfero::Plugin::Settings.new self, SuppliersPlugin
   end
