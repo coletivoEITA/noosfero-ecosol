@@ -22,7 +22,7 @@ consumer-page
       console.log($(e.target).val());
       for (var i in this.consumers) {
         c = this.consumers[i];
-        this.consumers[i].selected = (c.name.indexOf(needle) > -1 || c.contact_email.indexOf(needle) > -1);
+        this.consumers[i].selected = (c.name.toLowerCase().indexOf(needle) > -1 || c.contact_email.indexOf(needle) > -1);
       }
     }
 
