@@ -21,16 +21,36 @@
         background-size: 27px auto;
       }
 
-      .search input {
-        border: none;
-        border-bottom: 2px solid $cirandas-header-bg;
-        background-color: transparent;
-        color: $cirandas-header-bg;
-        outline: none;
-        margin-bottom: 10px;
-        font-size: 16px;
-        width: 100%;
-        margin-bottom: 15px;
+      .search {
+        ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+          color:    $cirandas-header-bg;
+          font-weight: bold;
+        }
+        :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+          color:    $cirandas-header-bg;
+          font-weight: bold;
+          opacity:  1;
+        }
+        ::-moz-placeholder { /* Mozilla Firefox 19+ */
+          color:    $cirandas-header-bg;
+          font-weight: bold;
+          opacity:  1;
+        }
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+          color:    $cirandas-header-bg;
+          font-weight: bold;
+        }
+        input {
+          border: none;
+          border-bottom: 2px solid $cirandas-header-bg;
+          background-color: transparent;
+          color: $cirandas-header-bg;
+          outline: none;
+          margin-bottom: 10px;
+          font-size: 16px;
+          width: 100%;
+          margin-bottom: 15px;
+        }
       }
       .picture-block {
         float: left;
@@ -54,6 +74,7 @@
         font-size: 15px;
         width: 100%;
         padding: 20px;
+        margin-top: 10px;
         margin-bottom: 10px;
 
         strong {
@@ -102,9 +123,10 @@
         margin-top: 5px;
         display: inline-block;
 
-        &:focus {
+        &:focus,&:hover {
           background-color: white;
           color: $cirandas-header-bg;
+          text-decoration: none;
         }
       }
       consumer-view {
