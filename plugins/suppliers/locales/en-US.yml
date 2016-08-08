@@ -367,10 +367,13 @@ en-US: &en-US
           accepted: Accepted
           ordered: Ordered
           received: Received
+          delivered: Delivered
+          cancelled: Cancelled
           remove: Remove from group
           confirm_remove: "Are you sure you want to remove '%{consumer}' membership?"
           tasks: "%{people} are waiting for approval to enter the group"
           manage: "Manage"
+          saved: "Saved!"
 
   orders_cycle_plugin:
     terms:

@@ -5,7 +5,7 @@ module SuppliersPlugin
     has_many :hubs
 
     def consumers
-      object.consumers.except_self
+      object.consumers.except_self.order(:name)
     end
 
     def hubs
@@ -14,4 +14,3 @@ module SuppliersPlugin
 
   end
 end
-

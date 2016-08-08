@@ -394,10 +394,13 @@ pt-BR: &pt-BR
           accepted: Aceito
           ordered: Pedido
           received: Recebido
+          delivered: Entregue
+          cancelled: Cancelado
           remove: Remover do grupo
           confirm_remove: "Você tem certeza de que quer remover '%{consumer}' do grupo?"
           tasks: "<strong>%{people} pessoas</strong> aguardam aprovação para entrar no grupo"
           manage: "Gerenciar"
+          saved: "Salvo!"
 
   orders_cycle_plugin:
     terms:

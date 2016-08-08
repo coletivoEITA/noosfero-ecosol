@@ -11,12 +11,12 @@
       min-height: 100vh;
 
       h1.title {
-        color: #BACB51;
+        color: #c4bf63;
         font-weight: bold;
         font-size: 25px;
         text-transform: uppercase;
         padding-left: 30px;
-        background-image: url(/plugins/consumers_coop/images/consumidores.png);
+        background-image: url(/plugins/consumers_coop/images/consumidores_.png);
         background-repeat: no-repeat;
         background-size: 27px auto;
       }
@@ -50,6 +50,16 @@
           font-size: 16px;
           width: 100%;
           margin-bottom: 15px;
+        }
+        .search-icon {
+          width: 25px;
+          height: 25px;
+          background-image: url(/plugins/consumers_coop/images/pesquisa.png);
+          background-repeat: no-repeat;
+          background-size: 24px auto;
+          position: absolute;
+          top: -2px;
+          right: 16px;
         }
       }
       .picture-block {
@@ -122,6 +132,8 @@
         color: white;
         margin-top: 5px;
         display: inline-block;
+        cursor: pointer;
+        border: 2px solid $cirandas-header-bg;
 
         &:focus,&:hover {
           background-color: white;
@@ -177,6 +189,8 @@
           }
         }
         table.orders {
+          margin-bottom: 20px;
+
           th {
             background-color: $cirandas-header-bg;
             color: white;
@@ -201,7 +215,7 @@
           }
         }
         .title-box {
-          height: 73px;
+          height: 58px;
         }
       }
     }

@@ -7,10 +7,10 @@ consumer-box.col-xs-12.col-md-6 show='{consumer.selected}' onclick="{detail}" da
         div.name-block
           div
             a.name target='_blank' href='{consumerUrl}'
-              |{consumer.short_name}
+              |{consumer.name}
           div
-            a.email href='mailto:{consumer.contact_email}'
-              |{consumer.contact_email}
+            a.email href='mailto:{consumer.email}'
+              |{consumer.email}
       div.col-xs-3
         button 
           |{cs.t('views.consumer.index.detail')}

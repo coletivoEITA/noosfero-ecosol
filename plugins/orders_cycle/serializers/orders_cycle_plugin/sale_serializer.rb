@@ -1,5 +1,5 @@
-module SuppliersPlugin
-  class PurchaseSerializer < ApplicationSerializer
+module OrdersCyclePlugin
+  class SaleSerializer < ApplicationSerializer
 
     attribute :total_price
     attribute :status

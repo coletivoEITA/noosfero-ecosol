@@ -1,26 +1,28 @@
 module SuppliersPlugin
   class ConsumerSerializer < ApplicationSerializer
 
+    attribute :id
     attribute :consumer_id
     attribute :name
-    attribute :contact_email
-    attribute :short_name
+    attribute :phone
+    attribute :cell_phone
+    attribute :email
+    attribute :hub_id
+    attribute :address
+    attribute :city
+    attribute :state
+    attribute :zip
     attribute :profile_icon_thumb
     attribute :identifier
 
-    has_many :purchases, serializer: PurchaseSerializer
+    has_many :purchases
 
-    #has_one :profile
-
-    def short_name
-      object.short_name(nil)
-    end
     def profile_icon_thumb
       scope.profile_icon(object, :thumb)
     end
 
     def purchases
-      object.purchases.last(10).map{|p| p.becomes OrdersCyclePlugin::Sale }.select{|p| p.cycle }
+      []
     end
   end
 end

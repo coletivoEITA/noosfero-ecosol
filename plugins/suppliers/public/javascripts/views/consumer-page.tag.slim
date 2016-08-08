@@ -2,6 +2,7 @@ consumer-page
   .row
     .search.col-xs-12
       input name='search' placeholder="{cs.t('views.consumer.index.search')}" onkeyup='{search}'
+      .search-icon
 
   .consumers-listing.row
     consumer-box each='{consumer in consumers}' consumer='{consumer}'
@@ -18,17 +19,16 @@ consumer-page
     var self = this;
 
     search(e) {
-      var needle = $(e.target).val().toLowerCase();
-      console.log($(e.target).val());
+      var needle = $('input[name="search"]').val().toLowerCase();
       for (var i in this.consumers) {
         c = this.consumers[i];
-        this.consumers[i].selected = (c.name.toLowerCase().indexOf(needle) > -1 || c.contact_email.indexOf(needle) > -1);
+        this.consumers[i].selected = (c.name.toLowerCase().indexOf(needle) > -1 || (c.email != null && c.email.indexOf(needle) > -1));
       }
     }
 
     edit(consumer) {
       this.editView.setConsumer(consumer)
-      this.editView.update()
+      this.editView.loadPurchases();
     }
 
     reset() {

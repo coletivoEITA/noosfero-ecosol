@@ -11,6 +11,21 @@ class SuppliersPlugin::ConsumerController < MyProfileController
     @tasks_count = Task.to(profile).pending.without_spam.select{|i| user.has_permission?(i.permission, profile)}.count
   end
 
+  def purchases
+    @sales = OrdersCyclePlugin::Sale.where(consumer_id: params[:consumer_id]).joins(:cycles).last(10)
+
+    respond_to do |format|
+      format.json {render json: @sales}
+    end
+  end
+
+  def update
+    @consumer = SuppliersPlugin::Consumer.find params[:id]
+    attrs = params[:consumer].except :id
+    ret = @consumer.update! attrs
+    render text: ret.to_s
+  end
+
   protected
 
   extend HMVC::ClassMethods

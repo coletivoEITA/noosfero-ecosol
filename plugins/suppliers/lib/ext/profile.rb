@@ -24,6 +24,8 @@ class Profile
 
   has_many :hubs, class_name: 'SuppliersPlugin::Hub', dependent: :destroy
 
+  after_update :sync_consumer
+
   def supplier_settings
     @supplier_settings ||= Noosfero::Plugin::Settings.new self, SuppliersPlugin
   end
@@ -86,4 +88,21 @@ class Profile
     end
   end
 
+  def sync_consumer
+    fields = {name: :name, email: :contact_email, contact_phone: :phone, cell_phone: :cell_phone, address: :address, zip_code: :zip}
+    dirty = false
+
+    self.consumers.each do |consumer|
+      fields.each do |profile_k, consumer_k|
+        profile_v  = self.send "#{profile_k}"
+        consumer_v = consumer.send "#{consumer_k}"
+        if profile_v.present? && profile_v != consumer_v
+          consumer.send "#{consumer_k}=", profile_v
+          dirty = true
+        end
+      end
+      consumer.save if dirty
+    end
+
+  end
 end
