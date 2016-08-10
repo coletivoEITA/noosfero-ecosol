@@ -21,7 +21,7 @@ class OrdersPluginAdminItemController < MyProfileController
     @query = params[:query].to_s
     @scope = @order.available_products.limit(10)
     @scope = @scope.includes :suppliers if defined? SuppliersPlugin
-    # FIXME: do not work cycles
+    # FIXME: do not work with cycles
     #@products = autocomplete(:catalog, @scope, @query, {per_page: 10, page: 1}, {})[:results]
     @products = @scope.where('name ILIKE ? OR name ILIKE ?', "#{@query}%", "% #{@query}%")
 
