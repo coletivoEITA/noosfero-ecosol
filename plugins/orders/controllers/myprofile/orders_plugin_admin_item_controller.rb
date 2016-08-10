@@ -25,9 +25,7 @@ class OrdersPluginAdminItemController < MyProfileController
     #@products = autocomplete(:catalog, @scope, @query, {per_page: 10, page: 1}, {})[:results]
     @products = @scope.where('name ILIKE ? OR name ILIKE ?', "#{@query}%", "% #{@query}%")
 
-    render json: @products.map{ |p|
-      {value: p.id, label: "#{p.name} (#{if p.respond_to? :supplier then p.supplier.name else p.profile.short_name end})"}
-    }
+    render json: @products.map{ |p| OrdersPlugin::ProductSearchSerializer.new(p).to_hash }
   end
 
   def add
