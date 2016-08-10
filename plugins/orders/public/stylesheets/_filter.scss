@@ -15,8 +15,8 @@ $filter-bg: #BCDC91;
   }
 
   &.wireframe-size {
-    margin-left: -($wireframe-padding);
-    margin-right: -($wireframe-padding);
+    margin-left: -($wireframe-padding - $border);
+    margin-right: -($wireframe-padding - $border);
 
     .title, .filter-box, .submit {
       padding-left: $wireframe-padding + $padding;

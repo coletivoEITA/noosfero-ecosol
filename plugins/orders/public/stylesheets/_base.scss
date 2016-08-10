@@ -61,7 +61,7 @@ $half-marginp: percentage($half-margin/$wireframe);
 $paddingp: percentage($padding/$wireframe);
 $half-paddingp: percentage($half-padding/$wireframe);
 
-$wireframe-padding: 5*$padding;
+$wireframe-padding: 3*$padding;
 
 /* use for borders */
 $border: 1px;
