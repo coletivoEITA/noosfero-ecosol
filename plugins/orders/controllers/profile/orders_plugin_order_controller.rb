@@ -17,7 +17,7 @@ class OrdersPluginOrderController < ProfileController
   protected
 
   def load_order
-    @order = hmvc_orders_context::Sale.find_by id: params[:id]
+    @order = hmvc_context::Sale.find_by id: params[:id]
     render_access_denied if @order.present? and not @user_is_admin and not @order.may_view? user
   end
 
@@ -37,7 +37,7 @@ class OrdersPluginOrderController < ProfileController
   end
 
   extend HMVC::ClassMethods
-  hmvc OrdersPlugin, orders_context: OrdersPlugin
+  hmvc OrdersPlugin
 
   def disable_purechat
     @disable_purechat = true

@@ -12,6 +12,6 @@ class OrdersCyclePluginAdminItemController < OrdersPluginAdminItemController
   protected
 
   extend HMVC::ClassMethods
-  hmvc OrdersCyclePlugin, orders_context: OrdersCyclePlugin
+  hmvc OrdersCyclePlugin
 
 end

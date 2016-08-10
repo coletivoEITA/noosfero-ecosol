@@ -17,7 +17,10 @@ class OrdersPluginAdminItemController < MyProfileController
   end
 
   def add_search
-    @order = hmvc_orders_context::Order.find params[:order_id]
+    @actor_name  = params[:actor_name].to_sym
+    @order_class = if @actor_name == :supplier then :Sale else :Purchase end
+    @order       = hmvc_context.const_get(@order_class).find params[:order_id]
+
     @query = params[:query].to_s
     @scope = @order.available_products.limit(10)
     @scope = @scope.includes :suppliers if defined? SuppliersPlugin
@@ -29,12 +32,14 @@ class OrdersPluginAdminItemController < MyProfileController
   end
 
   def add
-    @actor_name = params[:actor_name].to_sym
-    @order = hmvc_orders_context::Order.find params[:order_id]
+    @actor_name  = params[:actor_name].to_sym
+    @order_class = if @actor_name == :supplier then :Sale else :Purchase end
+    @order       = hmvc_context.const_get(@order_class).find params[:order_id]
+
     @product = @order.available_products.find params[:product_id]
 
-    @item = hmvc_orders_context::Item.where(order_id: @order.id, product_id: @product.id).first
-    @item ||= hmvc_orders_context::Item.new order: @order, product: @product
+    @item   = @order.items.find_by product_id: @product.id
+    @item ||= @order.items.build product: @product
     @item.next_status_quantity_set @actor_name, (@item.next_status_quantity(@actor_name) || @item.status_quantity || 0) + 1
     @item.save!
   end
@@ -46,6 +51,6 @@ class OrdersPluginAdminItemController < MyProfileController
   end
 
   extend HMVC::ClassMethods
-  hmvc OrdersPlugin, orders_context: OrdersPlugin
+  hmvc OrdersPlugin
 
 end
