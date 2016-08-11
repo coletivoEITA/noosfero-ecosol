@@ -1,5 +1,27 @@
 consumer-page
   .row
+    .col-xs-9
+      h1.title
+        |{cs.t("views.consumer.index.consumer")}
+
+      p.page-description
+        |{cs.t("views.consumer.index.description")}
+
+
+    .col-xs-3
+      a.add_consumer.right href="" onclick="{add}"
+        |{cs.t("views.consumer.index.add_consumer")}
+
+    .col-xs-12 if="{tasks_count > 0}"
+      .tasks
+        .row
+          .col-xs-12.col-md-10
+            raw html='{cs.t("views.consumer.index.tasks", {people: this.tasks_count})}'
+          .col-xs-12.col-md-2
+            a.cs-button href="{Routes.myprofile_path({profile: noosfero.profile, controller: 'tasks'})}"
+              |{cs.t("views.consumer.index.manage")}
+
+  .row
     .search.col-xs-12
       input name='search' placeholder="{cs.t('views.consumer.index.search')}" onkeyup='{search}'
       .search-icon
@@ -15,6 +37,8 @@ consumer-page
     this.hubs = opts.hubs;
     this.tasks = opts.tasks;
     this.editView = this.tags['consumer-view']
+    this.tasks_count = opts.tasks_count
+    console.log(opts.tasks_count)
 
     var self = this;
 
@@ -34,4 +58,8 @@ consumer-page
     reset() {
       $('consumer-view').modal('hide');
       this.update();
+    }
+
+    add() {
+      console.log("oi")
     }

@@ -374,6 +374,7 @@ en-US: &en-US
           tasks: "%{people} are waiting for approval to enter the group"
           manage: "Manage"
           saved: "Saved!"
+          add_consumer: "Add new"
 
   orders_cycle_plugin:
     terms:

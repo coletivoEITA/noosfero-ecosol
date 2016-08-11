@@ -94,6 +94,32 @@
         }
 
       }
+      a.add_consumer {
+        margin-top: 15px;
+        display: block;
+
+        border: 2px solid $cirandas-header-bg;
+        background-color: transparent;
+        color: #777; 
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+
+        padding: 8px;
+        padding-left: 30px;
+        background-image: url(/plugins/consumers_coop/images/cross.png);
+        background-repeat: no-repeat;
+        background-size: 16px auto;
+        background-position: 10px 9px;
+
+        &:hover {
+          background-color: $cirandas-header-bg;
+          color: white;
+          text-decoration: none;
+        }
+      }
+      .right { float: right; }
+
       .consumer-box {
         background-color: white;
         &:hover {

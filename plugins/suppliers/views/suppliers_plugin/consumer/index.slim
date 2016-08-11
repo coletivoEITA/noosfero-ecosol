@@ -3,27 +3,12 @@
 = js_translations_include plugin: :suppliers
 
 .consumers-page
-  .row
-    div.col-xs-12
-      h1.title
-        = t("views.consumer.index.consumer")
 
-    .col-xs-12
-      p.page-description
-        = t("views.consumer.index.description")
-
-    - if @tasks_count > 0
-      .col-xs-12
-        .tasks
-          .row
-            .col-xs-12.col-md-10
-              = t('views.consumer.index.tasks', {people: @tasks_count.size}).html_safe
-            .col-xs-12.col-md-2
-              = link_to t("views.consumer.index.manage"), {profile: profile.identifier, controller: 'tasks'}, class: "cs-button"
-
-
-  consumer-page.row
+  consumer-page
 
 javascript:
-  riot.mount($('consumer-page'), #{SuppliersPlugin::ConsumersPageSerializer.new(profile, scope: self).to_json})
+  riot.mount($('consumer-page'), {
+    consumers: #{SuppliersPlugin::ConsumersPageSerializer.new(profile, scope: self).to_hash.fetch(:consumers, []).to_json},
+    tasks_count: #{@tasks_count}
+  })
 

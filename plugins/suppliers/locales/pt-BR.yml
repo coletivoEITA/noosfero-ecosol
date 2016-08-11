@@ -401,6 +401,7 @@ pt-BR: &pt-BR
           tasks: "<strong>%{people} pessoas</strong> aguardam aprovação para entrar no grupo"
           manage: "Gerenciar"
           saved: "Salvo!"
+          add_consumer: "Adicionar novo"
 
   orders_cycle_plugin:
     terms:

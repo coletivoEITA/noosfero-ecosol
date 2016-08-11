@@ -11,6 +11,5 @@ module SuppliersPlugin
     def hubs
       object.hubs
     end
-
   end
 end
