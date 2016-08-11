@@ -12,7 +12,7 @@ module ConsumersCoopPlugin::LayoutHelper
     orders_cycles: [{:controller => :consumers_coop_plugin_cycle, :action => :index}, nil, -> { profile.has_admin? user }],
     products: [{:controller => :consumers_coop_plugin_product, :action => :index}, nil, -> { profile.has_admin? user }],
     suppliers: [{:controller => :consumers_coop_plugin_supplier, :action => :index}, nil, -> { profile.has_admin? user }],
-    consumers: [{:controller => "suppliers_plugin/consumer", :action => :index}, nil, -> { profile.has_admin? user }],
+    consumers: [{:controller => :consumers_coop_plugin_consumer, :action => :index}, nil, -> { profile.has_admin? user }],
     settings: [{:controller => :consumers_coop_plugin_myprofile, :action => :settings}, nil, -> { profile.has_admin? user }],
   }
   #TODO: Add leave/join and remove existing profile_info block
@@ -35,9 +35,7 @@ module ConsumersCoopPlugin::LayoutHelper
           url[:profile] = profile.identifier
         end
 
-        if key != :administration and @admin
-          selected = false
-        elsif selected_proc
+        if selected_proc
           selected = instance_exec(&selected_proc)
         else
           selected = params[:controller].to_s == url[:controller].to_s
