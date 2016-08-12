@@ -3,15 +3,14 @@
 = js_translations_include plugin: :suppliers
 
 - search_url = url_for(:controller => :profile_members, :action => 'search_user', :profile => profile.identifier, :role => @role.id)
+- object = SuppliersPlugin::ConsumersPageSerializer.new(profile, scope: self).to_hash.merge!({tasks_count: @tasks_count})
 .consumers-page
 
   consumer-page
 
+
 javascript:
-  riot.mount($('consumer-page'), {
-    consumers: #{SuppliersPlugin::ConsumersPageSerializer.new(profile, scope: self).to_hash.fetch(:consumers, []).to_json},
-    tasks_count: #{@tasks_count}
-  })
+  riot.mount($('consumer-page'), #{object.to_json})
 
   jQuery('#search_input')
   .tokenInput("#{search_url}", {
