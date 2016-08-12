@@ -7,8 +7,11 @@ class SuppliersPlugin::ConsumerController < MyProfileController
   helper SuppliersPlugin::TranslationHelper
   helper SuppliersPlugin::DisplayHelper
 
+  serialization_scope :view_context
+
   def index
     @tasks_count = Task.to(profile).pending.without_spam.select{|i| user.has_permission?(i.permission, profile)}.count
+    @role = Role.where(key: 'profile_member').first
   end
 
   def purchases
@@ -24,6 +27,21 @@ class SuppliersPlugin::ConsumerController < MyProfileController
     attrs = params[:consumer].except :id
     ret = @consumer.update! attrs
     render text: ret.to_s
+  end
+
+  def add_consumers
+    people = [Person.find(params[:consumers].split(','))].flatten
+    role = Role.where(key: 'profile_member').first
+    to_add = people - profile.members_by_role(role)
+
+    begin
+      to_add.each { |person| profile.affiliate(person, role) }
+    rescue Exception => ex
+      logger.info ex
+    end
+
+    consumers = profile.consumers.where(consumer_id: params[:consumers].split(','))
+    render json: consumers
   end
 
   protected

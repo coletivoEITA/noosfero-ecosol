@@ -1,15 +1,15 @@
 consumer-page
   .row
-    .col-xs-9
+    .col-xs-12
       h1.title
         |{cs.t("views.consumer.index.consumer")}
 
+    .col-xs-9
       p.page-description
         |{cs.t("views.consumer.index.description")}
 
-
     .col-xs-3
-      a.add_consumer.right href="" onclick="{add}"
+      a.add_consumer.right href="" data-toggle="modal" data-target="consumer-add"
         |{cs.t("views.consumer.index.add_consumer")}
 
     .col-xs-12 if="{tasks_count > 0}"
@@ -30,6 +30,8 @@ consumer-page
     consumer-box each='{consumer in consumers}' consumer='{consumer}'
 
   consumer-view
+    
+  consumer-add
 
   javascript:
     this.cs = window.consumers;
@@ -38,7 +40,6 @@ consumer-page
     this.tasks = opts.tasks;
     this.editView = this.tags['consumer-view']
     this.tasks_count = opts.tasks_count
-    console.log(opts.tasks_count)
 
     var self = this;
 
@@ -60,6 +61,9 @@ consumer-page
       this.update();
     }
 
-    add() {
-      console.log("oi")
+    add_consumers(consumers) {
+      var self = this
+      consumers.forEach(function(consumer) {
+        self.consumers.push(consumer)
+      })
     }

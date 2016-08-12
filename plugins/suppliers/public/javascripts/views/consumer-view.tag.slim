@@ -132,6 +132,8 @@ consumer-view.modal.fade tabindex="-1" role="dialog"
       if (!consumer) return false
       this.consumer = consumer;
       this.consumerUrl = Routes.profile_path({profile: this.consumer.identifier})
+      if (this.consumer.purchases == undefined)
+        this.consumer.purchases = {}
       this.purchases = this.consumer.purchases
     }
     this.setConsumer(opts.consumer)

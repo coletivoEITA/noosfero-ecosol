@@ -15,6 +15,7 @@
         font-weight: bold;
         font-size: 25px;
         text-transform: uppercase;
+        margin-bottom: 15px;
         padding-left: 30px;
         background-image: url(/plugins/consumers_coop/images/consumidores_.png);
         background-repeat: no-repeat;
@@ -84,8 +85,8 @@
         font-size: 15px;
         width: 100%;
         padding: 20px;
-        margin-top: 10px;
-        margin-bottom: 10px;
+        margin-top: 20px;
+        margin-bottom: 40px;
 
         strong {
           color: $cirandas-header-bg;
@@ -95,7 +96,6 @@
 
       }
       a.add_consumer {
-        margin-top: 15px;
         display: block;
 
         border: 2px solid $cirandas-header-bg;
@@ -113,7 +113,7 @@
         background-position: 10px 9px;
 
         &:hover {
-          background-color: $cirandas-header-bg;
+          background-color: grey;
           color: white;
           text-decoration: none;
         }
@@ -167,7 +167,13 @@
           text-decoration: none;
         }
       }
-      consumer-view {
+      consumer-add {
+        li.token-input-token {
+          background-color: $cirandas-header-bg;
+          color: white;
+        }
+      }
+      consumer-view, consumer-add {
         z-index: 1041; // fix modal-backdrop over it https://github.com/twbs/bootstrap/issues/16148
 
         hr {
@@ -247,3 +253,11 @@
     }
   }
 }
+div.token-input-dropdown {
+  z-index:1041 !important;
+  ul li.token-input-selected-dropdown-item {
+    background-color: $cirandas-header-bg;
+    color: white;
+  }
+}
+

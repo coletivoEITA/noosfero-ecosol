@@ -2,6 +2,7 @@
 
 = js_translations_include plugin: :suppliers
 
+- search_url = url_for(:controller => :profile_members, :action => 'search_user', :profile => profile.identifier, :role => @role.id)
 .consumers-page
 
   consumer-page
@@ -11,4 +12,23 @@ javascript:
     consumers: #{SuppliersPlugin::ConsumersPageSerializer.new(profile, scope: self).to_hash.fetch(:consumers, []).to_json},
     tasks_count: #{@tasks_count}
   })
+
+  jQuery('#search_input')
+  .tokenInput("#{search_url}", {
+    hintText: #{_('Type in a search term for users').to_json},
+    noResultsText: #{_('No results').to_json},
+    searchingText: #{ _('Searching...').to_json},
+    searchDelay: 500,
+    minChars: 3,
+    backspaceDeleteItem: false,
+    preventDuplicates: true,
+    queryParam: #{('q_'+@role.key).to_json}
+  });
+
+  jQuery(document)
+  .on("keydown","#token-input-search-enterprises", function(event){
+    if(event.keyCode == "13") return false;
+  });
+  jQuery('.token-input-input-token input').blur();
+  jQuery('.token-input-input-token input')[0].focus();
 

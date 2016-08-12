@@ -1,6 +1,7 @@
 //= require ./views/consumer-page
 //= require ./views/consumer-box
 //= require ./views/consumer-view
+//= require ./views/consumer-add
 
 consumers = {
 

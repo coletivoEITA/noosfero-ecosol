@@ -402,6 +402,8 @@ pt-BR: &pt-BR
           manage: "Gerenciar"
           saved: "Salvo!"
           add_consumer: "Adicionar novo"
+          adding_consumer: "Adicionando novo consumidor"
+          search_members: Procure abaixo por um usuário cadastrado no site
 
   orders_cycle_plugin:
     terms:

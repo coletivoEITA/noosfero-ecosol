@@ -375,6 +375,8 @@ en-US: &en-US
           manage: "Manage"
           saved: "Saved!"
           add_consumer: "Add new"
+          adding_consumer: "Adding new consumer"
+          search_members: Search for users registered in the site
 
   orders_cycle_plugin:
     terms:
