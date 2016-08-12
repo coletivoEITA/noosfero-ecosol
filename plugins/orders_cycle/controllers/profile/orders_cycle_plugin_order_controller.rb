@@ -174,7 +174,8 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   protected
 
   def load_products_for_order
-    scope = @cycle.products_for_order.in_stock
+    scope = @cycle.products_for_order
+    scope = scope.in_stock if defined? StockPlugin
     page, per_page = params[:page].to_i, 20
     page = 1 if page < 1
     @products = OrdersCyclePlugin::OfferedProduct.search_scope(scope, params).paginate page: page, per_page: per_page
