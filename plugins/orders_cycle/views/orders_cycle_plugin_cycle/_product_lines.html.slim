@@ -1,0 +1,25 @@
+.cycle-products-table.sortable-table
+
+  = pagination_links @products
+
+  #result-count
+    small= t('views.cycle._product_lines.showing_pcount_produc') % {pcount: @products.length, allpcount: @cycle.products.count}
+
+  .table-header
+    span.box-field.category= t('views.cycle._product_lines.category')
+    span.box-field.supplier= t('views.cycle._product_lines.supplier')
+    span.box-field.name= t('views.cycle._product_lines.product')
+    span.box-field.price= t('views.cycle._product_lines.price')
+    span.box-field.quantity-available= t('views.cycle._product_lines.qty_avail')
+    span.box-field.actions
+    .clean
+
+  .table-content
+    - @products.each do |p|
+      .cycle-product.value-row id="cycle-product-#{p.id}" toggle-edit="orders_cycle.offered_product.edit()"
+        = render 'orders_cycle_plugin_product/cycle_edit', p: p
+
+    javascript:
+      jQuery(document).ready(function() {
+        orders_cycle.ajaxifyPagination("#cycle-products .table")
+      })

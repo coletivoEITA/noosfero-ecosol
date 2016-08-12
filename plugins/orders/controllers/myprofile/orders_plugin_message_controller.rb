@@ -44,6 +44,6 @@ class OrdersPluginMessageController < MyProfileController
   end
 
   extend HMVC::ClassMethods
-  hmvc OrdersPlugin, orders_context: OrdersPlugin
+  hmvc OrdersPlugin
 
 end

@@ -181,6 +181,6 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   end
 
   extend HMVC::ClassMethods
-  hmvc OrdersCyclePlugin, orders_context: OrdersCyclePlugin
+  hmvc OrdersCyclePlugin
 
 end

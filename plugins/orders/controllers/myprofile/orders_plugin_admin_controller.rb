@@ -28,7 +28,7 @@ class OrdersPluginAdminController < MyProfileController
 
     @scope ||= profile
     @scope = @scope.send @method
-    @orders = hmvc_orders_context::Order.search_scope(@scope, params).paginate(per_page: 30, page: params[:page])
+    @orders = hmvc_context::Order.search_scope(@scope, params).paginate(per_page: 30, page: params[:page])
 
     respond_to do |format|
       format.html{ render partial: 'orders_plugin_admin/results', locals: { orders: @orders, actor_name: @actor_name} }
@@ -56,7 +56,7 @@ class OrdersPluginAdminController < MyProfileController
     @scope ||= profile
     @scope = @scope.send @method
     @orders = @scope.where(id: params[:ids])
-    report_file = report_products_by_supplier hmvc_orders_context::Order.supplier_products_by_suppliers @orders
+    report_file = report_products_by_supplier hmvc_context::Order.supplier_products_by_suppliers @orders
 
     send_file report_file, type: 'application/xlsx',
       disposition: 'attachment',
@@ -88,6 +88,6 @@ class OrdersPluginAdminController < MyProfileController
   end
 
   extend HMVC::ClassMethods
-  hmvc OrdersPlugin, orders_context: OrdersPlugin
+  hmvc OrdersPlugin
 
 end

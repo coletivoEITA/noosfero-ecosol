@@ -9,7 +9,7 @@ class OrdersPluginItemController < MyProfileController
 
   def edit
     @consumer = user
-    @item = hmvc_orders_context::Item.find params[:id]
+    @item = hmvc_context::Item.find params[:id]
     @product = @item.product
     @order = @item.send self.order_method
 
@@ -26,7 +26,7 @@ class OrdersPluginItemController < MyProfileController
   end
 
   def destroy
-    @item = hmvc_orders_context::Item.find params[:id]
+    @item = hmvc_context::Item.find params[:id]
     @product = @item.product
     @order = @item.send self.order_method
 
@@ -75,6 +75,6 @@ class OrdersPluginItemController < MyProfileController
   end
 
   extend HMVC::ClassMethods
-  hmvc OrdersPlugin, orders_context: OrdersPlugin
+  hmvc OrdersPlugin
 
 end
