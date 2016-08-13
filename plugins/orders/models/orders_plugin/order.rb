@@ -284,7 +284,7 @@ class OrdersPlugin::Order < ApplicationRecord
     return @current_status = 'open' if self.open?
     @current_status = self['status']
   end
-  def status_message
+  def status_message status = current_status
     I18n.t StatusText[current_status]
   end
 

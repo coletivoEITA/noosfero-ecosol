@@ -1,0 +1,67 @@
+order-items-table
+
+  div if='{order.items.length > 0}'
+    .order-items class="{'self-supplier': order.self_supplier}"
+      .table-header
+        .box-field.supplier if='{!order.self_supplier}'
+          '{t('views.item._index.supplier')}
+        .box-field.product
+          '{t('views.item._index.product')}
+        .box-field.quantity
+          '{t('views.item._index.quantity')}
+        .box-field.price-total
+          '{t('views.item._index.price_total', {currency: this.order.currency_unit})}
+        .box-field.status if='{order.admin}'
+          '{t('views.item._index.status')}
+
+      .table-content toggle-ignore='ignore'
+        order-item each='{item in order.items}' item='{item}'
+
+    .order-total
+      .title
+        '{t('views.consumer._total.total')}
+      .value
+        span
+          '{I18n.toCurrency(order.total_price)}
+
+  div if='{order.items.length == 0}'
+    '{t('views.item._index.empty_order')}
+
+  javascript:
+    this.order = opts.order
+
+    this.t = window.orders.t
+
+    updateOrder(order) {
+      _.merge(this.order, order)
+      this.update()
+    }
+
+    closeAll() {
+      _.each(this.tags['order-item'], function (i) { i.isOpen = false })
+    }
+
+    adminAdd(product_id) {
+      $.post(this.order.add_url, {product_id: product_id}, function(data) {
+        this.add(data.item_id, data.order)
+      }.bind(this))
+    }
+
+    add(item_id, order) {
+      this.updateOrder(order)
+
+      this.closeAll()
+      _.each(this.tags['order-item'], function (i) {
+        if (i.item.id == item_id)
+          i.isOpen = true
+      })
+      this.update()
+    }
+
+    remove(item_id) {
+      var index = _.remove(this.parent.order.items, function (i) {
+        return i.id == item_id
+      })
+      this.parent.update()
+    }
+

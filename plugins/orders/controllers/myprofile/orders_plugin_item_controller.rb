@@ -8,10 +8,9 @@ class OrdersPluginItemController < MyProfileController
   helper OrdersPlugin::DisplayHelper
 
   def edit
-    @consumer = user
-    @item = hmvc_context::Item.find params[:id]
-    @product = @item.product
-    @order = @item.send self.order_method
+    @consumer  = user
+    @item      = hmvc_context::Item.find params[:id]
+    @order     = @item.order
 
     unless @order.may_edit? @consumer
       raise 'Order confirmed or cycle is closed for orders' unless @order.open?
@@ -23,6 +22,9 @@ class OrdersPluginItemController < MyProfileController
       params[:item][:quantity_consumer_ordered] = @quantity_consumer_ordered
       @item.update! params[:item]
     end
+
+    serializer = OrdersPlugin::OrderSerializer.new @item.order.reload, scope: self, actor_name: @actor_name
+    render json: serializer.to_hash
   end
 
   def destroy
@@ -49,7 +51,8 @@ class OrdersPluginItemController < MyProfileController
         @quantity_consumer_ordered = min
         @quantity_consumer_ordered_less_than_minimum = @item.id || true
       end
-      if @item.product.use_stock
+
+      if defined? StockPlugin and @item.product.use_stock
         if @quantity_consumer_ordered > @item.product.stored
           @quantity_consumer_ordered = @item.product.stored
           @quantity_consumer_ordered_more_than_stored = @item.id || true

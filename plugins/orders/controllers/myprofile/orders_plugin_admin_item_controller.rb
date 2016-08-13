@@ -8,12 +8,14 @@ class OrdersPluginAdminItemController < MyProfileController
   helper OrdersPlugin::DisplayHelper
 
   def edit
-    @consumer = user
-    @item = OrdersPlugin::Item.find params[:id]
+    @consumer   = user
+    @item       = OrdersPlugin::Item.find params[:id]
     @actor_name = params[:actor_name].to_sym
-    @order = if @actor_name == :consumer then @item.purchase else @item.sale end
 
     @item.update! params[:item]
+
+    serializer  = OrdersPlugin::OrderSerializer.new @item.order.reload, scope: self, actor_name: @actor_name
+    render json: serializer.to_hash
   end
 
   def add_search
@@ -42,6 +44,12 @@ class OrdersPluginAdminItemController < MyProfileController
     @item ||= @order.items.build product: @product
     @item.next_status_quantity_set @actor_name, (@item.next_status_quantity(@actor_name) || @item.status_quantity || 0) + 1
     @item.save!
+
+    serializer = OrdersPlugin::OrderSerializer.new @item.order.reload, scope: self, actor_name: @actor_name
+    render json: {
+      order:   serializer.to_hash,
+      item_id: @item.id,
+    }
   end
 
   protected

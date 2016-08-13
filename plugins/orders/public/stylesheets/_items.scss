@@ -40,7 +40,7 @@
         }
 
         &.quantity {
-          &, input {
+          & {
             width: $module01 - $padding;
             max-width: $module01 - $padding;
           }
@@ -74,7 +74,7 @@
       }
 
       &.quantity {
-        &, input {
+        & {
           width: $module01;
           max-width: $module01;
         }

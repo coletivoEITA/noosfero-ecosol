@@ -1,5 +1,12 @@
+//= require ./views/items-table
+//= require ./views/item
+//= require ./views/item-quantity-price
 
 orders = {
+
+  t: function (key, options) {
+    return I18n.t(key, $.extend(options, {scope: 'orders_plugin'}))
+  },
 
   locales: {
     noneSelected: '',
@@ -31,26 +38,12 @@ orders = {
 
   item: {
 
-    edit: function () {
-    },
-
     edit_quantity: function (item) {
       item = $(item);
       toggle_edit.edit(item);
 
       var quantity = item.find('.quantity input');
       quantity.focus();
-    },
-
-    // keydown prevents form submit, keyup don't
-    quantity_keydown: function(context, event) {
-      if (event.keyCode == 13) {
-        var item = $(context).parents('.item');
-        item.find('.more .submit').get(0).onclick();
-
-        event.preventDefault();
-        return false;
-      }
     },
 
     admin_add: {
@@ -75,29 +68,9 @@ orders = {
           source: this.source.ttAdapter(),
         }).on('typeahead:selected', function(e, item) {
           input.val('')
-          $.post(self.add_url, {product_id: item.value}, function(data) {
-          })
+          $(`#order-${id} order-items-table`).get(0)._tag.adminAdd(item.value)
         })
       },
-    },
-
-    admin_remove: function(context, url) {
-      var container = $(context).parents('.order-items-container');
-      var item = $(context).parents('.item');
-      var quantity = item.find('.quantity input');
-      quantity.val('0')
-      this.submit(context, url)
-    },
-
-    submit: function(context, url) {
-      var container = $(context).parents('.order-items-container');
-      var item = $(context).parents('.item');
-      var quantity = item.find('.quantity input');
-      var data = {}
-      data[quantity[0].name] = quantity.val()
-
-      loading_overlay.show(container);
-      $.post(url, data, function(){}, 'script');
     },
   },
 

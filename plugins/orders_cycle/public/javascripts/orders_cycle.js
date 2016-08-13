@@ -104,10 +104,12 @@ orders_cycle = {
           alert(this.include_message);
 
         loading_overlay.show(product);
+
         $.post(this.add_url, {order_id: this.order_id, redirect: this.redirect_after_include, offered_product_id: id}, function () {
           loading_overlay.hide(product);
         }, 'script');
       },
+
       remove: function (id) {
         var product = this.load(id, false);
 

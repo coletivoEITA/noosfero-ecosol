@@ -1,0 +1,59 @@
+order-item-quantity-price
+
+  .quantity-price-row class="{status_id} {flagClasses}"
+
+    .box-field.quantity title='{statusWithUnit()}'
+      span.value if='{status.flags.removed}'
+        '{t('views.item._edit.removed')}
+      span.value if='{!status.flags.removed}'
+        '{quantityNumber}
+
+      span if='{!parent.parent.order.view_only && status.flags.editable}'
+        input.form-control.inline-input name='quantity_{status.field}' type='number' value='{status.quantity}' min='0' step='any' onkeyup='{quantityKeyUp}'
+      span.unit if='{!status.flags.editable}'
+        '&nbsp;{item.unit_name}
+
+    .box-field.price-total
+      span class='{outdated: status.new_price}'
+        '{status.price}
+      span.new-price if='{status.new_price}'
+        '{status.new_price}
+
+    .box-field.status if='{parent.parent.order.admin}'
+      '{t('models.order.statuses.'+status_id)}
+
+  javascript:
+    this.item      = opts.item
+    this.status    = opts.status
+    this.status_id = opts.status_id
+
+    statusWithUnit() {
+      if (!status.flags.removed)
+        return quantityNumber+' '+item.unit_name
+    }
+
+    quantityKeyUp(event) {
+      var input = event.target
+      if (input.value == this.status.quantity) return
+
+      this.quantityUpdate(input.value)
+    }
+
+    quantityUpdate(value) {
+      var data = {item: {}}
+      data.item['quantity_'+this.status.field] = value
+
+      $.post(this.item.update_url, data, function (order) {
+        var orderTag = this.parent.parent
+        orderTag.updateOrder(order)
+      }.bind(this))
+
+      // keep up/down of number input work
+      return true
+    }
+
+    this.on('update', function () {
+      this.flagClasses    = _.keys(_.pick(this.status.flags, function (v, k) { return v })).join(' ')
+      this.quantityNumber = I18n.toNumber(this.status.quantity, {precision: 1})
+    }.bind(this))
+

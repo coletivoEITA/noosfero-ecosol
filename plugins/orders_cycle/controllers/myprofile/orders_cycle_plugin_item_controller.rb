@@ -33,6 +33,8 @@ class OrdersCyclePluginItemController < OrdersPluginItemController
     if set_quantity_consumer_ordered(params[:quantity_consumer_ordered] || 1)
       @item.update! quantity_consumer_ordered: @quantity_consumer_ordered
     end
+
+    @serializer = OrdersPlugin::OrderSerializer.new @order, scope: self, actor_name: @actor_name
   end
 
   def edit
@@ -56,7 +58,7 @@ class OrdersCyclePluginItemController < OrdersPluginItemController
   def destroy
     super
     @offered_product = @product
-    @cycle = @order.cycle
+    @cycle           = @order.cycle
   end
 
   protected

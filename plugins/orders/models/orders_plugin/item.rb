@@ -7,8 +7,8 @@ class OrdersPlugin::Item < ApplicationRecord
   # flag used by items to compare them with products
   attr_accessor :product_diff
 
-  Statuses = %w[ordered accepted separated delivered received]
-  DbStatuses = %w[draft planned cancelled] + Statuses
+  Statuses     = %w[ordered accepted separated delivered received]
+  DbStatuses   = %w[draft planned cancelled] + Statuses
   UserStatuses = %w[open forgotten planned cancelled] + Statuses
   StatusText = {}; UserStatuses.map do |status|
     StatusText[status] = "orders_plugin.models.order.statuses.#{status}"
@@ -16,11 +16,11 @@ class OrdersPlugin::Item < ApplicationRecord
 
   # should be Order, but can't reference it here so it would create a cyclic reference
   StatusAccessMap = {
-    'ordered' => :consumer,
-    'accepted' => :supplier,
+    'ordered'   => :consumer,
+    'accepted'  => :supplier,
     'separated' => :supplier,
     'delivered' => :supplier,
-    'received' => :consumer,
+    'received'  => :consumer,
   }
   StatusDataMap = {}; StatusAccessMap.each do |status, access|
     StatusDataMap[status] = "#{access}_#{status}"
@@ -230,19 +230,35 @@ class OrdersPlugin::Item < ApplicationRecord
       access = StatusAccessMap[status]
 
       status_data = statuses_data[status] = {
-        flags: {},
-        field: data_field,
+        flags: {
+          editable:     nil,
+          not_modified: nil,
+          empty:        nil,
+          filled:       nil,
+          overwritten:  nil,
+          current:      nil,
+          removed:      nil,
+          admin:        nil,
+        },
+
+        price:     nil,
+        new_price: nil,
+        quantity:  nil,
+
+        field:  data_field,
         access: access,
       }
 
       quantity = self.send "quantity_#{data_field}"
       if quantity.present?
         # quantity is used on <input type=number> so it should not be localized
-        status_data[:quantity] = quantity
+        status_data[:quantity]           = quantity
+
         status_data[:flags][:removed] = true if status_data[:quantity].zero?
-        status_data[:price] = self.send "price_#{data_field}_as_currency_number"
-        status_data[:new_price] = quantity * new_price if new_price
         status_data[:flags][:filled] = true
+
+        status_data[:price]     = self.send "price_#{data_field}_as_currency_number"
+        status_data[:new_price] = quantity * new_price if new_price
       else
         status_data[:flags][:empty] = true
       end
@@ -267,6 +283,7 @@ class OrdersPlugin::Item < ApplicationRecord
         elsif status_data[:flags][:empty]
           # fill with previous status data
           status_data[:quantity] = prev_status_data[:quantity]
+
           status_data[:price] = prev_status_data[:price]
           status_data[:flags][:filled] = status_data[:flags].delete :empty
           status_data[:flags][:not_modified] = true

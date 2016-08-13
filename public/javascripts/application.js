@@ -24,6 +24,7 @@
 *= require riot
 *= require riot_rails
 *= require i18n
+*= require i18n/translations
 *= require js-routes
 * noosfero libraries
 *= require_self

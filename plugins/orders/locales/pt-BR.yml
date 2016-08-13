@@ -194,7 +194,7 @@ pt-BR: &pt-BR
         _index:
           header: "Compra %{profile_code} - %{profile} / Venda %{consumer}"
           empty_order: "Pedido vazio"
-          supplier: "%{terms.supplier.singular}"
+          supplier: 'fornecedor'
           product: "produto"
           quantity: "qtd"
           price_total: "valor (%{currency})"

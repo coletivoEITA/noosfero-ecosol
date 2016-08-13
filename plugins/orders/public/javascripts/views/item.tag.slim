@@ -1,0 +1,62 @@
+order-item id='{item.id}'
+
+  .item.value-row id='item-{item.id}' class="{'product-unavailable': item.flags.unavailable, edit: this.isOpen}" onclick='{open}'
+
+    .distribution-error-message if='{item.quantity_consumer_ordered_more_than_stored && item.quantity_consumer_ordered_more_than_stored == item.id}'
+      '{t('views.item._edit.ordered_more_than_in_stock')}
+    .distribution-error-message if='{item.quantity_consumer_ordered_less_than_minimum && item.quantity_consumer_ordered_less_than_minimum == item.id}'
+      '{t('views.item._edit.this_product_requires', {value: this.product.minimum_selleable_localized})}
+
+    .fields
+      .box-field.supplier if='{!parent.order.self_supplier}' title='{item.supplier_name}'
+        '{item.supplier_name}
+      .box-field.product title='{item.name}'
+        '{item.name}
+      .box-field.quantity-price-table
+        order-item-quantity-price each='{status_id,status in item.statuses}' item='{item}' status='{status}' status-id='{status_id}' if='{!(status.flags.not_modified && !status.flags.editable)}'
+
+    .more
+      .actions if='{parent.order.may_edit}'
+        a href='#' onclick='{adminRemove}' if='{parent.order.admin}'
+          '{t('views.item._edit.remove_from_order')}
+        a href='#' onclick='{userRemove}' if='{!parent.order.admin}'
+          '{t('views.item._edit.remove_from_order')}
+
+      .orders-price-with-unit.price-with-unit.box-field if='{!parent.order.view_only}' title="{priceUnit()}"
+        span.price
+          '{I18n.toCurrency(item.price)}
+        '/
+        span.price-unit if='{item.unit_name}'
+          '{item.unit_name}
+
+  .clean
+
+  javascript:
+    this.item   = opts.item
+    this.isOpen = false
+
+    this.t = window.orders.t
+
+    priceUnit() {
+      return I18n.toCurrency(this.item.price)+' / '+this.item.unit_name
+    }
+
+    open() {
+      this.parent.closeAll()
+      this.isOpen = true
+      this.parent.update()
+    }
+
+    adminRemove() {
+      var l = this.tags['order-item-quantity-price']
+      var q = l[l.length-1]
+      q.quantityUpdate(0)
+
+      return false
+    }
+    userRemove() {
+      $.post(this.item.remove_url)
+
+      return false
+    }
+
