@@ -85,7 +85,7 @@ consumer-view.modal.fade tabindex="-1" role="dialog"
             .form-group
               .col-sm-10
                 a.cs-button href="" onclick='{save}'
-                  |Save
+                  |{cs.t('views.consumer.index.save')}
 
 
       .modal-footer
@@ -170,6 +170,7 @@ consumer-view.modal.fade tabindex="-1" role="dialog"
       var self = this
       $.post(updateUrl, {consumer: this.prepareForm()}, function (data) {
         display_notice(self.cs.t('views.consumer.index.saved'))
+        self.parent.update()
       })
 
       $(this.root).modal('hide');

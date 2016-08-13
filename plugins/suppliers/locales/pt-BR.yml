@@ -404,6 +404,7 @@ pt-BR: &pt-BR
           add_consumer: "Adicionar novo"
           adding_consumer: "Adicionando novo consumidor"
           search_members: Procure abaixo por um usuário cadastrado no site
+          save: Salvar
 
   orders_cycle_plugin:
     terms:
