@@ -9,7 +9,7 @@ order-item-quantity-price
         '{quantityNumber}
 
       span if='{!parent.parent.order.view_only && status.flags.editable}'
-        input.form-control.inline-input name='quantity_{status.field}' type='number' value='{status.quantity}' min='0' step='any' onkeyup='{quantityKeyUp}'
+        input.form-control.inline-input name='quantity_{status.field}' type='number' value='{status.quantity}' min='0' step='any' onkeyup='{quantityChange}' oninput='{quantityChange}' onchange='{quantityChange}'
       span.unit if='{!status.flags.editable}'
         '&nbsp;{item.unit_name}
 
@@ -32,9 +32,9 @@ order-item-quantity-price
         return quantityNumber+' '+item.unit_name
     }
 
-    quantityKeyUp(event) {
+    quantityChange(event) {
       var input = event.target
-      if (input.value == this.status.quantity) return
+      if (!input.value && input.value == this.status.quantity) return
 
       this.quantityUpdate(input.value)
     }
