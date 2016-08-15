@@ -24,8 +24,6 @@ class Profile
 
   has_many :hubs, class_name: 'SuppliersPlugin::Hub', dependent: :destroy
 
-  after_save :sync_consumers
-
   def supplier_settings
     @supplier_settings ||= Noosfero::Plugin::Settings.new self, SuppliersPlugin
   end
@@ -85,12 +83,6 @@ class Profile
         product.default_margin_percentage = true
         product.save!
       end
-    end
-  end
-
-  def sync_consumers
-    self.consumers.each do |consumer|
-      consumer.sync_profile
     end
   end
 end
