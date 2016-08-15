@@ -35,8 +35,14 @@ order-item-quantity-price
     quantityChange(event) {
       var input = event.target
       if (!input.value && input.value == this.status.quantity) return
+      this.run_at = new Date()
+      this.event_type = event.type
+      self = this
 
-      this.quantityUpdate(input.value)
+      setTimeout(function(run_at, type) {
+        if (self.run_at == run_at && type == self.event_type)
+        self.quantityUpdate(input.value)
+      }, 500, this.run_at, event.type);
     }
 
     quantityUpdate(value) {
