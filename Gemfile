@@ -43,7 +43,7 @@ gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
 # while https://github.com/fnando/i18n-js/pull/354 is not released
 gem 'i18n-js', github: 'coletivoEITA/i18n-js'
 gem 'js-routes', '>= 1.1.2'
-gem 'riot_js-rails'#, path: '../../others/riot_js-rails'
+gem 'riot_js-rails', '>= 0.5.0'
 gem 'sprockets-es6'
 
 #############################################
