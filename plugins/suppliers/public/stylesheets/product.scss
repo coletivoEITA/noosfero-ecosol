@@ -1,0 +1,184 @@
+#content .main-block product-page {
+  .left { float: left; }
+
+  h1.title {
+    color: #c4bf63;
+    font-weight: bold;
+    font-size: 25px;
+    line-height: 35px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    padding-left: 39px;
+    background-image: url(/plugins/consumers_coop/images/produtos_.png);
+    background-repeat: no-repeat;
+    background-size: 32px auto;
+  }
+
+  input, select {
+    @include input;
+  }
+  input {
+    background-color: white;
+  }
+  .filter {
+    padding: 10px;
+    margin: 20px auto;
+    display: inline-block;
+    background-color: #f8f8f8;
+    border: 1px solid #efefef;
+
+    h4 {
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+      color:    #bababa;
+      font-weight: bold;
+    }
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+      color:    #bababa;
+      font-weight: bold;
+      opacity:  1;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+      color:    #bababa;
+      font-weight: bold;
+      opacity:  1;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+      color:    #bababa;
+      font-weight: bold;
+    }
+
+    select {
+      margin-left: 15px;
+      border-radius: 5px;
+    }
+  }
+  
+  .mass_actions {
+    float: right;
+    margin-bottom: 10px;
+
+    button {
+      background-color: $cirandas-header-bg;
+      color: white;
+      margin-left: 10px;
+      border: none;
+      padding: 7px 10px;
+      font-weight: bold;
+    }
+    select {
+      margin-left: 10px;
+      font-weight: bold;
+    }
+  }
+  .clear {
+    clear: both;
+  }
+  .products-listing {
+    margin-left: -23px;
+    .header {
+      background-color: #c6c15d;
+      border-top: 2px solid #b8b558;
+      border-left: 2px solid #b8b558;
+      border-bottom: 2px solid white;
+
+      & > div {
+        padding: 16px 8px;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 12px;
+        display: inline-block;
+        color: white;
+        border-left: 1px solid white;
+      }
+      div.image {
+        padding-left: 46px;
+        border-left: none;
+      }
+      .available { color: white !important; }
+    }
+
+    //***** PRODUCT ITEM *******//
+    product-item {
+      display: block;
+      &:hover {
+        background-color: #f9fcf3;
+      }
+      &.edition {
+        background-color: #fbf8ef;
+      }
+      &.disabled {
+        color: #b8b8b8;
+      }
+
+      border-bottom: 1px solid #dcdcde;
+      border-left:   1px solid #dcdcde;
+      border-right:  1px solid #dcdcde;
+      & > div {
+        display: inline-block;
+        padding: 8px;
+        font-size: 12px;
+        margin: auto;
+
+        input,select {
+          padding: 5px;
+        }
+      }
+      input[type=checkbox] {
+        margin: auto 5px;
+        padding: 0;
+      }
+      .image { width: 112px }
+      .image-box {
+        width: 68px;
+        height: 68px;
+        border: 1px solid #e6e6e6;
+        display: inline-block;
+      }
+      .state {
+        margin: auto;
+        div {
+          margin: auto;
+          width: 20px;
+          height: 20px;
+          background-image: url(/plugins/suppliers/images/radio.png);
+          &.inactive { background-position: 0px 0 }
+          &.active { background-position: 20px 0 }
+        }
+      }
+      .margin, .stock {
+        text-align: center;
+      }
+      .total_price, .supplier_price {
+        padding-left: 16px;
+      }
+    }
+
+    .image          { width: 110px; }
+    .state          { width:  90px; }
+    .name           { width: 230px; }
+    .supplier       { width:  96px; }
+    .category       { width: 135px; }
+    .margin         { width:  66px; }
+    .stock          { width:  70px; }
+    .total_price    { width: 97px; }
+    .supplier_price { width: 126px; }
+    .unit           { width:  96px; }
+
+
+    product-item.disabled {
+      color: #b5b5b5;
+    }
+
+    margin-bottom: 30px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .head {
+    margin-left: 20px;
+  }
+}

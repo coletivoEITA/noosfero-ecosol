@@ -1,0 +1,10 @@
+@mixin input {
+  background-color: #f9f9f9;
+  border:           none;
+  border: 1px solid #caced7; 
+  color:            #000;
+  line-height:      35px;
+  height:           35px;
+  font-size:        13px;
+  padding:          8px;
+}

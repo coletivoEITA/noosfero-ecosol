@@ -1,0 +1,83 @@
+product-page
+  .head
+    h1.title
+      |{t("views.product.products")}
+
+    .filter
+      input type='hidden' value="{page}"
+
+      h4
+        |{t("views.product.filter")}
+      form.form-inline
+        .form-group
+          .name
+            input type="text" name="filter_name" placeholder="{t('views.product.product_name')}"
+
+        .form-group.category
+          select name="category_id"
+            option each="{category in categories}" category="{category}" value="{category[1]}" selected="{category[1] == filter_category}"
+              |{category[0]}
+
+        .form-group.supplier
+          select name="supplier_id"
+            option each="{supplier in suppliers}" data="{supplier}" value="{supplier.id}" selected="{supplier.id == filter_supplier}"
+              |{supplier[0]}
+
+        .form-group.state
+          select name='available'
+            option value="" selected="{filter_state == ''}"
+              |{t('views.product.situation')}
+            option value="true" selected="{filter_state == 'true'}"
+              |{t('views.product.active')}
+            option value="false" selected="{filter_state == 'false'}"
+              |{t('views.product.inactive')}
+
+  .mass_actions
+    strong
+      |{t('views.product.mass_action')}
+    select name='action' id='mass-action-select'
+      option value="activate"
+        |{t('views.product.activate')}
+      option value="deactivate"
+        |{t('views.product.deactivate')}
+    button name='ok' onclick="{massAction}"
+      |{t('views.product.ok')}
+
+
+  .clear
+  .products-listing.table-responsive
+    .table
+      .header
+        .image
+          |{t('views.product.image')}
+        .state
+          |{t('views.product.state')}
+        .name
+          |{t('views.product.name')}
+        .supplier
+          |{t('views.product.supplier')}
+        .category
+          |{t('views.product.category')}
+        .margin
+          |{t('views.product.margin')}
+        .stock
+          |{t('views.product.stock')}
+        .total_price
+          |{t('views.product.total_price')}
+        .supplier_price
+          |{t('views.product.supplier_price')}
+        .unit
+          |{t('views.product.unit')}
+
+      product-item each="{product in products}" product="{product}" class="{product.available ? 'available':'disabled'}"
+
+  javascript:
+    this.t = window.products.t
+    this.products = opts.products
+    this.categories = opts.categories
+    this.suppliers = opts.suppliers
+    this.units = opts.units
+    this.page = opts.page
+    this.filter_category = opts.filter_category
+    this.filter_supplier = opts.filter_supplier
+    this.filter_state = opts.filter_state

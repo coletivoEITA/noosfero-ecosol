@@ -6,6 +6,8 @@ class SuppliersPlugin::ProductController < MyProfileController
 
   protect 'edit_profile', :profile
 
+  serialization_scope :view_context
+
   helper SuppliersPlugin::TranslationHelper
   helper SuppliersPlugin::DisplayHelper
 
@@ -59,7 +61,7 @@ class SuppliersPlugin::ProductController < MyProfileController
     params[:consumers] ||= {}
 
     @product = profile.products.find params[:id]
-    @consumers = profile.consumers.find(params[:consumers].keys.to_a).collect &:profile
+    @consumers = profile.consumers.find(params[:consumers].keys.to_a).collect(&:profile)
     to_add = @consumers - @product.consumers
     to_remove = @product.consumers - @consumers
 
@@ -84,7 +86,7 @@ class SuppliersPlugin::ProductController < MyProfileController
     @scope = SuppliersPlugin::BaseProduct.search_scope @scope, params
     @products_count = @scope.supplied_for_count.count
     @scope = @scope.supplied.select('products.*, MIN(from_products_products.name) as from_products_name').order('from_products_name ASC')
-    @products = @scope.paginate per_page: 20, page: page
+    @products = @scope.paginate per_page: 200, page: page
 
     @product_categories = Product.product_categories_of @products
     @new_product = SuppliersPlugin::DistributedProduct.new

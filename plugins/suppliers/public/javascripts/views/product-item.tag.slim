@@ -1,0 +1,53 @@
+product-item
+  .image
+    input type='checkbox' id='product-select'
+    .image-box
+      img src="{product.image}"
+
+  .state
+    div class="{product.available ? 'active':'inactive'}"
+  .name
+    |{product.name}
+  .supplier
+    |{supplier}
+  .category
+    |{category}
+  .margin
+    |{product.margin_percentage}
+  .stock
+    span if="{!product.use_stock}"
+      |&#8212;
+    span if="{product.use_stock}"
+      |{product.stored}
+  .total_price
+    |{product.price}
+  .supplier_price
+    |{product.supplier_price}
+  .unit
+    |{unit.singular}
+
+  javascript:
+    this.product = opts.product
+    self = this
+
+    setUnit() {
+      this.parent.units.forEach(function(unit) {
+        if (self.product.unit_id == unit.id)
+          self.unit = unit
+      })
+    }
+    setSupplier() {
+      this.parent.suppliers.forEach(function(supplier) {
+        if (self.product.supplier_id == supplier[1])
+          self.supplier = supplier[0]
+      })
+    }
+    setCategory() {
+      this.parent.categories.forEach(function(category) {
+        if (self.product.product_category_id == category[1])
+          self.category = category[0]
+      })
+    }
+    this.setCategory()
+    this.setSupplier()
+    this.setUnit();
