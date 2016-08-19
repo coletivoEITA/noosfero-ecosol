@@ -37,7 +37,7 @@ order-item-quantity-price
       if (!input.value && input.value == this.status.quantity) return
       this.run_at = new Date()
       this.event_type = event.type
-      self = this
+      var self = this
 
       setTimeout(function(run_at, type) {
         if (self.run_at == run_at && type == self.event_type)
