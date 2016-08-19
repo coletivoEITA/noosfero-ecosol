@@ -7,10 +7,11 @@ module SuppliersPlugin
     has_many :suppliers
 
     def categories
-      hash = {'': scope.t('suppliers_plugin.views.product.all_the_categories')}
+      hash = {"0": scope.t('suppliers_plugin.views.product.all_the_categories')}
       Product.product_categories_of(products).each do |pc|
         hash[pc.id] = pc.name
       end
+      hash
     end
 
     def suppliers
@@ -27,8 +28,9 @@ module SuppliersPlugin
       scope = profile.products.unarchived.joins :from_products, :suppliers
       scope = SuppliersPlugin::BaseProduct.search_scope scope, params
       scope = scope.supplied.select('products.*, MIN(from_products_products.name) as from_products_name').order('from_products_name ASC')
-      scope = scope
-        .select('from_products_products.price AS supplier_price')
+      scope.limit(10)
+      #scope = scope
+        #.select('from_products_products.price AS supplier_price')
     end
 
     def units

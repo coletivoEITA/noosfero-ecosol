@@ -73,14 +73,14 @@ product-page
 
   javascript:
     this.t = window.products.t
+
     this.products = opts.products
     this.categories = opts.categories
     this.suppliers = opts.suppliers
     this.units = opts.units
+
     this.page = opts.page
-    this.filter_category = opts.filter_category
-    this.filter_supplier = opts.filter_supplier
-    this.filter_state = opts.filter_state
+    this.filter_state = 'true'
 
     massAction(e) {
      if (this.mass_action_select.value == 'activate') {
@@ -94,15 +94,26 @@ product-page
     changeState(state) {
       var checked = $('.product-select:checked')
       if (checked) {
+        var productItems = checked.parents('product-item')
         var products = []
-        checked.parents('product-item').each(function(i, product) {
-          var func = product._tag[state]
-          if (!func) return
-          func();
-          console.log(func)
+        productItems.each(function(i, product) {
           products.push(product._tag.product.id)
         })
-        console.log(products);
+
+        if (products) {
+          self = this
+          updateUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: state})
+          $.post(updateUrl,{ids: products}, function(response) {
+            if (response == 'success') {
+              productItems.each(function(i, product) {
+                var func = product._tag[state]
+                if (!func) return
+                func();
+              })
+              self.update()
+            }
+          })
+        }
       }
     }
 

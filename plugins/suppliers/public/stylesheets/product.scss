@@ -162,6 +162,7 @@
       input[type=checkbox] {
         margin: auto 5px;
         padding: 0;
+        height: auto;
       }
       .image-box {
         width: 68px;
@@ -177,7 +178,7 @@
           height: 20px;
           background-image: url(/plugins/suppliers/images/radio.png);
           &.inactive { background-position: 0px 0 }
-          &.active { background-position: 20px 0 }
+          &.active   { background-position: 20px 0 }
         }
       }
       .margin, .stock {

@@ -73,6 +73,16 @@ class SuppliersPlugin::ProductController < MyProfileController
     @product.reload
   end
 
+  def activate
+    ret = Product.where(id: params[:ids]).update_all(available: true)
+    render text: ret > 0 ? "success" : "fail"
+  end
+
+  def deactivate
+    ret = Product.where(id: params[:ids]).update_all(available: false)
+    render text: ret > 0 ? "success" : "fail"
+  end
+
   protected
 
   def filter

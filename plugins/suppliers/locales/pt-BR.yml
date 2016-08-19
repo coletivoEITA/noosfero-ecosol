@@ -171,7 +171,7 @@ pt-BR: &pt-BR
         product_name: 'Nome do produto'
         name: 'Nome'
         categories: categorias
-        all_the_categories: 'todas as categorias'
+        all_the_categories: 'Todas as categorias'
         supplier: fornecedor
         situation: situação
         active: ativo
@@ -288,7 +288,7 @@ pt-BR: &pt-BR
           index:
             active: ativa
             add_product: "Criar produto"
-            all_the_categories: "todas as categorias"
+            all_the_categories: "Todas as categorias"
             all_the_suppliers: "todos %{terms.supplier.article.plural}"
             situation: "Situação de distribuição"
             anyone: anyone
