@@ -28,26 +28,6 @@ product-item
 
   javascript:
     this.product = opts.product
-    self = this
-
-    setUnit() {
-      this.parent.units.forEach(function(unit) {
-        if (self.product.unit_id == unit.id)
-          self.unit = unit
-      })
-    }
-    setSupplier() {
-      this.parent.suppliers.forEach(function(supplier) {
-        if (self.product.supplier_id == supplier[1])
-          self.supplier = supplier[0]
-      })
-    }
-    setCategory() {
-      this.parent.categories.forEach(function(category) {
-        if (self.product.product_category_id == category[1])
-          self.category = category[0]
-      })
-    }
-    this.setCategory()
-    this.setSupplier()
-    this.setUnit();
+    this.supplier = this.parent.suppliers[this.product.supplier_id]
+    this.category = this.parent.categories[this.product.product_category_id]
+    this.unit = this.parent.units[this.product.unit_id]

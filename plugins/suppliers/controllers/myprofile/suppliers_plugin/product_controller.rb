@@ -76,23 +76,6 @@ class SuppliersPlugin::ProductController < MyProfileController
   protected
 
   def filter
-    page = params[:page]
-    page = 1 if page.blank?
-
-    @supplier = SuppliersPlugin::Supplier.where(id: params[:supplier_id]).first if params[:supplier_id].present?
-
-    # FIXME: joins(:from_products) is hiding own products (except baskets)
-    @scope = profile.products.unarchived.joins :from_products, :suppliers
-    @scope = SuppliersPlugin::BaseProduct.search_scope @scope, params
-    @products_count = @scope.supplied_for_count.count
-    @scope = @scope.supplied.select('products.*, MIN(from_products_products.name) as from_products_name').order('from_products_name ASC')
-    @products = @scope.paginate per_page: 200, page: page
-
-    @product_categories = Product.product_categories_of @products
-    @new_product = SuppliersPlugin::DistributedProduct.new
-    @new_product.profile = profile
-    @new_product.supplier = @supplier
-    @units = Unit.all
   end
 
   extend HMVC::ClassMethods

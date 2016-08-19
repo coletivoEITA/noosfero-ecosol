@@ -15,13 +15,13 @@ product-page
 
         .form-group.category
           select name="category_id"
-            option each="{category in categories}" category="{category}" value="{category[1]}" selected="{category[1] == filter_category}"
-              |{category[0]}
+            option each="{id,name in categories}" value="{id}" selected="{name == filter_category}"
+              |{name}
 
         .form-group.supplier
           select name="supplier_id"
-            option each="{supplier in suppliers}" data="{supplier}" value="{supplier.id}" selected="{supplier.id == filter_supplier}"
-              |{supplier[0]}
+            option each="{id,name in suppliers}" value="{id}" selected="{id == filter_supplier}"
+              |{name}
 
         .form-group.state
           select name='available'

@@ -14,7 +14,7 @@ module SuppliersPlugin
     attribute :supplier_price
 
     def supplier_price
-      object.from_product.price_as_currency
+      object.supplier_price
     end
     def price
       object.price_as_currency

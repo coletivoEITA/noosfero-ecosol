@@ -2,7 +2,7 @@
 
 = js_translations_include plugin: :suppliers
 
-- object = SuppliersPlugin::ProductPageSerializer.new({products: @products, categories: @product_categories, units: @units, profile: profile} , scope: self).to_hash.merge!({})
+- object = SuppliersPlugin::ProductPageSerializer.new(profile, params.merge(scope: self)).to_hash.merge!({})
 
 product-page
 
