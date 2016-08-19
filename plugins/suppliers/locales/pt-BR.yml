@@ -190,6 +190,8 @@ pt-BR: &pt-BR
         deactivate: "desativar produtos"
         ok: ok
         state: Estado
+        complete_edition: "edição completa"
+        fast_edition: "edição rápida"
 
       backup:
         manage_products:

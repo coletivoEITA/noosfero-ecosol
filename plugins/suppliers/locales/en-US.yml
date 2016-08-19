@@ -182,6 +182,8 @@ en-US: &en-US
         deactivate: "Deactivate"
         ok: ok
         state: state
+        complete_edition: "complete edition"
+        fast_edition: "fast edition"
 
       backup:
         manage_products:

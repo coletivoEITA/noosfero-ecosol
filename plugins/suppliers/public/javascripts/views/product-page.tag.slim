@@ -11,7 +11,7 @@ product-page
       form.form-inline
         .form-group
           .name
-            input type="text" name="filter_name" placeholder="{t('views.product.product_name')}"
+            input type="text" name="filter_name" placeholder="{t('views.product.product_name')}" onclick="{search}"
 
         .form-group.category
           select name="category_id"
@@ -24,7 +24,7 @@ product-page
               |{name}
 
         .form-group.state
-          select name='available'
+          select name='available' onclick="{search}"
             option value="" selected="{filter_state == ''}"
               |{t('views.product.situation')}
             option value="true" selected="{filter_state == 'true'}"
@@ -35,7 +35,7 @@ product-page
   .mass_actions
     strong
       |{t('views.product.mass_action')}
-    select name='action' id='mass-action-select'
+    select name='action' id='mass_action_select'
       option value="activate"
         |{t('views.product.activate')}
       option value="deactivate"
@@ -81,3 +81,43 @@ product-page
     this.filter_category = opts.filter_category
     this.filter_supplier = opts.filter_supplier
     this.filter_state = opts.filter_state
+
+    massAction(e) {
+     if (this.mass_action_select.value == 'activate') {
+      this.changeState('activate')
+     }
+     else if (this.mass_action_select.value == 'deactivate') {
+      this.changeState('deactivate')
+     }
+    }
+
+    changeState(state) {
+      var checked = $('.product-select:checked')
+      if (checked) {
+        var products = []
+        checked.parents('product-item').each(function(i, product) {
+          var func = product._tag[state]
+          if (!func) return
+          func();
+          console.log(func)
+          products.push(product._tag.product.id)
+        })
+        console.log(products);
+      }
+    }
+
+    search() {
+      var data = {
+        state: this.filter_state,
+        supplier: this.filter_supplier,
+        category: this.filter_category,
+        name: filter_name
+      }
+
+      var searchUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'search'});
+      $.post(searchUrl, data, function(response) {
+        if (response) {
+          console.log(response);
+        }
+      });
+    }

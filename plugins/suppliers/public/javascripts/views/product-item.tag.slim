@@ -1,6 +1,6 @@
 product-item
   .image
-    input type='checkbox' id='product-select'
+    input type='checkbox' class='product-select'
     .image-box
       img src="{product.image}"
 
@@ -24,10 +24,26 @@ product-item
   .supplier_price
     |{product.supplier_price}
   .unit
-    |{unit.singular}
+    .unit_name
+      |{unit.singular}
+  .actions
+    .fast_edition
+      .img
+      |{t('views.product.fast_edition')}
+    .complete_edition
+      .img
+      |{t('views.product.complete_edition')}
+    .clear
 
   javascript:
     this.product = opts.product
     this.supplier = this.parent.suppliers[this.product.supplier_id]
     this.category = this.parent.categories[this.product.product_category_id]
     this.unit = this.parent.units[this.product.unit_id]
+
+    activate() {
+      this.product.available = true;
+    }
+    deactivate() {
+      this.product.available = false;
+    }

@@ -1,6 +1,7 @@
 module SuppliersPlugin
   class ProductSerializer < ApplicationSerializer
 
+    attribute :id
     attribute :name
     attribute :price
     attribute :image
