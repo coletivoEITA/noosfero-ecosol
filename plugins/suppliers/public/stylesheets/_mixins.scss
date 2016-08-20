@@ -8,3 +8,59 @@
   font-size:        13px;
   padding:          8px;
 }
+
+@mixin toggle-input($height: 20px) {
+  .switch {
+    margin: auto;
+    width: $height * 2;
+    height: $height;
+  }
+  .cmn-toggle {
+    position: absolute;
+    margin-left: -9999px !important;
+    visibility: hidden;
+  }
+  .cmn-toggle + label {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    user-select: none;
+  }
+  input.cmn-toggle-round + label {
+    padding: 2px;
+    width: $height*2;
+    max-width: auto;
+    height: $height;
+    background-color: #dddddd;
+    border-radius: $height;
+  }
+  input.cmn-toggle-round + label:before,
+  input.cmn-toggle-round + label:after {
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    bottom: 1px;
+    content: "";
+  }
+  input.cmn-toggle-round + label:before {
+    right: 1px;
+    background-color: #f1f1f1;
+    border-radius: $height;
+    transition: background 0.4s;
+  }
+  input.cmn-toggle-round + label:after {
+    width: $height - 2px;
+    background-color: #fff;
+    border-radius: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: margin 0.4s;
+  }
+  input.cmn-toggle-round:checked + label:before {
+    background-color: #53c740;
+  }
+  input.cmn-toggle-round:checked + label:after {
+    margin-left: $height;
+  }
+}

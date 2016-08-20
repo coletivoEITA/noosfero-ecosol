@@ -15,10 +15,12 @@ module SuppliersPlugin
     end
 
     def suppliers
-      scope = profile.suppliers.order(:name_abbreviation, :name)
-      scope.each.with_object({}) do |s, hash|
-        hash[s.id] = s.abbreviation_or_name
+      hash = {"0": scope.t("suppliers_plugin.views.product.supplier")}
+      s = profile.suppliers.order(:name_abbreviation, :name)
+      s.each do |supplier|
+        hash[supplier.id] = supplier.abbreviation_or_name
       end
+      hash
     end
 
     def products

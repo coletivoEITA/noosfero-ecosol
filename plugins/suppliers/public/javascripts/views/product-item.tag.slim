@@ -1,11 +1,14 @@
-product-item
+product-item  class="{edition: product.edition}"
   .image
     input type='checkbox' class='product-select'
     .image-box
       img src="{product.image}"
 
   .state
-    div class="{product.available ? 'active':'inactive'}"
+    div class="{product.available ? 'active':'inactive'}" show="{!product.edition}"
+    .switch show="{product.edition}"
+      input.cmn-toggle.cmn-toggle-round type="checkbox" id="{'check-'+product.id}" checked="{product.available}"
+      label for="{'check-'+product.id}"
   .name
     |{product.name}
   .supplier
@@ -27,7 +30,7 @@ product-item
     .unit_name
       |{unit}
   .actions
-    .fast_edition
+    .fast_edition onclick="{edit}" 
       .img
       |{t('views.product.fast_edition')}
     .complete_edition
@@ -40,10 +43,16 @@ product-item
     this.supplier = this.parent.suppliers[this.product.supplier_id]
     this.category = this.parent.categories[this.product.product_category_id]
     this.unit = this.parent.units[this.product.unit_id]
+    this.product.edition = false
 
     activate() {
       this.product.available = true;
     }
     deactivate() {
       this.product.available = false;
+    }
+
+    edit() {
+      this.parent.stopEdition();
+      this.product.edition = true
     }

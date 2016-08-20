@@ -184,6 +184,7 @@ en-US: &en-US
         state: state
         complete_edition: "complete edition"
         fast_edition: "fast edition"
+        showing: "Showing %{count} products"
 
       backup:
         manage_products:

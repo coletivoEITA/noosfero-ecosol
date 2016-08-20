@@ -22,7 +22,7 @@
   }
   .filter {
     padding: 10px;
-    margin: 20px auto;
+    margin: 20px auto 0px;
     display: inline-block;
     background-color: #f8f8f8;
     border: 1px solid #efefef;
@@ -55,6 +55,12 @@
       margin-left: 15px;
       border-radius: 5px;
     }
+  }
+  p.filter_stats {
+    font-size: 12px;
+    font-weight: bold;
+    color: black;
+    padding-left: 5px;
   }
   
   .mass_actions {
@@ -172,7 +178,7 @@
       }
       .state {
         margin: auto;
-        div {
+        .active {
           margin: auto;
           width: 20px;
           height: 20px;
@@ -222,6 +228,7 @@
           }
         }
       }
+      @include toggle-input(30px); 
     }
 
     product-item.disabled {

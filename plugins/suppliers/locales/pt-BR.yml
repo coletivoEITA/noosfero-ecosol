@@ -172,7 +172,7 @@ pt-BR: &pt-BR
         name: 'Nome'
         categories: categorias
         all_the_categories: 'Todas as categorias'
-        supplier: fornecedor
+        supplier: Fornecedor
         situation: situação
         active: ativo
         inactive: inativo
@@ -192,6 +192,7 @@ pt-BR: &pt-BR
         state: Estado
         complete_edition: "edição completa"
         fast_edition: "edição rápida"
+        showing: "Mostrando %{count} produtos"
 
       backup:
         manage_products:

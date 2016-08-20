@@ -31,6 +31,8 @@ product-page
               |{t('views.product.active')}
             option value="false" selected="{filter_state == 'false'}"
               |{t('views.product.inactive')}
+    p.filter_stats
+      |{t('views.product.showing', {count: this.count})}
 
   .mass_actions
     strong
@@ -81,6 +83,7 @@ product-page
 
     this.page = opts.page
     this.filter_state = 'true'
+    this.count = this.products.length
 
     massAction(e) {
      if (this.mass_action_select.value == 'activate') {
@@ -131,4 +134,11 @@ product-page
           console.log(response);
         }
       });
+    }
+
+    stopEdition() {
+      this.products.forEach(function(p) {
+        p.edition = false;
+      })
+      this.update();
     }
