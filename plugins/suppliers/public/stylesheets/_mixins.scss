@@ -49,6 +49,10 @@
     background-color: #f1f1f1;
     border-radius: $height;
     transition: background 0.4s;
+    padding-left: 7px;
+    padding-top: 4px;
+    color: white;
+    font-weight: bold;
   }
   input.cmn-toggle-round + label:after {
     width: $height - 2px;

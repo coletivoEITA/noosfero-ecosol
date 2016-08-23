@@ -36,8 +36,8 @@ module SuppliersPlugin
     end
 
     def units
-      profile.environment.units.each.with_object({}) do |u, hash|
-        hash[u.id] = u.singular
+      profile.environment.units.map do |unit|
+        {name: unit.singular, id: unit.id}
       end
     end
 

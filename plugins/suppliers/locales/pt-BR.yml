@@ -193,6 +193,7 @@ pt-BR: &pt-BR
         complete_edition: "edição completa"
         fast_edition: "edição rápida"
         showing: "Mostrando %{count} produtos"
+        save: "Salvar"
 
       backup:
         manage_products:

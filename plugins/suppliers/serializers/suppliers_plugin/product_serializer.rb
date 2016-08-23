@@ -12,7 +12,7 @@ module SuppliersPlugin
     attribute :available
     attribute :unit_id
     attribute :supplier_price
-    has_many  :image
+    has_one   :image
 
     def supplier_price
       object.supplier_price

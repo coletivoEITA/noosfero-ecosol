@@ -83,6 +83,11 @@ class SuppliersPlugin::ProductController < MyProfileController
     render text: ret > 0 ? "success" : "fail"
   end
 
+  def categories
+    @categories = environment.categories.where("LOWER(name) like ?", "%#{params[:query].downcase}%")
+    render json: @categories, each_serializer: SuppliersPlugin::ProductCategorySerializer
+  end
+
   protected
 
   def filter

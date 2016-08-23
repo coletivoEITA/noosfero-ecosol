@@ -185,6 +185,7 @@ en-US: &en-US
         complete_edition: "complete edition"
         fast_edition: "fast edition"
         showing: "Showing %{count} products"
+        save: "Save"
 
       backup:
         manage_products:

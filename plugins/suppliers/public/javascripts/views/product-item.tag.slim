@@ -10,40 +10,65 @@ product-item  class="{edition: product.edition}"
       input.cmn-toggle.cmn-toggle-round type="checkbox" id="{'check-'+product.id}" checked="{product.available}"
       label for="{'check-'+product.id}"
   .name
-    |{product.name}
+    span show="{!product.edition}"
+      |{product.name}
+    input type="text" name="name" value="{product.name}" show="{product.edition}" class='name'
   .supplier
     |{supplier}
   .category
-    |{category}
+    span show="{!product.edition}"
+      |{category}
+    .white-wrap
+      input type="text" name="category" value="{category}" show="{product.edition}" class='category'
   .margin
-    |{product.margin_percentage}
+    span show="{!product.edition}"
+      |{product.margin_percentage}
+    input type="text" name="margin" value="{product.margin_percentage}" show="{product.edition}" class='margin' onchange="{updatePrice}"
   .stock
-    span if="{!product.use_stock}"
+    span if="{!product.use_stock && !product.edition}"
       |&#8212;
-    span if="{product.use_stock}"
+    span if="{product.use_stock && !product.edition}"
       |{product.stored}
+    input type="text" name="stock" value="{product.margin_percentage}" show="{product.edition}" class='stock'
   .total_price
     |{product.price}
+
   .supplier_price
-    |{product.supplier_price}
+    span show="{!product.edition}"
+      |{product.supplier_price}
+    input type="text" name="price" value="{product.price}" show="{product.edition}" class='price' onchange="{updatePrice}"
   .unit
-    .unit_name
+    .unit_name show="{!product.edition}"
       |{unit}
+    .white-wrap
+      input name="unit_id" value="{unit}" show="{product.edition}" class='unit_id'
   .actions
-    .fast_edition onclick="{edit}" 
+    .fast_edition onclick="{edit}" show="{!product.edition}"
       .img
       |{t('views.product.fast_edition')}
-    .complete_edition
+    .complete_edition show="{!product.edition}"
       .img
       |{t('views.product.complete_edition')}
+    .save_edition show="{product.edition}"
+      button name='save' onclick="{save}"
+        |{t('views.product.save')}
+      i class="fa fa-times close-cross" onclick="{close}"
+
     .clear
 
   javascript:
     this.product = opts.product
+    this.product.price = this.product.supplier_price * (this.product.margin_percentage/100 + 1)
     this.supplier = this.parent.suppliers[this.product.supplier_id]
     this.category = this.parent.categories[this.product.product_category_id]
-    this.unit = this.parent.units[this.product.unit_id]
     this.product.edition = false
+    this.fields = ['name', 'available', 'supplier', 'category', 'margin', 'stock', 'supplier_price', 'price', 'unit']
+
+    getUnit() {
+      var self = this
+      this.parent.units.forEach(function(u) { if (self.product.unit_id == u.id) self.unit = u.singular  })
+    }
+    this.getUnit();
 
     activate() {
       this.product.available = true;
@@ -55,4 +80,73 @@ product-item  class="{edition: product.edition}"
     edit() {
       this.parent.stopEdition();
       this.product.edition = true
+    }
+
+    close() {
+      this.parent.stopEdition();
+      // maybe, reset fields
+    }
+
+    updatePrice() {
+      this.product.price = this.product.supplier_price * (this.product.margin_percentage/100 + 1)
+    }
+
+    save() {
+      console.log("save")
+      var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'save'})
+      product = this.prepareForm()
+      $.post(saveUrl, product, function(data) {
+        console.log(data);
+      })
+    }
+
+    setCategory(e, item) {
+    }
+    setUnit(e, item) {
+    }
+
+    this.on('update', function () {
+      this.typeaheadCategoryInit()
+      this.typeaheadUnitInit()
+    })
+
+    typeaheadCategoryInit () {
+      var input = $(this.root).find('input.category')
+      input.typeahead('destroy')
+      input.off('typeahead:selected')
+
+      var categoryUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'categories'})+'?query=%QUERY'
+      source = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: categoryUrl,
+      })
+      source.initialize()
+
+      input.typeahead(
+        { minLength: 3, highlight: true, },
+        { displayKey: 'name', source: source.ttAdapter(), }
+      )
+
+      input.on('typeahead:selected', this.setCategory)
+    }
+
+    typeaheadUnitInit () {
+      var input = $(this.root).find('input.unit_id')
+      input.typeahead('destroy')
+      input.off('typeahead:selected')
+
+      source = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        local: this.parent.units,
+      })
+      source.initialize()
+
+      input.typeahead(
+        { minLength: 1, highlight: true, },
+        { displayKey: 'name', source: source.ttAdapter() }
+      )
+
+      input.on('typeahead:selected', this.SetUnit)
     }

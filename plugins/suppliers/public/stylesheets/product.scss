@@ -67,18 +67,18 @@
     float: right;
     margin-bottom: 10px;
 
-    button {
-      background-color: $cirandas-header-bg;
-      color: white;
-      margin-left: 10px;
-      border: none;
-      padding: 7px 10px;
-      font-weight: bold;
-    }
     select {
       margin-left: 10px;
       font-weight: bold;
     }
+  }
+  button {
+    background-color: $cirandas-header-bg;
+    color: white;
+    margin-left: 10px;
+    border: none;
+    padding: 7px 10px;
+    font-weight: bold;
   }
   .clear {
     clear: both;
@@ -93,9 +93,9 @@
       border-bottom: 2px solid white;
 
       .image          { width: 110px; }
-      .state          { width:  90px; }
+      .state          { width:  80px; }
       .name           { width: 230px; }
-      .supplier       { width:  96px; }
+      .supplier       { width: 108px; }
       .category       { width: 135px; }
       .margin         { width:  66px; }
       .stock          { width:  70px; }
@@ -127,7 +127,9 @@
       &:hover {
         background-color: #f9fcf3;
         .actions {
-          display: table-cell;
+          .fast_edition, .complete_edition {
+            display: table-cell;
+          }
         }
       }
       &.edition {
@@ -153,9 +155,9 @@
         }
       }
       .image          { width: 111px; }
-      .state          { width:  91px; }
+      .state          { width:  81px; }
       .name           { width: 231px; }
-      .supplier       { width:  97px; }
+      .supplier       { width: 109px; }
       .category       { width: 136px; }
       .margin         { width:  71px; }
       .stock          { width:  71px; }
@@ -165,10 +167,16 @@
       .action         { width:  60px; }
 
 
+      .white-wrap {
+        background-color: white;
+      }
       input[type=checkbox] {
         margin: auto 5px;
         padding: 0;
         height: auto;
+      }
+      input[type=text] {
+        width: 100%;
       }
       .image-box {
         width: 68px;
@@ -194,8 +202,8 @@
         padding-left: 16px;
       }
       .actions {
-        display: none;
         .fast_edition,.complete_edition {
+          display: none;
           cursor: pointer;
           width: 36px;
           float: left;
@@ -227,8 +235,15 @@
             background-position: 20px 0;
           }
         }
+        .close-cross {
+          font-size: 20px;
+          margin-left: 5px;
+          cursor: pointer;
+        }
       }
       @include toggle-input(30px); 
+
+      .unit_id { width: 100%; }
     }
 
     product-item.disabled {
@@ -236,6 +251,12 @@
     }
 
     margin-bottom: 30px;
+    input.tt-input {
+      background-color: white;
+    }
+    .tt-suggestion {
+      font-size: 10px !important;
+    }
   }
 }
 
