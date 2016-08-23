@@ -184,6 +184,8 @@ pt-BR: &pt-BR
         stock: Estoque
         total_price: 'Preço final'
         supplier_price: 'Preço produtor'
+        total_price_currency: 'Preço final (R$)'
+        supplier_price_currency: 'Preço fornec. (R$)'
         unit: unidade
         mass_action: "Ação em massa"
         activate: "ativar produtos"
@@ -194,6 +196,10 @@ pt-BR: &pt-BR
         fast_edition: "edição rápida"
         showing: "Mostrando %{count} produtos"
         save: "Salvar"
+        edit: "Editar"
+        saved: "Salvo!"
+        close: "Fechar"
+        stock_modal: "Estoque"
 
       backup:
         manage_products:

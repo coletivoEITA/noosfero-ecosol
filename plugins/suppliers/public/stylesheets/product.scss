@@ -155,13 +155,13 @@
         }
       }
       .image          { width: 111px; }
-      .state          { width:  81px; }
-      .name           { width: 231px; }
-      .supplier       { width: 109px; }
-      .category       { width: 136px; }
-      .margin         { width:  71px; }
-      .stock          { width:  71px; }
-      .total_price    { width:  91px; }
+      .state          { width:  80px; }
+      .name           { width: 230px; }
+      .supplier       { width: 107px; }
+      .category       { width: 134px; }
+      .margin         { width:  70px; }
+      .stock          { width:  70px; }
+      .total_price    { width:  90px; }
       .supplier_price { width:  91px; }
       .unit           { width:  97px; }
       .action         { width:  60px; }
@@ -175,7 +175,7 @@
         padding: 0;
         height: auto;
       }
-      input[type=text] {
+      input[type=text], input[type=number] {
         width: 100%;
       }
       .image-box {
@@ -197,6 +197,10 @@
       }
       .margin, .stock {
         text-align: center;
+      }
+      .stock button {
+        width: 100%;
+        margin: auto;
       }
       .total_price, .supplier_price {
         padding-left: 16px;
@@ -254,8 +258,21 @@
     input.tt-input {
       background-color: white;
     }
-    .tt-suggestion {
-      font-size: 10px !important;
+    .tt-dropdown-menu {
+      border-radius: 0;
+      margin-top: 1px;
+
+      .tt-suggestion {
+        font-size: 10px !important;
+        padding: 6px 8px;
+        &.tt-cursor {
+          background-color: #f58b57;
+        }
+      }
+    }
+
+    stock-modal {
+      z-index: 1041; // fix modal-backdrop over it https://github.com/twbs/bootstrap/issues/16148
     }
   }
 }

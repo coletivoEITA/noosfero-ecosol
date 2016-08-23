@@ -7,41 +7,43 @@ product-item  class="{edition: product.edition}"
   .state
     div class="{product.available ? 'active':'inactive'}" show="{!product.edition}"
     .switch show="{product.edition}"
-      input.cmn-toggle.cmn-toggle-round type="checkbox" id="{'check-'+product.id}" checked="{product.available}"
-      label for="{'check-'+product.id}"
+      input.cmn-toggle.cmn-toggle-round type="checkbox" id="{'available-'+product.id}" checked="{product.available}"
+      label for="{'available-'+product.id}"
   .name
     span show="{!product.edition}"
       |{product.name}
-    input type="text" name="name" value="{product.name}" show="{product.edition}" class='name'
+    input type="text" value="{product.name}" id="{'name-'+product.id}" show="{product.edition}" class='name'
   .supplier
     |{supplier}
   .category
     span show="{!product.edition}"
       |{category}
     .white-wrap
-      input type="text" name="category" value="{category}" show="{product.edition}" class='category'
+      input type="text" value="{category}" show="{product.edition}" class='category' id="{'product_category_id-'+product.id}"
   .margin
     span show="{!product.edition}"
       |{product.margin_percentage}
-    input type="text" name="margin" value="{product.margin_percentage}" show="{product.edition}" class='margin' onchange="{updatePrice}"
+    .input-group
+    input type="number" value="{product.margin_percentage}" id="{'margin_percentage-'+product.id}" show="{product.edition}" oninput="{updatePrice}"
   .stock
     span if="{!product.use_stock && !product.edition}"
       |&#8212;
     span if="{product.use_stock && !product.edition}"
       |{product.stored}
-    input type="text" name="stock" value="{product.margin_percentage}" show="{product.edition}" class='stock'
+    button onclick="{editStock}" show="{product.edition}" data-toggle="modal" data-target="stock-modal"
+      |{t('views.product.edit')}
   .total_price
     |{product.price}
 
   .supplier_price
     span show="{!product.edition}"
       |{product.supplier_price}
-    input type="text" name="price" value="{product.price}" show="{product.edition}" class='price' onchange="{updatePrice}"
+    input type="text" value="{product.supplier_price}" id="{'supplier_price-'+product.id}" show="{product.edition}" class='price' oninput="{updatePrice}"
   .unit
     .unit_name show="{!product.edition}"
       |{unit}
     .white-wrap
-      input name="unit_id" value="{unit}" show="{product.edition}" class='unit_id'
+      input type="text" value="{unit}" show="{product.edition}" id="{'unit_id-'+product.id}"
   .actions
     .fast_edition onclick="{edit}" show="{!product.edition}"
       .img
@@ -50,7 +52,7 @@ product-item  class="{edition: product.edition}"
       .img
       |{t('views.product.complete_edition')}
     .save_edition show="{product.edition}"
-      button name='save' onclick="{save}"
+      button onclick="{save}"
         |{t('views.product.save')}
       i class="fa fa-times close-cross" onclick="{close}"
 
@@ -58,15 +60,13 @@ product-item  class="{edition: product.edition}"
 
   javascript:
     this.product = opts.product
-    this.product.price = this.product.supplier_price * (this.product.margin_percentage/100 + 1)
     this.supplier = this.parent.suppliers[this.product.supplier_id]
     this.category = this.parent.categories[this.product.product_category_id]
     this.product.edition = false
-    this.fields = ['name', 'available', 'supplier', 'category', 'margin', 'stock', 'supplier_price', 'price', 'unit']
 
     getUnit() {
       var self = this
-      this.parent.units.forEach(function(u) { if (self.product.unit_id == u.id) self.unit = u.singular  })
+      this.parent.units.forEach(function(u) { if (self.product.unit_id == u.id) self.unit = u.name;  })
     }
     this.getUnit();
 
@@ -84,36 +84,73 @@ product-item  class="{edition: product.edition}"
 
     close() {
       this.parent.stopEdition();
-      // maybe, reset fields
     }
 
     updatePrice() {
-      this.product.price = this.product.supplier_price * (this.product.margin_percentage/100 + 1)
+      // update variables from form
+      this.product.margin_percentage = this['margin_percentage-'+this.product.id].value 
+      this.product.supplier_price = this['supplier_price-'+this.product.id].value 
+      if (this.product.margin_percentage)
+        this.product.price = (this.product.supplier_price * (this.product.margin_percentage/100 + 1)).toFixed(2)
     }
 
     save() {
-      console.log("save")
-      var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'save'})
-      product = this.prepareForm()
-      $.post(saveUrl, product, function(data) {
-        console.log(data);
+      var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'edit/'+this.product.id})
+      var self = this
+      $.post(saveUrl, {product: this.prepareForm()}, function(data) {
+        display_notice(self.t('views.product.saved'))
+        self.close();
       })
     }
 
-    setCategory(e, item) {
-    }
-    setUnit(e, item) {
+    updateProductFromForm() {
+      var keys = ['name', 'available', 'margin_percentage'] // category, unit and prices are automatically updated
+
+      var self = this;
+      
+      keys.forEach(function(key) {
+        var input = self[key+'-'+self.product.id];
+
+        if (input == undefined) { console.log("Haven't found key "+key) }
+        else { self.product[key] = input.value; }
+
+      })
     }
 
-    this.on('update', function () {
+    prepareForm() {
+      this.updateProductFromForm()
+
+      var data = Object();
+      var keys = ['name', 'available', 'product_category_id', 'unit_id', 'price', 'supplier_price']
+
+      var self = this;
+      keys.forEach( function(key) { data[key] = self.product[key] } )
+
+      return data;
+    }
+
+    setCategory(e, item) {
+      this.product.product_category_id = item.id
+      this.category = this.parent.categories[this.product.product_category_id]
+    }
+    setUnit(e, item) {
+      this.product.unit_id = item.id
+      this.unit = item.name
+    }
+
+    editStock() {
+      this.parent.setStockModal(this.product)
+    }
+
+    this.on('mount', function () {
+      this.updatePrice()
+      this.update()
       this.typeaheadCategoryInit()
       this.typeaheadUnitInit()
     })
 
     typeaheadCategoryInit () {
-      var input = $(this.root).find('input.category')
-      input.typeahead('destroy')
-      input.off('typeahead:selected')
+      var input = $(this.root).find('input#product_category_id-'+this.product.id)
 
       var categoryUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'categories'})+'?query=%QUERY'
       source = new Bloodhound({
@@ -132,9 +169,7 @@ product-item  class="{edition: product.edition}"
     }
 
     typeaheadUnitInit () {
-      var input = $(this.root).find('input.unit_id')
-      input.typeahead('destroy')
-      input.off('typeahead:selected')
+      var input = $(this.root).find('input#unit_id-'+this.product.id)
 
       source = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
@@ -148,5 +183,5 @@ product-item  class="{edition: product.edition}"
         { displayKey: 'name', source: source.ttAdapter() }
       )
 
-      input.on('typeahead:selected', this.SetUnit)
+      input.on('typeahead:selected', this.setUnit)
     }

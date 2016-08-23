@@ -1,0 +1,33 @@
+stock-modal.modal.fade tabindex="-1" role="dialog"
+  .modal-dialog.modal-sm
+    .modal-content
+      .modal-header
+        .row
+          .col-xs-10
+            h1
+              |{t('views.product.stock_modal')}
+          .col-xs-2
+            button type="button" class="close left" data-dismiss="modal" aria-label="Close"
+              span.left.close-text
+                |{t("views.product.close")}
+              span aria-hidden="true"
+                |&times;
+  
+      .modal-body
+        form.form-horizontal
+          .form-group
+            label for="use_stock" class="col-sm-2 control-label"
+              |{cs.t("views.product.use_stock")}
+            .col-sm-10
+              input type="checkbox" name='use-stock' value='{product.name}' class="form-control" id="use_stock"
+
+          .form-group
+            label for="telephone" class="col-sm-2 control-label"
+              |{cs.t("views.product.stock")}
+            .col-sm-10
+              input type="number" name='stock' value='{product.stock}' class="form-control" id="phone" placeholder='{cs.t("views.product.stock")}'
+
+      .modal-footer
+
+  javascript:
+    this.t = window.products.t

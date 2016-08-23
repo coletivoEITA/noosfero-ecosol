@@ -18,7 +18,6 @@ module SuppliersPlugin
       object.supplier_price
     end
     def price
-      object.price_as_currency
     end
 
     def image
