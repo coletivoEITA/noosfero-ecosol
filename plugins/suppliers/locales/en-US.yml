@@ -190,6 +190,16 @@ en-US: &en-US
         save: "Save"
         edit: "Edit"
         saved: "Saved!"
+        close: "close"
+        stock_modal: "Inventory movimentation"
+        action: "Action"
+        quantity: "Quantity" 
+        description: "description"
+        the_description: "Describe the movimentation. Ex: remotion of 2 boxes to distribution"
+        adition: adition
+        remotion: remotion
+        stock_modal_qtt: "In the inventory now: %{stock}"
+        use_stock: "Use inventory"
 
       backup:
         manage_products:

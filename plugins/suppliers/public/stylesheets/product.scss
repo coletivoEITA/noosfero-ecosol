@@ -53,7 +53,6 @@
 
     select {
       margin-left: 15px;
-      border-radius: 5px;
     }
   }
   p.filter_stats {
@@ -72,7 +71,7 @@
       font-weight: bold;
     }
   }
-  button {
+  button.default {
     background-color: $cirandas-header-bg;
     color: white;
     margin-left: 10px;
@@ -258,6 +257,8 @@
     input.tt-input {
       background-color: white;
     }
+
+    // TYPEAHEAD
     .tt-dropdown-menu {
       border-radius: 0;
       margin-top: 1px;
@@ -271,8 +272,42 @@
       }
     }
 
+    // STOCK MODAL
     stock-modal {
       z-index: 1041; // fix modal-backdrop over it https://github.com/twbs/bootstrap/issues/16148
+      @include modal-default;
+
+      .form-group {
+        input[type=checkbox] {
+          width: 18px;
+          height: 18px;
+        }
+        button {
+          margin-left: 0;
+        }
+        input, select, textarea {
+          background-color: white;
+          &:disabled {
+            background-color: #ddd;
+            border: none;
+            color: #aaa;
+          }
+        }
+        textarea {
+          border: 1px solid black;
+          border-radius: 2px;
+          min-height: 70px;
+        }
+        span.addon {
+          color: #555;
+          padding: 6px;
+          font-size: 13px;
+          line-height: 1;
+          width: 1%;
+          display: table-cell;
+          vertical-align: middle;
+        }
+      }
     }
   }
 }

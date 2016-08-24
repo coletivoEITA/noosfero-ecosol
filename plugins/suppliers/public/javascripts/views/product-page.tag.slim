@@ -42,7 +42,7 @@ product-page
         |{t('views.product.activate')}
       option value="deactivate"
         |{t('views.product.deactivate')}
-    button name='ok' onclick="{massAction}"
+    button name='ok' onclick="{massAction}" class="default"
       |{t('views.product.ok')}
 
 
@@ -147,4 +147,5 @@ product-page
 
     setStockModal(product) {
       this.tags['stock-modal'].product = product
+      this.tags['stock-modal'].update()
     }

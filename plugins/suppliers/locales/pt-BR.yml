@@ -199,7 +199,15 @@ pt-BR: &pt-BR
         edit: "Editar"
         saved: "Salvo!"
         close: "Fechar"
-        stock_modal: "Estoque"
+        stock_modal: "Movimentação de Estoque"
+        action: "Ação"
+        quantity: "Quantidade" 
+        description: "Descrição"
+        the_description: "Descreva a movimentação. Ex: Saída de 2 caixas para distribuição"
+        adition: "adição"
+        remotion: "remoção"
+        stock_modal_qtt: "Em estoque agora: %{stock}"
+        use_stock: "Usar estoque"
 
       backup:
         manage_products:

@@ -176,68 +176,8 @@
       consumer-view, consumer-add {
         z-index: 1041; // fix modal-backdrop over it https://github.com/twbs/bootstrap/issues/16148
 
-        hr {
-          width: 100%;
-          border-bottom: 1px solid $hr-green;
-        }
-        h1,h2 { background-color: transparent; }
-        h1 {
-          font-size: 18px;
-          font-weight: bold;
-          color: $cirandas-header-bg;
-          text-transform: uppercase;
-        }
-        h2 {
-          font-size: 16px;
-          font-weight: bold;
-          color: $cirandas-header-bg;
-          text-transform: uppercase;
-        }
-        .close-text {
-          font-size: 15px;
-          padding: 4px 8px 8px 0;
-        }
-        .close {
-          padding: 15px 0;
-          font-weight: normal;
-          opacity: 1;
-          float: right;
-        }
-        .form-group {
-          margin-bottom: 5px;
+        @include modal-default;
 
-          input,select {
-            border-radius: 0;
-            border: 0px;
-            border-bottom: 1px solid #555;
-            -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
-            box-shadow:         inset 0 0px 0px rgba(0, 0, 0, 0.075);
-
-            &:focus {
-              border: 1px solid #555;
-              -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 102, 102, 0.6);
-              box-shadow:         inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 102, 102, 0.6);
-            }
-          }
-        }
-        table.orders {
-          margin-bottom: 20px;
-
-          th {
-            background-color: $cirandas-header-bg;
-            color: white;
-            text-transform: uppercase;
-            font-weight: bold;
-            font-size: 15px;
-            text-align: center;
-          }
-          tr {
-            text-align: center;
-          }
-          td,th {
-            border: 1px solid black;
-          }
-        }
         .picture-block {
           width: 122px;
           height: 112px;

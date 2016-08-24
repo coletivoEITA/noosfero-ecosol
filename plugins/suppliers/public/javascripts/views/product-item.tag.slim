@@ -30,7 +30,7 @@ product-item  class="{edition: product.edition}"
       |&#8212;
     span if="{product.use_stock && !product.edition}"
       |{product.stored}
-    button onclick="{editStock}" show="{product.edition}" data-toggle="modal" data-target="stock-modal"
+    button onclick="{editStock}" show="{product.edition}" data-toggle="modal" data-target="stock-modal" class="default"
       |{t('views.product.edit')}
   .total_price
     |{product.price}
@@ -41,9 +41,9 @@ product-item  class="{edition: product.edition}"
     input type="text" value="{product.supplier_price}" id="{'supplier_price-'+product.id}" show="{product.edition}" class='price' oninput="{updatePrice}"
   .unit
     .unit_name show="{!product.edition}"
-      |{unit}
+      |{product.unit}
     .white-wrap
-      input type="text" value="{unit}" show="{product.edition}" id="{'unit_id-'+product.id}"
+      input type="text" value="{product.unit}" show="{product.edition}" id="{'unit_id-'+product.id}"
   .actions
     .fast_edition onclick="{edit}" show="{!product.edition}"
       .img
@@ -52,7 +52,7 @@ product-item  class="{edition: product.edition}"
       .img
       |{t('views.product.complete_edition')}
     .save_edition show="{product.edition}"
-      button onclick="{save}"
+      button onclick="{save}" class="default"
         |{t('views.product.save')}
       i class="fa fa-times close-cross" onclick="{close}"
 
@@ -66,7 +66,7 @@ product-item  class="{edition: product.edition}"
 
     getUnit() {
       var self = this
-      this.parent.units.forEach(function(u) { if (self.product.unit_id == u.id) self.unit = u.name;  })
+      this.parent.units.forEach(function(u) { if (self.product.unit_id == u.id) self.product.unit = u.name;  })
     }
     this.getUnit();
 
@@ -135,7 +135,7 @@ product-item  class="{edition: product.edition}"
     }
     setUnit(e, item) {
       this.product.unit_id = item.id
-      this.unit = item.name
+      this.product.unit = item.name
     }
 
     editStock() {
