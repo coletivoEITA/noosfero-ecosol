@@ -21,7 +21,7 @@
 *= require rails-extended.js
 *= require jrails.js
 *= require message-bus.js
-*= require riot
+*= require vendor/riot-2.5.0
 *= require riot_rails
 *= require i18n
 *= require i18n/translations
