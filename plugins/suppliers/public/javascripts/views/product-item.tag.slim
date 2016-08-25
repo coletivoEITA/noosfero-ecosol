@@ -59,9 +59,10 @@ product-item  class="{edition: product.edition}"
     .clear
 
   javascript:
-    this.product = opts.product
+    this.product  = opts.product
     this.supplier = this.parent.suppliers[this.product.supplier_id]
     this.category = this.parent.categories[this.product.product_category_id]
+    this.product.margin_percentage = this.product.margin_percentage || parent.default_margin_percentage
     this.product.edition = false
 
     getUnit() {
@@ -88,8 +89,8 @@ product-item  class="{edition: product.edition}"
 
     updatePrice() {
       // update variables from form
-      this.product.margin_percentage = this['margin_percentage-'+this.product.id].value 
-      this.product.supplier_price = this['supplier_price-'+this.product.id].value 
+      this.product.margin_percentage = this['margin_percentage-'+this.product.id].value
+      this.product.supplier_price = this['supplier_price-'+this.product.id].value
       if (this.product.margin_percentage)
         this.product.price = (this.product.supplier_price * (this.product.margin_percentage/100 + 1)).toFixed(2)
     }
@@ -107,7 +108,7 @@ product-item  class="{edition: product.edition}"
       var keys = ['name', 'available', 'margin_percentage'] // category, unit and prices are automatically updated
 
       var self = this;
-      
+
       keys.forEach(function(key) {
         var input = self[key+'-'+self.product.id];
 
