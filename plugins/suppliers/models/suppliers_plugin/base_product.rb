@@ -7,6 +7,8 @@ class SuppliersPlugin::BaseProduct < ProductsPlugin::Product
     self.name
   end
 
+  has_one :supplier_image, through: :from_product, source: :image
+
   attr_accessible :default_margin_percentage, :margin_percentage, :default_unit, :unit_detail,
     :supplier_product_attributes
 

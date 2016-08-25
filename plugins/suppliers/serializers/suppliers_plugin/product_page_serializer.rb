@@ -1,10 +1,16 @@
 module SuppliersPlugin
   class ProductPageSerializer < ApplicationSerializer
 
+    attribute :default_margin_percentage
+
     has_many :products
     has_many :units
     has_many :categories
     has_many :suppliers
+
+    def default_margin_percentage
+      profile.margin_percentage
+    end
 
     def categories
       hash = {"0": scope.t('suppliers_plugin.views.product.all_the_categories')}
@@ -31,18 +37,19 @@ module SuppliersPlugin
         .unarchived
         .supplied
         .joins(:from_products, :suppliers)
+        .includes(:image)
+        .includes(:supplier_image)
         .order('from_product_name ASC')
-        .limit(20)
-        .select(<<-EOQ
-          products.*,
-          from_products_products.name       AS from_product_name,
-          suppliers_plugin_suppliers.id     AS supplier_id,
-          suppliers_plugin_suppliers.active AS supplier_active
-        EOQ
-        ).group <<-EOQ
-          suppliers_plugin_suppliers.id,
-          from_products_products.name
-        EOQ
+        .where(suppliers_plugin_suppliers: {active: true})
+        .select('products.*')
+        .select('from_products_products.name    AS from_product_name')
+        .select('from_products_products.unit_id AS from_product_unit_id')
+        .select('from_products_products.price   AS from_product_price')
+        .select('suppliers_plugin_suppliers.id  AS supplier_id')
+        .group('suppliers_plugin_suppliers.id')
+        .group('from_products_products.name')
+        .group('from_products_products.unit_id')
+        .group('from_products_products.price')
     end
 
     def units
