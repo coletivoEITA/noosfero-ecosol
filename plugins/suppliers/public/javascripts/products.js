@@ -1,5 +1,6 @@
 //= require ./views/product-page
 //= require ./views/product-item
+//= require ./views/stock-modal
 
 products = {
 

@@ -1,0 +1,94 @@
+stock-modal.modal.fade tabindex="-1" role="dialog"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        .row
+          .col-xs-10
+            h1
+              |{t('views.product.stock_modal')}
+          .col-xs-2
+            button type="button" class="close left" data-dismiss="modal" aria-label="Close"
+              span.left.close-text
+                |{t("views.product.close")}
+              span aria-hidden="true"
+                |&times;
+  
+      .modal-body
+        p
+          |{t('views.product.stock_modal_qtt', {stock: product.stock})}
+
+        form.form-horizontal
+          .form-group
+            label for="use_stock" class="col-sm-3 control-label"
+              |{t("views.product.use_stock")}
+            .col-sm-9
+              input type="checkbox" name='use-stock' checked='{product.use_stock}' class="form-control" id="use_stock" onclick="{toggleStock}"
+
+          .form-group
+            label for="stock_action" class="col-sm-3 control-label"
+              |{t("views.product.action")}
+            .col-sm-9
+              select name='stock' class="form-control" id="stock_action"
+                option value="adition"
+                  |{t("views.product.adition")}
+                option value="remotion"
+                  |{t("views.product.remotion")}
+
+          .form-group
+            label for="stock_qtt" class="col-sm-3 control-label"
+              |{t("views.product.quantity")}
+            .col-sm-9
+              .input-group
+                input type="number" min="0" name='stock' value='{product.stock}' class="form-control" id="stock_qtt" placeholder='{t("views.product.quantity")}'
+                span.addon
+                  |{product.unit}
+
+          .form-group
+            label for="stock_qtt" class="col-sm-3 control-label"
+              |{t("views.product.description")}
+            .col-sm-9
+              textarea name='description' class="form-control" id="stock_desc" placeholder='{t("views.product.the_description")}'
+
+          .form-group
+            .col-sm-3
+            .col-sm-9
+              button onclick="{savestock}" class="default"
+                |{t('views.product.save')}
+
+
+  javascript:
+    this.t = window.products.t
+
+    toggleStock() {
+      this.product.use_stock = ($('#use_stock').attr('checked') != undefined)
+      $("#stock_action, #stock_qtt, #stock_desc").prop('disabled', !this.product.use_stock)
+    }
+    savestock() {
+      var self = this
+      data = {
+        use_stock: this.product.use_stock,
+        stock_action: this.stock_action.value,
+        product_id: this.product.id,
+        quantity: this.stock_qtt.value,
+        description: this.stock_desc.value
+      }
+      var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: "createAllocation"}) 
+      $.post(saveUrl, data, function(response) {
+        if (response != "fail") {
+          display_notice(self.t('views.product.saved'))
+          self.product.stored = response.stored
+        }
+        self.close();
+        $('stock-modal form').reset()
+      })
+    }
+    close() {
+      $(this.root).modal('hide');
+    }
+
+    this.on('update', function() {
+      if (this.product) {
+        $('#use_stock').attr('checked', this.product.use_stock)
+        this.toggleStock();
+      }
+    })

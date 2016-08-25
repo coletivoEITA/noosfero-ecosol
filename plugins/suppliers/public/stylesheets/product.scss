@@ -22,7 +22,7 @@
   }
   .filter {
     padding: 10px;
-    margin: 20px auto;
+    margin: 20px auto 0px;
     display: inline-block;
     background-color: #f8f8f8;
     border: 1px solid #efefef;
@@ -53,44 +53,63 @@
 
     select {
       margin-left: 15px;
-      border-radius: 5px;
     }
+  }
+  p.filter_stats {
+    font-size: 12px;
+    font-weight: bold;
+    color: black;
+    padding-left: 5px;
   }
   
   .mass_actions {
     float: right;
     margin-bottom: 10px;
 
-    button {
-      background-color: $cirandas-header-bg;
-      color: white;
-      margin-left: 10px;
-      border: none;
-      padding: 7px 10px;
-      font-weight: bold;
-    }
     select {
       margin-left: 10px;
       font-weight: bold;
     }
+  }
+  button.default {
+    background-color: $cirandas-header-bg;
+    color: white;
+    margin-left: 10px;
+    border: none;
+    padding: 7px 10px;
+    font-weight: bold;
   }
   .clear {
     clear: both;
   }
   .products-listing {
     margin-left: -23px;
+    width: 1200px;
     .header {
       background-color: #c6c15d;
       border-top: 2px solid #b8b558;
       border-left: 2px solid #b8b558;
       border-bottom: 2px solid white;
 
+      .image          { width: 110px; }
+      .state          { width:  80px; }
+      .name           { width: 230px; }
+      .supplier       { width: 108px; }
+      .category       { width: 135px; }
+      .margin         { width:  66px; }
+      .stock          { width:  70px; }
+      .total_price    { width:  90px; }
+      .supplier_price { width:  90px; }
+      .unit           { width:  96px; }
+
+
       & > div {
-        padding: 16px 8px;
+        padding: 0px 8px;
         text-transform: uppercase;
         font-weight: bold;
         font-size: 12px;
-        display: inline-block;
+        display: table-cell;
+        vertical-align: middle;
         color: white;
         border-left: 1px solid white;
       }
@@ -98,7 +117,7 @@
         padding-left: 46px;
         border-left: none;
       }
-      .available { color: white !important; }
+      .available { color: white; }
     }
 
     //***** PRODUCT ITEM *******//
@@ -106,6 +125,11 @@
       display: block;
       &:hover {
         background-color: #f9fcf3;
+        .actions {
+          .fast_edition, .complete_edition {
+            display: table-cell;
+          }
+        }
       }
       &.edition {
         background-color: #fbf8ef;
@@ -113,13 +137,15 @@
       &.disabled {
         color: #b8b8b8;
       }
+      color: black;
 
       border-bottom: 1px solid #dcdcde;
       border-left:   1px solid #dcdcde;
       border-right:  1px solid #dcdcde;
       & > div {
-        display: inline-block;
-        padding: 8px;
+        display: table-cell;
+        vertical-align: middle;
+        padding: 4px 8px;
         font-size: 12px;
         margin: auto;
 
@@ -127,11 +153,30 @@
           padding: 5px;
         }
       }
+      .image          { width: 111px; }
+      .state          { width:  80px; }
+      .name           { width: 230px; }
+      .supplier       { width: 107px; }
+      .category       { width: 134px; }
+      .margin         { width:  70px; }
+      .stock          { width:  70px; }
+      .total_price    { width:  90px; }
+      .supplier_price { width:  91px; }
+      .unit           { width:  97px; }
+      .action         { width:  60px; }
+
+
+      .white-wrap {
+        background-color: white;
+      }
       input[type=checkbox] {
         margin: auto 5px;
         padding: 0;
+        height: auto;
       }
-      .image { width: 112px }
+      input[type=text], input[type=number] {
+        width: 100%;
+      }
       .image-box {
         width: 68px;
         height: 68px;
@@ -140,40 +185,130 @@
       }
       .state {
         margin: auto;
-        div {
+        .active {
           margin: auto;
           width: 20px;
           height: 20px;
           background-image: url(/plugins/suppliers/images/radio.png);
           &.inactive { background-position: 0px 0 }
-          &.active { background-position: 20px 0 }
+          &.active   { background-position: 20px 0 }
         }
       }
       .margin, .stock {
         text-align: center;
       }
+      .stock button {
+        width: 100%;
+        margin: auto;
+      }
       .total_price, .supplier_price {
         padding-left: 16px;
       }
+      .actions {
+        .fast_edition,.complete_edition {
+          display: none;
+          cursor: pointer;
+          width: 36px;
+          float: left;
+          font-size: 9px;
+          line-height: 1;
+          text-align: center;
+          margin: auto;
+          &:hover {
+            text-decoration: underline;
+          }
+
+          .img {
+            width: 20px;
+            height: 20px;
+            background-image: url(/plugins/suppliers/images/actions.png);
+            background-size: 40px 20px;
+            margin: auto;
+          }
+        }
+        .fast_edition {
+          color: #c8bf60;
+          .img {
+            background-position: 0px 0;
+          }
+        }
+        .complete_edition {
+          color: #86b83f;
+          .img {
+            background-position: 20px 0;
+          }
+        }
+        .close-cross {
+          font-size: 20px;
+          margin-left: 5px;
+          cursor: pointer;
+        }
+      }
+      @include toggle-input(30px); 
+
+      .unit_id { width: 100%; }
     }
-
-    .image          { width: 110px; }
-    .state          { width:  90px; }
-    .name           { width: 230px; }
-    .supplier       { width:  96px; }
-    .category       { width: 135px; }
-    .margin         { width:  66px; }
-    .stock          { width:  70px; }
-    .total_price    { width: 97px; }
-    .supplier_price { width: 126px; }
-    .unit           { width:  96px; }
-
 
     product-item.disabled {
       color: #b5b5b5;
     }
 
     margin-bottom: 30px;
+    input.tt-input {
+      background-color: white;
+    }
+
+    // TYPEAHEAD
+    .tt-dropdown-menu {
+      border-radius: 0;
+      margin-top: 1px;
+
+      .tt-suggestion {
+        font-size: 10px !important;
+        padding: 6px 8px;
+        &.tt-cursor {
+          background-color: #f58b57;
+        }
+      }
+    }
+
+    // STOCK MODAL
+    stock-modal {
+      z-index: 1041; // fix modal-backdrop over it https://github.com/twbs/bootstrap/issues/16148
+      @include modal-default;
+
+      .form-group {
+        input[type=checkbox] {
+          width: 18px;
+          height: 18px;
+        }
+        button {
+          margin-left: 0;
+        }
+        input, select, textarea {
+          background-color: white;
+          &:disabled {
+            background-color: #ddd;
+            border: none;
+            color: #aaa;
+          }
+        }
+        textarea {
+          border: 1px solid black;
+          border-radius: 2px;
+          min-height: 70px;
+        }
+        span.addon {
+          color: #555;
+          padding: 6px;
+          font-size: 13px;
+          line-height: 1;
+          width: 1%;
+          display: table-cell;
+          vertical-align: middle;
+        }
+      }
+    }
   }
 }
 

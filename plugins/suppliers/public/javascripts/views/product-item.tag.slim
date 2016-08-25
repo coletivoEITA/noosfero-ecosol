@@ -1,33 +1,187 @@
-product-item
+product-item  class="{edition: product.edition}"
   .image
-    input type='checkbox' id='product-select'
+    input type='checkbox' class='product-select'
     .image-box
       img src="{product.image}"
 
   .state
-    div class="{product.available ? 'active':'inactive'}"
+    div class="{product.available ? 'active':'inactive'}" show="{!product.edition}"
+    .switch show="{product.edition}"
+      input.cmn-toggle.cmn-toggle-round type="checkbox" id="{'available-'+product.id}" checked="{product.available}"
+      label for="{'available-'+product.id}"
   .name
-    |{product.name}
+    span show="{!product.edition}"
+      |{product.name}
+    input type="text" value="{product.name}" id="{'name-'+product.id}" show="{product.edition}" class='name'
   .supplier
     |{supplier}
   .category
-    |{category}
+    span show="{!product.edition}"
+      |{category}
+    .white-wrap
+      input type="text" value="{category}" show="{product.edition}" class='category' id="{'product_category_id-'+product.id}"
   .margin
-    |{product.margin_percentage}
+    span show="{!product.edition}"
+      |{product.margin_percentage}
+    .input-group
+    input type="number" value="{product.margin_percentage}" id="{'margin_percentage-'+product.id}" show="{product.edition}" oninput="{updatePrice}"
   .stock
-    span if="{!product.use_stock}"
+    span if="{!product.use_stock && !product.edition}"
       |&#8212;
-    span if="{product.use_stock}"
+    span if="{product.use_stock && !product.edition}"
       |{product.stored}
+    button onclick="{editStock}" show="{product.edition}" data-toggle="modal" data-target="stock-modal" class="default"
+      |{t('views.product.edit')}
   .total_price
     |{product.price}
+
   .supplier_price
-    |{product.supplier_price}
+    span show="{!product.edition}"
+      |{product.supplier_price}
+    input type="text" value="{product.supplier_price}" id="{'supplier_price-'+product.id}" show="{product.edition}" class='price' oninput="{updatePrice}"
   .unit
-    |{unit.singular}
+    .unit_name show="{!product.edition}"
+      |{product.unit}
+    .white-wrap
+      input type="text" value="{product.unit}" show="{product.edition}" id="{'unit_id-'+product.id}"
+  .actions
+    .fast_edition onclick="{edit}" show="{!product.edition}"
+      .img
+      |{t('views.product.fast_edition')}
+    .complete_edition show="{!product.edition}"
+      .img
+      |{t('views.product.complete_edition')}
+    .save_edition show="{product.edition}"
+      button onclick="{save}" class="default"
+        |{t('views.product.save')}
+      i class="fa fa-times close-cross" onclick="{close}"
+
+    .clear
 
   javascript:
     this.product = opts.product
     this.supplier = this.parent.suppliers[this.product.supplier_id]
     this.category = this.parent.categories[this.product.product_category_id]
-    this.unit = this.parent.units[this.product.unit_id]
+    this.product.edition = false
+
+    getUnit() {
+      var self = this
+      this.parent.units.forEach(function(u) { if (self.product.unit_id == u.id) self.product.unit = u.name;  })
+    }
+    this.getUnit();
+
+    activate() {
+      this.product.available = true;
+    }
+    deactivate() {
+      this.product.available = false;
+    }
+
+    edit() {
+      this.parent.stopEdition();
+      this.product.edition = true
+    }
+
+    close() {
+      this.parent.stopEdition();
+    }
+
+    updatePrice() {
+      // update variables from form
+      this.product.margin_percentage = this['margin_percentage-'+this.product.id].value 
+      this.product.supplier_price = this['supplier_price-'+this.product.id].value 
+      if (this.product.margin_percentage)
+        this.product.price = (this.product.supplier_price * (this.product.margin_percentage/100 + 1)).toFixed(2)
+    }
+
+    save() {
+      var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'edit/'+this.product.id})
+      var self = this
+      $.post(saveUrl, {product: this.prepareForm()}, function(data) {
+        display_notice(self.t('views.product.saved'))
+        self.close();
+      })
+    }
+
+    updateProductFromForm() {
+      var keys = ['name', 'available', 'margin_percentage'] // category, unit and prices are automatically updated
+
+      var self = this;
+      
+      keys.forEach(function(key) {
+        var input = self[key+'-'+self.product.id];
+
+        if (input == undefined) { console.log("Haven't found key "+key) }
+        else { self.product[key] = input.value; }
+
+      })
+    }
+
+    prepareForm() {
+      this.updateProductFromForm()
+
+      var data = Object();
+      var keys = ['name', 'available', 'product_category_id', 'unit_id', 'price', 'supplier_price']
+
+      var self = this;
+      keys.forEach( function(key) { data[key] = self.product[key] } )
+
+      return data;
+    }
+
+    setCategory(e, item) {
+      this.product.product_category_id = item.id
+      this.category = this.parent.categories[this.product.product_category_id]
+    }
+    setUnit(e, item) {
+      this.product.unit_id = item.id
+      this.product.unit = item.name
+    }
+
+    editStock() {
+      this.parent.setStockModal(this.product)
+    }
+
+    this.on('mount', function () {
+      this.updatePrice()
+      this.update()
+      this.typeaheadCategoryInit()
+      this.typeaheadUnitInit()
+    })
+
+    typeaheadCategoryInit () {
+      var input = $(this.root).find('input#product_category_id-'+this.product.id)
+
+      var categoryUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'categories'})+'?query=%QUERY'
+      source = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: categoryUrl,
+      })
+      source.initialize()
+
+      input.typeahead(
+        { minLength: 3, highlight: true, },
+        { displayKey: 'name', source: source.ttAdapter(), }
+      )
+
+      input.on('typeahead:selected', this.setCategory)
+    }
+
+    typeaheadUnitInit () {
+      var input = $(this.root).find('input#unit_id-'+this.product.id)
+
+      source = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        local: this.parent.units,
+      })
+      source.initialize()
+
+      input.typeahead(
+        { minLength: 1, highlight: true, },
+        { displayKey: 'name', source: source.ttAdapter() }
+      )
+
+      input.on('typeahead:selected', this.setUnit)
+    }

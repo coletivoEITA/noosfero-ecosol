@@ -171,8 +171,8 @@ pt-BR: &pt-BR
         product_name: 'Nome do produto'
         name: 'Nome'
         categories: categorias
-        all_the_categories: 'todas as categorias'
-        supplier: fornecedor
+        all_the_categories: 'Todas as categorias'
+        supplier: Fornecedor
         situation: situação
         active: ativo
         inactive: inativo
@@ -184,12 +184,30 @@ pt-BR: &pt-BR
         stock: Estoque
         total_price: 'Preço final'
         supplier_price: 'Preço produtor'
+        total_price_currency: 'Preço final (R$)'
+        supplier_price_currency: 'Preço fornec. (R$)'
         unit: unidade
         mass_action: "Ação em massa"
         activate: "ativar produtos"
         deactivate: "desativar produtos"
         ok: ok
         state: Estado
+        complete_edition: "edição completa"
+        fast_edition: "edição rápida"
+        showing: "Mostrando %{count} produtos"
+        save: "Salvar"
+        edit: "Editar"
+        saved: "Salvo!"
+        close: "Fechar"
+        stock_modal: "Movimentação de Estoque"
+        action: "Ação"
+        quantity: "Quantidade" 
+        description: "Descrição"
+        the_description: "Descreva a movimentação. Ex: Saída de 2 caixas para distribuição"
+        adition: "adição"
+        remotion: "remoção"
+        stock_modal_qtt: "Em estoque agora: %{stock}"
+        use_stock: "Usar estoque"
 
       backup:
         manage_products:
@@ -286,7 +304,7 @@ pt-BR: &pt-BR
           index:
             active: ativa
             add_product: "Criar produto"
-            all_the_categories: "todas as categorias"
+            all_the_categories: "Todas as categorias"
             all_the_suppliers: "todos %{terms.supplier.article.plural}"
             situation: "Situação de distribuição"
             anyone: anyone

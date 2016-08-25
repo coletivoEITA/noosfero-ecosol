@@ -1,5 +1,7 @@
-= javascript_include_tag 'plugins/suppliers/javascripts/products'
+= stylesheet_link_tag 'typeahead'
+= javascript_include_tag 'typeahead.bundle.js'
 
+= javascript_include_tag 'plugins/suppliers/javascripts/products'
 = js_translations_include plugin: :suppliers
 
 - object = SuppliersPlugin::ProductPageSerializer.new(profile, params.merge(scope: self)).to_hash.merge!({})
@@ -8,5 +10,3 @@ product-page
 
 javascript:
   riot.mount($('product-page'), #{object.to_json})
-
-

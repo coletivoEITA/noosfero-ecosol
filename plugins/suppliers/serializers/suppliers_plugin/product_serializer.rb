@@ -1,9 +1,9 @@
 module SuppliersPlugin
   class ProductSerializer < ApplicationSerializer
 
+    attribute :id
     attribute :name
     attribute :price
-    attribute :image
     attribute :supplier_id
     attribute :product_category_id
     attribute :margin_percentage
@@ -12,6 +12,7 @@ module SuppliersPlugin
     attribute :available
     attribute :unit_id
     attribute :supplier_price
+    has_one   :image
 
     def available
       object[:available]

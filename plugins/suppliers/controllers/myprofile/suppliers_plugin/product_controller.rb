@@ -28,13 +28,11 @@ class SuppliersPlugin::ProductController < MyProfileController
     end
   end
 
-  def add
-
-  end
-
   def edit
     @product = profile.products.supplied.find params[:id]
-    @product.update params["product_#{@product.id}"]
+    @product.update params.require(:product).permit(:name, :product_category_id, :price, :margin, :available, :unit_id)
+
+    render nothing: true
   end
 
   def import
@@ -71,6 +69,47 @@ class SuppliersPlugin::ProductController < MyProfileController
     @product.to_products.each{ |p| p.destroy if to_remove.include? p.profile }
 
     @product.reload
+  end
+
+  def activate
+    ret = Product.where(id: params[:ids]).update_all(available: true)
+    render text: ret > 0 ? "success" : "fail"
+  end
+
+  def deactivate
+    ret = Product.where(id: params[:ids]).update_all(available: false)
+    render text: ret > 0 ? "success" : "fail"
+  end
+
+  def categories
+    @categories = environment.categories.where("LOWER(name) like ?", "%#{params[:query].downcase}%")
+    render json: @categories, each_serializer: SuppliersPlugin::ProductCategorySerializer
+  end
+
+  def createAllocation
+    @product = profile.products.find params[:product_id]
+    @product.update_attribute(:use_stock, params[:use_stock] == 'true') if params[:use_stock].present?
+
+    if params[:place_id].nil?
+      if @product.stock_places.count == 0
+        place = @product.profile.stock_places.create! name: 'default', description: 'default place'
+        place = place.id
+      else
+        place = @product.stock_places.first.id
+      end
+    end
+
+    m = params[:stock_action] == "adition" ? 1 : -1
+    if params[:use_stock]
+      a = @product.stock_allocations.create!(
+        quantity: m * params[:quantity].to_f.abs,
+        description: params[:description],
+        place_id: place
+      )
+      render text: "fail" if !a
+    end
+
+    render json: @product
   end
 
   protected

@@ -11,7 +11,7 @@ product-page
       form.form-inline
         .form-group
           .name
-            input type="text" name="filter_name" placeholder="{t('views.product.product_name')}"
+            input type="text" name="filter_name" placeholder="{t('views.product.product_name')}" onclick="{search}"
 
         .form-group.category
           select name="category_id"
@@ -24,23 +24,25 @@ product-page
               |{name}
 
         .form-group.state
-          select name='available'
+          select name='available' onclick="{search}"
             option value="" selected="{filter_state == ''}"
               |{t('views.product.situation')}
             option value="true" selected="{filter_state == 'true'}"
               |{t('views.product.active')}
             option value="false" selected="{filter_state == 'false'}"
               |{t('views.product.inactive')}
+    p.filter_stats
+      |{t('views.product.showing', {count: this.count})}
 
   .mass_actions
     strong
       |{t('views.product.mass_action')}
-    select name='action' id='mass-action-select'
+    select name='action' id='mass_action_select'
       option value="activate"
         |{t('views.product.activate')}
       option value="deactivate"
         |{t('views.product.deactivate')}
-    button name='ok' onclick="{massAction}"
+    button name='ok' onclick="{massAction}" class="default"
       |{t('views.product.ok')}
 
 
@@ -63,21 +65,87 @@ product-page
         .stock
           |{t('views.product.stock')}
         .total_price
-          |{t('views.product.total_price')}
+          |{t('views.product.total_price_currency')}
         .supplier_price
-          |{t('views.product.supplier_price')}
+          |{t('views.product.supplier_price_currency')}
         .unit
           |{t('views.product.unit')}
 
       product-item each="{product in products}" product="{product}" class="{product.available ? 'available':'disabled'}"
 
+      stock-modal
+
   javascript:
     this.t = window.products.t
+
     this.products = opts.products
     this.categories = opts.categories
     this.suppliers = opts.suppliers
     this.units = opts.units
+
     this.page = opts.page
-    this.filter_category = opts.filter_category
-    this.filter_supplier = opts.filter_supplier
-    this.filter_state = opts.filter_state
+    this.filter_state = 'true'
+    this.count = this.products.length
+
+    massAction(e) {
+     if (this.mass_action_select.value == 'activate') {
+      this.changeState('activate')
+     }
+     else if (this.mass_action_select.value == 'deactivate') {
+      this.changeState('deactivate')
+     }
+    }
+
+    changeState(state) {
+      var checked = $('.product-select:checked')
+      if (checked) {
+        var productItems = checked.parents('product-item')
+        var products = []
+        productItems.each(function(i, product) {
+          products.push(product._tag.product.id)
+        })
+
+        if (products) {
+          self = this
+          updateUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: state})
+          $.post(updateUrl,{ids: products}, function(response) {
+            if (response == 'success') {
+              productItems.each(function(i, product) {
+                var func = product._tag[state]
+                if (!func) return
+                func();
+              })
+              self.update()
+            }
+          })
+        }
+      }
+    }
+
+    search() {
+      var data = {
+        state: this.filter_state,
+        supplier: this.filter_supplier,
+        category: this.filter_category,
+        name: filter_name
+      }
+
+      var searchUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'search'});
+      $.post(searchUrl, data, function(response) {
+        if (response) {
+          console.log(response);
+        }
+      });
+    }
+
+    stopEdition() {
+      this.products.forEach(function(p) {
+        p.edition = false;
+      })
+      this.update();
+    }
+
+    setStockModal(product) {
+      this.tags['stock-modal'].product = product
+      this.tags['stock-modal'].update()
+    }

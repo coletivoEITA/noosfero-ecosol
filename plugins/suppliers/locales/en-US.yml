@@ -176,12 +176,30 @@ en-US: &en-US
         stock: stock
         total_price: 'final price'
         supplier_price: 'supplier price'
+        total_price_currency: 'final price ($)'
+        supplier_price_currency: 'supplier price ($)'
         unit: unit
         mass_action: "Mass action"
         activate: "Activate"
         deactivate: "Deactivate"
         ok: ok
         state: state
+        complete_edition: "complete edition"
+        fast_edition: "fast edition"
+        showing: "Showing %{count} products"
+        save: "Save"
+        edit: "Edit"
+        saved: "Saved!"
+        close: "close"
+        stock_modal: "Inventory movimentation"
+        action: "Action"
+        quantity: "Quantity" 
+        description: "description"
+        the_description: "Describe the movimentation. Ex: remotion of 2 boxes to distribution"
+        adition: adition
+        remotion: remotion
+        stock_modal_qtt: "In the inventory now: %{stock}"
+        use_stock: "Use inventory"
 
       backup:
         manage_products:

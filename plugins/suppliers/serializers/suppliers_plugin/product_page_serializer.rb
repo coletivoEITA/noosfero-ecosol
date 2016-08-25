@@ -7,17 +7,20 @@ module SuppliersPlugin
     has_many :suppliers
 
     def categories
-      hash = {'': scope.t('suppliers_plugin.views.product.all_the_categories')}
+      hash = {"0": scope.t('suppliers_plugin.views.product.all_the_categories')}
       Product.product_categories_of(products).each do |pc|
         hash[pc.id] = pc.name
       end
+      hash
     end
 
     def suppliers
-      scope = profile.suppliers.order(:name_abbreviation, :name)
-      scope.each.with_object({}) do |s, hash|
-        hash[s.id] = s.abbreviation_or_name
+      hash = {"0": scope.t("suppliers_plugin.views.product.supplier")}
+      s = profile.suppliers.order(:name_abbreviation, :name)
+      s.each do |supplier|
+        hash[supplier.id] = supplier.abbreviation_or_name
       end
+      hash
     end
 
     def products
@@ -43,8 +46,8 @@ module SuppliersPlugin
     end
 
     def units
-      profile.environment.units.each.with_object({}) do |u, hash|
-        hash[u.id] = u.singular
+      profile.environment.units.map do |unit|
+        {name: unit.singular, id: unit.id}
       end
     end
 
