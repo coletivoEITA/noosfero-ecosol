@@ -13,15 +13,16 @@ module SuppliersPlugin
     attribute :unit_id
     attribute :supplier_price
 
-    def supplier_price
-      object.supplier_price
+    def available
+      object[:available]
     end
+
     def price
-      object.price_as_currency
+      #object.price_as_currency
     end
 
     def image
-      object.default_image(:thumb)
+      #object.default_image(:thumb)
     end
 
   end

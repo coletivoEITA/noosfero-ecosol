@@ -2,8 +2,6 @@ class SuppliersPlugin::SourceProduct < ApplicationRecord
 
   attr_accessible :from_product, :to_product, :quantity
 
-  default_scope -> { includes :from_product, :to_product }
-
   belongs_to :from_product, class_name: 'ProductsPlugin::Product'
   belongs_to :to_product, class_name: 'ProductsPlugin::Product'
   belongs_to :supplier, class_name: 'SuppliersPlugin::Supplier'
