@@ -14,12 +14,10 @@ class Profile
   has_many :to_products, through: :products
 
   has_many :suppliers, -> {
-    includes(profile: [:domains], consumer: [:domains])
-      .order('name ASC')
+    order('name ASC')
   }, class_name: 'SuppliersPlugin::Supplier', foreign_key: :consumer_id, dependent: :destroy
   has_many :consumers, -> {
-    includes(profile: [:domains], consumer: [:domains])
-      .order('name ASC')
+    order('name ASC')
   }, class_name: 'SuppliersPlugin::Consumer', foreign_key: :profile_id, dependent: :destroy
 
   has_many :hubs, class_name: 'SuppliersPlugin::Hub', dependent: :destroy

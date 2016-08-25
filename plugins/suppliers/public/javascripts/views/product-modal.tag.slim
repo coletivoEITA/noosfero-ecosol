@@ -22,10 +22,12 @@ product-modal.modal.fade tabindex="-1" role="dialog"
                   |{t("views.product.product_name")}
                 input type="text" value="{product.name}" id="p-name"
 
-                .form-group.switch
-                  input.cmn-toggle.cmn-toggle-round type="checkbox" id="{'available-'+product.id}" checked="{product.available}"
-                  label for="{'available-'+product.id}"
-                    |{t("views.product.available")}
+              .form-group
+                .switch
+                  input.cmn-toggle.cmn-toggle-round type="checkbox" id="p-available" checked="{product.available}"
+                  label for="p-available"
+                span.enable_product
+                  |{t("views.product.enable_product")}
 
               .form-group
                 label for="p-description"
@@ -39,9 +41,9 @@ product-modal.modal.fade tabindex="-1" role="dialog"
                   input type="text" value="{product.category}" id="p-category"
 
               .form-group
-                label for="p-margin"
+                label for="p-margin_percentage"
                   |{t("views.product.margin")}
-                input type="number" value="{product.margin_percentage}" id="p-margin" step="0.01"
+                input type="number" value="{product.margin_percentage}" id="p-margin_percentage" step="0.01"
 
               .form-group
                 p.final_price
@@ -144,9 +146,9 @@ product-modal.modal.fade tabindex="-1" role="dialog"
       var self = this
       var creating = (this.product.id = undefined)
       if (creating)
-        var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'edit/'+this.product.id})
-      else
         var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'create'})
+      else
+        var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'edit/'+this.product.id})
       $.post(saveUrl, {product: this.prepareForm()}, function(data) {
         if (creating)
           display_notice(self.t('views.product.created'))
@@ -169,3 +171,6 @@ product-modal.modal.fade tabindex="-1" role="dialog"
       $(this.root).modal('hide');
     }
 
+    $(this.root).on('show', function() {
+      this.update();
+    }.bind(this))

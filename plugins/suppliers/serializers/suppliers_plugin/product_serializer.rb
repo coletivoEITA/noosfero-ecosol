@@ -3,7 +3,6 @@ module SuppliersPlugin
 
     attribute :id
     attribute :name
-    attribute :price
     attribute :supplier_id
     attribute :product_category_id
     attribute :margin_percentage
@@ -14,10 +13,8 @@ module SuppliersPlugin
     attribute :supplier_price
     has_one   :image
 
-    def supplier_price
-      object.supplier_price
-    end
-    def price
+    def available
+      object[:available]
     end
 
     def image

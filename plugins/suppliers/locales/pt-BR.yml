@@ -214,11 +214,12 @@ pt-BR: &pt-BR
         initial_qtt_stock: "Quantidade inicial em estoque"
         cancel: "Cancelar"
         remove: "Remover produto"
-        remove_warning: "CUIDADO: Remover esse produto perderá histórico. Talvez você prefira desabilitá-lo."
+        remove_warning: "CUIDADO: Ao remover esse produto haverá perda de histórico. Talvez você prefira desabilitá-lo."
         removed_product: "Produto removido com sucesso"
         created: "Produto criado com sucesso"
         final_price_with_margin: "Preço final com a margem:"
         currency: "R$ "
+        enable_product: "Habilitar/desabilitar produto"
 
       backup:
         manage_products:

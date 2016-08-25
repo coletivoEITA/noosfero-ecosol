@@ -12,16 +12,6 @@ class SuppliersPlugin::BaseProduct < ProductsPlugin::Product
 
   accepts_nested_attributes_for :supplier_product
 
-  default_scope -> {
-    includes(
-      # from_products is required for products.available
-      :from_products,
-      # FIXME: move use cases to a scope called 'includes_for_links'
-      {suppliers: [{ profile: [:domains, {environment: :domains}] }]},
-      {profile: [:domains, {environment: :domains}]}
-    )
-  }
-
   # if abstract_class is true then it will trigger https://github.com/rails/rails/issues/20871
   #self.abstract_class = true
 
@@ -43,9 +33,6 @@ class SuppliersPlugin::BaseProduct < ProductsPlugin::Product
 
   default_delegate_setting :qualifiers, to: :supplier_product
   default_delegate :product_qualifiers, default_setting: :default_qualifiers, to: :supplier_product
-
-  default_delegate_setting :product_category, to: :supplier_product
-  default_delegate :product_category_id, default_setting: :default_product_category, to: :supplier_product
 
   default_delegate_setting :image, to: :supplier_product, prefix: :_default
   default_delegate :image_id, default_setting: :_default_image, to: :supplier_product
@@ -161,6 +148,9 @@ SQL
 
   # FIXME: move to core
   # just in case the from_products is nil
+  def product_category_id
+    self[:product_category_id]
+  end
   def product_category_with_default
     self.product_category_without_default or self.class.default_product_category(self.environment)
   end

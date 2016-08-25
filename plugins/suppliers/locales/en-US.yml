@@ -211,6 +211,7 @@ en-US: &en-US
         created: "Product created successfully"
         final_price_with_margin: "Final price with margin:"
         currency: "$ "
+        enable_product: "Enable/disable product"
 
       backup:
         manage_products:

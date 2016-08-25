@@ -27,12 +27,22 @@ module SuppliersPlugin
       params[:available] ||= 'true'
 
       # FIXME: joins(:from_products) is hiding own products (except baskets)
-      scope = profile.products.unarchived.joins :from_products, :suppliers
-      scope = SuppliersPlugin::BaseProduct.search_scope scope, params
-      scope = scope.supplied.select('products.*, MIN(from_products_products.name) as from_products_name').order('from_products_name ASC')
-      scope.limit(10)
-      #scope = scope
-        #.select('from_products_products.price AS supplier_price')
+      SuppliersPlugin::BaseProduct.search_scope(profile.products, params)
+        .unarchived
+        .supplied
+        .joins(:from_products, :suppliers)
+        .order('from_product_name ASC')
+        .limit(20)
+        .select(<<-EOQ
+          products.*,
+          from_products_products.name       AS from_product_name,
+          suppliers_plugin_suppliers.id     AS supplier_id,
+          suppliers_plugin_suppliers.active AS supplier_active
+        EOQ
+        ).group <<-EOQ
+          suppliers_plugin_suppliers.id,
+          from_products_products.name
+        EOQ
     end
 
     def units

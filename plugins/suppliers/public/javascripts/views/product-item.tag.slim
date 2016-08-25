@@ -72,9 +72,11 @@ product-item  class="{edition: product.edition}"
 
     activate() {
       this.product.available = true;
+      this.update()
     }
     deactivate() {
       this.product.available = false;
+      this.update()
     }
 
     edit() {
@@ -117,7 +119,9 @@ product-item  class="{edition: product.edition}"
         var input = self[key+'-'+self.product.id];
 
         if (input == undefined) { console.log("Haven't found key "+key) }
-        else { self.product[key] = input.value; }
+        else {
+          self.product[key] = input.value;
+        }
 
       })
     }

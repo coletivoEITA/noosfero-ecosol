@@ -186,7 +186,7 @@
       }
       .state {
         margin: auto;
-        .active {
+        .active,.inactive {
           margin: auto;
           width: 20px;
           height: 20px;
@@ -382,6 +382,13 @@
       }
       p.final_price {
         font-weight: bold;
+      }
+      .switch {
+        float: left;
+      }
+      span.enable_product {
+        margin-left: 10px;
+        line-height: 30px;
       }
     }
   }
