@@ -208,6 +208,17 @@ pt-BR: &pt-BR
         remotion: "remoção"
         stock_modal_qtt: "Em estoque agora: %{stock}"
         use_stock: "Usar estoque"
+        about_product: "Sobre o produto"
+        the_supplier_price: "Preço do produto no fornecedor"
+        change_image: "Mudar a imagem"
+        initial_qtt_stock: "Quantidade inicial em estoque"
+        cancel: "Cancelar"
+        remove: "Remover produto"
+        remove_warning: "CUIDADO: Remover esse produto perderá histórico. Talvez você prefira desabilitá-lo."
+        removed_product: "Produto removido com sucesso"
+        created: "Produto criado com sucesso"
+        final_price_with_margin: "Preço final com a margem:"
+        currency: "R$ "
 
       backup:
         manage_products:

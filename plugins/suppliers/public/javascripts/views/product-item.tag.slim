@@ -17,14 +17,14 @@ product-item  class="{edition: product.edition}"
     |{supplier}
   .category
     span show="{!product.edition}"
-      |{category}
+      |{product.category}
     .white-wrap
-      input type="text" value="{category}" show="{product.edition}" class='category' id="{'product_category_id-'+product.id}"
+      input type="text" value="{product.category}" show="{product.edition}" class='category' id="{'product_category_id-'+product.id}"
   .margin
     span show="{!product.edition}"
       |{product.margin_percentage}
     .input-group
-    input type="number" value="{product.margin_percentage}" id="{'margin_percentage-'+product.id}" show="{product.edition}" oninput="{updatePrice}"
+    input type="number" step="0.01" value="{product.margin_percentage}" id="{'margin_percentage-'+product.id}" show="{product.edition}" oninput="{updatePrice}"
   .stock
     span if="{!product.use_stock && !product.edition}"
       |&#8212;
@@ -48,7 +48,7 @@ product-item  class="{edition: product.edition}"
     .fast_edition onclick="{edit}" show="{!product.edition}"
       .img
       |{t('views.product.fast_edition')}
-    .complete_edition show="{!product.edition}"
+    .complete_edition show="{!product.edition}" onclick="{completeEdition}" data-toggle="modal" data-target="product-modal"
       .img
       |{t('views.product.complete_edition')}
     .save_edition show="{product.edition}"
@@ -61,7 +61,7 @@ product-item  class="{edition: product.edition}"
   javascript:
     this.product = opts.product
     this.supplier = this.parent.suppliers[this.product.supplier_id]
-    this.category = this.parent.categories[this.product.product_category_id]
+    this.product.category = this.parent.categories[this.product.product_category_id]
     this.product.edition = false
 
     getUnit() {
@@ -80,6 +80,11 @@ product-item  class="{edition: product.edition}"
     edit() {
       this.parent.stopEdition();
       this.product.edition = true
+    }
+
+    completeEdition() {
+      this.parent.completeEdition(this.product);
+      this.close()
     }
 
     close() {
@@ -131,7 +136,7 @@ product-item  class="{edition: product.edition}"
 
     setCategory(e, item) {
       this.product.product_category_id = item.id
-      this.category = this.parent.categories[this.product.product_category_id]
+      this.product.category = this.parent.categories[this.product.product_category_id]
     }
     setUnit(e, item) {
       this.product.unit_id = item.id
@@ -145,43 +150,7 @@ product-item  class="{edition: product.edition}"
     this.on('mount', function () {
       this.updatePrice()
       this.update()
-      this.typeaheadCategoryInit()
-      this.typeaheadUnitInit()
+      this.parent.typeaheadCategoryInit($(this.root).find('input#product_category_id-'+this.product.id, this.setCategory))
+      this.parent.typeaheadUnitInit($(this.root).find('input#unit_id-'+this.product.id, this.setUnit))
     })
 
-    typeaheadCategoryInit () {
-      var input = $(this.root).find('input#product_category_id-'+this.product.id)
-
-      var categoryUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'categories'})+'?query=%QUERY'
-      source = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        remote: categoryUrl,
-      })
-      source.initialize()
-
-      input.typeahead(
-        { minLength: 3, highlight: true, },
-        { displayKey: 'name', source: source.ttAdapter(), }
-      )
-
-      input.on('typeahead:selected', this.setCategory)
-    }
-
-    typeaheadUnitInit () {
-      var input = $(this.root).find('input#unit_id-'+this.product.id)
-
-      source = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        local: this.parent.units,
-      })
-      source.initialize()
-
-      input.typeahead(
-        { minLength: 1, highlight: true, },
-        { displayKey: 'name', source: source.ttAdapter() }
-      )
-
-      input.on('typeahead:selected', this.setUnit)
-    }

@@ -3,8 +3,8 @@ pt-BR: &pt-BR
   consumers_coop_plugin:
     lib:
       plugin:
-        name: "Coletivo de consumo"
-        description: "Torne uma organização em uma coletivo de consumo"
+        name: "Grupo de consumo responsável"
+        description: "Torne uma organização em um grupo de consumo"
       layout_helper:
         orders: Pedidos
         orders_cycles: Feiras Virtuais

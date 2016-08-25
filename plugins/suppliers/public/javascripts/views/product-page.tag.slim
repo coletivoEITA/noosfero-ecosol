@@ -74,6 +74,7 @@ product-page
       product-item each="{product in products}" product="{product}" class="{product.available ? 'available':'disabled'}"
 
       stock-modal
+      product-modal
 
   javascript:
     this.t = window.products.t
@@ -149,3 +150,42 @@ product-page
       this.tags['stock-modal'].product = product
       this.tags['stock-modal'].update()
     }
+
+    completeEdition(product) {
+      this.tags['product-modal'].product = product
+      this.tags['product-modal'].update()
+    }
+
+    typeaheadCategoryInit (input, selected) {
+      var categoryUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'categories'})+'?query=%QUERY'
+      source = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: categoryUrl,
+      })
+      source.initialize()
+
+      input.typeahead(
+        { minLength: 3, highlight: true, },
+        { displayKey: 'name', source: source.ttAdapter(), }
+      )
+
+      input.on('typeahead:selected', selected)
+    }
+
+    typeaheadUnitInit (input, selected) {
+      source = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        local: this.units,
+      })
+      source.initialize()
+
+      input.typeahead(
+        { minLength: 1, highlight: true, },
+        { displayKey: 'name', source: source.ttAdapter() }
+      )
+
+      input.on('typeahead:selected', selected)
+    }
+

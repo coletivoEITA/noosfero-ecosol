@@ -119,6 +119,7 @@
       }
       .available { color: white; }
     }
+    margin-bottom: 30px;
 
     //***** PRODUCT ITEM *******//
     product-item {
@@ -244,16 +245,18 @@
           cursor: pointer;
         }
       }
-      @include toggle-input(30px); 
 
       .unit_id { width: 100%; }
+    }
+
+    product-item, product-modal {
+      @include toggle-input(30px); 
     }
 
     product-item.disabled {
       color: #b5b5b5;
     }
 
-    margin-bottom: 30px;
     input.tt-input {
       background-color: white;
     }
@@ -307,6 +310,78 @@
           display: table-cell;
           vertical-align: middle;
         }
+      }
+    }
+
+    product-modal {
+      z-index: 1041; // fix modal-backdrop over it https://github.com/twbs/bootstrap/issues/16148
+      @include modal-default;
+
+      h1 {
+        color: #c4bf63;
+        font-size: 25px;
+        margin-top: 5px;
+        margin-bottom: 0;
+      }
+      button.close {
+        padding: 0;
+      }
+
+      label {
+        display: block;
+      }
+      input, textarea {
+        width: 100%;
+      }
+      textarea {
+        border: 1px solid black;
+      }
+      .image-block {
+        margin-left: 20%;
+        img.picture {
+          width: 100%;
+        }
+      }
+      .change_image {
+        position: relative;
+        top: -30px;
+        line-height: 30px;
+        width: 100%;
+        background-color: rgba(0,0,0,0.7);
+        color: white;
+        font-weight: bold;
+        text-align: center;
+        cursor: pointer;
+      }
+      #p-use_stock {
+        width: auto;
+        height: auto;
+      }
+      label.use_stock {
+        display: inline-block;
+      }
+
+      a.remove_product {
+        color: red;
+        margin-left: px;
+        text-decoration: underline;
+      }
+      button.grey {
+        background-color: #c0c0c0;
+        i {
+          margin-right: 5px;
+        }
+      }
+      span.warning {
+        color: red;
+        margin-left: 5px;
+        font-size: 11px;
+      }
+      .form-group {
+        margin-bottom: 10px;
+      }
+      p.final_price {
+        font-weight: bold;
       }
     }
   }

@@ -52,7 +52,7 @@ class SuppliersPlugin::ProductController < MyProfileController
   def destroy
     @product = SuppliersPlugin::DistributedProduct.find params[:id]
     @product.destroy
-    flash[:notice] = t('controllers.myprofile.product_controller.product_removed_succe')
+    render text: t('controllers.myprofile.product_controller.product_removed_succe')
   end
 
   def distribute_to_consumers
@@ -82,7 +82,7 @@ class SuppliersPlugin::ProductController < MyProfileController
   end
 
   def categories
-    @categories = environment.categories.where("LOWER(name) like ?", "%#{params[:query].downcase}%")
+    @categories = environment.product_categories.where("LOWER(name) like ?", "%#{params[:query].downcase}%")
     render json: @categories, each_serializer: SuppliersPlugin::ProductCategorySerializer
   end
 

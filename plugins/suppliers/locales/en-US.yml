@@ -200,6 +200,17 @@ en-US: &en-US
         remotion: remotion
         stock_modal_qtt: "In the inventory now: %{stock}"
         use_stock: "Use inventory"
+        about_product: "About the product"
+        the_supplier_price: "Supplier price"
+        change_image: "Change the image"
+        initial_qtt_stock: "Initial quantity in inventory"
+        cancel: "Cancel"
+        remove: "Remove product"
+        remove_warning: "WARNING: Removing this product will loose the history. Maybe you want to disable it"
+        removed_product: "Product removed successfully"
+        created: "Product created successfully"
+        final_price_with_margin: "Final price with margin:"
+        currency: "$ "
 
       backup:
         manage_products:
