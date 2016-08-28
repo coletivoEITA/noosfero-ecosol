@@ -84,6 +84,7 @@ product-page
     this.suppliers = opts.suppliers
     this.units = opts.units
 
+    this.default_margin_percentage = opts.default_margin_percentage
     this.page = opts.page
     this.filter_state = 'true'
     this.count = this.products.length
@@ -128,7 +129,7 @@ product-page
         state: this.filter_state,
         supplier: this.filter_supplier,
         category: this.filter_category,
-        name: filter_name
+        name: this.filter_name
       }
 
       var searchUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'search'});
@@ -151,8 +152,9 @@ product-page
       this.tags['stock-modal'].update()
     }
 
-    completeEdition(product) {
+    completeEdition(product, productItem) {
       this.tags['product-modal'].product = product
+      this.tags['product-modal'].productItem = productItem
       this.tags['product-modal'].update()
     }
 

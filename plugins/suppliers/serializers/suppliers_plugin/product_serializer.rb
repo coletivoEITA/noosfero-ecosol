@@ -16,7 +16,8 @@ module SuppliersPlugin
 
     attribute :available
 
-    has_one   :image
+    has_one   :image_portrait
+    has_one   :image_big
 
     def price
       product[:price]
@@ -44,11 +45,18 @@ module SuppliersPlugin
       product.own_margin_percentage
     end
 
-    def image
+    def image_portrait
       i = product.own_image || product.supplier_image
       return unless i
 
-      i.public_filename :thumb
+      i.public_filename :portrait
+    end
+
+    def image_big
+      i = product.own_image || product.supplier_image
+      return unless i
+
+      i.public_filename :big
     end
 
     protected

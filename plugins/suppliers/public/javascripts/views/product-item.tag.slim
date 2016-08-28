@@ -2,7 +2,8 @@ product-item  class="{edition: product.edition}"
   .image
     input type='checkbox' class='product-select'
     .image-box
-      img src="{product.image}"
+      img src="{product.image_portrait}" if="{product.image_portrait}"
+      div.image-placeholder if="{!product.image_portrait}"
 
   .state
     div class="{product.available ? 'active':'inactive'}" show="{!product.edition}"
@@ -62,7 +63,7 @@ product-item  class="{edition: product.edition}"
     this.product  = opts.product
     this.supplier = this.parent.suppliers[this.product.supplier_id]
     this.product.category = this.parent.categories[this.product.product_category_id]
-    this.product.margin_percentage = this.product.margin_percentage || parent.default_margin_percentage
+    this.product.margin_percentage = this.product.margin_percentage || this.parent.default_margin_percentage
     this.product.edition = false
 
     getUnit() {
@@ -86,12 +87,13 @@ product-item  class="{edition: product.edition}"
     }
 
     completeEdition() {
-      this.parent.completeEdition(this.product);
+      this.parent.completeEdition(this.product, this);
       this.close()
     }
 
     close() {
       this.parent.stopEdition();
+      this.update()
     }
 
     updatePrice() {
@@ -121,7 +123,10 @@ product-item  class="{edition: product.edition}"
 
         if (input == undefined) { console.log("Haven't found key "+key) }
         else {
-          self.product[key] = input.value;
+          if (input.type == "checkbox")
+            self.product[key] = input.checked;
+          else
+            self.product[key] = input.value;
         }
 
       })

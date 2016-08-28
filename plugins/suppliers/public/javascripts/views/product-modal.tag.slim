@@ -18,16 +18,16 @@ product-modal.modal.fade tabindex="-1" role="dialog"
           .col-xs-12.col-md-5
             form
               .form-group
-                label for="p-name"
-                  |{t("views.product.product_name")}
-                input type="text" value="{product.name}" id="p-name"
-
-              .form-group
                 .switch
                   input.cmn-toggle.cmn-toggle-round type="checkbox" id="p-available" checked="{product.available}"
                   label for="p-available"
                 span.enable_product
                   |{t("views.product.enable_product")}
+
+              .form-group
+                label for="p-name"
+                  |{t("views.product.product_name")}
+                input type="text" value="{product.name}" id="p-name"
 
               .form-group
                 label for="p-description"
@@ -77,7 +77,8 @@ product-modal.modal.fade tabindex="-1" role="dialog"
 
           .col-xs-12.col-md-7
             .image-block
-              img.picture src="{product.image}"
+              img.picture src="{product.image_big}" if="{product.image_big}"
+              div.image-placeholder if="{!product.image_big}"
               .change_image onclick="{uploadImg}"
                 |{t('views.product.change_image')}
               input type="file" id="upload" style="visibility: hidden; width: 1px; height: 1px;"
@@ -116,6 +117,14 @@ product-modal.modal.fade tabindex="-1" role="dialog"
       $('#upload').click()
     }
 
+    updatePrice() {
+      // update variables from form
+      this.product.margin_percentage = this['margin_percentage-'+this.product.id].value
+      this.product.supplier_price = this['supplier_price-'+this.product.id].value
+      if (this.product.margin_percentage)
+        this.product.price = (this.product.supplier_price * (this.product.margin_percentage/100 + 1)).toFixed(2)
+    }
+
     updateProductFromForm() {
       var keys = ['name', 'available', 'margin_percentage'] // category, unit and prices are automatically updated
 
@@ -125,7 +134,17 @@ product-modal.modal.fade tabindex="-1" role="dialog"
         var input = self["p-"+key];
 
         if (input == undefined) { console.log("Haven't found key "+key) }
-        else { self.product[key] = input.value; }
+        else {
+          if (input.type == "checkbox") {
+            self.product[key] = input.checked;
+            self.productItem.product[key] = input.checked;
+          }
+          else {
+            self.product[key] = input.value;
+            self.productItem.product[key] = input.checked;
+          }
+        }
+        self.productItem.update()
 
       })
     }
@@ -144,7 +163,7 @@ product-modal.modal.fade tabindex="-1" role="dialog"
 
     save() {
       var self = this
-      var creating = (this.product.id = undefined)
+      var creating = (this.product.id == undefined)
       if (creating)
         var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'create'})
       else
