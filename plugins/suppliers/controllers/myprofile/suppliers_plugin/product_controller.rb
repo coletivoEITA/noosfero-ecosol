@@ -28,11 +28,23 @@ class SuppliersPlugin::ProductController < MyProfileController
     end
   end
 
+  def create
+    @product = Product.new(params[:product])
+  end
+
   def edit
     @product = profile.products.supplied.find params[:id]
     @product.update params.require(:product).permit(:name, :product_category_id, :price, :margin, :available, :unit_id)
 
     render nothing: true
+  end
+
+  def set_image
+    params[:image_builder] = {uploaded_data: params[:image_builder]} if params[:image_builder].present?
+    @product = profile.products.supplied.find params[:id]
+    @product.update params.permit(image_builder: [:uploaded_data])
+
+    render json: @product, serializer: SuppliersPlugin::ProductSerializer
   end
 
   def import

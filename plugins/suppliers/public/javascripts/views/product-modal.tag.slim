@@ -16,7 +16,7 @@ product-modal.modal.fade tabindex="-1" role="dialog"
       .modal-body
         .row
           .col-xs-12.col-md-5
-            form
+            form enctype="multipart/form-data"
               .form-group
                 .switch
                   input.cmn-toggle.cmn-toggle-round type="checkbox" id="p-available" checked="{product.available}"
@@ -77,11 +77,12 @@ product-modal.modal.fade tabindex="-1" role="dialog"
 
           .col-xs-12.col-md-7
             .image-block
-              img.picture src="{product.image_big}" if="{product.image_big}"
-              div.image-placeholder if="{!product.image_big}"
+              div.image-placeholder
+                img.picture src="{product.image_big}" if="{product.image_big}"
+                img src="" id="image-preview" style="display: none;"
               .change_image onclick="{uploadImg}"
                 |{t('views.product.change_image')}
-              input type="file" id="upload" style="visibility: hidden; width: 1px; height: 1px;"
+              input type="file" id="image" accept="image/gif, image/jpeg, image/png" onchange="{showImage}" style="visibility: hidden; width: 1px; height: 1px;"
 
       .modal-footer
         button onclick="{save}" class="default"
@@ -114,7 +115,7 @@ product-modal.modal.fade tabindex="-1" role="dialog"
     }
 
     uploadImg() {
-      $('#upload').click()
+      $('#image').click()
     }
 
     updatePrice() {
@@ -141,7 +142,7 @@ product-modal.modal.fade tabindex="-1" role="dialog"
           }
           else {
             self.product[key] = input.value;
-            self.productItem.product[key] = input.checked;
+            self.productItem.product[key] = input.value;
           }
         }
         self.productItem.update()
@@ -168,15 +169,64 @@ product-modal.modal.fade tabindex="-1" role="dialog"
         var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'create'})
       else
         var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'edit/'+this.product.id})
-      $.post(saveUrl, {product: this.prepareForm()}, function(data) {
-        if (creating)
-          display_notice(self.t('views.product.created'))
-        else
-          display_notice(self.t('views.product.saved'))
-        self.close();
-      })
-      
+
+      $.post(saveUrl,{product: this.prepareForm()}, function(data) {
+          if (creating)
+            display_notice(self.t('views.product.created'))
+          else
+            display_notice(self.t('views.product.saved'))
+
+          if (creating && data && data['id']) {
+            self.product.id = data['id']
+          }
+          var input = $('#image')[0]
+          if (input.files && input.files[0]) {
+            self.saveImage();
+          }
+
+          self.close();
+        }
+      );
     }
+
+    saveImage() {
+      var self = this
+      var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'set_image/'+this.product.id})
+      
+      data = new FormData();
+      data.append('image_builder', $('#image')[0].files[0])
+      var opts = {
+        url: saveUrl,
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: 'json',
+        type: 'POST',
+        success: function(data) {
+          self.product.image_portrait = data.image_portrait
+          self.product.image_big = data.image_big
+          self.productItem.product.image_portrait = data.image_portrait
+          self.productItem.product.image_big = data.image_big
+        }
+      };
+      $.ajax(opts);
+    }
+
+    showImage(e) {
+      input = e.currentTarget
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          $('#image-preview').attr('src', e.target.result).show()
+          $('img.picture').slideUp()
+        };
+
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
     remove() {
       var self = this
       var removeUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'destroy/'+this.product.id})
