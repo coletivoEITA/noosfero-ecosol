@@ -1,4 +1,4 @@
-product-item  class="{edition: product.edition}"
+product-item  class="{edition: product.edition}" show="{product.selected}"
   .image
     input type='checkbox' class='product-select'
     .image-box
@@ -65,6 +65,7 @@ product-item  class="{edition: product.edition}"
     this.product.category = this.parent.categories[this.product.product_category_id]
     this.product.margin_percentage = this.product.margin_percentage || this.parent.default_margin_percentage
     this.product.edition = false
+    this.product.selected  = true
 
     getUnit() {
       var self = this

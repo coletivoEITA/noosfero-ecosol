@@ -11,20 +11,20 @@ product-page
       form.form-inline
         .form-group
           .name
-            input type="text" name="filter_name" placeholder="{t('views.product.product_name')}" onclick="{search}"
+            input type="text" id="filter_name" placeholder="{t('views.product.product_name')}" onkeyup="{search}"
 
         .form-group.category
-          select name="category_id"
+          select name="category_id" id="filter_category" onchange="{search}"
             option each="{id,name in categories}" value="{id}" selected="{name == filter_category}"
               |{name}
 
         .form-group.supplier
-          select name="supplier_id"
+          select name="supplier_id" id="filter_supplier" onchange="{search}"
             option each="{id,name in suppliers}" value="{id}" selected="{id == filter_supplier}"
               |{name}
 
         .form-group.state
-          select name='available' onclick="{search}"
+          select name='available' onchange="{search}"
             option value="" selected="{filter_state == ''}"
               |{t('views.product.situation')}
             option value="true" selected="{filter_state == 'true'}"
@@ -78,6 +78,7 @@ product-page
 
   javascript:
     this.t = window.products.t
+    this.hasLoadedUnavailableProducts = false
 
     this.products = opts.products
     this.categories = opts.categories
@@ -125,26 +126,60 @@ product-page
     }
 
     search() {
-      var data = {
-        state: this.filter_state,
-        supplier: this.filter_supplier,
-        category: this.filter_category,
-        name: this.filter_name
-      }
+      if ($('select[name="available"]')[0].value == 'false')
+        this.loadUnavailableProducts()
 
-      var searchUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'search'});
-      $.post(searchUrl, data, function(response) {
+      for (var i in this.products) {
+        if (this.filter_name.value) {
+          if (this.products[i].name.toLowerCase().indexOf(this.filter_name.value.toLowerCase()) < 0) {
+            this.products[i].selected = false
+            continue
+          }
+        }
+        if (this.filter_category.value != "0") {
+          if (this.products[i].product_category_id.toString() != this.filter_category.value) {
+            this.products[i].selected = false
+            continue
+          }
+        }
+        if (this.filter_supplier.value != "0") {
+          if (this.products[i].supplier_id != this.filter_supplier.value) {
+            this.products[i].selected = false
+            continue
+          }
+        }
+        if ($('select[name="available"]')[0].value) {
+          if (this.products[i].available.toString() != $('select[name="available"]')[0].value) {
+            this.products[i].selected = false
+            continue
+          }
+        }
+        this.products[i].selected = true
+      }
+    }
+
+    loadUnavailableProducts() {
+      console.log(this.hasLoadedUnavailableProducts)
+      if (this.hasLoadedUnavailableProducts)
+        return
+
+      var self = this
+      var loadUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'unavailable'});
+      $.get(loadUrl, function(response) {
         if (response) {
-          console.log(response);
+          for (var i in response) {
+            self.products.push(response[i])
+          }
+          self.hasLoadedUnavailableProducts = true
         }
       });
+
     }
 
     stopEdition() {
       this.products.forEach(function(p) {
         p.edition = false;
       })
-      //this.update();
     }
 
     setStockModal(product) {

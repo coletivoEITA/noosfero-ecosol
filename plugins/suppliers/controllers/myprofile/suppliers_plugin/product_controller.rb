@@ -47,6 +47,12 @@ class SuppliersPlugin::ProductController < MyProfileController
     render json: @product, serializer: SuppliersPlugin::ProductSerializer
   end
 
+  def unavailable
+    #TODO load categories and suppliers to index
+    @products = profile.products.supplied.where(available: false)
+    render json: @products, each_serializer: SuppliersPlugin::ProductSerializer
+  end
+
   def import
     if params[:csv].present?
       if params[:remove_all_suppliers] == 'true'
