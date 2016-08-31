@@ -8,24 +8,24 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
   .state
     div class="{product.available ? 'active':'inactive'}" show="{!product.edition}"
     .switch show="{product.edition}"
-      input.cmn-toggle.cmn-toggle-round type="checkbox" id="{'available-'+product.id}" checked="{product.available}"
+      input.cmn-toggle.cmn-toggle-round type="checkbox" name='available' checked="{product.available}"
       label for="{'available-'+product.id}"
   .name
     span show="{!product.edition}"
       |{product.name}
-    input type="text" value="{product.name}" id="{'name-'+product.id}" show="{product.edition}" class='name'
+    input type="text" value="{product.name}" show="{product.edition}" name='name'
   .supplier
     |{supplier}
   .category
     span show="{!product.edition}"
       |{product.category}
     .white-wrap
-      input type="text" value="{product.category}" show="{product.edition}" class='category' id="{'product_category_id-'+product.id}"
+      input type="text" value="{product.category}" show="{product.edition}" class='category' name='product_category_id'
   .margin
     span show="{!product.edition}"
       |{product.margin_percentage}
     .input-group
-    input type="number" step="0.01" value="{product.margin_percentage}" id="{'margin_percentage-'+product.id}" show="{product.edition}" oninput="{updatePrice}"
+    input type="number" step="0.01" value="{product.margin_percentage}" name="margin_percentage" show="{product.edition}" oninput="{updatePrice}"
   .stock
     span if="{!product.use_stock && !product.edition}"
       |&#8212;
@@ -39,12 +39,12 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
   .supplier_price
     span show="{!product.edition}"
       |{product.supplier_price}
-    input type="text" value="{product.supplier_price}" id="{'supplier_price-'+product.id}" show="{product.edition}" class='price' oninput="{updatePrice}"
+    input type="text" value="{product.supplier_price}" name="supplier_price" show="{product.edition}" class='price' oninput="{updatePrice}"
   .unit
     .unit_name show="{!product.edition}"
       |{product.unit}
     .white-wrap
-      input type="text" value="{product.unit}" show="{product.edition}" id="{'unit_id-'+product.id}"
+      input type="text" value="{product.unit}" show="{product.edition}" name="unit_id"
   .actions
     .fast_edition onclick="{edit}" show="{!product.edition}"
       .img
@@ -68,8 +68,11 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
     this.product.selected  = true
 
     getUnit() {
-      var self = this
-      this.parent.units.forEach(function(u) { if (self.product.unit_id == u.id) self.product.unit = u.name;  })
+      for (var i in this.parent.units) {
+        if (this.product.unit_id == this.parent.units[i].id)
+          this.product.unit = this.parent.units[i].name
+          return
+      }
     }
     this.getUnit();
 
@@ -99,8 +102,8 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
 
     updatePrice() {
       // update variables from form
-      this.product.margin_percentage = this['margin_percentage-'+this.product.id].value
-      this.product.supplier_price = this['supplier_price-'+this.product.id].value
+      this.product.margin_percentage = $(this.root).find('input[name="margin_percentage"]').value
+      this.product.supplier_price = $(this.root).find('input[name="supplier_price"]').value
       if (this.product.margin_percentage)
         this.product.price = (this.product.supplier_price * (this.product.margin_percentage/100 + 1)).toFixed(2)
     }
@@ -117,20 +120,18 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
     updateProductFromForm() {
       var keys = ['name', 'available', 'margin_percentage'] // category, unit and prices are automatically updated
 
-      var self = this;
+      for (var k in keys) {
+        var input = $(this.root).find('input[name="'+keys[k]+'"]');
 
-      keys.forEach(function(key) {
-        var input = self[key+'-'+self.product.id];
-
-        if (input == undefined) { console.log("Haven't found key "+key) }
-        else {
+        if (input == undefined) {
+        } else {
           if (input.type == "checkbox")
-            self.product[key] = input.checked;
+            this.product[key] = input.checked;
           else
-            self.product[key] = input.value;
+            this.product[key] = input.value;
         }
 
-      })
+      }
     }
 
     prepareForm() {
@@ -140,7 +141,9 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
       var keys = ['name', 'available', 'product_category_id', 'unit_id', 'price', 'supplier_price']
 
       var self = this;
-      keys.forEach( function(key) { data[key] = self.product[key] } )
+      for (var k in keys) {
+        data[keys[k]] = self.product[keys[k]]
+      }
 
       return data;
     }
@@ -161,7 +164,7 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
     this.on('mount', function () {
       this.updatePrice()
       this.update()
-      this.parent.typeaheadCategoryInit($(this.root).find('input#product_category_id-'+this.product.id, this.setCategory))
-      this.parent.typeaheadUnitInit($(this.root).find('input#unit_id-'+this.product.id, this.setUnit))
+      this.parent.typeaheadCategoryInit($(this.root).find('input[name="product_category_id"]'), this.setCategory)
+      this.parent.typeaheadUnitInit($(this.root).find('input[name="unit_id"]'), this.setUnit)
     })
 

@@ -12,7 +12,6 @@ class SuppliersPlugin::ProductController < MyProfileController
   helper SuppliersPlugin::DisplayHelper
 
   def index
-    filter
     respond_to do |format|
       format.html{ render template: 'suppliers_plugin/product/index' }
       format.js{ render partial: 'suppliers_plugin/product/search' }
@@ -20,7 +19,6 @@ class SuppliersPlugin::ProductController < MyProfileController
   end
 
   def search
-    filter
     if params[:page].present?
       render partial: 'suppliers_plugin/product/results'
     else
@@ -48,9 +46,10 @@ class SuppliersPlugin::ProductController < MyProfileController
   end
 
   def unavailable
-    #TODO load categories and suppliers to index
-    @products = profile.products.supplied.where(available: false)
-    render json: @products, each_serializer: SuppliersPlugin::ProductSerializer
+    params[:available] = 'false'
+    respond_to do |format|
+      format.js{ render partial: 'suppliers_plugin/product/search' }
+    end
   end
 
   def import
@@ -131,9 +130,6 @@ class SuppliersPlugin::ProductController < MyProfileController
   end
 
   protected
-
-  def filter
-  end
 
   extend HMVC::ClassMethods
   hmvc SuppliersPlugin

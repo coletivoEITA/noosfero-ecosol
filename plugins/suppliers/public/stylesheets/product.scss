@@ -55,11 +55,12 @@
       margin-left: 15px;
     }
   }
-  p.filter_stats {
+  filter-counter.filter_stats {
     font-size: 12px;
     font-weight: bold;
     color: black;
     padding-left: 5px;
+    display: block;
   }
   
   .mass_actions {

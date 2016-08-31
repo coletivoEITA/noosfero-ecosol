@@ -11,15 +11,15 @@ product-page
       form.form-inline
         .form-group
           .name
-            input type="text" id="filter_name" placeholder="{t('views.product.product_name')}" onkeyup="{search}"
+            input type="text" placeholder="{t('views.product.product_name')}" onkeyup="{search}" name="name"
 
         .form-group.category
-          select name="category_id" id="filter_category" onchange="{search}"
+          select name="category_id" onchange="{search}"
             option each="{id,name in categories}" value="{id}" selected="{name == filter_category}"
               |{name}
 
         .form-group.supplier
-          select name="supplier_id" id="filter_supplier" onchange="{search}"
+          select name="supplier_id" onchange="{search}"
             option each="{id,name in suppliers}" value="{id}" selected="{id == filter_supplier}"
               |{name}
 
@@ -31,7 +31,7 @@ product-page
               |{t('views.product.active')}
             option value="false" selected="{filter_state == 'false'}"
               |{t('views.product.inactive')}
-    p.filter_stats
+    filter-counter.filter_stats
       |{t('views.product.showing', {count: this.count})}
 
   .mass_actions
@@ -79,17 +79,37 @@ product-page
   javascript:
     this.t = window.products.t
     this.hasLoadedUnavailableProducts = false
-
-    this.products = opts.products
-    this.categories = opts.categories
-    this.suppliers = opts.suppliers
-    this.units = opts.units
-
-    this.default_margin_percentage = opts.default_margin_percentage
-    this.page = opts.page
     this.filter_state = 'true'
-    this.count = this.products.length
 
+
+    loadOpts(opts) {
+      this.default_margin_percentage = opts.default_margin_percentage
+
+      if (this.products == undefined)
+        this.products = opts.products
+      else
+        for (var i in opts.products)
+          this.products.push(opts.products[i])
+      this.count = this.products.length
+
+      if (this.categories == undefined)
+        this.categories = opts.categories
+      else
+        _.merge(this.categories,opts.categories)
+
+      if (this.suppliers == undefined)
+        this.suppliers = opts.suppliers
+      else
+        _.merge(this.suppliers,opts.suppliers)
+
+      if (this.units == undefined)
+        this.units = opts.units
+      else
+        _.merge(this.units,opts.units)
+    }
+
+    this.loadOpts(opts)
+    
     massAction(e) {
      if (this.mass_action_select.value == 'activate') {
       this.changeState('activate')
@@ -125,55 +145,75 @@ product-page
       }
     }
 
-    search() {
-      if ($('select[name="available"]')[0].value == 'false')
+    search(e) {
+      e.preventUpdate = true
+      var available = $('select[name="available"]')[0].value
+      if (e.target.name == 'name')
+        this.run_at = new Date()
+
+      if (available == 'false' && !this.hasLoadedUnavailableProducts)
         this.loadUnavailableProducts()
+      else
+        setTimeout(function(run_at) {
+          if (this.run_at == run_at)
+            this.theRealSearch()
+          }.bind(this), 500, this.run_at)
+    }
+
+    theRealSearch() {
+      var count = 0
+
+      var name = $('input[name="name"]')[0].value
+      if (name)
+        name = name.toLowerCase()
+      var category = $('select[name="category_id"]')[0].value
+      var supplier = $('select[name="supplier_id"]')[0].value
+      var available = $('select[name="available"]')[0].value
+
 
       for (var i in this.products) {
-        if (this.filter_name.value) {
-          if (this.products[i].name.toLowerCase().indexOf(this.filter_name.value.toLowerCase()) < 0) {
+        if (name && this.products[i].name) {
+          if (this.products[i].name.toLowerCase().indexOf(name) < 0) {
             this.products[i].selected = false
             continue
           }
         }
-        if (this.filter_category.value != "0") {
-          if (this.products[i].product_category_id.toString() != this.filter_category.value) {
+        if (category != "0") {
+          if (this.products[i].product_category_id.toString() != category) {
             this.products[i].selected = false
             continue
           }
         }
-        if (this.filter_supplier.value != "0") {
-          if (this.products[i].supplier_id != this.filter_supplier.value) {
+        if (supplier != "0") {
+          if (this.products[i].supplier_id != supplier) {
             this.products[i].selected = false
             continue
           }
         }
-        if ($('select[name="available"]')[0].value) {
-          if (this.products[i].available.toString() != $('select[name="available"]')[0].value) {
+        if (available) {
+          if (this.products[i].available.toString() != available) {
             this.products[i].selected = false
             continue
           }
         }
         this.products[i].selected = true
+        count += 1
       }
+      this.count = count
+
+      this.update()
     }
 
     loadUnavailableProducts() {
-      console.log(this.hasLoadedUnavailableProducts)
-      if (this.hasLoadedUnavailableProducts)
-        return
-
       var self = this
       var loadUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'unavailable'});
-      $.get(loadUrl, function(response) {
-        if (response) {
-          for (var i in response) {
-            self.products.push(response[i])
+      $.get(loadUrl,function(response) {
+          if (response && response.products) {
+            self.loadOpts(response)
+            self.hasLoadedUnavailableProducts = true
+            self.theRealSearch()
           }
-          self.hasLoadedUnavailableProducts = true
-        }
-      });
-
+      }, 'json');
     }
 
     stopEdition() {
@@ -225,4 +265,3 @@ product-page
 
       input.on('typeahead:selected', selected)
     }
-
