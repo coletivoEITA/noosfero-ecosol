@@ -1,6 +1,6 @@
 class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
 
-  attr_accessible :from_products, :product_category_id
+  attr_accessible :from_products, :product_category_id, :supplier_price
 
   # missed from lib/ext/product.rb because of STI
   attr_accessible :external_id, :price_details
@@ -27,6 +27,10 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
 
     self.margin_percentage = 100 * (value - base_price) / base_price
     super
+  end
+
+  def supplier_price= value
+    self.from_product.update_column :price, value if self.from_product
   end
 
   protected

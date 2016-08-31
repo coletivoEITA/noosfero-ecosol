@@ -35,15 +35,15 @@ product-modal.modal.fade tabindex="-1" role="dialog"
                 textarea value="{product.description}" id="p-description"
                 
               .form-group
-                label for="p-category"
+                label for="p-product_category_id"
                   |{t("views.product.category")}
                 .white-wrap
-                  input type="text" value="{product.category}" id="p-category"
+                  input type="text" value="{product.category}" id="p-product_category_id"
 
               .form-group
                 label for="p-margin_percentage"
                   |{t("views.product.margin")}
-                input type="number" value="{product.margin_percentage}" id="p-margin_percentage" step="0.01"
+                input type="number" value="{product.margin_percentage}" id="p-margin_percentage" step="0.01" oninput="{updatePrice}"
 
               .form-group
                 p.final_price
@@ -56,13 +56,13 @@ product-modal.modal.fade tabindex="-1" role="dialog"
               .form-group
                 label for="p-supplier-price"
                   |{t("views.product.the_supplier_price")}
-                input type="text" value="{product.supplier_price}" id='p-supplier-price'
+                input type="text" value="{product.supplier_price}" id='p-supplier-price' oninput="{updatePrice}"
 
               .form-group
-                label for="p-unit"
+                label for="p-unit_id"
                   |{t('views.product.unit')}
                 .white-wrap
-                  input type="text" value="{product.unit}" id="p-unit"
+                  input type="text" value="{product.unit}" id="p-unit_id"
 
               .form-group if="{!product.id}"
                 input type="checkbox" checked="{product.use_stock}" id="p-use_stock"
@@ -101,17 +101,24 @@ product-modal.modal.fade tabindex="-1" role="dialog"
     this.t = window.products.t
 
     this.on('mount', function () {
-      this.parent.typeaheadCategoryInit($('#p-category'), this.setCategory)
-      this.parent.typeaheadUnitInit($('#p-unit'), this.setUnit)
+      this.parent.typeaheadCategoryInit($('#p-product_category_id'), this.setCategory)
+      this.parent.typeaheadUnitInit($('#p-unit_id'), this.setUnit)
     })
 
     setCategory(e, item) {
-      this.product.product_category_id = item.id
-      this.category = this.parent.categories[this.product.product_category_id]
+      this.product.product_category_id             = item.id
+      this.productItem.product.product_category_id = item.id
+      this.product.category             = item.name
+      this.productItem.product.category = item.name
+      this.productItem.update()
     }
+
     setUnit(e, item) {
-      this.product.unit_id = item.id
-      this.product.unit = item.name
+      this.product.unit_id             = item.id
+      this.productItem.product.unit_id = item.id
+      this.product.unit                = item.name
+      this.productItem.product.unit    = item.name
+      this.productItem.update()
     }
 
     uploadImg() {
@@ -120,8 +127,8 @@ product-modal.modal.fade tabindex="-1" role="dialog"
 
     updatePrice() {
       // update variables from form
-      this.product.margin_percentage = this['margin_percentage-'+this.product.id].value
-      this.product.supplier_price = this['supplier_price-'+this.product.id].value
+      this.product.margin_percentage = this['p-margin_percentage'].value
+      this.product.supplier_price = this['p-supplier-price'].value
       if (this.product.margin_percentage)
         this.product.price = (this.product.supplier_price * (this.product.margin_percentage/100 + 1)).toFixed(2)
     }
@@ -154,7 +161,7 @@ product-modal.modal.fade tabindex="-1" role="dialog"
       this.updateProductFromForm()
 
       var data = Object();
-      var keys = ['name', 'available', 'product_category_id', 'unit_id', 'price', 'supplier_price']
+      var keys = ['name','description', 'available', 'product_category_id', 'unit_id', 'price', 'supplier_price', 'margin_percentage']
 
       var self = this;
       keys.forEach( function(key) { data[key] = self.product[key] } )

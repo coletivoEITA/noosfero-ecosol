@@ -8,7 +8,7 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
   .state
     div class="{product.available ? 'active':'inactive'}" show="{!product.edition}"
     .switch show="{product.edition}"
-      input.cmn-toggle.cmn-toggle-round type="checkbox" name='available' checked="{product.available}"
+      input.cmn-toggle.cmn-toggle-round type="checkbox" name='available' checked="{product.available}" id="{'available-'+product.id}"
       label for="{'available-'+product.id}"
   .name
     span show="{!product.edition}"
@@ -102,8 +102,8 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
 
     updatePrice() {
       // update variables from form
-      this.product.margin_percentage = $(this.root).find('input[name="margin_percentage"]').value
-      this.product.supplier_price = $(this.root).find('input[name="supplier_price"]').value
+      this.product.margin_percentage = $(this.root).find('input[name="margin_percentage"]')[0].value
+      this.product.supplier_price = $(this.root).find('input[name="supplier_price"]')[0].value
       if (this.product.margin_percentage)
         this.product.price = (this.product.supplier_price * (this.product.margin_percentage/100 + 1)).toFixed(2)
     }
@@ -121,14 +121,14 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
       var keys = ['name', 'available', 'margin_percentage'] // category, unit and prices are automatically updated
 
       for (var k in keys) {
-        var input = $(this.root).find('input[name="'+keys[k]+'"]');
+        var input = $(this.root).find('input[name="'+keys[k]+'"]')[0];
 
         if (input == undefined) {
         } else {
           if (input.type == "checkbox")
-            this.product[key] = input.checked;
+            this.product[keys[k]] = input.checked;
           else
-            this.product[key] = input.value;
+            this.product[keys[k]] = input.value;
         }
 
       }
@@ -138,7 +138,7 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
       this.updateProductFromForm()
 
       var data = Object();
-      var keys = ['name', 'available', 'product_category_id', 'unit_id', 'price', 'supplier_price']
+      var keys = ['name', 'available', 'product_category_id', 'unit_id', 'price', 'supplier_price', 'margin_percentage']
 
       var self = this;
       for (var k in keys) {
