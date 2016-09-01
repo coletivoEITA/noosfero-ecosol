@@ -1,5 +1,6 @@
 #content .main-block product-page {
   .left { float: left; }
+  .right { float: right; }
 
   h1.title {
     color: #c4bf63;
@@ -74,11 +75,24 @@
   }
   button.default {
     background-color: $cirandas-header-bg;
+    border: 1px solid $cirandas-header-bg;
     color: white;
     margin-left: 10px;
-    border: none;
     padding: 7px 10px;
     font-weight: bold;
+    &:hover {
+      background-color: white;
+      color: $cirandas-header-bg;
+    }
+  }
+  button.default.white {
+    background-color: white;
+    color: $cirandas-header-bg;
+    border: 1px solid $cirandas-header-bg;
+    &:hover {
+      background-color: $cirandas-header-bg;
+      color: white;
+    }
   }
   .clear {
     clear: both;
@@ -167,6 +181,12 @@
       .unit           { width:  97px; }
       .action         { width:  60px; }
 
+      .supplier .overflow {
+        width: 100%;
+        max-height: 82px;
+        overflow: hidden;
+        display: block;
+      }
 
       .white-wrap {
         background-color: white;
@@ -407,6 +427,27 @@
       span.enable_product {
         margin-left: 10px;
         line-height: 30px;
+      }
+    }
+
+    import-modal {
+      z-index: 1041; // fix modal-backdrop over it https://github.com/twbs/bootstrap/issues/16148
+      @include modal-default;
+
+      h1 {
+        color: #c4bf63;
+        font-size: 25px;
+        margin-top: 5px;
+        margin-bottom: 0;
+      }
+
+      input[type='file'] {
+        line-height: 1;
+        height: auto;
+        padding: 0;
+      }
+      input[type='checkbox'] {
+        height: auto;
       }
     }
   }

@@ -18,6 +18,10 @@ product-modal.modal.fade tabindex="-1" role="dialog"
           .col-xs-12.col-md-5
             form enctype="multipart/form-data"
               .form-group
+                select name="supplier_id" id="p-supplier_id" if="{!product.id}"
+                  option each="{id,name in suppliers}" value="{id}"
+                    |{name}
+              .form-group
                 .switch
                   input.cmn-toggle.cmn-toggle-round type="checkbox" id="p-available" checked="{product.available}"
                   label for="p-available"
@@ -93,7 +97,7 @@ product-modal.modal.fade tabindex="-1" role="dialog"
         hr
         a href="" onclick="{remove}" class="remove_product" if="{product.id}"
           |{t('views.product.remove')}
-        span.warning
+        span.warning if="{product.id}"
           |{t('views.product.remove_warning')}
           
 
@@ -135,6 +139,8 @@ product-modal.modal.fade tabindex="-1" role="dialog"
 
     updateProductFromForm() {
       var keys = ['name', 'available', 'margin_percentage'] // category, unit and prices are automatically updated
+      if (!this.product.id)
+        keys.push('supplier_id')
 
       var self = this;
       
@@ -162,6 +168,8 @@ product-modal.modal.fade tabindex="-1" role="dialog"
 
       var data = Object();
       var keys = ['name','description', 'available', 'product_category_id', 'unit_id', 'price', 'supplier_price', 'margin_percentage']
+      if (!this.product.id)
+        keys.push('supplier_id')
 
       var self = this;
       keys.forEach( function(key) { data[key] = self.product[key] } )

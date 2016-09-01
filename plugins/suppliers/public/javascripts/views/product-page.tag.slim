@@ -1,8 +1,15 @@
 product-page
   .head
-    h1.title
+    h1.title.left
       |{t("views.product.products")}
 
+    .actions.right
+      button onclick="{add}" data-toggle="modal" data-target="product-modal" class="default"
+        |{t('views.product.add_product')}
+      button onclick="{import}" data-toggle="modal" data-target="import-modal" class="default white"
+        |{t('views.product.import_products')}
+
+    .clear
     .filter
       input type='hidden' value="{page}"
 
@@ -75,6 +82,7 @@ product-page
 
       stock-modal
       product-modal
+      import-modal
 
   javascript:
     this.t = window.products.t
@@ -264,4 +272,9 @@ product-page
       )
 
       input.on('typeahead:selected', selected)
+    }
+
+    add() {
+      var product = {available: true}
+      this.setStockModal(product)
     }

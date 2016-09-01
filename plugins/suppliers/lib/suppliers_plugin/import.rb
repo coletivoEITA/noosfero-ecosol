@@ -7,7 +7,8 @@ class SuppliersPlugin::Import
     keys = I18n.t'suppliers_plugin.lib.import.keys'
     columns = []
     header.each do |name|
-      c = nil; keys.each do |key, regex|
+      c = nil
+      keys.each do |key, regex|
         if /#{regex}/i =~ name
           c = key
           break
@@ -34,6 +35,7 @@ class SuppliersPlugin::Import
       begin
         rows = CSV.parse csv, quote_char: quote_chars.shift, col_sep: sep
         columns = self.product_columns rows.first
+        raise columns.to_s
       rescue
         if quote_chars.empty? then raise else retry end
       ensure
@@ -130,7 +132,7 @@ class SuppliersPlugin::Import
           product.update! attrs
         end
 
-        distributed_product = product.distribute_to_consumer consumer, distributed_attrs
+        product.distribute_to_consumer consumer, distributed_attrs
       end
     end
   end

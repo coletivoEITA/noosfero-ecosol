@@ -2,6 +2,7 @@
 //= require ./views/product-item
 //= require ./views/stock-modal
 //= require ./views/product-modal
+//= require ./views/import-modal
 
 products = {
 

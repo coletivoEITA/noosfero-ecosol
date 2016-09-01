@@ -140,8 +140,6 @@ pt-BR: &pt-BR
     controllers:
       myprofile:
         supplier_created: "%{terms.supplier.singular.capitalize} criado"
-      product:
-        import_in_progress: "Os produtos estão sendo importados. Aguarde um pouco e recarregue a página para visualizá-los."
 
     models:
       base_product:
@@ -220,6 +218,21 @@ pt-BR: &pt-BR
         final_price_with_margin: "Preço final com a margem:"
         currency: "R$ "
         enable_product: "Habilitar/desabilitar produto"
+        add_product: "Adicionar produto"
+        import_products: "Importar produtos"
+        import:
+          action: "Importar planilha"
+          help: "Formate sua planilha para que tenha exatamente os campos abaixo com cabeçalho. Depois, salve-a escolhendo o tipo de arquivo CSV (extensão .csv)."
+          help2: "Produtos com nomes iguais têm seus dados (preço/unidade) atualizados."
+          field_supplier_name: "Nome do fornecedor"
+          field_product_name: "Nome do produto"
+          field_product_unit: "Unidade"
+          field_product_price: "Preço por unidade"
+          remove_all: 'Remover todos os atuais fornecedores cadastrados e todos os seus produtos (começar uma nova lista de produtos).'
+          confirm_remove_all: "ATENÇÃO! Essa opção removerá todos os fornecedores cadastrados e todos os seus produtos!"
+          unit_help: "Use como unidade das seguintes (use o nome igual): %{units}"
+          send: "Enviar"
+          import_in_progress: "Os produtos estão sendo importados. Aguarde um pouco e recarregue a página para visualizá-los."
 
       backup:
         manage_products:
@@ -257,17 +270,6 @@ pt-BR: &pt-BR
             name: "Nome"
 
         product:
-          import:
-            action: "Importar planilha"
-            help: "Formate sua planilha para que tenha exatamente os campos abaixo. Depois, salve-a escolhendo o tipo de arquivo CSV (extensão .csv).<br><b>Produtos com nomes iguais tem seus dados (preço/unidade) atualizados.</b>"
-            field_supplier_name: "Nome do fornecedor"
-            field_product_name: "Nome do produto"
-            field_product_unit: "Unidade"
-            field_product_price: "Preço por unidade"
-            remove_all: 'Remover todos os atuais fornecedores cadastrados e todos os seus produtos (começar uma nova lista de produtos).'
-            confirm_remove_all: "ATENÇÃO! Essa opção removerá todos os fornecedores cadastrados e todos os seus produtos!"
-            unit_help: "Use como <b>unidade</b> uma entre (coloque o nome igual): %{units}"
-            send: "Enviar"
           _edit:
             distribution_setts: "Configurações de distribuição do produto"
             margin_price: "Margem / preço"

@@ -15,7 +15,8 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
       |{product.name}
     input type="text" value="{product.name}" show="{product.edition}" name='name'
   .supplier
-    |{supplier}
+    .overflow
+      |{supplier}
   .category
     span show="{!product.edition}"
       |{product.category}

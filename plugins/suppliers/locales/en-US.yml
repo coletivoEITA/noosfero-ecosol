@@ -212,6 +212,20 @@ en-US: &en-US
         final_price_with_margin: "Final price with margin:"
         currency: "$ "
         enable_product: "Enable/disable product"
+        add_product: "Add product"
+        import_products: "Import products"
+        import:
+          action: "Import spreadsheet"
+          help: "Format your spreadsheet to have exactly the fields bellow with header. Then, save it choosing the CSV file type (.csv extension)."
+          help2: "Products with equal names have their data (price/unit) updated."
+          field_supplier_name: "Supplier's name"
+          field_product_name: "Product's name"
+          field_product_unit: "Unit"
+          field_product_price: "Price per unit"
+          remove_all: 'Also remove all registered suppliers and their products (start a new list of products).'
+          confirm_remove_all: "CAUTION! This option will remove all registered suppliers and their products!"
+          unit_help: "Use as unit one of the following units (put the name equal): %{units}"
+          send: "Send"
 
       backup:
         manage_products:
@@ -250,17 +264,6 @@ en-US: &en-US
             name: "Name"
 
         product:
-          import:
-            action: "Import spreadsheet"
-            help: "Format you spreadsheet to have exactly the fields bellow. Then, save it choosing the CSV file type (.csv extension).<br><b>Products with equal names have their data (price/unit) updated.</b>"
-            field_supplier_name: "Supplier's name"
-            field_product_name: "Product's name"
-            field_product_unit: "Unit"
-            field_product_price: "Price per unit"
-            remove_all: 'Also remove all registered suppliers and their products (start a new list of products).'
-            confirm_remove_all: "CAUTION! This option will remove all registered suppliers and their products!"
-            unit_help: "Use as <b>unit</b> one of the following (put the name equal): %{units}"
-            send: "Send"
           _edit:
             distribution_setts: "Product's distribution settings"
             margin_price: "Margin / price"
