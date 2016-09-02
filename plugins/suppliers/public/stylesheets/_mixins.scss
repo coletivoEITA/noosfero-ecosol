@@ -1,5 +1,4 @@
 @mixin input {
-  background-color: #f8f8f8;
   border-radius:    3px;
   border: 1px solid #caced7; 
   color:            #000;
@@ -101,6 +100,7 @@
     margin-bottom: 5px;
 
     input,select {
+      margin-bottom: 10px;
       border-radius: 0;
       border: 0px;
       border-bottom: 1px solid #555;

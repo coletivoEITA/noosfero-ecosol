@@ -15,7 +15,7 @@ product-page
 
       h4
         |{t("views.product.filter")}
-      form.form-inline
+      form.form-inline onsubmit="return false"
         .form-group
           .name
             input type="text" placeholder="{t('views.product.product_name')}" onkeyup="{search}" name="name"
@@ -275,6 +275,10 @@ product-page
     }
 
     add() {
-      var product = {available: true}
-      this.setStockModal(product)
+      var product = {
+        available: true,
+        margin_percentage: 0,
+        supplier_price: 0
+      }
+      this.completeEdition(product, {update: function(){}, product: {}})
     }

@@ -10,17 +10,15 @@ product-modal.modal.fade tabindex="-1" role="dialog"
               span aria-hidden="true"
                 |&times;
           .col-xs-12
-            h1.title
+            h1.title if="{product.id}"
               |{product.name}
+            h1.title if="{!product.id}"
+              |{t('views.product.add_product')}
   
       .modal-body
         .row
           .col-xs-12.col-md-5
             form enctype="multipart/form-data"
-              .form-group
-                select name="supplier_id" id="p-supplier_id" if="{!product.id}"
-                  option each="{id,name in suppliers}" value="{id}"
-                    |{name}
               .form-group
                 .switch
                   input.cmn-toggle.cmn-toggle-round type="checkbox" id="p-available" checked="{product.available}"
@@ -32,6 +30,11 @@ product-modal.modal.fade tabindex="-1" role="dialog"
                 label for="p-name"
                   |{t("views.product.product_name")}
                 input type="text" value="{product.name}" id="p-name"
+
+              .form-group
+                select name="supplier_id" id="p-supplier_id" if="{!product.id}"
+                  option each="{id,name in parent.suppliers}" value="{id}"
+                    |{name}
 
               .form-group
                 label for="p-description"
@@ -50,17 +53,17 @@ product-modal.modal.fade tabindex="-1" role="dialog"
                 input type="number" value="{product.margin_percentage}" id="p-margin_percentage" step="0.01" oninput="{updatePrice}"
 
               .form-group
+                label for="p-supplier-price"
+                  |{t("views.product.the_supplier_price")}
+                input type="text" value="{product.supplier_price}" id='p-supplier-price' oninput="{updatePrice}"
+
+              .form-group
                 p.final_price
                   |{t('views.product.final_price_with_margin')}
                   |&nbsp;
                 p
                   |{t('views.product.currency')}
                   |{product.price}
-
-              .form-group
-                label for="p-supplier-price"
-                  |{t("views.product.the_supplier_price")}
-                input type="text" value="{product.supplier_price}" id='p-supplier-price' oninput="{updatePrice}"
 
               .form-group
                 label for="p-unit_id"
@@ -94,7 +97,7 @@ product-modal.modal.fade tabindex="-1" role="dialog"
         button onclick="{close}" class="default grey"
           i class="fa fa-times close-cross"
           |{t('views.product.cancel')}
-        hr
+        hr if="{product.id}"
         a href="" onclick="{remove}" class="remove_product" if="{product.id}"
           |{t('views.product.remove')}
         span.warning if="{product.id}"
@@ -138,7 +141,7 @@ product-modal.modal.fade tabindex="-1" role="dialog"
     }
 
     updateProductFromForm() {
-      var keys = ['name', 'available', 'margin_percentage'] // category, unit and prices are automatically updated
+      var keys = ['name', 'available', 'margin_percentage', 'description', 'use_stock', 'initial_stock'] // category, unit and prices are automatically updated
       if (!this.product.id)
         keys.push('supplier_id')
 
@@ -163,11 +166,11 @@ product-modal.modal.fade tabindex="-1" role="dialog"
       })
     }
 
-    prepareForm() {
+    prepareModalForm() {
       this.updateProductFromForm()
 
       var data = Object();
-      var keys = ['name','description', 'available', 'product_category_id', 'unit_id', 'price', 'supplier_price', 'margin_percentage']
+      var keys = ['name','description', 'available', 'product_category_id', 'unit_id', 'price', 'supplier_price', 'margin_percentage','use_stock', 'initial_stock', 'image_id']
       if (!this.product.id)
         keys.push('supplier_id')
 
@@ -185,14 +188,16 @@ product-modal.modal.fade tabindex="-1" role="dialog"
       else
         var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'edit/'+this.product.id})
 
-      $.post(saveUrl,{product: this.prepareForm()}, function(data) {
+      $.post(saveUrl,{product: this.prepareModalForm()}, function(data) {
           if (creating)
             display_notice(self.t('views.product.created'))
           else
             display_notice(self.t('views.product.saved'))
 
           if (creating && data && data['id']) {
-            self.product.id = data['id']
+            $(this.root).find('form').first().reset()
+            self.parent.products.push(data)
+            self.parent.update()
           }
           var input = $('#image')[0]
           if (input.files && input.files[0]) {

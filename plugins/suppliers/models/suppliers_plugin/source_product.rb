@@ -22,6 +22,7 @@ class SuppliersPlugin::SourceProduct < ApplicationRecord
 
   def find_supplier
     self.supplier = SuppliersPlugin::Supplier.where(profile_id: self.from_product.profile_id, consumer_id: self.to_product.profile_id).first
+    debugger unless self.supplier
     raise "Can't find supplier" unless self.supplier
     self.supplier
   end

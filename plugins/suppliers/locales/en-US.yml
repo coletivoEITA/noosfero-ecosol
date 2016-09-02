@@ -213,6 +213,7 @@ en-US: &en-US
         currency: "$ "
         enable_product: "Enable/disable product"
         add_product: "Add product"
+        adding_product: "Adding product"
         import_products: "Import products"
         import:
           action: "Import spreadsheet"

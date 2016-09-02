@@ -18,7 +18,7 @@
   input, select {
     @include input;
   }
-  input {
+  input,select {
     background-color: white;
   }
   .filter {
@@ -53,6 +53,7 @@
     }
 
     select {
+      background-color: #f8f8f8;
       margin-left: 15px;
     }
   }
@@ -81,8 +82,7 @@
     padding: 7px 10px;
     font-weight: bold;
     &:hover {
-      background-color: white;
-      color: $cirandas-header-bg;
+      background-color: lighten($cirandas-header-bg, 5%);
     }
   }
   button.default.white {
@@ -90,7 +90,18 @@
     color: $cirandas-header-bg;
     border: 1px solid $cirandas-header-bg;
     &:hover {
-      background-color: $cirandas-header-bg;
+      background-color: #EEF3EE;
+      color: white;
+    }
+  }
+  button.grey {
+    background-color: #c0c0c0;
+    border: 1px solid #c0c0c0;
+    i {
+      margin-right: 5px;
+    }
+    &:hover {
+      background-color: #ccc;
       color: white;
     }
   }
@@ -362,7 +373,7 @@
       label {
         display: block;
       }
-      input, textarea {
+      input, textarea,select {
         width: 100%;
       }
       textarea {
@@ -403,12 +414,6 @@
         color: red;
         margin-left: px;
         text-decoration: underline;
-      }
-      button.grey {
-        background-color: #c0c0c0;
-        i {
-          margin-right: 5px;
-        }
       }
       span.warning {
         color: red;

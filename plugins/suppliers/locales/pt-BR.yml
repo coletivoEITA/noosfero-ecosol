@@ -219,6 +219,7 @@ pt-BR: &pt-BR
         currency: "R$ "
         enable_product: "Habilitar/desabilitar produto"
         add_product: "Adicionar produto"
+        adding_product: "Adicionando produto"
         import_products: "Importar produtos"
         import:
           action: "Importar planilha"

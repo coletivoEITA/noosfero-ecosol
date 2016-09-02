@@ -30,7 +30,7 @@ module SuppliersPlugin
       product[:unit_id] || product[:from_product_unit_id]
     end
     def supplier_price
-      product[:from_product_price]
+      product[:from_product_price] || product.supplier_price
     end
 
     def available
@@ -38,7 +38,7 @@ module SuppliersPlugin
     end
 
     def supplier_id
-      product[:supplier_id]
+      product[:supplier_id] || product.supplier_id
     end
 
     def margin_percentage

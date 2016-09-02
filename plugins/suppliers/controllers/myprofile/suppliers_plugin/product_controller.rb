@@ -27,7 +27,11 @@ class SuppliersPlugin::ProductController < MyProfileController
   end
 
   def create
-    @product = Product.new(params[:product])
+    supplier = SuppliersPlugin::Supplier.find params[:product][:supplier_id]
+    base_product = supplier.products.build base_product_params params
+    base_product.save!
+    @product = base_product.distribute_to_consumer profile, distributed_product_params(params)
+    render json: @product.reload, serializer: SuppliersPlugin::ProductSerializer
   end
 
   def edit
@@ -128,6 +132,13 @@ class SuppliersPlugin::ProductController < MyProfileController
 
   protected
 
+  def base_product_params params
+    params[:price] = params[:supplier_price]
+    params.require(:product).permit(:product_category_id, :description, :name, :available, :price, :image_id, :unit_id)
+  end
+  def distributed_product_params params
+    params.require(:product).permit(:product_category_id, :description, :name, :available, :price, :image_id, :margin_percentage, :use_stock, :initial_stock, :unit_id)
+  end
   extend HMVC::ClassMethods
   hmvc SuppliersPlugin
 

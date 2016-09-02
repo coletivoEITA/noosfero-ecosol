@@ -20,7 +20,7 @@ module ProductsPlugin
       display: %w[full map]
     }
 
-    attr_accessible :name, :product_category, :profile, :profile_id, :enterprise,
+    attr_accessible :name, :product_category, :product_category_id, :profile, :profile_id, :enterprise,
       :highlighted, :price, :image_builder, :description, :available, :qualifiers,
       :unit_id, :unit, :discount, :inputs, :qualifiers_list,
       :price_details
