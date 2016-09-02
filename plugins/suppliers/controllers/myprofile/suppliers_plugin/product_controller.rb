@@ -108,21 +108,16 @@ class SuppliersPlugin::ProductController < MyProfileController
     @product = profile.products.find params[:product_id]
     @product.update_attribute(:use_stock, params[:use_stock] == 'true') if params[:use_stock].present?
 
-    if params[:place_id].nil?
-      if @product.stock_places.count == 0
-        place = @product.profile.stock_places.create! name: 'default', description: 'default place'
-        place = place.id
-      else
-        place = @product.stock_places.first.id
-      end
+    if params[:place_id].nil? && @product.stock_places.count > 0
+      params[:place_id] = @product.stock_places.first.id
     end
 
     m = params[:stock_action] == "adition" ? 1 : -1
-    if params[:use_stock]
+    if params[:use_stock] == 'true'
       a = @product.stock_allocations.create!(
         quantity: m * params[:quantity].to_f.abs,
         description: params[:description],
-        place_id: place
+        place_id: params[:place_id]
       )
       render text: "fail" if !a
     end
