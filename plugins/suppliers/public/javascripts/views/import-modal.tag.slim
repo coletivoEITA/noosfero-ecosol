@@ -76,6 +76,7 @@ import-modal.modal.fade tabindex="-1" role="dialog"
         type:        'POST',
         success: function(data) {
           display_notice(self.t("views.product.import.import_in_progress"))
+          self.close()
         }
       };
       $.ajax(opts);
