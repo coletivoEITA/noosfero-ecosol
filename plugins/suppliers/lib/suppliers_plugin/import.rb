@@ -35,7 +35,6 @@ class SuppliersPlugin::Import
       begin
         rows = CSV.parse csv, quote_char: quote_chars.shift, col_sep: sep
         columns = self.product_columns rows.first
-        raise columns.to_s
       rescue
         if quote_chars.empty? then raise else retry end
       ensure
