@@ -11,4 +11,9 @@ class ConsumersCoopPlugin::ConsumersCoopMenuBlock < Block
   def help
     _('This block generates a menu with default entries and lets the communities to create more as needed')
   end
+
+  def cacheable?
+    false
+  end
+
 end
