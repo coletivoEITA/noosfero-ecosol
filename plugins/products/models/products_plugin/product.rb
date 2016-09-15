@@ -303,6 +303,17 @@ module ProductsPlugin
       p
     end
 
+    def self.products_by_supplier products
+      products_by_supplier = {}
+      products.each do |product|
+        supplier = product.supplier.abbreviation_or_name
+        products_by_supplier[supplier] ||= Set.new
+        products_by_supplier[supplier] << product
+      end
+
+      products_by_supplier
+    end
+
     delegate :enabled, :region, :region_id, :environment, :environment_id, to: :profile, allow_nil: true
 
     protected
