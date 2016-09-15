@@ -1,0 +1,28 @@
+en-US: &en-US
+
+  number:
+    currency:
+      format:
+        xlsx_currency: "[$R$-416]* #,##0.00;[RED]-[$R$-416]* #,##0.00"
+
+  products_plugin:
+    lib:
+      spreadsheet:
+        supplier: "Supplier"
+        unit: "Unit"
+        price: "Price"
+        product_cod: "Product code"
+        product_category: "Product category"
+        product_name: "product name"
+        products_spreadsheet: "products spreadsheet"
+        spreadsheet_name: "Products Spreadsheet - Group %{name} - issued on %{date}"
+
+    controllers:
+      product:
+        spreadsheet: "Products Spreadsheet - %{profile_identifier} - %{date}.xlsx"
+
+
+en_US:
+  <<: *en-US
+en:
+  <<: *en-US
