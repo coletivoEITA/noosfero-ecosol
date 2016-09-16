@@ -14,6 +14,8 @@ class SuppliersPlugin::Consumer < SuppliersPlugin::Supplier
 
   def sync_profile profile=nil
     profile = self.profile if profile.nil?
+    return if profile.community?
+
     fields = {name: :name, contact_email: :email, contact_phone: :phone, cell_phone: :cell_phone, address: :address, city: :city, state: :state, zip_code: :zip}
     dirty = false
 
@@ -23,12 +25,10 @@ class SuppliersPlugin::Consumer < SuppliersPlugin::Supplier
       consumer_v = self.send "#{consumer_k}"
       if profile_v.present? && profile_v != consumer_v
         self.send "#{consumer_k}=", profile_v
-        pp self.send "#{consumer_k}"
         dirty = true
       end
     end
 
-    pp self
     self.save if dirty
   end
 end
