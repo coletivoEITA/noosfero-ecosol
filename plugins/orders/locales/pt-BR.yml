@@ -105,7 +105,9 @@ pt-BR: &pt-BR
       myprofile:
         admin:
           orders_report: "Relatório de pedidos - %{date} - %{profile_identifier} - %{name}.xlsx"
+          orders_report_by_hub: "Relatório de pedidos no núcleo %{hub} - %{date} - %{profile_identifier} - %{name}.xlsx"
           products_report: "Relatório de produtos - %{date} - %{profile_identifier} - %{name}.xlsx"
+          products_report_by_hub: "Relatório de produtos no núcleo {hub} - %{date} - %{profile_identifier} - %{name}.xlsx"
     models:
       order:
         statuses:
@@ -239,9 +241,14 @@ pt-BR: &pt-BR
           supplier_heading: "Dados %{terms.supplier.from_article.singular}"
       admin:
         reports:
-          generate: "Gerar planilhas"
-          products_spreadsheet: "Produtos"
-          orders_spreadsheet: "Pedidos"
+          generate: "exportar planilhas"
+          products_spreadsheet: "Por fornecedor"
+          orders_spreadsheet: "Por consumidor"
+          suppliers_spreadsheet: "Por fornecedor"
+          consumers_spreadsheet: "Por consumidor"
+          choose_hub: "Escolha um núcleo" 
+          all_hubs: "todos os núcleos" 
+          close: "Fechar"
         index:
           no_orders_to_show: "Nenhum pedido para visualizar."
           code: "código"

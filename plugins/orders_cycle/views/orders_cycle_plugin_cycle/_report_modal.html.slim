@@ -1,0 +1,17 @@
+.report-modal.modal.fade tabindex="-1" role="dialog"
+  .modal-dialog role="document"
+    .modal-content
+      .modal-header
+        button type="button" class="close left" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true"
+            |&times;
+        h4.modal-title
+          = t('views.admin.reports.generate')
+      .modal-body
+        = form_for :report, url: {action: :report, id: cycle.id} do |f|
+          = labelled_form_field(t('views.admin.reports.choose_hub'), f.select(:hub_id, options_for_select([[t("views.admin.reports.all_hubs"),nil]]+@hubs)))
+          .btn-group
+            = f.button t('views.admin.reports.suppliers_spreadsheet'), name: "supplier", class: 'action-button'
+            | &nbsp;
+            = f.button t('views.admin.reports.consumers_spreadsheet'), name: "consumer", class: 'action-button'
+

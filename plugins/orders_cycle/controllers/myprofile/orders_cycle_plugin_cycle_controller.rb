@@ -49,6 +49,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
 
     @cycle = profile.orders_cycles.find params[:id]
     @products = products
+    @hubs = profile.hubs.all.map{|h| [h.name, h.id]}
 
     if request.xhr?
       if params[:commit]
@@ -100,25 +101,35 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
     render partial: 'suppliers_plugin/shared/pagereload'
   end
 
-  def report_products
+  def report
     return super if params[:ids].present?
-    @cycle = profile.orders_cycles.find params[:id]
-    report_file = report_products_by_supplier @cycle.supplier_products_by_suppliers(@cycle.sales.ordered)
 
-    send_file report_file, type: 'application/xlsx',
-      disposition: 'attachment',
-      filename: t('controllers.myprofile.admin.products_report') % {
+    @cycle = profile.orders_cycles.find params[:id]
+    scope = @cycle.sales.ordered
+
+    @hub = SuppliersPlugin::Hub.where(id: params[:report][:hub_id]).first
+    scope = scope.where(consumer_id: @hub.consumer_profiles) if @hub
+
+    # specifics
+    if params[:suppliers].present?
+      report_file = report_products_by_supplier @cycle.supplier_products_by_suppliers(scope)
+      file_str = 'controllers.myprofile.admin.products_report'
+    else params[:consumers].present?
+      report_file = report_orders_by_consumer scope
+      file_str = 'controllers.myprofile.admin.orders_report'
+    end
+
+    if @hub
+      filename = t(file_str+'_by_hub') % {
+        date: DateTime.now.strftime("%Y-%m-%d"), profile_identifier: profile.identifier, name: @cycle.name_with_code, hub: @hub.name}
+    else
+      filename = t(file_str) % {
         date: DateTime.now.strftime("%Y-%m-%d"), profile_identifier: profile.identifier, name: @cycle.name_with_code}
-  end
-
-  def report_orders
-    return super if params[:ids].present?
-    @cycle = profile.orders_cycles.find params[:id]
-    report_file = report_orders_by_consumer @cycle.sales.ordered
+    end
 
     send_file report_file, type: 'application/xlsx',
       disposition: 'attachment',
-      filename: t('controllers.myprofile.admin.orders_report') % {date: DateTime.now.strftime("%Y-%m-%d"), profile_identifier: profile.identifier, name: @cycle.name_with_code}
+      filename: filename
   end
 
   def filter
