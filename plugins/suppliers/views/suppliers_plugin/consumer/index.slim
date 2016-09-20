@@ -28,6 +28,8 @@ javascript:
   .on("keydown","#token-input-search-enterprises", function(event){
     if(event.keyCode == "13") return false;
   });
-  jQuery('.token-input-input-token input').blur();
-  jQuery('.token-input-input-token input')[0].focus();
+  var input = jQuery('.token-input-input-token input')
+  input.blur();
+  if (input[0])
+    input[0].focus();
 

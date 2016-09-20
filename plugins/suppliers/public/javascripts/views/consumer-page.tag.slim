@@ -16,10 +16,15 @@ consumer-page
       .tasks
         .row
           .col-xs-12.col-md-10
-            raw html='{cs.t("views.consumer.index.tasks", {people: this.tasks_count})}'
+            raw html='{cs.t("views.consumer.index.tasks", {people: this.tasks_count})}' if="{this.tasks_count}"
           .col-xs-12.col-md-2
-            a.cs-button href="{Routes.myprofile_path({profile: noosfero.profile, controller: 'tasks'})}"
+            a.cs-button href="" onclick="{approval}"
               |{cs.t("views.consumer.index.manage")}
+            a.cs-button href="" onclick="{closeApproval}" style="display: none"
+              |{cs.t("views.consumer.index.close")}
+          .col-xs-12
+            .pending-consumers.consumers-listing.row
+              pending-consumer-box each='{consumer in pendingConsumers}' consumer='{consumer}'
 
   .row
     .search.col-xs-12
@@ -30,7 +35,7 @@ consumer-page
     consumer-box each='{consumer in consumers}' consumer='{consumer}'
 
   consumer-view
-    
+  pending-consumer-view
   consumer-add
 
   javascript:
@@ -51,6 +56,28 @@ consumer-page
       }
     }
 
+    approval() {
+      if (this.pendingConsumers == undefined) {
+        pendingConsumersUrl = Routes.suppliers_plugin_consumer_path({profile: noosfero.profile, action: 'pending_consumers'});
+        self = this
+        $.get(pendingConsumersUrl, {}, function(data) {
+          self.pendingConsumers = data 
+          self.openApproval()
+          self.update()
+        })
+      }
+      else
+        this.openApproval()
+    }
+    openApproval() {
+      $('.pending-consumers').slideDown()
+      $('.tasks a.cs-button').toggle();
+    }
+    closeApproval() {
+        $('.pending-consumers').slideUp()
+        $('.tasks a.cs-button').toggle();
+    }
+
     edit(consumer) {
       this.editView.setConsumer(consumer)
       this.editView.loadPurchases();
@@ -66,4 +93,10 @@ consumer-page
       consumers.forEach(function(consumer) {
         self.consumers.push(consumer)
       })
+    }
+
+    showConsumer(id) {
+      var index = self.consumers.length - 1
+      this.edit(self.consumers[index])
+      $('consumer-view').modal('show');
     }

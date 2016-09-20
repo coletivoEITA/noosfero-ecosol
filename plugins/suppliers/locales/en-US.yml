@@ -440,6 +440,11 @@ en-US: &en-US
           adding_consumer: "Adding new consumer"
           search_members: Search for users registered in the site
           save: Save
+          accept: Accept
+          reject: Reject
+          send: Send
+          cancel: Cancel
+          rejection_message: "Please, explanain why you are rejecting this membership request"
 
   orders_cycle_plugin:
     terms:

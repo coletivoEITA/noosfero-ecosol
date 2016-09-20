@@ -94,6 +94,9 @@
           display: block;
         }
 
+        .pending-consumers {
+          margin-top: 15px;
+        }
       }
       a.add_consumer {
         display: block;
@@ -173,7 +176,7 @@
           color: white;
         }
       }
-      consumer-view, consumer-add {
+      consumer-view, consumer-add, pending-consumer-view {
         z-index: 1041; // fix modal-backdrop over it https://github.com/twbs/bootstrap/issues/16148
 
         @include modal-default;
@@ -188,6 +191,19 @@
         }
         .title-box {
           height: 58px;
+        }
+      }
+      pending-consumer-view {
+        span.key {
+          margin-right: 10px;
+          font-weight: bold;
+        }
+        .rejection-area {
+          display: none;
+          textarea {
+            width: 100%;
+            min-height: 70px;
+          }
         }
       }
     }

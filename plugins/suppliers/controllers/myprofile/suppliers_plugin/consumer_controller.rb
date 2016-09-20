@@ -10,7 +10,7 @@ class SuppliersPlugin::ConsumerController < MyProfileController
   serialization_scope :view_context
 
   def index
-    @tasks_count = Task.to(profile).pending.without_spam.select{|i| user.has_permission?(i.permission, profile)}.count
+    @tasks_count = Task.to(profile).of("AddMember").pending.without_spam.select{|i| user.has_permission?(i.permission, profile)}.count
     @role = Role.where(key: 'profile_member').first
   end
 
@@ -44,6 +44,36 @@ class SuppliersPlugin::ConsumerController < MyProfileController
     render json: consumers
   end
 
+  def pending_consumers
+    return if !current_person.has_permission?(:perform_task, profile)
+    @profiles = Profile.where(id: Task.to(profile).of("AddMember").pending.select(:requestor_id))
+    render json: @profiles, each_serializer: SuppliersPlugin::ProfileSerializer
+
+  end
+
+  def answer_membership_task
+    task = Task.to(profile).of("AddMember").where(requestor_id: params[:task][:profile_id]).pending.first
+    decision = params[:task][:decision].to_sym
+    return unless task.present?
+    return unless ([:cancel, :finish].include? decision)
+
+    if (decision == :finish)
+      role = Role.where(key: 'profile_member').first
+      data = {roles: [role.id]}
+    else
+      data = {reject_explanation: params[:task][:explanation]}
+    end
+
+    task.update(data)
+    task.send(decision, current_person)
+
+    if (decision == :finish)
+      consumer = profile.consumers.where(consumer_id: params[:task][:profile_id]).first
+      render json: consumer, serializer: SuppliersPlugin::ConsumerSerializer
+    else
+      render text: "success"
+    end
+  end
   protected
 
   extend HMVC::ClassMethods

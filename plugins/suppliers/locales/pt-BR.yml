@@ -464,6 +464,11 @@ pt-BR: &pt-BR
           adding_consumer: "Adicionando novo consumidor"
           search_members: Procure abaixo por um usuário cadastrado no site
           save: Salvar
+          accept: Aceitar
+          reject: Rejeitar
+          send: Enviar
+          cancel: Cancelar
+          rejection_message: "Por favor, explique por que você está rejeitando o pedido de filiação desse membro ao grupo."
 
   orders_cycle_plugin:
     terms:

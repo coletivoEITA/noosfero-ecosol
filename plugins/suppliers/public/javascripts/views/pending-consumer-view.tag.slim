@@ -1,0 +1,143 @@
+pending-consumer-view.modal.fade tabindex="-1" role="dialog"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        .row
+          .col-xs-10
+            .picture-block.left
+              a.picture target='_blank' href='{consumerUrl}' style='background-image: url("{consumer.profile_icon_thumb}")'
+
+            .name_actions.left
+              .title-box
+                h1
+                  |{consumer.name}
+
+          .col-xs-2
+            button type="button" class="close left" data-dismiss="modal" aria-label="Close"
+              span.left.close-text
+                |{t("views.consumer.index.close")}
+              span aria-hidden="true"
+                |&times;
+      .modal-body
+        h2
+          |{t("views.consumer.index.general_information")}
+
+        p
+          span.key
+            |{t("views.consumer.index.name")}
+          span.value
+            |{consumer.name}
+
+        p
+          span.key
+            |{t("views.consumer.index.email")}
+          span.value
+            |{consumer.email}
+
+        p if="{consumer.telephone}"
+          span.key
+            |{t("views.consumer.index.telephone")}
+          span.value
+            |{consumer.contact_phone}
+
+        p if="{consumer.cell_phone}"
+          span.key
+            |{t("views.consumer.index.celular")}
+          span.value
+            |{consumer.cell_phone}
+
+        p if="{consumer.address}"
+          span.key
+            |{t("views.consumer.index.address")}
+          span.value
+            |{consumer.address}
+
+        p if="{consumer.city}"
+          span.key
+            |{t("views.consumer.index.city")}
+          span.value
+            |{consumer.city}
+
+        p if="{consumer.state}"
+          span.key
+            |{t("views.consumer.index.state")}
+          span.value
+            |{consumer.state}
+
+        p if="{consumer.zip_code}"
+          span.key
+            |{t("views.consumer.index.zip")}
+          span.value
+            |{consumer.zip_code}
+
+      .modal-footer
+        .rejection-area
+          textarea class="rejection-message" placeholder="{t('views.consumer.index.rejection_message')}"
+          a.cs-button href="" onclick='{confirm_rejection}' 
+            |{t("views.consumer.index.send")}
+          |&nbsp;
+          a.cs-button href="" onclick='{cancel}' 
+            |{t("views.consumer.index.cancel")}
+
+        .decision-area
+          a.cs-button href="" onclick='{accept}' 
+            |{t("views.consumer.index.accept")}
+          |&nbsp;
+          a.cs-button href="" onclick='{reject}' 
+            |{t("views.consumer.index.reject")}
+  
+  javascript:
+    this.t = window.consumers.t
+
+    accept() {
+      this.update_task("finish")
+      return false;
+    }
+
+    reject() {
+      $('.decision-area, .rejection-area').toggle();
+      return false;
+    }
+
+    confirm_rejection() {
+      this.update_task("cancel")
+      $('.decision-area, .rejection-area').toggle();
+      return false;
+    }
+
+    cancel() {
+      $('.decision-area, .rejection-area').toggle();
+      return false;
+    }
+
+    update_task(decision) {
+      var acceptUrl = Routes.suppliers_plugin_consumer_path({profile: noosfero.profile, action: 'answer_membership_task'})
+      var self = this
+      var data = {task: {decision: decision, profile_id: this.consumer.id, rejection: $('textarea.rejection-message')[0].value}}
+      $.post(acceptUrl, data, function (data) {
+        if (data) {
+          display_notice(self.t('views.consumer.index.saved'))
+
+          var index = self.parent.pendingConsumers.indexOf(self.consumer)
+          self.parent.pendingConsumers.splice(index, 1)
+
+          if (decision == 'finish')
+            self.parent.consumers.push(data)
+
+          $('textarea.rejection-message')[0].value = ""
+
+          self.parent.tasks_count = self.parent.pendingConsumers.length
+          self.parent.update()
+          if (decision == 'finish')
+            self.parent.showConsumer(data["id"])
+        }
+        self.close()
+      })
+    }
+
+    close() {
+      $('pending-consumer-view').modal('hide');
+    }
+
+
+
