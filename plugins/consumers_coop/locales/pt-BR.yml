@@ -58,6 +58,11 @@ pt-BR: &pt-BR
           text_color: "Cor do texto"
           this_name_will_be_use: "Este nome será usado para evitar sempre o nome todo por extenso %{terms.profile.from_article.singular}. Como %{terms.profile.article.singular} é comumente chamado pelas pessoas?"
           white: branco
+          change: mudar
+          default_margin_of_com: "Margem padrão de comercialização"
+          default_margin_info: "Esta margem é automaticamente aplicada em todos os produtos, mas é possível estabelecer margens específicas para certos produtos."
+          margin: "%{margin} %"
+          no_margin_set: "Sem margem definida"
 
 pt_BR:
   <<: *pt-BR
