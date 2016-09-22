@@ -23,6 +23,8 @@
       }
 
       .search {
+        margin-top: 30px;
+
         ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
           color:    $cirandas-header-bg;
           font-weight: bold;
