@@ -1,5 +1,5 @@
 #suppliers-plugin-margin-change.popin
-  h1= t'views.myprofile.margin_change.change_default_margin'
+  h1= t'suppliers_plugin.views.myprofile.margin_change.change_default_margin'
 
   = form_for @profile, as: :profile_data, remote: true, url: {controller: :suppliers_plugin_myprofile, action: :margin_change} do |f|
     div= t'views.myprofile.margin_change.notice'

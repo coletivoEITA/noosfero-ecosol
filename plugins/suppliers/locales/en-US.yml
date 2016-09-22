@@ -228,6 +228,21 @@ en-US: &en-US
           unit_help: "Use as unit one of the following units (put the name equal): %{units}"
           send: "Send"
 
+      myprofile:
+        margin_change:
+          ? "%"
+          : "%"
+          notice: "By changing the default margin of commercialization, the products that are \"use the default margin\" marked will automatically have their margin updated."
+          cancel: cancel
+          change_default_margin: "Change default margin of commercialization"
+          confirm: Confirm
+          apply_to_all: "Apply to the products with custom margins"
+          apply_to_open_cycles: "Apply to the products in open cycles"
+          new_margin: "New margin"
+        index:
+          redistribution_situation: "Product distribution"
+          name: "Name"
+
       backup:
         manage_products:
           compare_tab:
@@ -248,21 +263,6 @@ en-US: &en-US
         control_panel:
           suppliers: "Manage suppliers"
           products: "Manage distributed products"
-
-        myprofile:
-          margin_change:
-            ? "%"
-            : "%"
-            notice: "By changing the default margin of commercialization, the products that are \"use the default margin\" marked will automatically have their margin updated."
-            cancel: cancel
-            change_default_margin: "Change default margin of commercialization"
-            confirm: Confirm
-            apply_to_all: "Apply to the products with custom margins"
-            apply_to_open_cycles: "Apply to the products in open cycles"
-            new_margin: "New margin"
-          index:
-            redistribution_situation: "Product distribution"
-            name: "Name"
 
         product:
           _edit:
@@ -318,13 +318,8 @@ en-US: &en-US
             situation: "distribution situation"
             anyone: anyone
             bigger_than_the_stock: "bigger than the stock"
-            change: change
-            default_margin_of_com: "Default margin of commercialization"
-            default_margin_info: "This margin is automatically applied in all the products, but it is possible to stabilish specific margins for certain products."
             in_any_state: "In any state"
             inactive: inactive
-            margin: "%{margin} %"
-            no_margin_set: "no margin set"
             products: Products
             supplier: "%{terms.supplier.singular.capitalize}"
             info: "This is list of all the products %{terms.profile.with_which.singular} distribute. The products are divided between active and inactive."

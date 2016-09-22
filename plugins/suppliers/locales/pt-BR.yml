@@ -235,6 +235,21 @@ pt-BR: &pt-BR
           send: "Enviar"
           import_in_progress: "Os produtos estão sendo importados. Aguarde um pouco e recarregue a página para visualizá-los."
 
+      myprofile:
+        margin_change:
+          ? "%"
+          : "%"
+          notice: "Ao mudar a margem padrão de comercialização, os produtos que são marcados como \"use a margem padrão\" automaticamente terão sua margem atualizada."
+          cancel: Cancelar
+          change_default_margin: "Mudar a margem padrão de comercialização"
+          confirm: Confirmar
+          apply_to_all: "Aplicar para os produtos com margens personalizadas"
+          apply_to_open_cycles: "Aplicar para os produtos nos ciclos abertos"
+          new_margin: "Nova margem"
+        index:
+          redistribution_situation: "Distribuição dos produtos"
+          name: "Nome"
+
       backup:
         manage_products:
           compare_tab:
@@ -254,21 +269,6 @@ pt-BR: &pt-BR
         control_panel:
           suppliers: "Gerenciar fornecedores"
           products: "Gerenciar produtos distribuídos"
-
-        myprofile:
-          margin_change:
-            ? "%"
-            : "%"
-            notice: "Ao mudar a margem padrão de comercialização, os produtos que são marcados como \"use a margem padrão\" automaticamente terão sua margem atualizada."
-            cancel: Cancelar
-            change_default_margin: "Mudar a margem padrão de comercialização"
-            confirm: Confirmar
-            apply_to_all: "Aplicar para os produtos com margens personalizadas"
-            apply_to_open_cycles: "Aplicar para os produtos nos ciclos abertos"
-            new_margin: "Nova margem"
-          index:
-            redistribution_situation: "Distribuição dos produtos"
-            name: "Nome"
 
         product:
           _edit:
@@ -324,13 +324,8 @@ pt-BR: &pt-BR
             situation: "Situação de distribuição"
             anyone: anyone
             bigger_than_the_stock: "maior do que o estoque"
-            change: mudar
-            default_margin_of_com: "Margem padrão de comercialização"
-            default_margin_info: "Esta margem é automaticamente aplicada em todos os produtos, mas é possível estabelecer margens específicas para certos produtos."
             in_any_state: "Em qualquer estado"
             inactive: inativa
-            margin: "%{margin} %"
-            no_margin_set: "Sem margem definida"
             products: Produtos
             supplier: "%{terms.supplier.singular.capitalize}"
             info: "Esta é a lista de produtos %{terms.profile.from_which_article.singular} distribui."
