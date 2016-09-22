@@ -13,10 +13,8 @@
 
   <div class='table-content'>
     <% if products.size.zero? %>
-      <div class="subtitle"><%= t('views.products.any') % {
-        :manage_products => link_to(t('views.products.click_to_manage_products'), :controller => :manage_products),
-
-      } %>
+      <div class="subtitle"><%= t('views.products.any',
+        :manage_products => link_to(t('views.products.click_to_manage_products'), :controller => :manage_products)) %>
       </div>
     <% else %>
       <% products.each do |product| %>
