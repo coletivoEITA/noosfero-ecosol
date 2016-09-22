@@ -331,7 +331,6 @@ en-US: &en-US
             the_products: "The products"
             name: "Nome"
             whose_qty_available_i: "whose qty. available is"
-            category: "Category"
             with_the_qualifiers: "with the qualifiers"
       supplier:
         _new:

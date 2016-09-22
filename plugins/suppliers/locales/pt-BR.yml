@@ -337,7 +337,6 @@ pt-BR: &pt-BR
             the_products: "Os produtos"
             name: "Nome"
             whose_qty_available_i: "cuja qtd disponível é"
-            category: "Categoria"
             with_the_qualifiers: "com os qualificadores"
 
       supplier:
