@@ -4,7 +4,7 @@
 
 h3
   - if @admin_edit
-    = t('views.order._consumer_orders.orders_from_consumer_') % {consumer: @consumer.name}
+    = t('views.order._consumer_orders.orders_from_consumer_', consumer: @consumer.name)
   - elsif @consumer and @cycle.orders?
     = t('views.order._consumer_orders.your_orders_on_this_c')
     - if @consumer.in? @cycle.profile.members
