@@ -7,9 +7,9 @@
     options_for_select([[t('orders_cycle_plugin.views.order._filter_products.all_the_suppliers'), ""]] + supplier_choices(cycle.suppliers), params[:supplier_profile_id].to_i)
 
 .field.category
-  label= t'suppliers_plugin.views.product.index.category'
+  label= t'suppliers_plugin.views.product.category'
   div
-    = select_tag :category_id, options_for_select(@product_categories.map{ |pc| [pc.name, pc.id]}.insert(0,[t('suppliers_plugin.views.product.index.all_the_categories'), ""]))
+    = select_tag :category_id, options_for_select(@product_categories.map{ |pc| [pc.name, pc.id]}.insert(0,[t('suppliers_plugin.views.product.all_the_categories'), ""]))
 
 /.field.qualifier
   div= select_tag :qualifier_id, options_for_select([t('orders_cycle_plugin.views.order._filter_products.anyone'), ''])

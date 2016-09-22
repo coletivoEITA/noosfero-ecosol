@@ -86,8 +86,8 @@ pt-BR: &pt-BR
           associate_to_order: "Associe-se para realizar pedidos"
         _filter_products:
           active: Ativo
-          all_the_categories: "todas as categorias"
-          all_the_suppliers: "todos %{terms.supplier.article.plural}"
+          all_the_categories: "Todas as categorias"
+          all_the_suppliers: "Todos %{terms.supplier.article.plural}"
           and_being: "e que estejam"
           anyone: anyone
           bigger_than_the_stock: "maior do que o estoque"

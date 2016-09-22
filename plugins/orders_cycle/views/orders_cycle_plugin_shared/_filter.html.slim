@@ -9,8 +9,6 @@
     .fields.filter-box
       - if type == :supplier
         = render 'suppliers_plugin_myprofile/filter_fields'
-      - elsif type == :product
-        = render 'suppliers_plugin/product/filter_fields'
       - elsif type == :order
         = render 'filter_fields', actor: cycle.suppliers, cycle: cycle, order: order
       - else
