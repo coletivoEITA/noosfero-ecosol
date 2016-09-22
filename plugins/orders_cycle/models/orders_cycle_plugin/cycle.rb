@@ -110,6 +110,13 @@ class OrdersCyclePlugin::Cycle < ApplicationRecord
     where 'start BETWEEN :start AND :finish OR finish BETWEEN :start AND :finish', start: range.first, finish: range.last
   }
 
+  # FINANCIAL CALLBACKS
+  if defined? FinancialPlugin
+    has_many :financial_transactions, class_name: "FinancialPlugin::Transaction", as: :context
+    scope :expenses, -> { financial_transactions.outputs }
+    scope :earnings, -> { financial_transactions.inputs }
+  end
+
   validates_presence_of :profile
   validates_presence_of :name, if: :not_new?
   validates_presence_of :start, if: :not_new?
