@@ -179,7 +179,7 @@ en-US: &en-US
         total_price_currency: 'final price ($)'
         supplier_price_currency: 'supplier price ($)'
         unit: unit
-        mass_action: "Mass action"
+        mass_action: "With selected"
         activate: "Activate"
         deactivate: "Deactivate"
         ok: ok

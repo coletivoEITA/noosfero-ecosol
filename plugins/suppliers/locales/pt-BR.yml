@@ -185,7 +185,7 @@ pt-BR: &pt-BR
         total_price_currency: 'Preço final (R$)'
         supplier_price_currency: 'Preço fornec. (R$)'
         unit: unidade
-        mass_action: "Ação em massa"
+        mass_action: "Com selecionados"
         activate: "ativar produtos"
         deactivate: "desativar produtos"
         ok: ok
