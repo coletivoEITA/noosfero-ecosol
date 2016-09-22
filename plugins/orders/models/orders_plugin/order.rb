@@ -112,6 +112,13 @@ class OrdersPlugin::Order < ApplicationRecord
   before_validation :change_status
   after_save :send_notifications
 
+  # FINANCIAL CALLBACKS
+  if defined? FinancialPlugin
+    has_one      :financial_transaction, class_name: "FinancialPlugin::Transaction", as: :source, dependent: :destroy
+    after_create :create_transaction
+    after_save   :update_transaction
+  end
+
   extend CodeNumbering::ClassMethods
   code_numbering :code, scope: -> { self.profile.orders }
 
@@ -398,6 +405,21 @@ class OrdersPlugin::Order < ApplicationRecord
   end
 
   protected
+
+  def create_transaction
+    self.create_financial_transaction(
+      profile_id: self.profile_id,
+      quantity: self.value,
+      description: "new payment"
+    )
+  end
+
+  def update_transaction
+   if self.transaction.value != self.value
+      self.transaction.value = self.value
+      self.transaction.save
+   end
+  end
 
   def check_status
     self.status ||= 'draft'
