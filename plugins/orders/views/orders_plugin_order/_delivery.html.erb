@@ -7,7 +7,7 @@
 
 <% if edition or data_present %>
   <div class="delivery-box order-section">
-    <h3><%= _('Delivery or pickup method') %></h3>
+    <h3><%= t('controllers.profile.consumer.delivery_method') %></h3>
 
     <% if edition %>
       <%= render 'delivery_plugin/order_select', f: f, order: order, methods: order.delivery_methods, edition: edition %>

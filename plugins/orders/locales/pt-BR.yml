@@ -102,6 +102,7 @@ pt-BR: &pt-BR
           order_removed: "Pedido removido"
           please_login_first: "Please login first"
           you_are_not_the_owner: "Você não é o autor desse pedido"
+          delivery_method: "Forma de entrega ou coleta"
       myprofile:
         admin:
           orders_report: "Relatório de pedidos - %{date} - %{profile_identifier} - %{name}.xlsx"

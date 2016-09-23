@@ -101,6 +101,7 @@ en-US: &en-US
           order_removed: "Order removed"
           please_login_first: "Please login first"
           you_are_not_the_owner: "You are not the owner of this order"
+          delivery_method: "Delivery or pickup method"
       myprofile:
         admin:
           orders_report: "Orders' Report - %{date} - %{profile_identifier} - %{name}.xlsx"
