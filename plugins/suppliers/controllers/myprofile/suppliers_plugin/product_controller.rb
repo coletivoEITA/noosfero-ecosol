@@ -12,18 +12,6 @@ class SuppliersPlugin::ProductController < MyProfileController
   helper SuppliersPlugin::DisplayHelper
 
   def index
-    respond_to do |format|
-      format.html{ render template: 'suppliers_plugin/product/index' }
-      format.js{ render partial: 'suppliers_plugin/product/search' }
-    end
-  end
-
-  def search
-    if params[:page].present?
-      render partial: 'suppliers_plugin/product/results'
-    else
-      render partial: 'suppliers_plugin/product/search'
-    end
   end
 
   def create
