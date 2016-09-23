@@ -2,14 +2,14 @@
 
 /* ----- override some noosfero's css  ----- */
 
-body.consumers-coop {
+body.consumers-coop-enable {
   line-height: 20px;
 
   .popin {
     padding-bottom: 10px;
   }
 }
-.consumers-coop .main-block {
+.consumers-coop-enable .main-block {
   text-align: left;
 }
 
@@ -62,25 +62,27 @@ body.consumers-coop {
   background-image: url(/plugins/consumers_coop/images/consumers-coop.png);
 }
 
-/* ----- general ----- */
+.consumers-coop-enabled {
 
-.consumers-coop .consumers-coop-error-message {
-  color: red;
-}
-.consumers-coop .consumers-coop-product-errors {
-  color: red;
-  background-color: white;
-}
-.consumers-coop .consumers-coop-product-errors > div {
-  border: 1px solid gray;
-  padding-left: 10px;
-}
-.consumers-coop #product-errors, .consumers-coop #supplier-product-errors ul {
-}
+  /* ----- general ----- */
+
+  .consumers-coop-error-message {
+    color: red;
+  }
+  .consumers-coop-product-errors {
+    color: red;
+    background-color: white;
+  }
+  .consumers-coop-product-errors > div {
+    border: 1px solid gray;
+    padding-left: 10px;
+  }
+  #product-errors, .consumers-coop #supplier-product-errors ul {
+  }
 
 /* ----- common ----- */
 
-.consumers-coop {
+
   .box-align {
     margin-left: -$padding;
   }
@@ -97,47 +99,54 @@ body.consumers-coop {
   small {
     font-size: 10px;
   }
-}
 
-.consumers-coop .happening {
-  background-color: #ffe546;
-}
+  .happening {
+    background-color: #ffe546;
 
-.consumers-coop .line-label {
-  margin: 10px 9px 2px;
-  display: inline-block;
-  font-weight: bold;
-}
+  }
 
-.consumers-coop .title {
-  font-weight: bold;
-  clear: both;
-  margin-bottom: 8px;
-}
+  #cycle-dates th {
+    vertical-align: middle;
+    padding-left: 1px;
+  }
 
-/* ----- cycle date ----- */
+  .line-label {
+    margin: 10px 9px 2px;
+    display: inline-block;
+    font-weight: bold;
+  }
 
-.consumers-coop .orders-date td.happening {
-  padding-right: 20px;
-  text-align: right;
-  text-transform: uppercase;
-}
+  .title {
+    font-weight: bold;
+    clear: both;
+    margin-bottom: 8px;
+  }
 
-/* ----- suppliers ----- */
+  /* ----- cycle date ----- */
 
-// disable find-enterprise for now
-.consumers-coop #supplier-add.supplier {
+  .orders-date td.happening {
+    padding-right: 20px;
+    text-align: right;
+    text-transform: uppercase;
+  }
 
-  #create-dummy {
-    display: block;
-    .box-edit {
+  /* ----- suppliers ----- */
+
+  // disable find-enterprise for now
+  #suppliers-page .supplier {
+
+    #create-dummy {
       display: block;
-    }
-  }
-  #find-enterprise {
-    display: none
-  }
 
+      .box-edit {
+        display: block;
+      }
+    }
+    #find-enterprise {
+      display: none;
+    }
+
+  }
 }
 
 /* ----- order edit ----- */
