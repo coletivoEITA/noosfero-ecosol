@@ -14,7 +14,7 @@ div class="order-view #{"editable" if order.may_edit? user, @admin rescue false}
 
     .actions
       - if @admin
-        = modal_link_to t('orders_plugin.views.admin._edit.message_to_actor') % {actor: t("terms.#{other_actor_name}.singular")},
+        = modal_link_to t('orders_plugin.views.admin._edit.message_to_actor', actor: t("terms.#{other_actor_name).singular")},
           {controller: :orders_plugin_message, action: "new_to_#{other_actor_name}", order_id: order.id}, class: 'action-button'
         |&emsp;
 

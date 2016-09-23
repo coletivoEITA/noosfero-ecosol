@@ -6,7 +6,7 @@
 </div>
 
 <div id="cycle-header">
-  <h2><%= (t('views.cycle._view_header.orders_cycle_cycle') % {cycle: content_tag(:strong, cycle.name_with_code)}).html_safe %></h2>
+  <h2><%= (t('views.cycle._view_header.orders_cycle_cycle', cycle: content_tag(:strong, cycle.name_with_code))).html_safe %></h2>
 
   <%= render partial: 'orders_cycle_plugin_cycle/view_dates', locals: {cycle: cycle} %>
 

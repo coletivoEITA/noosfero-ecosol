@@ -179,7 +179,7 @@ en-US: &en-US
         total_price_currency: 'final price ($)'
         supplier_price_currency: 'supplier price ($)'
         unit: unit
-        mass_action: "Mass action"
+        mass_action: "With selected"
         activate: "Activate"
         deactivate: "Deactivate"
         ok: ok
@@ -326,7 +326,6 @@ en-US: &en-US
             the_products: "The products"
             name: "Nome"
             whose_qty_available_i: "whose qty. available is"
-            category: "Category"
             with_the_qualifiers: "with the qualifiers"
       supplier:
         _new:

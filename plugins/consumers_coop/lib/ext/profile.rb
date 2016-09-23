@@ -36,21 +36,11 @@ class Profile
       self.update_attribute :theme, consumers_coop_theme
     end
 
-    login_block = self.blocks.select{ |b| b.class.name == "LoginBlock" }.first
-    if not login_block
-      box = self.boxes.where(position: 2).first
-      login_block = LoginBlock.create! box: box
-      login_block.move_to_top
-    end
-
     self.home_page = self.blogs.first
     self.save!
   end
   def consumers_coop_disable_view
     self.update_attribute :theme, nil
-
-    login_block = self.blocks.select{ |b| b.class.name == "LoginBlock" }.first
-    login_block.destroy if login_block
   end
 
   def consumers_coop_add_own_members

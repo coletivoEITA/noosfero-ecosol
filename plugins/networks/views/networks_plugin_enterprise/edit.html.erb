@@ -1,4 +1,4 @@
-<h1><%= t('views.enterprise.edit.title') % {:enterprise => @supplier.name} %></h1>
+<h1><%= t('views.enterprise.edit.title', :enterprise => @supplier.name) %></h1>
 
 <%= button :back, t('views.node.edit.back'), :controller => :networks_plugin_network, :action => :structure, :node_id => @node.id %>
 

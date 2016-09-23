@@ -1,6 +1,3 @@
-//= require ./views/items-table
-//= require ./views/item
-//= require ./views/item-quantity-price
 
 orders = {
 
@@ -68,7 +65,7 @@ orders = {
           source: this.source.ttAdapter(),
         }).on('typeahead:selected', function(e, item) {
           input.val('')
-          $(`#order-${id} order-items-table`).get(0)._tag.adminAdd(item.value)
+          $('#order-${id} order-items-table').get(0)._tag.adminAdd(item.value)
         })
       },
     },

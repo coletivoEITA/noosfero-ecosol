@@ -2,7 +2,7 @@
 
 li.dropdown
   = link_to '#', id: "homepage-link", title: _('Go to your homepage'), class: 'dropdown-toggle', data: {toggle: 'dropdown', hover: 'dropdown'}
-    = image_tag user.profile_custom_icon(gravatar_default), class: 'menu-user-gravatar'
+    = image_tag user.profile_custom_image(:portrait), class: 'menu-user-gravatar'
     = content_tag :strong, user.identifier
     - if pending_tasks_count
       span class='badge' onclick="document.location='#{url_for user.tasks_url}'" title="#{_("Manage your pending tasks")}"
