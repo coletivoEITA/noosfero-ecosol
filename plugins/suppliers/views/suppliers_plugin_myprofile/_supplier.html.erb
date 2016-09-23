@@ -49,7 +49,7 @@
       :confirm => t('views.supplier._supplier.by_removing_this_supp'), :class => 'supplier-remove' %></div>
 
     <div><%= link_to t('views.supplier._supplier.manage_products'), {controller: 'consumers_coop_plugin_product', action: :index, supplier_id: supplier.id}, target: '_blank' %></div>
-    <div><%= link_to t('views.supplier._supplier.add_product'), {controller: 'products_plugin/page', profile: supplier.profile.identifier, action: :new}, target: '_blank' %></div>
+    <div><%# link_to t('views.supplier._supplier.add_product'), {controller: 'consumers_coop_plugin_product', profile: supplier.profile.identifier, action: :new}, target: '_blank' %></div>
   </div>
 </div>
 
