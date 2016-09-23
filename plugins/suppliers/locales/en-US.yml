@@ -184,6 +184,9 @@ en-US: &en-US
         deactivate: "Deactivate"
         ok: ok
         state: state
+        in_any_state: "In any state"
+        inactive: inactive
+        active: active
         complete_edition: "complete edition"
         fast_edition: "fast edition"
         showing: "Showing %{count} products"
@@ -311,7 +314,6 @@ en-US: &en-US
             own_product: "Create own product"
             or_from_a_supplier: 'or from a managed supplier:'
           index:
-            active: active
             add_product: "Create product"
             all_the_categories: "all the categories"
             all_the_suppliers: "all %{terms.supplier.article.plural}"
@@ -321,8 +323,6 @@ en-US: &en-US
             change: change
             default_margin_of_com: "Default margin of commercialization"
             default_margin_info: "This margin is automatically applied in all the products, but it is possible to stabilish specific margins for certain products."
-            in_any_state: "In any state"
-            inactive: inactive
             margin: "%{margin} %"
             no_margin_set: "no margin set"
             products: Products
