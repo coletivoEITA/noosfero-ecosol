@@ -1,3 +1,6 @@
+//= require ./views/items-table
+//= require ./views/item-quantity-price
+//= require ./views/item
 
 orders = {
 
