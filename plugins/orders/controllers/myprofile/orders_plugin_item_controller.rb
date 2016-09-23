@@ -10,7 +10,7 @@ class OrdersPluginItemController < MyProfileController
   def edit
     @consumer  = user
     @item      = hmvc_context::Item.find params[:id]
-    @order     = @item.order
+    @order     = @item.send(self.order_method)
 
     unless @order.may_edit? @consumer
       raise 'Order confirmed or cycle is closed for orders' unless @order.open?
