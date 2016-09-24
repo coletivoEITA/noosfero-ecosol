@@ -16,10 +16,7 @@ module OrdersPlugin
     attribute :remove_url
     attribute :update_url
 
-    has_one :product, serializer: ItemProductSerializer
-
     attribute :quantity_consumer_ordered_more_than_stored
-    attribute :quantity_consumer_ordered_less_than_minimum
 
     def flags
       quantity_price_data[:flags]
@@ -31,9 +28,6 @@ module OrdersPlugin
 
     def quantity_consumer_ordered_more_than_stored
       scope.instance_variable_get :@quantity_consumer_ordered_more_than_stored
-    end
-    def quantity_consumer_ordered_less_than_minimum
-      scope.instance_variable_get :@quantity_consumer_ordered_less_than_minimum
     end
 
     ##
