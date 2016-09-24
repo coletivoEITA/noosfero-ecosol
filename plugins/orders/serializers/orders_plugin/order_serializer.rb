@@ -18,6 +18,7 @@ module OrdersPlugin
     attribute :add_url
 
     def currency_unit
+      return unless scope.respond_to? :environment, true
       scope.send(:environment).currency_unit
     end
 

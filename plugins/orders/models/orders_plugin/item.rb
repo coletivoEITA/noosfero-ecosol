@@ -35,9 +35,9 @@ class OrdersPlugin::Item < ApplicationRecord
 
   serialize :data
 
-  belongs_to :order, class_name: '::OrdersPlugin::Order', foreign_key: :order_id, touch: true
-  belongs_to :sale, class_name: '::OrdersPlugin::Sale', foreign_key: :order_id, touch: true
-  belongs_to :purchase, class_name: '::OrdersPlugin::Purchase', foreign_key: :order_id, touch: true
+  belongs_to :order, class_name: '::OrdersPlugin::Order', foreign_key: :order_id, touch: true, inverse_of: :items
+  belongs_to :sale, class_name: '::OrdersPlugin::Sale', foreign_key: :order_id, touch: true, inverse_of: :items
+  belongs_to :purchase, class_name: '::OrdersPlugin::Purchase', foreign_key: :order_id, touch: true, inverse_of: :items
 
   belongs_to :product, class_name: '::ProductsPlugin::Product'
   has_one :supplier, through: :product
@@ -73,6 +73,8 @@ class OrdersPlugin::Item < ApplicationRecord
   before_save :step_status
   before_create :sync_fields
 
+  extend CurrencyHelper::ClassMethods
+
   # utility for other classes
   DefineTotals = proc do
     StatusDataMap.each do |status, data|
@@ -92,8 +94,8 @@ class OrdersPlugin::Item < ApplicationRecord
       has_currency "total_#{price}"
     end
   end
+  has_currency :status_quantity
 
-  extend CurrencyHelper::ClassMethods
   has_currency :price
   StatusDataMap.each do |status, data|
     quantity = "quantity_#{data}"

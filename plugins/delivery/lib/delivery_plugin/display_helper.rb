@@ -28,7 +28,7 @@ module DeliveryPlugin::DisplayHelper
       text = if cost.present? then "#{method.name} (#{cost})" else method.name end
       if method.id == selected
         method_text = content_tag 'div', text, class: 'method_name'
-        method_text += content_tag 'div', method.description, class: 'method_description'
+        method_text += content_tag 'div', method.description.html_safe, class: 'method_description'
         break
       end
     end
