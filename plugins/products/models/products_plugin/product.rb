@@ -76,7 +76,7 @@ module ProductsPlugin
     acts_as_having_settings field: :data
 
     # FIXME: transliterate input and name column
-    scope :name_like, -> (name) { where "name ILIKE ?", "%#{name}%" }
+    scope :name_like, -> (name) { where "products.name ILIKE ?", "%#{name}%" }
     scope :with_product_category_id, -> (id) { where product_category_id: id }
 
     scope :by_profile, -> (profile) { where profile_id: profile.id }
