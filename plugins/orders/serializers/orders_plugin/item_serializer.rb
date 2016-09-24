@@ -8,6 +8,7 @@ module OrdersPlugin
 
     attribute :price
     attribute :status_quantity
+    attribute :status_quantity_localized
 
     attribute :status
     attribute :flags
