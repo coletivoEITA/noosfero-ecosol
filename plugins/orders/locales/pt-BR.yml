@@ -200,6 +200,7 @@ pt-BR: &pt-BR
           quantity: "qtd"
           price_total: "valor (%{currency})"
           status: "etapa"
+          info_about_delivery: "Informações sobre a forma de entrega/coleta escolhida"
 
       message:
         _fields:

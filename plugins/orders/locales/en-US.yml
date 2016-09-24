@@ -199,6 +199,7 @@ en-US: &en-US
           quantity: "qty"
           price_total: "value (%{currency})"
           status: "status"
+          info_about_delivery: "Informations about the chosen delivery/pickup method"
 
       message:
         _fields:
