@@ -198,9 +198,10 @@ pt-BR: &pt-BR
           supplier: 'fornecedor'
           product: "produto"
           quantity: "qtd"
-          price_total: "valor (%{currency})"
+          price_total: "valor (R$)"
           status: "etapa"
           info_about_delivery: "Informações sobre a forma de entrega/coleta escolhida"
+          address_completion: "Complemento do endereço"
 
       message:
         _fields:
@@ -249,7 +250,7 @@ pt-BR: &pt-BR
           code: "código"
           last_update: "últ. atualização"
           order_date: "data do pedido"
-          total: "total (%{currency})"
+          total: "total (R$)"
           situation: "situação"
           none_selected: "Nenhum pedido selecionado"
         _edit:

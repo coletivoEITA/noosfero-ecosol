@@ -197,9 +197,10 @@ en-US: &en-US
           supplier: "%{terms.supplier.singular}"
           product: "product"
           quantity: "qty"
-          price_total: "value (%{currency})"
+          price_total: "value (U$)"
           status: "status"
           info_about_delivery: "Informations about the chosen delivery/pickup method"
+          address_completion: "Address Completion"
 
       message:
         _fields:
@@ -248,7 +249,7 @@ en-US: &en-US
           consumer: "consumer"
           last_update: "last update"
           order_date: "orders' date"
-          total: "total (%{currency})"
+          total: "total (U$)"
           situation: "situation"
           none_selected: "Any order selected"
         _edit:
