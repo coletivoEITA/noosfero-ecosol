@@ -28,11 +28,9 @@ class OrdersPluginItemController < MyProfileController
   end
 
   def destroy
-    @item = hmvc_context::Item.find params[:id]
-    @product = @item.product
-    @order = @item.send self.order_method
-
-    @item.destroy
+    item = hmvc_context::Item.find params[:id]
+    @offered_product = item.offered_product
+    item.destroy
   end
 
   protected
