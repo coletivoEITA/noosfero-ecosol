@@ -60,7 +60,6 @@ class OrdersPluginItemController < MyProfileController
     if @quantity_consumer_ordered <= 0 && @item
       @quantity_consumer_ordered = nil
       destroy
-      render action: :destroy
     end
 
     @quantity_consumer_ordered
