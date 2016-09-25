@@ -41,11 +41,12 @@ order-item-quantity-price
 
       setTimeout(function(run_at, type) {
         if (self.run_at == run_at && type == self.event_type)
-        self.quantityUpdate(input.value)
+        self.quantityUpdate(input)
       }, 500, this.run_at, event.type);
     }
 
-    quantityUpdate(value) {
+    quantityUpdate(input) {
+      var value = input.value
       var data = {item: {}}
       data.item['quantity_'+this.status.field] = value
 
