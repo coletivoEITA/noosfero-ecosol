@@ -202,6 +202,8 @@ product-page
           }
         }
         if (available) {
+          if (this.products[i].available == null)
+            this.products[i].available = false
           if (this.products[i].available.toString() != available) {
             this.products[i].selected = false
             continue
