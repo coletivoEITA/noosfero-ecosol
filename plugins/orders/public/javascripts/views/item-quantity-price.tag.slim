@@ -41,15 +41,29 @@ order-item-quantity-price
 
       setTimeout(function(run_at, type) {
         if (self.run_at == run_at && type == self.event_type)
-        self.quantityUpdate(input.value)
+        self.quantityUpdate(input)
       }, 500, this.run_at, event.type);
     }
 
-    quantityUpdate(value) {
+    quantityUpdate(input) {
+      var value = input.value
       var data = {item: {}}
       data.item['quantity_'+this.status.field] = value
+      if (value == 0) {
+        var index = this.parent.order.items.indexOf(this.item)
+        this.order.items.splice(index,1)
+        var products = $(".order-cycle-product input:checked")
+        products[index].checked = ""
+        products.eq(index).parents('.order-cycle-product').removeClass("in-order")
+      }
 
       $.post(this.item.update_url, data, function (order) {
+        // force input value updating as browsers seem to ignore it cursor is over input
+        for (var i in order.items) {
+          p = order.items[i]
+          if (p.quantity_consumer_ordered_more_than_stored)
+            $('#item-'+p.id).find('input')[0].value = p.status_quantity
+        }
         var orderTag = this.parent.parent
         orderTag.updateOrder(order)
       }.bind(this))

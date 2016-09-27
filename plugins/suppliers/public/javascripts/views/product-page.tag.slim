@@ -100,11 +100,13 @@ product-page
           this.products.push(opts.products[i])
       this.count = this.products.length
 
+      this.filter_category = opts.filter.category
       if (this.categories == undefined)
         this.categories = opts.categories
       else
         _.merge(this.categories,opts.categories)
 
+      this.filter_supplier = opts.filter.supplier
       if (this.suppliers == undefined)
         this.suppliers = opts.suppliers
       else
@@ -114,9 +116,10 @@ product-page
         this.units = opts.units
       else
         _.merge(this.units,opts.units)
-    }
 
+    }
     this.loadOpts(opts)
+
     
     massAction(e) {
      if (this.mass_action_select.value == 'activate') {
@@ -199,6 +202,8 @@ product-page
           }
         }
         if (available) {
+          if (this.products[i].available == null)
+            this.products[i].available = false
           if (this.products[i].available.toString() != available) {
             this.products[i].selected = false
             continue
@@ -282,3 +287,7 @@ product-page
       }
       this.completeEdition(product, {update: function(){}, product: {}})
     }
+
+    this.on('mount', function() {
+      this.theRealSearch()
+    })

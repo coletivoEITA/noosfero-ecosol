@@ -2,6 +2,7 @@ module SuppliersPlugin
   class ProductPageSerializer < ApplicationSerializer
 
     attribute :default_margin_percentage
+    has_one :filter
 
     has_many :products
     has_many :units
@@ -33,7 +34,7 @@ module SuppliersPlugin
       params[:available] ||= 'true'
 
       # FIXME: joins(:from_products) is hiding own products (except baskets)
-      SuppliersPlugin::BaseProduct.search_scope(profile.products, params)
+      profile.products
         .unarchived
         .supplied
         .joins(:from_products, :suppliers)
@@ -56,6 +57,15 @@ module SuppliersPlugin
       profile.environment.units.map do |unit|
         {name: unit.singular, id: unit.id}
       end
+    end
+
+    def filter
+      {
+        supplier:instance_options[:supplier_id],
+        category:instance_options[:category],
+        unit:instance_options[:unit_id],
+        name:instance_options[:name],
+      }
     end
 
     protected

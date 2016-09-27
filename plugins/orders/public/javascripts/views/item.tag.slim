@@ -55,7 +55,12 @@ order-item id='{item.id}'
       return false
     }
     userRemove() {
-      $.post(this.item.remove_url)
+      var self = this
+      $.post(this.item.remove_url, function(data) {
+        var index = self.parent.order.items.indexOf(self.item)
+        self.parent.order.items.splice(index, 1)
+        self.parent.update()
+      })
 
       return false
     }

@@ -101,6 +101,7 @@ en-US: &en-US
           order_removed: "Order removed"
           please_login_first: "Please login first"
           you_are_not_the_owner: "You are not the owner of this order"
+          delivery_method: "Delivery or pickup method"
       myprofile:
         admin:
           orders_report: "Orders' Report - %{date} - %{profile_identifier} - %{name}.xlsx"
@@ -198,8 +199,10 @@ en-US: &en-US
           supplier: "%{terms.supplier.singular}"
           product: "product"
           quantity: "qty"
-          price_total: "value (%{currency})"
+          price_total: "value (U$)"
           status: "status"
+          info_about_delivery: "Informations about the chosen delivery/pickup method"
+          address_completion: "Address Completion"
 
       message:
         _fields:
@@ -253,7 +256,7 @@ en-US: &en-US
           consumer: "consumer"
           last_update: "last update"
           order_date: "orders' date"
-          total: "total (%{currency})"
+          total: "total (U$)"
           situation: "situation"
           none_selected: "Any order selected"
         _edit:

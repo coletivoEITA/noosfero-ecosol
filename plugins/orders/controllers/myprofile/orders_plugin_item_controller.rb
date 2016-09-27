@@ -10,7 +10,7 @@ class OrdersPluginItemController < MyProfileController
   def edit
     @consumer  = user
     @item      = hmvc_context::Item.find params[:id]
-    @order     = @item.order
+    @order     = @item.send(self.order_method)
 
     unless @order.may_edit? @consumer
       raise 'Order confirmed or cycle is closed for orders' unless @order.open?
@@ -28,11 +28,9 @@ class OrdersPluginItemController < MyProfileController
   end
 
   def destroy
-    @item = hmvc_context::Item.find params[:id]
-    @product = @item.product
-    @order = @item.send self.order_method
-
-    @item.destroy
+    item = hmvc_context::Item.find params[:id]
+    @offered_product = item.offered_product
+    item.destroy
   end
 
   protected
@@ -62,7 +60,6 @@ class OrdersPluginItemController < MyProfileController
     if @quantity_consumer_ordered <= 0 && @item
       @quantity_consumer_ordered = nil
       destroy
-      render action: :destroy
     end
 
     @quantity_consumer_ordered

@@ -102,6 +102,7 @@ pt-BR: &pt-BR
           order_removed: "Pedido removido"
           please_login_first: "Please login first"
           you_are_not_the_owner: "Você não é o autor desse pedido"
+          delivery_method: "Forma de entrega ou coleta"
       myprofile:
         admin:
           orders_report: "Relatório de pedidos - %{date} - %{profile_identifier} - %{name}.xlsx"
@@ -199,8 +200,10 @@ pt-BR: &pt-BR
           supplier: 'fornecedor'
           product: "produto"
           quantity: "qtd"
-          price_total: "valor (%{currency})"
+          price_total: "valor (R$)"
           status: "etapa"
+          info_about_delivery: "Informações sobre a forma de entrega/coleta escolhida"
+          address_completion: "Complemento do endereço"
 
       message:
         _fields:
@@ -254,7 +257,7 @@ pt-BR: &pt-BR
           code: "código"
           last_update: "últ. atualização"
           order_date: "data do pedido"
-          total: "total (%{currency})"
+          total: "total (R$)"
           situation: "situação"
           none_selected: "Nenhum pedido selecionado"
         _edit:

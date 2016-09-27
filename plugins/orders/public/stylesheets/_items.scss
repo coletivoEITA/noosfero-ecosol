@@ -104,6 +104,13 @@
 
     .item {
 
+      .distribution-error-message {
+        background-color: rgba(255,255,255,0.3);
+        color: red;
+        padding: 4px;
+        font-size: 11px;
+      }
+
       &.product-unavailable {
         .product, .quantity, .price-total {
           text-decoration: line-through;

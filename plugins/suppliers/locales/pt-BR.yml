@@ -190,6 +190,9 @@ pt-BR: &pt-BR
         deactivate: "desativar produtos"
         ok: ok
         state: Estado
+        in_any_state: "Em qualquer estado"
+        inactive: inativa
+        active: ativa
         complete_edition: "edição completa"
         fast_edition: "edição rápida"
         showing: "Mostrando %{count} produtos"
@@ -317,7 +320,6 @@ pt-BR: &pt-BR
             own_product: "Criar produto próprio"
             or_from_a_supplier: 'ou de um fornecedor gerido pelo coletivo:'
           index:
-            active: ativa
             add_product: "Criar produto"
             all_the_categories: "Todas as categorias"
             all_the_suppliers: "todos %{terms.supplier.article.plural}"
@@ -326,6 +328,11 @@ pt-BR: &pt-BR
             bigger_than_the_stock: "maior do que o estoque"
             in_any_state: "Em qualquer estado"
             inactive: inativa
+            change: mudar
+            default_margin_of_com: "Margem padrão de comercialização"
+            default_margin_info: "Esta margem é automaticamente aplicada em todos os produtos, mas é possível estabelecer margens específicas para certos produtos."
+            margin: "%{margin} %"
+            no_margin_set: "Sem margem definida"
             products: Produtos
             supplier: "%{terms.supplier.singular.capitalize}"
             info: "Esta é a lista de produtos %{terms.profile.from_which_article.singular} distribui."

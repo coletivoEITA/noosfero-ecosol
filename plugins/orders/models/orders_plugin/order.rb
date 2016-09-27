@@ -50,7 +50,7 @@ class OrdersPlugin::Order < ApplicationRecord
 
   belongs_to :session, primary_key: :session_id, foreign_key: :session_id, class_name: 'Session'
 
-  has_many :items, -> { order 'name ASC' }, class_name: 'OrdersPlugin::Item', foreign_key: :order_id, dependent: :destroy
+  has_many :items, -> { order 'name ASC' }, class_name: 'OrdersPlugin::Item', foreign_key: :order_id, dependent: :destroy, inverse_of: :order
   has_many :products, through: :items
 
   belongs_to :supplier_delivery, class_name: 'DeliveryPlugin::Method'

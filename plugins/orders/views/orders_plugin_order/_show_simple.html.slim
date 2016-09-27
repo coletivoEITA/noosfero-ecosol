@@ -1,12 +1,50 @@
 - actor_name ||= :consumer
 - other_actor_name = if actor_name == :supplier then :consumer else :supplier end
-- @view = true
 
-.order-view id="order-#{order.id}"
-  = form_for order, as: :order, url: '', html: {onsubmit: 'return false'} do |f|
-    .order-data
-      = render "orders_plugin_item/index", order: order, actor_name: actor_name
-      = render 'orders_plugin_order/delivery', order: order, actor_name: actor_name, edition: false, f: f
+.order-view id="order-#{@order.id}"
+  table
+    thead
+      th= t('views.item._index.supplier')
+      th= t('views.item._index.product')
+      th= t('views.item._index.quantity')
+      th= t('views.item._index.price_total')
+    tbody
+      - @order.items.each do |item|
+        tr
+          td= item.supplier.present? ? item.supplier.name : item.supplier_name
+          td= item.name
+          td= item.status_quantity_localized
+          td= item.price_as_currency_number
 
-javascript:
-  orders.setOrderMaxHeight()
+      div.order-delivery-select
+        h3
+          = t('views.item._index.info_about_delivery')
+        div.supplier-delivery-data
+          - if @order.delivery_methods.size > 0
+            = supplier_delivery_selected_method(methods: @order.delivery_methods, selected: @order.supplier_delivery_id)
+
+        / do not render on confirmation if supplier_delivery is pickup
+        - if @order.supplier_delivery_data[:delivery_type] != 'pickup'
+          div.consumer-delivery-data
+            p
+              span= _('Address (street and number)')
+              span= consumer_delivery_field_value(@order, :address)
+            p
+              span= t('views.item._index.address_completion')
+              span=  consumer_delivery_field_value(@order, :address_line2)
+            p
+              span= _('Address reference')
+              span=  consumer_delivery_field_value(@order, :address_reference)
+            p
+              span= _('District')
+              span=  consumer_delivery_field_value(@order, :district)
+            p
+              span= _('City')
+              span=  consumer_delivery_field_value(@order, :city)
+            p
+              span= _('State')
+              span=  consumer_delivery_field_value(@order, :state)
+            p
+              span= _('ZIP code')
+              span=  consumer_delivery_field_value(@order, :zip_code)
+

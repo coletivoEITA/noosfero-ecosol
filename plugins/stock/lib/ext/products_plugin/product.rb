@@ -8,7 +8,7 @@ module ProductsPlugin
     has_many :stock_allocations, class_name: 'StockPlugin::Allocation'
     has_many :stock_places, through: :stock_allocations, source: :place
 
-    scope :in_stock, -> {where("products.use_stock is ? or (products.stored > 0)", nil)}
+    scope :in_stock, -> {where("products.use_stock is ? or products.use_stock = ? or (products.stored > 0)", nil, false)}
 
     extend CurrencyHelper::ClassMethods
     has_number_with_locale :stored
