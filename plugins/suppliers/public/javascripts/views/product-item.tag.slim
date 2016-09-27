@@ -70,9 +70,10 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
 
     getUnit() {
       for (var i in this.parent.units) {
-        if (this.product.unit_id == this.parent.units[i].id)
+        if (this.product.unit_id == this.parent.units[i].id) {
           this.product.unit = this.parent.units[i].name
           return
+        }
       }
     }
     this.getUnit();
