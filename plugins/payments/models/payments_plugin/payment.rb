@@ -1,11 +1,11 @@
 class PaymentsPlugin::Payment < ApplicationRecord
-  attr_accessible :orders_plugin_order_id, :profile_id, :payment_type_id, :operator_id, :value, :description
+  attr_accessible :orders_plugin_order_id, :profile_id, :payment_method_id, :operator_id, :value, :description
 
   # ASSOCIATIONS
   belongs_to :order
   belongs_to :profile
   belongs_to :operator, class_name: "Profile"
-  belongs_to :payment_type
+  belongs_to :payment_method
 
 
   # FINANCIAL CALLBACKS
