@@ -59,6 +59,10 @@ en-US: &en-US
           default_margin_info: "This margin is automatically applied in all the products, but it is possible to stabilish specific margins for certain products."
           margin: "%{margin} %"
           no_margin_set: "no margin set"
+          payments: "Payments"
+          enable_payments: "enable payments in the cycles?"
+          set_payments: "Configure the collective payment methods"
+          add_payment_method: "Add available payment method"
 
 en_US:
   <<: *en-US

@@ -15,6 +15,9 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
   end
 
   def settings
+    if defined? PaymentsPlugin
+      @payment_methods = PaymentsPlugin::PaymentMethod.all_in_a_list
+    end
     if params[:commit]
       params[:profile_data][:consumers_coop_settings][:enabled] = params[:profile_data][:consumers_coop_settings][:enabled] == 'true' rescue false
       params[:profile_data][:volunteers_settings][:cycle_volunteers_enabled] = params[:profile_data][:volunteers_settings][:cycle_volunteers_enabled] == '1' rescue false

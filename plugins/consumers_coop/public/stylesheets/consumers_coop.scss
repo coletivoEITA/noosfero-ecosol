@@ -190,4 +190,25 @@ body.consumers-coop-enable {
   .products-margin {
     margin-bottom: 20px;
   }
+  #payment_methods {
+    margin-bottom: 10px;
+  }
+  .chosen_payment_methods {
+    margin-bottom: 20px;
+
+    span {
+      font-weight: bold;
+      color: white;
+      background-color: #c4be66;
+      padding: 5px;
+      border-radius: 5px;
+      margin: 5px;
+    }
+    span.remove {
+      content: "x";
+      padding-left: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  }
 }

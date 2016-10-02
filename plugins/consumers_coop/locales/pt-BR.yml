@@ -63,6 +63,10 @@ pt-BR: &pt-BR
           default_margin_info: "Esta margem é automaticamente aplicada em todos os produtos, mas é possível estabelecer margens específicas para certos produtos."
           margin: "%{margin} %"
           no_margin_set: "Sem margem definida"
+          payments: "Pagamentos"
+          enable_payments: "Habilitar pagamentos nas feiras?"
+          set_payments: "Configure os métodos de pagamento do grupo"
+          add_payment_method: "Adicionar método de pagamento disponível"
 
 pt_BR:
   <<: *pt-BR
