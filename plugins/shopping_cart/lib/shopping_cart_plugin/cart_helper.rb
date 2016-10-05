@@ -72,7 +72,7 @@ module ShoppingCartPlugin::CartHelper
   end
 
   def options_for_payment
-    options_for_select OrdersPlugin::Order::PaymentMethods.map{ |key, text| [text.call, key] }
+    options_for_select PaymentsPlugin::PaymentMethod.as_hash_n_translation.map{ |key, text| [text.call, key] }
   end
 
 end

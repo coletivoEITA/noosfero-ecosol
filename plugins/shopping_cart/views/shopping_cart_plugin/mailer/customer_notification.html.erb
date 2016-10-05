@@ -19,7 +19,8 @@
       <li><b><%= _('Phone number') %>: </b><%= @order.consumer_data[:contact_phone] %></li>
 
       <% if @order.payment_data[:method] %>
-        <li><b><%= _("Payment's method") %>: </b><%= _ OrdersPlugin::Order::PaymentMethods[@order.payment_data[:method].to_sym].call %></li>
+        <% pm = PaymentsPlugin::PaymentMethod.where(slug: @order.payment_data[:method]).first %>
+        <li><b><%= _("Payment's method") %>: </b><%= t("payments_plugin.models.payment_methods."+pm.slug) %></li>
         <% if @order.payment_data[:method] == 'money' %>
           <li><b><%= s_('shopping_cart|Change') %>: </b><%= @order.payment_data[:change] %></li>
         <% end %>
