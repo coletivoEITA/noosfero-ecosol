@@ -636,13 +636,17 @@
 .cycle-delivery-option {
   float: left;
   display: inline-block;
-  padding: 2px 5px;
+  padding: 5px;
   margin-right: 10px;
   background-color: #E5E0EC;
   border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   -o-border-radius: 4px;
+
+  a {
+    padding-left: 5px;
+  }
 }
 
 .action-orders_cycle_plugin_cycle-new #colorbox, .action-orders_cycle_plugin_cycle-edit #colorbox {
