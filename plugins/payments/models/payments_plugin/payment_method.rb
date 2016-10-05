@@ -5,7 +5,7 @@ class PaymentsPlugin::PaymentMethod < ApplicationRecord
   has_many :payments
   has_and_belongs_to_many :profiles
 
-  def self.all_in_a_list
-    all.map{|p| [p.name, p.id]}
+  def self.as_hash_n_translation
+    all.each_with_object({}){|pm,h| h[pm.slug.to_sym] = proc{ _(pm.name) } }
   end
 end

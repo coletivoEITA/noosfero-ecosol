@@ -1,0 +1,20 @@
+pt-BR: &pt-BR
+
+  payments_plugin:
+    models:
+      payment_methods:
+        money: "Dinheiro"
+        check: "Cheque"
+        credit_card: "Cartão de crédito"
+        debit_card: "Cartão de débito"
+        bank_transfer: "Transferência bancária"
+        boleto: "Boleto"
+        other: "Outro"
+
+
+
+pt_BR:
+  <<: *pt-BR
+pt:
+  <<: *pt-BR
+
