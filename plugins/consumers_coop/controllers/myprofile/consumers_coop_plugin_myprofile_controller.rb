@@ -16,7 +16,7 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
 
   def settings
     if defined? PaymentsPlugin
-      @payment_methods = PaymentsPlugin::PaymentMethod.all_in_a_list
+      @payment_methods = PaymentsPlugin::PaymentMethod.all.map{|p| [t("payments_plugin.models.payment_methods."+p.slug), p.id]}
     end
     if params[:commit]
       params[:profile_data][:consumers_coop_settings][:enabled] = params[:profile_data][:consumers_coop_settings][:enabled] == 'true' rescue false
