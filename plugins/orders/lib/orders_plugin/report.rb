@@ -116,7 +116,7 @@ module OrdersPlugin::Report
     report_file
   end
 
-  def report_orders_by_consumer orders
+  def report_orders_by_consumer orders, payment_methods
     p = Axlsx::Package.new
     wb = p.workbook
 
@@ -158,7 +158,7 @@ module OrdersPlugin::Report
         # sp = index of the start of the products list / ep = index of the end of the products list
         sp = sbs + 3
         productsEnd = ep = sp + order.items.count - 1
-        payment_method = _ OrdersPlugin::Order::PaymentMethods[order.payment_data[:method].to_sym].call rescue ''
+        payment_method = _ payment_methods[order.payment_data[:method]]
         sheet.add_row [order.created_at, order.updated_at, payment_method, order.supplier_delivery_data[:name], '', '','',''],
           style: [date, date, default, default]
         sbs += 1

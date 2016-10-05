@@ -8,15 +8,6 @@ class OrdersPlugin::Order < ApplicationRecord
   UserStatuses = ::OrdersPlugin::Item::UserStatuses
   StatusText = ::OrdersPlugin::Item::StatusText
 
-  # oh, we need a payments plugin!
-  PaymentMethods = {
-    money: proc{ _'Money' },
-    check: proc{ _'shopping_cart|Check' },
-    credit_card: proc{ _'Credit card' },
-    bank_transfer: proc{ _'Bank transfer' },
-    boleto: proc{ _'Boleto' },
-  }
-
   # remember to translate on changes
   ActorData = [
     :name, :email, :contact_phone,
