@@ -224,6 +224,9 @@ pt-BR: &pt-BR
         add_product: "Adicionar produto"
         adding_product: "Adicionando produto"
         import_products: "Importar produtos"
+        validation_error_product_category_id: "Erro de validação: Por favor preencher o campo Categoria"
+        validation_error_supplier_id: "Erro de validação: Por favor preencher o campo Fornecedor"
+        validation_error_name: "Erro de validação: Por favor preencher o campo Nome"
         import:
           action: "Importar planilha"
           help: "Formate sua planilha para que tenha exatamente os campos abaixo com cabeçalho. Depois, salve-a escolhendo o tipo de arquivo CSV (extensão .csv)."
