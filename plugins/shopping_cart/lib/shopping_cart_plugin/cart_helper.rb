@@ -71,8 +71,8 @@ module ShoppingCartPlugin::CartHelper
     number_to_currency value, options
   end
 
-  def options_for_payment
-    options_for_select PaymentsPlugin::PaymentMethod.as_hash_n_translation.map{ |key, text| [text.call, key] }
+  def options_for_payment selected=nil
+    options_for_select PaymentsPlugin::PaymentMethod.as_hash_n_translation.map{ |key, text| [text.call, key] }, selected
   end
 
 end

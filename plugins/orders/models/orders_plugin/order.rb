@@ -32,7 +32,8 @@ class OrdersPlugin::Order < ApplicationRecord
   }
 
   attr_accessible :status, :consumer, :profile,
-    :supplier_delivery_id, :consumer_delivery_id, :supplier_delivery_data, :consumer_delivery_data
+    :supplier_delivery_id, :consumer_delivery_id,
+    :supplier_delivery_data, :consumer_delivery_data, :payment_data
 
   belongs_to :profile
   # may be override by subclasses

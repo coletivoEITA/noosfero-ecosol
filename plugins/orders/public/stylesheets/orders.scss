@@ -181,6 +181,11 @@
     }
   }
 
+  .payment-edition {
+    border-top: 2*$border solid black;
+    padding: $padding;
+  }
+
   .order-section {
     border-top: 2*$border solid black;
     width: auto;

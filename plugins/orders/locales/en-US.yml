@@ -145,6 +145,7 @@ en-US: &en-US
         payment_data:
           method: "Method"
           change: "Change"
+          other_method: "Chosen method"
     helpers:
       help:
         hide: "hide help"
@@ -240,6 +241,10 @@ en-US: &en-US
         _actor_data:
           consumer_heading: "Data %{terms.consumer.from_article.singular}"
           supplier_heading: "Data %{terms.supplier.from_article.singular}"
+        _payment_edition:
+          choose_payment_method: "Escolha um método de pagamento"
+          other_method: "Define the method"
+          
       admin:
         reports:
           generate_spreadsheets: "Export spreadsheets"

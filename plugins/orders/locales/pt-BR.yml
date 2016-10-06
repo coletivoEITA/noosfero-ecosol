@@ -146,6 +146,7 @@ pt-BR: &pt-BR
         payment_data:
           method: "Método"
           change: "Troco"
+          other_method: "Método escolhido"
     helpers:
       help:
         hide: "esconder ajuda"
@@ -242,6 +243,10 @@ pt-BR: &pt-BR
         _actor_data:
           consumer_heading: "Dados %{terms.consumer.from_article.singular}"
           supplier_heading: "Dados %{terms.supplier.from_article.singular}"
+        _payment_edition:
+          choose_payment_method: "Escolha um método de pagamento"
+          other_method: "Defina o método"
+
       admin:
         reports:
           generate: "exportar planilhas"

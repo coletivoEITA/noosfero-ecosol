@@ -142,6 +142,20 @@ orders = {
       });
     },
   },
+
+  set_other_payment_method_field: function(ev) {
+    if (ev)
+      var target = ev.target
+    else
+      var target = $(".payment-edition select")[0]
+
+    if (target.value == 'other')
+      $("#order_payment_data_other_method").show()
+    else {
+      $("#order_payment_data_other_method").val('')
+      $("#order_payment_data_other_method").hide()
+    }
+  },
 };
 
 $(document).ready(orders.setOrderMaxHeight);
