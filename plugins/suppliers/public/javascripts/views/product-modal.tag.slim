@@ -182,6 +182,10 @@ product-modal.modal.fade tabindex="-1" role="dialog"
 
     save() {
       var self = this
+
+      if (!this.validate())
+        return
+
       var creating = (this.product.id == undefined)
       if (creating)
         var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'create'})
@@ -207,6 +211,20 @@ product-modal.modal.fade tabindex="-1" role="dialog"
           self.close();
         }
       );
+    }
+
+    validate() {
+      var keys = ['name', "supplier_id",'product_category_id']
+      
+      for (var i in keys) {
+        var input = this["p-"+keys[i]]
+        if (input.value == "" || input.value == "0") {
+          alert(this.t('views.product.validation_error_'+keys[i]))
+          $("product-modal").scrollTo(100,1000)
+          return false
+        }
+      }
+      return true
     }
 
     saveImage() {

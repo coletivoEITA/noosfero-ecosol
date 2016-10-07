@@ -218,6 +218,9 @@ en-US: &en-US
         add_product: "Add product"
         adding_product: "Adding product"
         import_products: "Import products"
+        validation_error_product_category_id: "Validation error: Please, fill the field Category"
+        validation_error_supplier_id: "Validation error: Please, fill the field Supplier"
+        validation_error_name: "Validation error: Please, fill the field Name"
         import:
           action: "Import spreadsheet"
           help: "Format your spreadsheet to have exactly the fields bellow with header. Then, save it choosing the CSV file type (.csv extension)."

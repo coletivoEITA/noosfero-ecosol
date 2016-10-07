@@ -3,7 +3,7 @@
   = pagination_links @products
 
   #result-count
-    small= t('views.cycle._product_lines.showing_pcount_produc') % {pcount: @products.length, allpcount: @cycle.products.count}
+    small= t('views.cycle._product_lines.showing_pcount_produc', pcount: @products.length, allpcount: @cycle.products.count)
 
   .table-header
     span.box-field.category= t('views.cycle._product_lines.category')

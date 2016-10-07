@@ -40,7 +40,7 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
   .supplier_price
     span show="{!product.edition}"
       |{product.supplier_price}
-    input type="text" value="{product.supplier_price}" name="supplier_price" show="{product.edition}" class='price' oninput="{updatePrice}"
+    input type="number" step="0.01" value="{product.supplier_price}" name="supplier_price" show="{product.edition}" class='price' oninput="{updatePrice}"
   .unit
     .unit_name show="{!product.edition}"
       |{product.unit}
