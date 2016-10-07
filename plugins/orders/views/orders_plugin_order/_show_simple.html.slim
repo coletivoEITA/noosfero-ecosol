@@ -48,3 +48,4 @@
               span= _('ZIP code')
               span=  consumer_delivery_field_value(@order, :zip_code)
 
+      = render "orders_plugin_order/payment", order: @order

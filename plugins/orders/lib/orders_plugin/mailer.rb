@@ -59,6 +59,22 @@ class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
       subject:  t('lib.mailer.order_was_confirmed') % {name: profile.name}
   end
 
+  def order_received order
+    profile = @profile = order.profile
+    self.environment = profile.environment
+    @order = order
+    @consumer = order.consumer
+
+    to       = if order.is_a? OrdersPlugin::Purchase then order.profile else order.consumer end
+    reply_to = if order.is_a? OrdersPlugin::Purchase then order.consumer else order.profile end
+
+    mail \
+      to:       profile_recipients(to),
+      from:     environment.noreply_email,
+      reply_to: profile_recipients(reply_to),
+      subject:  t('lib.mailer.order_was_received') % {name: profile.name}
+  end
+
   def order_cancellation order
     profile = @profile = order.profile
     self.environment   = profile.environment

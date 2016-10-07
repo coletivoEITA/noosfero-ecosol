@@ -449,6 +449,8 @@ class OrdersPlugin::Order < ApplicationRecord
       OrdersPlugin::Mailer.order_confirmation(self).deliver
     elsif self.status == 'cancelled' and self.status_was != 'cancelled'
       OrdersPlugin::Mailer.order_cancellation(self).deliver
+    elsif self.status == 'received' and self.status_was != 'received'
+      OrdersPlugin::Mailer.order_received(self).deliver
     end
   end
 
