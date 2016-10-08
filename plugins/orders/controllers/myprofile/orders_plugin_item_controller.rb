@@ -9,7 +9,13 @@ class OrdersPluginItemController < MyProfileController
 
   def edit
     @consumer  = user
-    @item      = hmvc_context::Item.find params[:id]
+    @item      = hmvc_context::Item.where id: params[:id]
+    if (@item.empty?)
+      render json: {notfound: true}.to_hash
+      return
+    else
+      @item = @item.first
+    end
     @order     = @item.send(self.order_method)
 
     unless @order.may_edit? @consumer
