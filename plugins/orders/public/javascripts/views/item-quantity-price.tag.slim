@@ -49,16 +49,18 @@ order-item-quantity-price
       var value = input.value
       var data = {item: {}}
       data.item['quantity_'+this.status.field] = value
-      if (value == 0) {
-        var index = this.parent.order.items.indexOf(this.item)
-        this.order.items.splice(index,1)
-        var products = $(".order-cycle-product input:checked")
-        products[index].checked = ""
-        products.eq(index).parents('.order-cycle-product').removeClass("in-order")
-      }
 
       $.post(this.item.update_url, data, function (order) {
-        // force input value updating as browsers seem to ignore it cursor is over input
+        if (value == 0 || order['notfound'] != undefined) {
+          var index = this.parent.order.items.indexOf(this.item)
+          this.order.items.splice(index,1)
+          var products = $(".order-cycle-product input:checked")
+          if (index >= products.length)
+            return
+          products[index].checked = ""
+          products.eq(index).parents('.order-cycle-product').removeClass("in-order")
+        }
+        // force input value updating as browsers seem to ignore it when input has focus
         for (var i in order.items) {
           p = order.items[i]
           if (p.quantity_consumer_ordered_more_than_stored)
