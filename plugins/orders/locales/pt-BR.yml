@@ -64,6 +64,7 @@ pt-BR: &pt-BR
         modified: modificado
         payment_method: forma de pagamento
         delivery_option: forma de entrega ou retirada
+        hub: Núcleo
 
         member_name: "Nome do(a) consumidor(a)"
         order_code: "Código do Pedido"

@@ -63,6 +63,7 @@ en-US: &en-US
         modified: modified
         payment_method: payment method
         delivery_option: delivery or pickup option
+        hub: Hub
 
         member_name: "Consumer name"
         min_stock: "min. stock"
