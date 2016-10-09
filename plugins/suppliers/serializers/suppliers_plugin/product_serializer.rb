@@ -3,6 +3,7 @@ module SuppliersPlugin
 
     attribute :id
     attribute :name
+    attribute :description
     attribute :supplier_id
     attribute :product_category_id
 
