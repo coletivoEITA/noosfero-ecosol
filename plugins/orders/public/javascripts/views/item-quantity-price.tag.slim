@@ -47,6 +47,10 @@ order-item-quantity-price
 
     quantityUpdate(input) {
       var value = input.value
+      // avoid recalling save when there's no change
+      if (parseInt(this.status.quantity).toFixed(2) == parseInt(input.value).toFixed(2)) {
+        return
+      }
       var data = {item: {}}
       data.item['quantity_'+this.status.field] = value
 
@@ -70,7 +74,7 @@ order-item-quantity-price
         }
         var orderTag = this.parent.parent
         orderTag.updateOrder(order)
-        display_notice(this.t('views.item._edit.saved")
+        display_notice(this.t('views.item._edit.saved'))
       }.bind(this))
 
       // keep up/down of number input work
