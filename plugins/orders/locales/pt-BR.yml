@@ -186,7 +186,8 @@ pt-BR: &pt-BR
           removed: 'removido'
           submit: 'OK'
           this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
-          ordered_more_than_in_stock: "A quantidade deste produto em estoque é menor do que foi pedido. A quantidade no seu pedido foi mudada para o máximo disponível no momento."
+          ordered_more_than_in_stock: "A quantidade do produto %{name} em estoque é menor do que foi pedido. A quantidade no seu pedido foi mudada para o máximo disponível no momento."
+          saved: "Salvo.."
 
         _add:
           label: 'Adiciona produto'
