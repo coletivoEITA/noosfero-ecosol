@@ -48,6 +48,9 @@ orders_cycle = {
       })
     },
 
+    reload_order_items: function(order) {
+      $('order-items-table')[0]._tag.updateOrder(order)
+    },
     product: {
       include_message: '',
       order_id: 0,
@@ -84,7 +87,7 @@ orders_cycle = {
         var state = !product.hasClass('in-order');
         if (state == true)
           this.add(id);
-        else
+        else 
           this.remove(id);
         product.find('input').get(0).checked = state;
       },
@@ -105,16 +108,16 @@ orders_cycle = {
 
         loading_overlay.show(product);
 
-        $.post(this.add_url, {order_id: this.order_id, redirect: this.redirect_after_include, offered_product_id: id}, function () {
-          loading_overlay.hide(product);
-        }, 'script');
+        $.post(this.add_url, {order_id: this.order_id, redirect: this.redirect_after_include, offered_product_id: id},
+          function () { loading_overlay.hide(product); }, 'script')
+          .always( function () { loading_overlay.hide(product); } );
       },
 
       remove: function (id) {
         var product = this.load(id, false);
 
         loading_overlay.show(product);
-        $.post(this.remove_url, {id: id, order_id: this.order_id}, function () {
+        $.post(this.remove_url, {id: id, order_id: this.order_id}, function (order) {
           loading_overlay.hide(product);
         }, 'script');
       },

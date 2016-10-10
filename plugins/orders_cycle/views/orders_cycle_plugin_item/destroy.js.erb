@@ -1,2 +1,10 @@
-orders_cycle.order.product.load(<%= @offered_product.id.to_json %>, false)
+try {
+  orders_cycle.order.product.load(<%= @offered_product.id.to_json %>, false)
+    <%# update order items table %>
+    <% serializer = OrdersPlugin::OrderSerializer.new @order.reload, scope: self, actor_name: :consumer %>
+    orders_cycle.order.reload_order_items(<%= serializer.to_json %>)
+} catch (err) {
+  alert("Bad news, something wrong happened. Reloading: "+err);
+  window.location.reload()
+}
 
