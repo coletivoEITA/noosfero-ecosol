@@ -56,9 +56,9 @@ class OrdersPluginItemController < MyProfileController
         @quantity_consumer_ordered_less_than_minimum = @item.id || true
       end
 
-      if defined? StockPlugin and @item.product.use_stock
-        if @quantity_consumer_ordered > @item.product.stored
-          @quantity_consumer_ordered = @item.product.stored
+      if defined? StockPlugin and @item.from_product.use_stock
+        if @quantity_consumer_ordered > @item.from_product.stored
+          @quantity_consumer_ordered = @item.from_product.stored
           @quantity_consumer_ordered_more_than_stored = @item.id || true
         end
       end
