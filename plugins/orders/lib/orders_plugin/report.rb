@@ -24,14 +24,14 @@ module OrdersPlugin::Report
     # create sheet and populates
     wb.add_worksheet(name: t('lib.report.products_report')) do |sheet|
 
-      sheet.add_row [t('lib.report.alert_formulas'),"","","","","","","","","",""], style: yellowcell
+      sheet.add_row [t('lib.report.alert_formulas'),"","","","","","","",""], style: yellowcell
       sheet.add_row [""]
       sheet.merge_cells "A1:K1"
       total_selled_sum = 0
       total_parcelled_sum = 0
       products_by_suppliers.each do |supplier, products|
         next if supplier.blank?
-        sheet.add_row [t('lib.report.supplier'),'',t('lib.report.phone'),'',t('lib.report.mail'),'','','','','',''], style: bluecell
+        sheet.add_row [t('lib.report.supplier'),'',t('lib.report.phone'),'',t('lib.report.mail'),'','','','',''], style: bluecell
         sheet.merge_cells "A#{sbs}:B#{sbs}"
 
         selled_sum = 0
@@ -46,7 +46,7 @@ module OrdersPlugin::Report
 
         sheet.add_row [
           t('lib.report.product_cod'), t('lib.report.product_name'), t('lib.report.qty_ordered'),
-          t('lib.report.stock_qtt'), t('lib.report.min_stock'), t('lib.report.qtt_to_be_parcelled'),t('lib.report.projected_stock'),
+          t('lib.report.stock_qtt'), t('lib.report.qtt_to_be_parcelled'),t('lib.report.projected_stock'),
           t('lib.report.un'), t('lib.report.price_un'), t('lib.report.selled_value'), t('lib.report.value_parcel')
         ], style: greencell
 
@@ -54,12 +54,12 @@ module OrdersPlugin::Report
         pl = sp
         products.each do |product|
 
-          stock_qty_formula = "=IF(C#{pl}-D#{pl}+E#{pl}>0, C#{pl}-D#{pl}+E#{pl},0)"
+          stock_qty_formula = "=IF(C#{pl}-D#{pl}>0, C#{pl}-D#{pl},0)"
           stock_qty_value = product.quantity_ordered
-          stock_formula = "=D#{pl}-C#{pl}+F#{pl}"
+          stock_formula = "=D#{pl}-C#{pl}"
           stock_value = 0
           unit = product.unit.singular rescue ''
-          total_price_formula = "=F#{pl}*I#{pl}"
+          total_price_formula = "=E#{pl}*H#{pl}"
           total_price_value = product.quantity_ordered * product.price rescue 0
 
           #FIXME: correct this calc for stock
@@ -67,13 +67,13 @@ module OrdersPlugin::Report
           parcelled_sum += total_price_value
 
           sheet.add_row [product.id, product.name, product.quantity_ordered,
-                         0, 0, stock_qty_formula, stock_formula,
+                         stock_value, stock_qty_formula, stock_formula,
                          unit, product.price, total_price_value, total_price_formula],
             style: [default,default,default,
                     default,default,default,default,
                     default,currency,currency,currency],
             formula_values: [nil,nil,nil,
-                             nil,nil,stock_qty_value,stock_value,
+                             nil,stock_qty_value,stock_value,
                              nil,nil,nil,total_price_value]
 
           pl +=1
@@ -82,11 +82,11 @@ module OrdersPlugin::Report
         total_selled_sum += selled_sum
         total_parcelled_sum += parcelled_sum
 
-        sheet.add_row [t('lib.report.total_selled_value'), '', "=SUM(J#{sp}:J#{ep})",
-                       t('lib.report.total_parcel_value'), '', "=SUM(k#{sp}:k#{ep})",
+        sheet.add_row [t('lib.report.total_selled_value'), '', "=SUM(I#{sp}:I#{ep})",
+                       t('lib.report.total_parcel_value'), '', "=SUM(J#{sp}:J#{ep})",
                        '', '', '', ''],
           formula_values: [nil,nil, selled_sum,
-                           nil,nil, parcelled_sum,
+                           nil, parcelled_sum,
                            nil,nil,nil, nil],
             style: [redcell,redcell,currency,
                     redcell,redcell,currency,
@@ -101,7 +101,7 @@ module OrdersPlugin::Report
 
       end
 
-      sheet.add_row [t('lib.report.selled_total'), "=SUM(J1:J1000)", t('lib.report.parcelled_total'), "=SUM(K1:K1000)"],
+      sheet.add_row [t('lib.report.selled_total'), "=SUM(I1:I1000)", t('lib.report.parcelled_total'), "=SUM(J1:J1000)"],
         style: [redcell, default, redcell, default],
         formula_values: [nil, total_selled_sum, nil,total_parcelled_sum]
 
