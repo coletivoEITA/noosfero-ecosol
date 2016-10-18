@@ -184,6 +184,8 @@ class OrdersPlugin::Order < ApplicationRecord
           products_by_supplier[supplier] << sp
           sp.quantity_ordered ||= 0
           sp.quantity_ordered += item.status_quantity * source_sp.quantity
+          sp.use_stock = item.offered_product.use_stock
+          sp.stored = item.offered_product.stored
         end
       else
         # the case where cycles and offered products are not involved, so item is linked directly to a Product

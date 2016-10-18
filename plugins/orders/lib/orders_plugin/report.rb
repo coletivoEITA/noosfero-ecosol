@@ -24,14 +24,14 @@ module OrdersPlugin::Report
     # create sheet and populates
     wb.add_worksheet(name: t('lib.report.products_report')) do |sheet|
 
-      sheet.add_row [t('lib.report.alert_formulas'),"","","","","","","",""], style: yellowcell
+      sheet.add_row [t('lib.report.alert_formulas'),"","","","","","",""], style: yellowcell
       sheet.add_row [""]
-      sheet.merge_cells "A1:K1"
+      sheet.merge_cells "A1:H1"
       total_selled_sum = 0
       total_parcelled_sum = 0
       products_by_suppliers.each do |supplier, products|
         next if supplier.blank?
-        sheet.add_row [t('lib.report.supplier'),'',t('lib.report.phone'),'',t('lib.report.mail'),'','','','',''], style: bluecell
+        sheet.add_row [t('lib.report.supplier'),'',t('lib.report.phone'),'',t('lib.report.mail'),'','',''], style: bluecell
         sheet.merge_cells "A#{sbs}:B#{sbs}"
 
         selled_sum = 0
@@ -39,27 +39,31 @@ module OrdersPlugin::Report
         # sp = index of the start of the products list / ep = index of the end of the products list
         sp = sbs + 3
         ep = sp + products.count - 1
-        sheet.add_row [supplier.abbreviation_or_name, '', supplier.profile.contact_phone, '',supplier.profile.contact_email, '', '', '', '', '', ''],
+        sheet.add_row [supplier.abbreviation_or_name, '', supplier.profile.contact_phone, '',supplier.profile.contact_email, '', '', '', ''],
           style: default
         sbe = sbs+1
         ["A#{sbe}:B#{sbe}","C#{sbe}:D#{sbe}", "E#{sbe}:F#{sbe}"].each{ |c| sheet.merge_cells c }
 
         sheet.add_row [
           t('lib.report.product_cod'), t('lib.report.product_name'), t('lib.report.qty_ordered'),
-          t('lib.report.stock_qtt'), t('lib.report.qtt_to_be_parcelled'),t('lib.report.projected_stock'),
-          t('lib.report.un'), t('lib.report.price_un'), t('lib.report.selled_value'), t('lib.report.value_parcel')
+          t('lib.report.stock_qtt'), t('lib.report.projected_stock'),
+          t('lib.report.un'), t('lib.report.price_un'), t('lib.report.selled_value')
         ], style: greencell
 
         # pl = product line
         pl = sp
         products.each do |product|
 
-          stock_qty_formula = "=IF(C#{pl}-D#{pl}>0, C#{pl}-D#{pl},0)"
-          stock_qty_value = product.quantity_ordered
           stock_formula = "=D#{pl}-C#{pl}"
-          stock_value = 0
+          if product.use_stock
+            stock_value = product.stored
+            stock_after = stock_value - product.quantity_ordered
+          else
+            stock_value = '-'
+            stock_after = '-'
+          end
+
           unit = product.unit.singular rescue ''
-          total_price_formula = "=E#{pl}*H#{pl}"
           total_price_value = product.quantity_ordered * product.price rescue 0
 
           #FIXME: correct this calc for stock
@@ -67,14 +71,14 @@ module OrdersPlugin::Report
           parcelled_sum += total_price_value
 
           sheet.add_row [product.id, product.name, product.quantity_ordered,
-                         stock_value, stock_qty_formula, stock_formula,
-                         unit, product.price, total_price_value, total_price_formula],
+                         stock_value, stock_formula,
+                         unit, product.price, total_price_value],
             style: [default,default,default,
-                    default,default,default,default,
-                    default,currency,currency,currency],
+                    default,default,default,
+                    default,currency,currency],
             formula_values: [nil,nil,nil,
-                             nil,stock_qty_value,stock_value,
-                             nil,nil,nil,total_price_value]
+                             nil,stock_after,
+                             nil,nil,nil]
 
           pl +=1
         end
@@ -82,14 +86,10 @@ module OrdersPlugin::Report
         total_selled_sum += selled_sum
         total_parcelled_sum += parcelled_sum
 
-        sheet.add_row [t('lib.report.total_selled_value'), '', "=SUM(I#{sp}:I#{ep})",
-                       t('lib.report.total_parcel_value'), '', "=SUM(J#{sp}:J#{ep})",
-                       '', '', '', ''],
+        sheet.add_row [t('lib.report.total_selled_value'), '', "=SUM(H#{sp}:H#{ep})", '', '', '', ''],
           formula_values: [nil,nil, selled_sum,
-                           nil, parcelled_sum,
                            nil,nil,nil, nil],
-            style: [redcell,redcell,currency,
-                    redcell,redcell,currency,
+            style: [redcell,redcell,currency, default,
                     default,default,default, default]
 
         row = ep+1
@@ -101,9 +101,9 @@ module OrdersPlugin::Report
 
       end
 
-      sheet.add_row [t('lib.report.selled_total'), "=SUM(I1:I1000)", t('lib.report.parcelled_total'), "=SUM(J1:J1000)"],
-        style: [redcell, default, redcell, default],
-        formula_values: [nil, total_selled_sum, nil,total_parcelled_sum]
+      sheet.add_row [t('lib.report.selled_total'), "=SUM(H1:H1000)"],
+        style: [redcell, default],
+        formula_values: [nil, total_selled_sum]
 
       sheet.column_widths 11,29,13,10,12,12,12,10,10,14,14
 
