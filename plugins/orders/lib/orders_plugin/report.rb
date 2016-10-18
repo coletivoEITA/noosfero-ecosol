@@ -54,13 +54,14 @@ module OrdersPlugin::Report
         pl = sp
         products.each do |product|
 
-          stock_formula = "=D#{pl}-C#{pl}"
           if product.use_stock
             stock_value = product.stored
             stock_after = stock_value - product.quantity_ordered
+            stock_formula = "=D#{pl}-C#{pl}"
           else
             stock_value = '-'
             stock_after = '-'
+            stock_formula = '-'
           end
 
           unit = product.unit.singular rescue ''
