@@ -53,5 +53,4 @@ features/plugins/*
 
 plugins/avaliacoes/config/database.yml
 plugins/fb_app/config.yml
-config/solr.yml
 /solr
