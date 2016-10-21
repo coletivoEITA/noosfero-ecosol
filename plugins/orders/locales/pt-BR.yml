@@ -75,12 +75,12 @@ pt-BR: &pt-BR
         product_cod: "Cód. produto"
         product_name: "nome do produto"
         products_report: "relatório de produtos"
-        projected_stock: "estoque projetado"
+        projected_stock: "estoque depois"
         qtt_to_be_parcelled: "qtd a ser encomendada"
         qty_ordered: "qtd pedida"
         selled_total: "Total vendido"
         selled_value: "Valor vendido"
-        stock_qtt: "qtd estoque"
+        stock_qtt: "estoque antes"
         supplier: "%{terms.supplier.singular.capitalize}"
         total_parcel_value: "Valor total usando estoque"
         total_selled_value: "Valor total vendido"
@@ -185,12 +185,14 @@ pt-BR: &pt-BR
           total: Total
 
       item:
+        no_stock: "Este produto não está mais em estoque"
         _edit:
           remove_from_order: "Remover do pedido"
           removed: 'removido'
           submit: 'OK'
           this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
-          ordered_more_than_in_stock: "A quantidade deste produto em estoque é menor do que foi pedido. A quantidade no seu pedido foi mudada para o máximo disponível no momento."
+          ordered_more_than_in_stock: "A quantidade do produto %{name} em estoque é menor do que foi pedido. A quantidade no seu pedido foi mudada para o máximo disponível no momento."
+          saved: "Salvo.."
 
         _add:
           label: 'Adiciona produto'

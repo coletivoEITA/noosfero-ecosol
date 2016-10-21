@@ -3,7 +3,7 @@ order-item id='{item.id}'
   .item.value-row id='item-{item.id}' class="{'product-unavailable': item.flags.unavailable, edit: this.isOpen}" onclick='{open}'
 
     .distribution-error-message if='{item.quantity_consumer_ordered_more_than_stored && item.quantity_consumer_ordered_more_than_stored == item.id}'
-      '{t('views.item._edit.ordered_more_than_in_stock')}
+      '{t('views.item._edit.ordered_more_than_in_stock', {name: this.item.name})}
     .distribution-error-message if='{item.quantity_consumer_ordered_less_than_minimum && item.quantity_consumer_ordered_less_than_minimum == item.id}'
       '{t('views.item._edit.this_product_requires', {value: this.product.minimum_selleable_localized})}
 

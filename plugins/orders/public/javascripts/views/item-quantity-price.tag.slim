@@ -41,12 +41,16 @@ order-item-quantity-price
 
       setTimeout(function(run_at, type) {
         if (self.run_at == run_at && type == self.event_type)
-        self.quantityUpdate(input)
+          self.quantityUpdate(input)
       }, 500, this.run_at, event.type);
     }
 
     quantityUpdate(input) {
       var value = input.value
+      // avoid recalling save when there's no change
+      if (parseInt(this.status.quantity).toFixed(2) == parseInt(input.value).toFixed(2)) {
+        return
+      }
       var data = {item: {}}
       data.item['quantity_'+this.status.field] = value
 
@@ -63,11 +67,14 @@ order-item-quantity-price
         // force input value updating as browsers seem to ignore it when input has focus
         for (var i in order.items) {
           p = order.items[i]
-          if (p.quantity_consumer_ordered_more_than_stored)
+          if (p.quantity_consumer_ordered_more_than_stored && p.quantity_consumer_ordered_more_than_stored == p.id) {
+            alert(this.t('views.item._edit.ordered_more_than_in_stock', {name: p.name}))
             $('#item-'+p.id).find('input')[0].value = p.status_quantity
+          }
         }
         var orderTag = this.parent.parent
         orderTag.updateOrder(order)
+        display_notice(this.t('views.item._edit.saved'))
       }.bind(this))
 
       // keep up/down of number input work

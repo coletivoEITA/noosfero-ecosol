@@ -1,7 +1,7 @@
 class StockPlugin::Allocation < ActiveRecord::Base
 
   belongs_to :place, :class_name => 'StockPlugin::Place'
-  belongs_to :product, :class_name => 'ProductPlugin::Product'
+  belongs_to :product, :class_name => 'ProductsPlugin::Product'
 
   validates_presence_of :place
   validates_presence_of :product
@@ -21,8 +21,12 @@ class StockPlugin::Allocation < ActiveRecord::Base
   end
 
   def check_place
-    if self.place.nil? && self.product && self.product.stock_places.count == 0
-      self.place = StockPlugin::Place.create! profile_id: self.product.profile_id, name: 'default', description: 'default place'
+    if self.place.nil?
+      if self.product && self.product.profile.stock_places.count == 0
+        self.place = StockPlugin::Place.create! profile_id: self.product.profile_id, name: 'default', description: 'default place'
+      else
+        self.place = self.product.profile.stock_places.first
+      end
     end
   end
 end

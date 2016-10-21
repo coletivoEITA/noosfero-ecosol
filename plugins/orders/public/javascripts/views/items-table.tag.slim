@@ -33,6 +33,12 @@ order-items-table
     this.t = window.orders.t
 
     updateOrder(order) {
+      var newL = order.items.length
+      var oldL = this.order.items.length
+      if (newL < oldL) {
+        this.order.items.splice(newL - 1, oldL - newL)
+      }
+
       _.merge(this.order, order)
       this.update()
     }

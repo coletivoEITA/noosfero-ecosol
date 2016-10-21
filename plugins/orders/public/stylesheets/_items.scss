@@ -105,10 +105,10 @@
     .item {
 
       .distribution-error-message {
-        background-color: rgba(255,255,255,0.3);
+        border-top: 1px solid black;
         color: red;
-        padding: 4px;
-        font-size: 11px;
+        padding: 8px;
+        font-size: 12px;
       }
 
       &.product-unavailable {
