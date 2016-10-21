@@ -111,10 +111,10 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
     scope = scope.where(consumer_id: @hub.consumer_profiles) if @hub
 
     # specifics
-    if params[:suppliers].present?
+    if params.include? :supplier
       report_file = report_products_by_supplier @cycle.supplier_products_by_suppliers(scope)
       file_str = 'controllers.myprofile.admin.products_report'
-    else params[:consumers].present?
+    else
       report_file = report_orders_by_consumer scope, profile.payment_methods_list
       file_str = 'controllers.myprofile.admin.orders_report'
     end
