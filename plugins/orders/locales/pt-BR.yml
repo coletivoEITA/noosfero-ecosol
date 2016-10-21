@@ -60,10 +60,10 @@ pt-BR: &pt-BR
         price_unit: "%{price}%{unit}"
       report:
         closed_orders: "Pedidos fechados"
-        created: criado
-        modified: modificado
-        payment_method: forma de pagamento
-        delivery_option: forma de entrega ou retirada
+        created: Criado
+        modified: Modificado
+        payment_method: Forma de pagamento
+        delivery_option: Forma de entrega ou retirada
         hub: Núcleo
 
         member_name: "Nome do(a) consumidor(a)"

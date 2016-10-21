@@ -19,6 +19,10 @@ class SuppliersPlugin::Consumer < SuppliersPlugin::Supplier
     self['description'] = value
   end
 
+  def hub_name
+    self.hub.nil? ? '' : self.hub.name
+  end
+
   def sync_profile profile=nil
     profile = self.profile if profile.nil?
     return if profile.community?

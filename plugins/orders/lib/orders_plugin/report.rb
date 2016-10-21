@@ -159,9 +159,12 @@ module OrdersPlugin::Report
         # sp = index of the start of the products list / ep = index of the end of the products list
         sp = sbs + 3
         productsEnd = ep = sp + order.items.count - 1
-        payment_method = t("payments_plugin.models.payment_methods."+payment_methods[order.payment_data[:method]])
-        sheet.add_row [payment_method, order.supplier_delivery_data[:name], '', '','','',order.created_at, order.updated_at],
-          style: [date, date, default, default]
+
+        payment_method = order.payment_data[:method]
+        payment_method = payment_method.nil? ? '' : t("payments_plugin.models.payment_methods."+payment_method)
+
+        sheet.add_row [payment_method, order.suppliers_consumer.hub_name, order.supplier_delivery_data[:name], '','',order.created_at, order.updated_at],
+          style: [default, default, default, default, default, date, date]
         sbs += 1
         sheet.add_row [t('lib.report.product_cod'), t('lib.report.supplier'), t('lib.report.product_name'),
                        t('lib.report.qty_ordered'),t('lib.report.un'),t('lib.report.price_un'), t('lib.report.value')], style: greencell
@@ -172,7 +175,7 @@ module OrdersPlugin::Report
         order.items.each do |item|
 
           formula_value = item.price * item.status_quantity rescue 0
-          formula_value_s = CurrencyHelper.localized_number(formula_value)
+          formula_value_s = CurrencyHelper.number_as_currency_number(formula_value)
           unit = item.product.unit.singular rescue ''
 
           # for the case in which the item is aggregated by other products we chose to use the item idhave to
@@ -196,6 +199,7 @@ module OrdersPlugin::Report
           sum += formula_value
         end # closes order.items.each
 
+        sum = CurrencyHelper.number_as_currency_number(sum)
         sheet.add_row ['','','','',t('lib.report.total_value'),"=SUM(G#{sp}:G#{ep})", ''], style: [default]*4+[bluecell,currency, default],
           formula_values: [nil,nil,nil,nil,nil,sum, nil]
 
@@ -203,11 +207,12 @@ module OrdersPlugin::Report
         sbs = sbe + 2
       end
 
-      sheet.add_row [t('lib.report.selled_total'), '', "=SUM(G#{productsStart}:G#{productsEnd})", t('lib.report.total_price_without_margin'),"","", total_price_without_margin],
-        formula_values: [nil, nil, selled_sum, nil, nil, nil, nil],
-        style: [redcell, redcell, currency, redcell, redcell, redcell, currency]
+      selled_sum = CurrencyHelper.number_as_currency_number selled_sum
+      sheet.add_row [t('lib.report.selled_total'), "=SUM(G#{productsStart}:G#{productsEnd})", t('lib.report.total_price_without_margin'),"","", total_price_without_margin],
+        formula_values: [nil, selled_sum, nil, nil, nil, nil],
+        style: [redcell, currency, redcell, redcell, redcell, currency]
 
-      ["A#{sbs}:B#{sbs}", "D#{sbs}:F#{sbs}"].each{ |c| sheet.merge_cells c }
+      ["D#{sbs}:E#{sbs}"].each{ |c| sheet.merge_cells c }
 
       sheet.column_widths 15,30,30,9,8,10,11
     end # closes spreadsheet
