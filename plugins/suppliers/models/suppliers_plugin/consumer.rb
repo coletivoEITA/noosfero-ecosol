@@ -12,6 +12,13 @@ class SuppliersPlugin::Consumer < SuppliersPlugin::Supplier
 
   belongs_to :hub
 
+  def name= value
+    self['name'] = value
+  end
+  def description= value
+    self['description'] = value
+  end
+
   def sync_profile profile=nil
     profile = self.profile if profile.nil?
     return if profile.community?
@@ -21,7 +28,6 @@ class SuppliersPlugin::Consumer < SuppliersPlugin::Supplier
 
     fields.each do |profile_k, consumer_k|
       profile_v  = profile.send "#{profile_k}"
-      pp profile_v
       consumer_v = self.send "#{consumer_k}"
       if profile_v.present? && profile_v != consumer_v
         self.send "#{consumer_k}=", profile_v
