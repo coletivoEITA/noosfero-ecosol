@@ -180,6 +180,7 @@ en-US: &en-US
           total: Total
 
       item:
+        no_stock: "This product is not stock anymore"
         _edit:
           remove_from_order: "remove from order"
           removed: 'removed'

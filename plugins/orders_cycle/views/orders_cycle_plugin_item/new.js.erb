@@ -1,6 +1,11 @@
 <% unless params[:redirect] == '1' %>
-  orders_cycle.order.product.load(<%= @offered_product.id %>, true)
-  $('#order-<%=@order.id%> order-items-table').get(0)._tag.add(<%=@item.id%>, <%=@serializer.to_json%>)
+  <% if @item.id.nil? %>
+    display_notice('<%= t("views.item.no_stock") %>')
+    $('#cycle-product-<%= @offered_product.id %>').remove()
+  <% else %>
+    orders_cycle.order.product.load(<%= @offered_product.id %>, true)
+    $('#order-<%=@order.id%> order-items-table').get(0)._tag.add(<%=@item.id%>, <%=@serializer.to_json%>)
+  <% end %>
 <% else %>
   window.location = <%= url_for(controller: :orders_cycle_plugin_order, action: :edit, id: @order.id).to_json %>
 <% end %>

@@ -181,6 +181,7 @@ pt-BR: &pt-BR
           total: Total
 
       item:
+        no_stock: "Este produto não está mais em estoque"
         _edit:
           remove_from_order: "Remover do pedido"
           removed: 'removido'

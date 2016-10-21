@@ -65,7 +65,7 @@ class OrdersPluginItemController < MyProfileController
     end
     if @quantity_consumer_ordered <= 0 && @item
       @quantity_consumer_ordered = nil
-      destroy
+      destroy if params[:id]
     end
 
     @quantity_consumer_ordered
