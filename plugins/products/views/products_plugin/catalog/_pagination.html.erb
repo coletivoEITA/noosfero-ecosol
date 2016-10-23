@@ -1,5 +1,5 @@
 <%
-  options = {params: {controller: :catalog, action: :index, profile: profile.identifier}}
+  options = {params: {controller: 'products_plugin/catalog', action: :index, profile: profile.identifier}}
   if @use_show_more
     options[:previous_label] = ''
     options[:next_label] = _('Show more')+'&hellip;'
