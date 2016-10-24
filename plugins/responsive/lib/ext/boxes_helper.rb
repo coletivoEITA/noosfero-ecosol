@@ -49,7 +49,7 @@ module BoxesHelper
         else
           display_block item, main_content
         end
-      end.join("\n") + box_decorator.block_target(box)
+      end.join("\n").html_safe + box_decorator.block_target(box).html_safe
     end
 
     def render_linklist_navbar link_list
