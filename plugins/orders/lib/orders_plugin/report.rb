@@ -117,7 +117,7 @@ module OrdersPlugin::Report
     report_file
   end
 
-  def report_orders_by_consumer orders, payment_methods
+  def report_orders_by_consumer orders
     p = Axlsx::Package.new
     wb = p.workbook
 

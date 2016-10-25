@@ -115,7 +115,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
       report_file = report_products_by_supplier @cycle.supplier_products_by_suppliers(scope)
       file_str = 'controllers.myprofile.admin.products_report'
     else
-      report_file = report_orders_by_consumer scope, profile.payment_methods_list
+      report_file = report_orders_by_consumer scope
       file_str = 'controllers.myprofile.admin.orders_report'
     end
 
