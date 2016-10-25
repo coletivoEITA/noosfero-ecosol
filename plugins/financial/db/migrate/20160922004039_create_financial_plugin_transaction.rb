@@ -11,6 +11,7 @@ class CreateFinancialPluginTransaction < ActiveRecord::Migration
       t.string     :category
       t.string     :direction
       t.decimal    :balance
+      t.timestamps
     end
   end
 end
