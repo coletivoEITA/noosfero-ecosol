@@ -7,6 +7,7 @@ class CreatePayment < ActiveRecord::Migration
       t.integer :operator_id
       t.decimal :value
       t.text :description
+      t.timestamps
     end
     add_index :payments_plugin_payments, :payment_method_id, name: 'index_payments_on_payment_method_id'
     add_index :payments_plugin_payments, :operator_id,     name: 'index_payments_on_operator_id'
