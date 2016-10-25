@@ -1,6 +1,7 @@
 //= require ./views/items-table
 //= require ./views/item-quantity-price
 //= require ./views/item
+//= require ./views/payment
 
 orders = {
 
@@ -34,6 +35,26 @@ orders = {
       return false
     },
 
+    add_payment: function(context) {
+      var data = $(context).siblings(".order-input-data")
+      $('#payment_orders_plugin_order_id').val(data.attr('data-id'))
+      $('#payment_value').val("")
+      $('#payment_description').val("")
+
+      var pm = $('#payment_payment_method_id')
+      var slug = data.attr('data-payment-method')
+      var option = pm.find('option').filter(function() { return $(this).html() == slug })
+      if (option) { pm.val(option.val()) }
+    },
+
+    payment: {
+      submit: function() {
+        var id = $("#payment_orders_plugin_order_id").val()
+        var order = $('#order-'+id)
+        var form = order.find('form')
+        orders.order.submit(form)
+      }
+    },
   },
 
   item: {
@@ -158,7 +179,9 @@ orders = {
   },
 };
 
-$(document).ready(orders.setOrderMaxHeight);
 $(window).resize(orders.setOrderMaxHeight);
 $('#order_supplier_delivery_id').change(orders.setOrderMaxHeight);
 
+$(document).ready(function(){
+  orders.setOrderMaxHeight();
+});

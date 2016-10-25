@@ -183,6 +183,8 @@ pt-BR: &pt-BR
       consumer:
         _total:
           total: Total
+          order_total: Total do pedido
+          total_yet_to_pay: Total ainda a pagar
 
       item:
         no_stock: "Este produto não está mais em estoque"
@@ -208,6 +210,7 @@ pt-BR: &pt-BR
           status: "etapa"
           info_about_delivery: "Informações sobre a forma de entrega/coleta escolhida"
           address_completion: "Complemento do endereço"
+          payment_number: "Pagamento %{number}"
 
       message:
         _fields:
@@ -281,6 +284,16 @@ pt-BR: &pt-BR
           see_redistribution: "veja redistribuição"
           the_collective_member: "O(a) consumidor(a) %{terms.profile.from_article.singular} receberá um email que discrimina todas as mudanças feitas em seu pedido."
           warn_member_of_the_ch: "Avise o(a) consumidor(a) das mudanças em seu pedido"
+          add_payment: "Adicionar pagamento"
+        add_payment:
+          adding_payment: "Adicionando pagamento"
+          payment_method: "Forma de pagamento"
+          value: "Valor do pagamento"
+          description: "Descrição"
+          cancel: Cancelar
+          submit: Enviar
+          saved: Salvo..
+
       mailer:
         message_to_admins:
           a_service_of_s: "Um serviço de %{environment}."

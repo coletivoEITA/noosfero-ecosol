@@ -179,6 +179,14 @@
         width: $order-items-admin-width - 2*$border;
       }
     }
+
+  }
+
+  .actions {
+    .space {
+      margin: 4px;
+      float: left;
+    }
   }
 
   .payment-edition {

@@ -48,6 +48,8 @@ class OrdersPlugin::Order < ApplicationRecord
   belongs_to :supplier_delivery, class_name: 'DeliveryPlugin::Method'
   belongs_to :consumer_delivery, class_name: 'DeliveryPlugin::Method'
 
+  has_many :payments, class_name: PaymentsPlugin::Payment, foreign_key: :orders_plugin_order_id
+
   scope :alphabetical, -> { joins(:consumer).reorder 'profiles.name ASC' }
   scope :latest, -> { reorder 'code ASC' }
   scope :default_order, -> { reorder 'code DESC' }
@@ -398,21 +400,30 @@ class OrdersPlugin::Order < ApplicationRecord
     self.items.each{ |i| i.product_diff = true }
   end
 
+  def remaining_total actor_name = :consumer, admin = false
+    remaining = self.total(actor_name, admin) - self.payments.sum(:value)
+    remaining >= 0 ? remaining : 0
+  end
+  has_currency :remaining_total
+
   protected
 
   def create_transaction
     self.create_financial_transaction(
       profile_id: self.profile_id,
-      quantity: self.value,
+      quantity: self.total,
       description: "new payment"
     )
   end
 
   def update_transaction
-   if self.transaction.value != self.value
-      self.transaction.value = self.value
-      self.transaction.save
-   end
+    unless self.financial_transaction
+      self.create_financial_transaction
+    end
+    if self.financial_transaction && self.financial_transaction.value != self.total
+      self.financial_transaction.value = self.total
+      self.financial_transaction.save
+    end
   end
 
   def check_status
@@ -455,5 +466,4 @@ class OrdersPlugin::Order < ApplicationRecord
       OrdersPlugin::Mailer.order_received(self).deliver
     end
   end
-
 end

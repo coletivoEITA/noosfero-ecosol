@@ -19,16 +19,28 @@ order-items-table
 
     .order-total
       .title
-        '{t('views.consumer._total.total')}
+        '{t('views.consumer._total.order_total')}
       .value
         span
           '{I18n.toCurrency(order.total_price)}
+
+      payment each="{payment,index in order.payments}" payment='{payment}'
+
+      .title
+        '{t('views.consumer._total.total_yet_to_pay')}
+      .value
+        span
+          '{I18n.toCurrency(order.remaining_total)}
+      .payed show='{order.remaining_total == 0}'
+        span
+          |	✓
 
   div if='{order.items.length == 0}'
     '{t('views.item._index.empty_order')}
 
   javascript:
     this.order = opts.order
+    console.log(this.order)
 
     this.t = window.orders.t
 

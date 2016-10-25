@@ -1,4 +1,5 @@
 - return if profile.payment_methods.count == 0
+- return unless order.status == 'edition'
 
 - edition = order.may_edit?(user, @admin)
 - return unless edition

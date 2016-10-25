@@ -182,6 +182,8 @@ en-US: &en-US
       consumer:
         _total:
           total: Total
+          order_total: Order Total
+          total_yet_to_pay: Total yet to pay
 
       item:
         no_stock: "This product is not stock anymore"
@@ -207,6 +209,7 @@ en-US: &en-US
           status: "status"
           info_about_delivery: "Informations about the chosen delivery/pickup method"
           address_completion: "Address Completion"
+          payment_number: "Payment %{number}"
 
       message:
         _fields:
@@ -280,6 +283,15 @@ en-US: &en-US
           see_redistribution: "see redistribution"
           the_collective_member: "The consumer %{terms.profile.from_article.singular} will receive an email that discriminates all changes made in his/her order"
           warn_member_of_the_ch: "Warn consumer of the changes in his/her order"
+          add_payment: "Add payment"
+        add_payment:
+          adding_payment: "Adding payment"
+          payment_method: "Payment method"
+          value: "Payment value"
+          description: "Description"
+          cancel: Cancel
+          submit: Submit
+          saved: Saved..
 
       mailer:
         message_to_admins:

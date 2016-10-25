@@ -13,15 +13,32 @@
     padding: $half-padding $padding;
     @extend .container-clean;
 
-    .title, .value {
-      margin-left: $module05 - $padding; //the size of the previous colums
-      padding: 0 $padding;
-      width: $module01;
+    .title, .value, .method, .date {
+      padding: 0 $padding 0 0;
+      float: left;
+      font-size: 12px;
+    }
+    .title {
       text-transform: uppercase;
+      width: $module02;
+    }
+    .value {
+      width: $module01;
+      text-align: right;
     }
 
-    .value {
+    .value:after {
+      content: " ";
       clear: both;
+    }
+    .payed {
+      float: left;
+      color: green;
+      font-size: 16px;
+      line-height: 1;
+    }
+    .method {
+      width: $module02;
     }
   }
 

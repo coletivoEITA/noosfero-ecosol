@@ -1,0 +1,22 @@
+.add-payment-modal.modal.fade tabindex="-1" role="dialog"
+  .modal-dialog role="document"
+    .modal-content
+      .modal-header
+        button type="button" class="close left" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true"
+            |&times;
+        h4.modal-title
+          = t('orders_plugin.views.admin.add_payment.adding_payment')
+      .modal-body
+        = form_for :payment, remote: true,url: {controller: :payments_plugin_payment, action: :create} do |f|
+          - options = profile.payment_methods.collect {|pm| [t("payments_plugin.models.payment_methods."+pm.slug), pm.id]}
+          = labelled_form_field(t('views.admin.add_payment.payment_method'), f.select(:payment_method_id, options))
+          = f.hidden_field :orders_plugin_order_id
+          = labelled_form_field(t('views.admin.add_payment.value'), f.number_field(:value, step: 0.01)) 
+          = labelled_form_field(t('views.admin.add_payment.description'), f.text_area(:description))
+          .btn-group
+            = f.button t('views.admin.add_payment.cancel'), name: "cancel", class: 'action-button', "data-dismiss" => "modal"
+            | &nbsp;
+            = f.button t('views.admin.add_payment.submit'), name: "submit", class: 'action-button'
+
+

@@ -1,0 +1,14 @@
+payment
+  .title
+    |{t("views.item._index.payment_number", {number: this.index+1})}
+  .value
+    |{I18n.toCurrency(payment.value)}
+  .method
+    |{I18n.t('models.payment_methods.'+payment.method, {scope: "payments_plugin"})}
+  .date
+    |{payment.date}
+
+
+  javascript:
+    this.payment = opts.payment
+    this.t = window.orders.t

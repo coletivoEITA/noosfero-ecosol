@@ -323,29 +323,31 @@
   margin-top: 10px;
 }
 
-#content .main-block .report-modal.modal {
-  z-index: 1041;
+#content .main-block {
+  .report-modal.modal, .add-payment-modal.modal {
+    z-index: 1041;
 
-  h4.modal-title {
-    text-transform: uppercase;
-    margin: 0;
-  }
-  button.close {
-    -webkit-appearance: none;
-    padding: 0;
-    cursor: pointer;
-    background: 0 0;
-    border: 0;
-  }
-  .close {
-    float: right;
-    font-size: 21px;
-    font-weight: 700;
-    line-height: 1;
-    color: #000;
-    text-shadow: 0 1px 0 #fff;
-    filter: alpha(opacity=20);
-    opacity: .2;
+    h4.modal-title {
+      text-transform: uppercase;
+      margin: 0;
+    }
+    button.close {
+      -webkit-appearance: none;
+      padding: 0;
+      cursor: pointer;
+      background: 0 0;
+      border: 0;
+    }
+    .close {
+      float: right;
+      font-size: 21px;
+      font-weight: 700;
+      line-height: 1;
+      color: #000;
+      text-shadow: 0 1px 0 #fff;
+      filter: alpha(opacity=20);
+      opacity: .2;
+    }
   }
 }
 

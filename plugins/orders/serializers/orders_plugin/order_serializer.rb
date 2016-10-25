@@ -12,8 +12,10 @@ module OrdersPlugin
 
     attribute :status
     attribute :total_price
+    attribute :remaining_total
 
     has_many :items
+    has_many :payments
 
     attribute :add_url
 
@@ -43,12 +45,21 @@ module OrdersPlugin
       object.total_price actor_name
     end
 
+    def remaining_total
+      object.remaining_total actor_name
+    end
+
     def items
       object.items.map do |item|
         ItemSerializer.new(item, scope: scope, actor_name: actor_name).to_hash
       end
     end
 
+    def payments
+      object.payments.map do |p|
+        PaymentSerializer.new(p, scope: scope).to_hash
+      end
+    end
     def add_url
       if admin
         scope.url_for controller: :orders_plugin_admin_item, action: :add, order_id: object.id, actor_name: actor_name
