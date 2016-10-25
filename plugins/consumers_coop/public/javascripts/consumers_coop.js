@@ -5,10 +5,12 @@ consumers_coop = {
     var i = e.target.options.selectedIndex
     var value = e.target.options[i].value
     e.target.options.selectedIndex = 0
-    if ($('.payment_method_id-'+value))
+    if ($('.payment_method_id-'+value).length > 0)
       return
     var text = e.target.options[i].text
+    console.log(text)
     $('<span data="'+value+'">').append(text).append($('<span class=remove>').append('x')).appendTo('.chosen_payment_methods')
+    console.log($('<span data="'+value+'">').append(text).append($('<span class=remove>').append('x')))
 
     $('<input name="profile_data[payment_method_ids][]" multiple="multiple" type="hidden" class="payment_method_id-'+value+'" value="'+value+'">').appendTo('.chosen_payment_methods')
 
