@@ -210,6 +210,7 @@ en-US: &en-US
           info_about_delivery: "Informations about the chosen delivery/pickup method"
           address_completion: "Address Completion"
           payment_number: "Payment %{number}"
+          product_added: "Product added"
 
       message:
         _fields:

@@ -1,5 +1,5 @@
 .order-items-container class="#{'empty' if order.items.size == 0} #{'admin' if @admin} #{'self-supplier' if order.self_supplier?}"
-  - if @admin
+  - if @admin && order.status != "received"
     = render 'orders_plugin_admin_item/add', order: order, actor_name: actor_name
 
   order-items-table

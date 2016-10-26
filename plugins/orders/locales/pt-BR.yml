@@ -211,6 +211,7 @@ pt-BR: &pt-BR
           info_about_delivery: "Informações sobre a forma de entrega/coleta escolhida"
           address_completion: "Complemento do endereço"
           payment_number: "Pagamento %{number}"
+          product_added: "Produto adicionado"
 
       message:
         _fields:
