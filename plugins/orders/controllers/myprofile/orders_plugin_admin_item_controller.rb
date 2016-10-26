@@ -12,7 +12,15 @@ class OrdersPluginAdminItemController < MyProfileController
     @item       = OrdersPlugin::Item.find params[:id]
     @actor_name = params[:actor_name].to_sym
 
-    @item.update! params[:item]
+    @quantity = true
+    ["accepted", "separated", "delivered"].each do |status|
+      qtt = params[:item]["quantity_supplier_#{status}".to_sym]
+      next if qtt.nil?
+      if set_order_quantity(qtt || 1)
+        params[:item]["quantity_supplier_#{status}".to_sym] = @quantity
+      end
+    end
+    @item.update! params[:item] if @quantity
 
     serializer  = OrdersPlugin::OrderSerializer.new @item.order.reload, scope: self, actor_name: @actor_name
     render json: serializer.to_hash
@@ -25,10 +33,11 @@ class OrdersPluginAdminItemController < MyProfileController
 
     @query = params[:query].to_s
     @scope = @order.available_products.limit(10)
+    @scope = @scope.joins(:from_product).from_products_in_stock if defined? StockPlugin
     @scope = @scope.includes :suppliers if defined? SuppliersPlugin
     # FIXME: do not work with cycles
     #@products = autocomplete(:catalog, @scope, @query, {per_page: 10, page: 1}, {})[:results]
-    @products = @scope.where('name ILIKE ? OR name ILIKE ?', "#{@query}%", "% #{@query}%")
+    @products = @scope.where('products.name ILIKE ? OR products.name ILIKE ?', "#{@query}%", "% #{@query}%")
 
     render json: @products.map{ |p| OrdersPlugin::ProductSearchSerializer.new(p).to_hash }
   end
@@ -56,6 +65,25 @@ class OrdersPluginAdminItemController < MyProfileController
 
   def set_admin
     @admin = true
+  end
+
+  def set_order_quantity value
+    @quantity = CurrencyHelper.parse_localized_number value
+
+    if @quantity > 0
+      if defined? StockPlugin and @item.from_product.use_stock
+        if @quantity > @item.from_product.stored
+          @quantity = @item.from_product.stored
+          @quantity_consumer_ordered_more_than_stored = @item.id || true
+        end
+      end
+    end
+    if @quantity <= 0 && @item
+      @quantity = nil
+      @item.destroy
+    end
+
+    @quantity
   end
 
   extend HMVC::ClassMethods

@@ -4,4 +4,12 @@
   javascript:
     orders.item.admin_add.search_url = '#{j url_for controller: :orders_plugin_admin_item, action: :add_search, order_id: order.id, actor_name: actor_name}'
     orders.item.admin_add.load(#{order.id.to_json})
+    $(document).ready(function() {
+      $('.order-product-add .add-input').keydown(function(event){
+        if(event.keyCode == 13) {
+          event.preventDefault();
+          return false;
+        }
+      });
+    });
 
