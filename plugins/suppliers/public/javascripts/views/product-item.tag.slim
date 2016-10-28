@@ -65,7 +65,7 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
     this.product  = opts.product
     this.supplier = this.parent.suppliers[this.product.supplier_id]
     this.product.category = this.parent.categories[this.product.product_category_id]
-    this.product.margin_percentage = this.product.margin_percentage || this.parent.default_margin_percentage
+    this.product.margin_percentage = Math.round(parseFloat( this.product.margin_percentage || this.parent.default_margin_percentage)*1000)/1000
     this.product.edition = false
     this.product.selected  = true
 
@@ -114,7 +114,10 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
     save() {
       var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'edit/'+this.product.id})
       var self = this
-      $.post(saveUrl, {product: this.prepareForm()}, function(data) {
+      var data = this.prepareForm()
+      if (!data)
+        return;
+      $.post(saveUrl, {product: data}, function(data) {
         display_notice(self.t('views.product.saved'))
         self.close();
       })
@@ -143,8 +146,15 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
       var data = Object();
       var keys = ['name', 'available', 'product_category_id', 'unit_id', 'price', 'supplier_price', 'margin_percentage']
 
+      var to_validate = ['name', 'product_category_id', 'supplier_price', 'margin_percentage']
       var self = this;
       for (var k in keys) {
+        if (to_validate.includes(keys[k])) {
+          if (self.product[keys[k]] == '') {
+            alert(self.t("views.product.validation_error_"+keys[k]))
+            return false;
+          }
+        }
         data[keys[k]] = self.product[keys[k]]
       }
 
@@ -167,6 +177,8 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
     this.on('mount', function () {
       this.updatePrice()
       this.update()
+      this.setCategory({}, {id: this.product.product_category_id})
+      this.setUnit({}, {id: this.product.unit_id})
       this.parent.typeaheadCategoryInit($(this.root).find('input[name="product_category_id"]'), this.setCategory)
       this.parent.typeaheadUnitInit($(this.root).find('input[name="unit_id"]'), this.setUnit)
     })

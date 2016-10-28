@@ -218,6 +218,9 @@ product-modal.modal.fade tabindex="-1" role="dialog"
       
       for (var i in keys) {
         var input = this["p-"+keys[i]]
+
+        if (keys[i] == 'supplier_id' && this.product.id)
+          continue;
         if (input.value == "" || input.value == "0") {
           alert(this.t('views.product.validation_error_'+keys[i]))
           $("product-modal").scrollTo(100,1000)
