@@ -30,10 +30,11 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
   .stock
     span if="{!product.use_stock && !product.edition}"
       |&#8212;
-    span if="{product.use_stock && !product.edition}"
+    span if="{product.use_stock}"
       |{product.stored}
     button onclick="{editStock}" show="{product.edition}" data-toggle="modal" data-target="stock-modal" class="default"
-      |{t('views.product.edit')}
+      i class="fa fa-exchange"
+
   .total_price
     |{product.price}
 
