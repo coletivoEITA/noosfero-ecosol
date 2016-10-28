@@ -65,6 +65,16 @@ stock-modal.modal.fade tabindex="-1" role="dialog"
     }
     savestock() {
       var self = this
+      if (this.product.use_stock) {
+        if (this.stock_qtt.value.trim() == "") {
+          alert(this.t('views.product.stock_qtt_validation_error'))
+          return;
+        }
+        if (this.stock_desc.value.trim() == "") {
+          alert(this.t('views.product.stock_desc_validation_error'))
+          return;
+        }
+      }
       data = {
         use_stock: this.product.use_stock,
         stock_action: this.stock_action.value,
@@ -80,6 +90,7 @@ stock-modal.modal.fade tabindex="-1" role="dialog"
         }
         self.close();
         $('stock-modal form').reset()
+        self.parent.update()
       })
     }
     close() {
