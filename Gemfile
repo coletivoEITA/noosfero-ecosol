@@ -39,11 +39,11 @@ gem 'message_bus'
 
 # js
 # while https://github.com/rails-api/active_model_serializers/issues/1143 is not released
-gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
+gem 'active_model_serializers', '0.10.0'
 # while https://github.com/fnando/i18n-js/pull/354 is not released
 gem 'i18n-js', github: 'coletivoEITA/i18n-js'
-gem 'js-routes', '>= 1.1.2'
-gem 'riot_js-rails', '>= 0.5.0'
+gem 'js-routes', '= 1.2.6'
+gem 'riot_js-rails'#, path: '../../others/riot_js-rails'
 gem 'sprockets-es6'
 
 #############################################
