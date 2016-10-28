@@ -12,7 +12,6 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3~rc2-1-ga15645d\n"
-"POT-Creation-Date: 2015-10-30 16:35-0300\n"
 "PO-Revision-Date: 2014-12-18 18:40-0200\n"
 "Last-Translator: Luciano Prestes Cavalcanti <lucianopcbr@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero/"
@@ -24,31 +23,46 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2.0\n"
 
-#: plugins/breadcrumbs/lib/breadcrumbs_plugin.rb:8
 msgid "A plugin that add a block to display breadcrumbs."
 msgstr "Um plugin que adiciona um bloco que mostra caminhos de pão."
 
-#: plugins/breadcrumbs/lib/breadcrumbs_plugin/content_breadcrumbs_block.rb:10
-msgid "Content Breadcrumbs"
-msgstr "Conteúdo de Caminho de Pão"
+msgid ""
+"<p>Display a breadcrumb of the current content navigation.</p><p>You could "
+"choose if the breadcrumb is going to appear in the cms editing or not.</p> "
+"<p>There is either the option of display the profile location in the "
+"breadcrumb path.</p>"
+msgstr ""
+"<p>Mostra um caminho de pão do conteúdo atual da navegação.</p><p>Você pode "
+"escolher se o caminho de pão aparecerá na edição do cms ou não.</p> "
+"<p>Existe também a opção de mostrar a localização do perfil no endereço do "
+"caminho de pão.</p>"
 
-#: plugins/breadcrumbs/lib/breadcrumbs_plugin/content_breadcrumbs_block.rb:14
+msgid "Breadcrumb"
+msgstr "Caminho de Pão"
+
+msgid "Breadcrumbs Block"
+msgstr "Bloco de Caminho de Pão"
+
 msgid "This block displays breadcrumb trail."
-msgstr "Esse bloco mostra o rastro de caminho de pão."
+msgstr "Esse bloco mostra o rastro do caminho de pão."
 
-#: plugins/breadcrumbs/lib/breadcrumbs_plugin/content_breadcrumbs_block.rb:68
 msgid "Upload Files"
 msgstr "Enviar Arquivos"
 
-#: plugins/breadcrumbs/views/box_organizer/breadcrumbs_plugin/_content_breadcrumbs_block.html.erb:2
+msgid "Members"
+msgstr "Integrantes"
+
+msgid "Events"
+msgstr "Eventos"
+
+msgid "Profile"
+msgstr "Perfil"
+
 msgid "Show cms action"
 msgstr "Mostrar cms"
 
-#: plugins/breadcrumbs/views/box_organizer/breadcrumbs_plugin/_content_breadcrumbs_block.html.erb:3
 msgid "Show profile"
 msgstr "Mostrar perfil"
 
-#: plugins/breadcrumbs/views/box_organizer/breadcrumbs_plugin/_content_breadcrumbs_block.html.erb:4
-#, fuzzy
 msgid "Show section name"
-msgstr "Mostrar cms"
+msgstr "Mostrar nome da seção"

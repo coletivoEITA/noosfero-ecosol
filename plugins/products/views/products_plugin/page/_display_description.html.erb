@@ -3,7 +3,7 @@
   <div id="product-description-content" property="dcterms:description">
     <%= @product.description %>
   </div>
-  <%= edit_product_button_to_remote(@product, 'description', _('Edit description'), :title => _('Edit the description of your product and give consumers more information about what you are advertising')) %>
+  <%= edit_product_button_to_remote(@product, 'description', _('Edit description'), {:title => _('Edit the description of your product and give consumers more information about what you are advertising'), :class => current_editor}) %>
 <% else %>
   <%= edit_product_ui_button_to_remote(
     @product,

@@ -1,7 +1,7 @@
 # A person is the profile of an user holding all relationships with the rest of the system
 class Person < Profile
 
-  attr_accessible :organization, :contact_information, :sex, :birth_date, :cell_phone, :comercial_phone, :jabber_id, :personal_website, :nationality, :address_reference, :district, :schooling, :schooling_status, :formation, :custom_formation, :area_of_study, :custom_area_of_study, :professional_activity, :organization_website, :following_articles
+  attr_accessible :organization, :contact_information, :sex, :birth_date, :cell_phone, :comercial_phone, :jabber_id, :personal_website, :nationality, :address_reference, :district, :schooling, :schooling_status, :formation, :custom_formation, :area_of_study, :custom_area_of_study, :professional_activity, :organization_website, :following_articles, :editor
 
   SEARCH_FILTERS = {
     :order => %w[more_recent],
@@ -123,6 +123,8 @@ class Person < Profile
   has_many :suggested_communities, -> {
     where 'profile_suggestions.suggestion_type = ? AND profile_suggestions.enabled = ?', 'Community', true
   }, through: :suggested_profiles, source: :suggestion
+
+  has_and_belongs_to_many :marked_scraps, :join_table => :private_scraps, :class_name => 'Scrap'
 
   scope :more_popular, -> { order 'friends_count DESC' }
 
@@ -341,6 +343,8 @@ class Person < Profile
   validates_uniqueness_of :user_id
 
   validates_associated :user
+
+  validates :editor, inclusion: { in: lambda { |p| p.available_editors } }
 
   def email
     self.user.nil? ? nil : self.user.email
@@ -614,8 +618,21 @@ class Person < Profile
     Profile.followed_by self
   end
 
+  def editor?(editor)
+    self.editor == editor
+  end
+
   def in_social_circle?(person)
     self.is_a_friend?(person) || super
+  end
+
+  def available_editors
+    available_editors = {
+      Article::Editor::TINY_MCE => _('TinyMCE'),
+      Article::Editor::TEXTILE => _('Textile')
+    }
+    available_editors.merge!({Article::Editor::RAW_HTML => _('Raw HTML')}) if self.is_admin?
+    available_editors
   end
 
 end

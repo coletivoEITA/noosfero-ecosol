@@ -37,8 +37,8 @@ class ArticlesTest < ActiveSupport::TestCase
   should 'list all text articles' do
     profile = Community.create(identifier: 'my-community', name: 'name-my-community')
     a1 = fast_create(TextArticle, :profile_id => profile.id)
-    a2 = fast_create(TextileArticle, :profile_id => profile.id)
-    a3 = fast_create(TinyMceArticle, :profile_id => profile.id)
+    a2 = fast_create(TextArticle, :profile_id => profile.id)
+    a3 = fast_create(TextArticle, :profile_id => profile.id)
     params['content_type']='TextArticle'
     get "api/v1/communities/#{profile.id}/articles?#{params.to_query}"
     json = JSON.parse(last_response.body)
@@ -138,8 +138,8 @@ class ArticlesTest < ActiveSupport::TestCase
   should 'list all text articles of children' do
     article = fast_create(Article, :profile_id => user.person.id, :name => "Some thing")
     child1 = fast_create(TextArticle, :parent_id => article.id, :profile_id => user.person.id, :name => "Some thing 1")
-    child2 = fast_create(TextileArticle, :parent_id => article.id, :profile_id => user.person.id, :name => "Some thing 2")
-    child3 = fast_create(TinyMceArticle, :parent_id => article.id, :profile_id => user.person.id, :name => "Some thing 3")
+    child2 = fast_create(TextArticle, :parent_id => article.id, :profile_id => user.person.id, :name => "Some thing 2")
+    child3 = fast_create(TextArticle, :parent_id => article.id, :profile_id => user.person.id, :name => "Some thing 3")
     get "/api/v1/articles/#{article.id}/children?#{params.to_query}"
     json = JSON.parse(last_response.body)
     assert_equivalent [child1.id, child2.id, child3.id], json["articles"].map { |a| a["id"] }
@@ -473,7 +473,7 @@ class ArticlesTest < ActiveSupport::TestCase
       assert_kind_of TextArticle, Article.last
     end
 
-    should "#{kind}: create article of TinyMceArticle type if no content type is passed as parameter" do
+    should "#{kind}: create article of TexrArticle type if no content type is passed as parameter" do
       profile = fast_create(kind.camelcase.constantize, :environment_id => environment.id)
       Person.any_instance.stubs(:can_post_content?).with(profile).returns(true)
 
@@ -481,7 +481,7 @@ class ArticlesTest < ActiveSupport::TestCase
       post "/api/v1/#{kind.pluralize}/#{profile.id}/articles?#{params.to_query}"
       json = JSON.parse(last_response.body)
 
-      assert_kind_of TinyMceArticle, Article.last
+      assert_kind_of TextArticle, Article.last
     end
 
     should "#{kind}: not create article with invalid article content type" do
@@ -567,12 +567,12 @@ class ArticlesTest < ActiveSupport::TestCase
     assert_kind_of TextArticle, Article.last
   end
 
-  should 'person create article of TinyMceArticle type if no content type is passed as parameter' do
+  should 'person create article of TextArticle type if no content type is passed as parameter' do
     params[:article] = {:name => "Title"}
     post "/api/v1/people/#{user.person.id}/articles?#{params.to_query}"
     json = JSON.parse(last_response.body)
 
-    assert_kind_of TinyMceArticle, Article.last
+    assert_kind_of TextArticle, Article.last
   end
 
   should 'person not create article with invalid article content type' do
@@ -773,12 +773,12 @@ class ArticlesTest < ActiveSupport::TestCase
     end
   end
 
-  should 'only show article comments when show_comments is present' do
+  should 'only show article comments when optional_fields comments is present' do
     person = fast_create(Person)
     article = fast_create(Article, :profile_id => person.id, :name => "Some thing")
     article.comments.create!(:body => "another comment", :author => person)
 
-    get "/api/v1/articles/#{article.id}/?#{params.merge(:show_comments => '1').to_query}"
+    get "/api/v1/articles/#{article.id}/?#{params.merge(:optional_fields => [:comments]).to_query}"
     json = JSON.parse(last_response.body)
     assert_includes json["article"].keys, "comments"
     assert_equal json["article"]["comments"].first["body"], "another comment"
@@ -805,4 +805,24 @@ class ArticlesTest < ActiveSupport::TestCase
     json = JSON.parse(last_response.body)
     assert_includes json["article"]["permissions"], 'allow_post_content'
   end
+
+  should 'return only article fields defined in parameter' do
+    Article.destroy_all
+    article = fast_create(Article, :profile_id => user.person.id, :name => "Some thing")
+    params[:fields] = {:only => ['id', 'title']}
+    get "/api/v1/articles/?#{params.to_query}"
+    json = JSON.parse(last_response.body)
+    assert_equivalent ['id', 'title'], json["articles"].first.keys
+  end
+
+  should 'return all article fields except the ones defined in parameter' do
+    Article.destroy_all
+    article = fast_create(Article, :profile_id => user.person.id, :name => "Some thing")
+    params[:fields] = {:except => ['id', 'title']}
+    get "/api/v1/articles/?#{params.to_query}"
+    json = JSON.parse(last_response.body)
+    assert_not_includes json["articles"].first.keys, 'id'
+    assert_not_includes json["articles"].first.keys, 'title'
+  end
+
 end

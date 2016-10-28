@@ -12,9 +12,9 @@ class ProfileEditorController < MyProfileController
   include CategoriesHelper
 
   def index
-    @pending_tasks = Task.to(profile).pending.without_spam.select{|i| user.has_permission?(i.permission, profile)}
-    @show_appearance_option = @user_is_admin || environment.enabled?('enable_appearance')
-    @show_header_footer_option = @user_is_admin || !environment.enabled?('disable_header_and_footer')
+    @pending_tasks = Task.to(profile).pending.without_spam
+    @show_appearance_option = user.is_admin?(environment) || environment.enabled?('enable_appearance')
+    @show_header_footer_option = user.is_admin?(environment) || (!profile.enterprise? && !environment.enabled?('disable_header_and_footer'))
   end
 
   helper :profile
@@ -92,7 +92,7 @@ class ProfileEditorController < MyProfileController
   end
 
   def welcome_page
-    @welcome_page = profile.welcome_page || TinyMceArticle.new(:name => 'Welcome Page', :profile => profile, :published => false)
+    @welcome_page = profile.welcome_page || TextArticle.new(:name => 'Welcome Page', :profile => profile, :published => false)
     if request.post?
       begin
         @welcome_page.update!(params[:welcome_page])

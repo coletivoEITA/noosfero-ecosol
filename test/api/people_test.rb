@@ -119,8 +119,8 @@ class PeopleTest < ActiveSupport::TestCase
 
   should 'people endpoint filter by fields parameter with hierarchy for logged user' do
     login_api
-    fields = URI.encode({only: [:name, {user: [:login]}]}.to_json.to_str)
-    get "/api/v1/people?#{params.to_query}&fields=#{fields}"
+    params[:fields] = {only: [:name, {user: [:login]}]}
+    get "/api/v1/people?#{params.to_query}"
     json = JSON.parse(last_response.body)
     expected = {'people' => [{'name' => person.name, 'user' => {'login' => 'testapi'}}]}
     assert_equal expected, json
@@ -369,7 +369,7 @@ class PeopleTest < ActiveSupport::TestCase
     assert_equal "www.blog.org", json['person']['additional_data']['Custom Blog']
   end
 
-  PERSON_ATTRIBUTES = %w(vote_count comments_count articles_count following_articles_count)
+  PERSON_ATTRIBUTES = %w(vote_count comments_count articles_count following_articles_count friends_count)
 
   PERSON_ATTRIBUTES.map do |attribute|
     define_method "test_should_not_expose_#{attribute}_attribute_in_person_enpoint_if_field_parameter_does_not_contain_the_attribute" do

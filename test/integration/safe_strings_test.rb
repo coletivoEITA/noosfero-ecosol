@@ -122,7 +122,7 @@ class SafeStringsTest < ActionDispatch::IntegrationTest
     create_user('jimi', :password => 'test', :password_confirmation => 'test').activate
     person = Person['jimi']
     login 'jimi', 'test'
-    get "/myprofile/jimi/cms/new?type=TinyMceArticle"
+    get "/myprofile/jimi/cms/new?type=TextArticle"
     assert_no_match /title: &quot;Safestringstest::plugin1::macro&quot/, response.body
   end
 
@@ -134,7 +134,7 @@ class SafeStringsTest < ActionDispatch::IntegrationTest
 
     expected_content = 'something'
     html_content = "<p>#{expected_content}</p>"
-    article = TinyMceArticle.create!(:profile => profile, :name => 'An Article about Free Software', :body => html_content)
+    article = TextArticle.create!(:profile => profile, :name => 'An Article about Free Software', :body => html_content)
     ActionTracker::Record.destroy_all
     activity = create(ActionTracker::Record, :user_id => profile.id, :user_type => 'Profile', :verb => 'create_article', :target_id => article.id, :target_type => 'Article', :params => {'name' => article.name, 'url' => article.url, 'lead' => article.lead, 'first_image' => article.first_image})
     get "/profile/marley"
@@ -178,12 +178,21 @@ class SafeStringsTest < ActionDispatch::IntegrationTest
   should 'not escape read more link to article on display short format' do
     profile = fast_create Profile
     blog = fast_create Blog, :name => 'Blog', :profile_id => profile.id
-    fast_create(TinyMceArticle, :name => "Post Test", :profile_id => profile.id, :parent_id => blog.id, :accept_comments => false, :body => '<p>Lorem ipsum dolor sit amet</p>')
+    fast_create(TextArticle, :name => "Post Test", :profile_id => profile.id, :parent_id => blog.id, :accept_comments => false, :body => '<p>Lorem ipsum dolor sit amet</p>')
     blog.update_attribute(:visualization_format, 'short')
 
     get "/#{profile.identifier}/blog"
     assert_tag :tag => 'div', :attributes => {:class => 'read-more'}, :child => {:tag => 'a', :content => 'Read more'}
   end
 
+  should 'not scape sex radio button' do
+    env = Environment.default
+    env.custom_person_fields = { 'sex' => { 'active' => 'true' } }
+    env.save!
+    create_user('marley', :password => 'test', :password_confirmation => 'test').activate
+    login 'marley', 'test'
+    get "/myprofile/marley/profile_editor/edit"
+    assert_tag :tag => 'input', :attributes => { :id => "profile_data_sex_male" }
+  end
 
 end

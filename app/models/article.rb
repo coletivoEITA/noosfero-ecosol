@@ -1,6 +1,12 @@
 
 class Article < ApplicationRecord
 
+  module Editor
+    TEXTILE = 'textile'
+    TINY_MCE = 'tiny_mce'
+    RAW_HTML = 'raw_html'
+  end
+
   include SanitizeHelper
 
   attr_accessible :name, :body, :abstract, :profile, :tag_list, :parent,
@@ -12,6 +18,7 @@ class Article < ApplicationRecord
                   :external_feed_builder, :display_versions, :external_link,
                   :image_builder, :show_to_followers, :archived,
                   :author, :display_preview, :published_at, :person_followers,
+                  :editor,
                   :created_by, :last_changed_by
 
   extend ActsAsHavingImage::ClassMethods
@@ -59,7 +66,7 @@ class Article < ApplicationRecord
     _('Content')
   end
 
-  track_actions :create_article, :after_create, :keep_params => [:name, :url, :lead, :first_image], :if => Proc.new { |a| a.is_trackable? && !a.image? }
+  track_actions :create_article, :after_create, :keep_params => [:name, :url, :lead, :first_image], :if => Proc.new { |a| a.notifiable? }
 
   # xss_terminate plugin can't sanitize array fields
   # sanitize_tag_list is used with SanitizeHelper
@@ -179,10 +186,6 @@ class Article < ApplicationRecord
       end
       current_parent = current_parent.parent
     end
-  end
-
-  def is_trackable?
-    self.published? && self.notifiable? && self.advertise? && self.profile.public_profile
   end
 
   def external_link=(link)
@@ -522,17 +525,12 @@ class Article < ApplicationRecord
     ['Folder', 'Blog', 'Forum', 'Gallery']
   end
 
-  def self.text_article_types
-    ['TextArticle', 'TextileArticle', 'TinyMceArticle']
-  end
-
   scope :published, -> { where 'articles.published = ?', true }
   scope :folders, -> profile { where 'articles.type IN (?)', profile.folder_types }
   scope :no_folders, -> profile { where 'articles.type NOT IN (?)', profile.folder_types }
   scope :galleries, -> { where "articles.type IN ('Gallery')" }
   scope :images, -> { where :is_image => true }
   scope :no_images, -> { where :is_image => false }
-  scope :text_articles, -> { where 'articles.type IN (?)', text_article_types }
   scope :files, -> { where :type => 'UploadedFile' }
   scope :with_types, -> types { where 'articles.type IN (?)', types }
 
@@ -718,10 +716,6 @@ class Article < ApplicationRecord
     false
   end
 
-  def tiny_mce?
-    false
-  end
-
   def folder?
     false
   end
@@ -874,7 +868,7 @@ class Article < ApplicationRecord
   end
 
   def create_activity
-    if is_trackable? && !image?
+    if notifiable? && !image?
       save_action_for_verb 'create_article', [:name, :url, :lead, :first_image], Proc.new{}, :author
     end
   end
@@ -899,6 +893,10 @@ class Article < ApplicationRecord
 
   def self.can_display_blocks?
     false
+  end
+
+  def editor?(editor)
+    self.editor == editor
   end
 
   private

@@ -8,7 +8,7 @@ class ApproveArticleTest < ActiveSupport::TestCase
     ActionMailer::Base.deliveries = []
     User.current = @user = create_user 'test_user'
     @profile = @user.person
-    @article = fast_create(TextileArticle, :profile_id => @profile.id, :name => 'test name', :abstract => 'Lead of article', :body => 'This is my article')
+    @article = fast_create(TextArticle, :profile_id => @profile.id, :name => 'test name', :abstract => 'Lead of article', :body => 'This is my article')
     @community = fast_create(Community)
     @community.add_member(@profile)
   end
@@ -257,15 +257,15 @@ class ApproveArticleTest < ActiveSupport::TestCase
     other_community.add_member(profile)
     ActionTracker::Record.delete_all
 
-    article = fast_create(TextileArticle)
+    article = fast_create(TextArticle)
     a = create(ApproveArticle, :name => 'bar', :article => article, :target => community, :requestor => profile)
     a.finish
 
-    article = fast_create(TextileArticle)
+    article = fast_create(TextArticle)
     a = create(ApproveArticle, :name => 'another bar', :article => article, :target => community, :requestor => profile)
     a.finish
 
-    article = fast_create(TextileArticle)
+    article = fast_create(TextArticle)
     a = create(ApproveArticle, :name => 'another bar', :article => article, :target => other_community, :requestor => profile)
     a.finish
     assert_equal 3, ActionTracker::Record.count
@@ -275,11 +275,11 @@ class ApproveArticleTest < ActiveSupport::TestCase
     other_community = fast_create(Community)
     other_community.add_member(profile)
     ActionTracker::Record.delete_all
-    article1 = fast_create(TextileArticle)
+    article1 = fast_create(TextArticle)
     a = create(ApproveArticle, :name => 'bar', :article => article1, :target => community, :requestor => profile)
     a.finish
 
-    article2 = fast_create(TinyMceArticle)
+    article2 = fast_create(TextArticle)
     a = create(ApproveArticle, :name => 'another bar', :article => article2, :target => other_community, :requestor => profile)
     a.finish
     assert_equal 2, ActionTracker::Record.count
@@ -317,13 +317,6 @@ class ApproveArticleTest < ActiveSupport::TestCase
     approved_article = person.articles.find_by(name: article.name)
 
     assert_equal approved_article, ActionTracker::Record.last.target
-  end
-
-  should "have the same is_trackable method as original article" do
-    a = create(ApproveArticle, :article => article, :target => community, :requestor => profile)
-    a.finish
-
-    assert_equal article.is_trackable?, article.class.last.is_trackable?
   end
 
   should 'not have target notification message if it is not a moderated oganization' do
@@ -462,7 +455,7 @@ class ApproveArticleTest < ActiveSupport::TestCase
     assert t2.invalid?(:requestor)
   end
 
-  should 'allow only members to be requestors when target is a community' do
+  should 'allow anyone to be requestors when target is a community' do
     community = fast_create(Community)
     member = fast_create(Person)
     community.add_member(member)
@@ -472,8 +465,7 @@ class ApproveArticleTest < ActiveSupport::TestCase
     t2 = ApproveArticle.new(:requestor => non_member, :target => community)
 
     assert t1.valid?
-    assert !t2.valid?
-    assert t2.invalid?(:requestor)
+    assert t2.valid?
   end
 
   should 'allow any user to be requestor whe the target is the portal community' do
