@@ -162,7 +162,7 @@ product-page
       if (e.target.name == 'name')
         this.run_at = new Date()
 
-      if (available == 'false' && !this.hasLoadedUnavailableProducts)
+      if (available != 'true' && !this.hasLoadedUnavailableProducts)
         this.loadUnavailableProducts()
       else
         setTimeout(function(run_at) {

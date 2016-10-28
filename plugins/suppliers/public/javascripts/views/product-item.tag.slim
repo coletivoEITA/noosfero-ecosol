@@ -114,7 +114,10 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
     save() {
       var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'edit/'+this.product.id})
       var self = this
-      $.post(saveUrl, {product: this.prepareForm()}, function(data) {
+      var data = this.prepareForm()
+      if (!data)
+        return;
+      $.post(saveUrl, {product: data}, function(data) {
         display_notice(self.t('views.product.saved'))
         self.close();
       })
@@ -143,8 +146,15 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
       var data = Object();
       var keys = ['name', 'available', 'product_category_id', 'unit_id', 'price', 'supplier_price', 'margin_percentage']
 
+      var to_validate = ['name', 'product_category_id', 'supplier_price', 'margin_percentage']
       var self = this;
       for (var k in keys) {
+        if (to_validate.includes(keys[k])) {
+          if (self.product[keys[k]] == '') {
+            alert(self.t("views.product.validation_error_"+keys[k]))
+            return false;
+          }
+        }
         data[keys[k]] = self.product[keys[k]]
       }
 
