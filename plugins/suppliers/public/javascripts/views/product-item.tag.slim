@@ -65,7 +65,7 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
     this.product  = opts.product
     this.supplier = this.parent.suppliers[this.product.supplier_id]
     this.product.category = this.parent.categories[this.product.product_category_id]
-    this.product.margin_percentage = this.product.margin_percentage || this.parent.default_margin_percentage
+    this.product.margin_percentage = Math.round(parseFloat( this.product.margin_percentage || this.parent.default_margin_percentage)*1000)/1000
     this.product.edition = false
     this.product.selected  = true
 
