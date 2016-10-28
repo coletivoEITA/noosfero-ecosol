@@ -46,9 +46,11 @@ module Api
     def present_partial(model, options)
       if(params[:fields].present?)
         begin
-          fields = JSON.parse(params[:fields])
+          fields = JSON.parse((params.to_hash[:fields] || params.to_hash['fields']).to_json)
           if fields.present?
-            options.merge!(fields.symbolize_keys.slice(:only, :except))
+            fields = fields.symbolize_keys
+            options.merge!(:only => fields[:only]) if fields[:only].present?
+            options.merge!(:except => fields[:except]) if fields[:except].present?
           end
         rescue
           fields = params[:fields]
@@ -105,7 +107,7 @@ module Api
     def post_article(asset, params)
       return forbidden! unless current_person.can_post_content?(asset)
 
-      klass_type = params[:content_type] || params[:article].delete(:type) || TinyMceArticle.name
+      klass_type = params[:content_type] || params[:article].delete(:type) || TextArticle.name
       return forbidden! unless klass_type.constantize <= Article
 
       article = klass_type.constantize.new(params[:article])
@@ -403,12 +405,12 @@ module Api
     end
 
     def asset_with_image params
-      if params.has_key? :image_builder
+      if !params.nil? && params.has_key?(:image_builder)
         asset_api_params = params
         asset_api_params[:image_builder] = base64_to_uploadedfile(asset_api_params[:image_builder])
         return asset_api_params
       end
-        params
+      params
     end
 
     def base64_to_uploadedfile(base64_image)
@@ -459,11 +461,9 @@ module Api
 
     def parse_content_type(content_type)
       return nil if content_type.blank?
-      content_types = content_type.split(',').map do |content_type|
-        content_type = content_type.camelcase
-        content_type == 'TextArticle' ? Article.text_article_types : content_type
+      content_type.split(',').map do |content_type|
+        content_type.camelcase
       end
-      content_types.flatten.uniq
     end
 
     def period(from_date, until_date)

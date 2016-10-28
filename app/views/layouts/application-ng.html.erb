@@ -30,6 +30,15 @@
       safe_join(str, "\n")
     %>
 
+    <script type="text/javascript">
+      DEFAULT_LOADING_MESSAGE = <%="'#{ _('loading...') }'".html_safe %>;
+      PERMANENT_NOTIFICATIONS = <%= @environment.permanent_notifications %>;
+      noosfero.profile = <%= (@profile.identifier if @profile).to_json.html_safe %>
+    </script>
+
+    <% if current_editor_is?(Article::Editor::TINY_MCE) %>
+      <%= render :file => 'shared/tiny_mce' %>
+    <% end %>
   </head>
   <body class="<%= h body_classes %>">
     <a href="#content" id="link-go-content"><span><%= _("Go to the content") %></span></a>
@@ -67,7 +76,7 @@
         </div><!-- end id="content" -->
       </div><!-- end id="wrap-2" -->
     </div><!-- end id="wrap-1" -->
-    <%= render_environment_features(:logged_in) if logged_in? %>
+    <%= render_environment_features(:logged_in).html_safe if logged_in? %>
     <div id="footer">
       <div id="theme-footer">
         <%= theme_footer %>

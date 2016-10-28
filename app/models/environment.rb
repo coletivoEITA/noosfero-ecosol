@@ -368,6 +368,8 @@ class Environment < ApplicationRecord
   settings_items :members_whitelist_enabled, :type => :boolean, :default => false
   settings_items :members_whitelist, :type => Array, :default => []
 
+  settings_items :permanent_notifications, :type => :boolean, :default => false
+
   def in_whitelist?(person)
     !members_whitelist_enabled || members_whitelist.include?(person.id)
   end
@@ -1028,6 +1030,10 @@ class Environment < ApplicationRecord
 
   def to_liquid
     HashWithIndifferentAccess.new :name => name
+  end
+
+  def permissions_for(person)
+    person.role_assignments.where(resource: self).map {|ra| ra.role.permissions}.flatten.uniq
   end
 
   private

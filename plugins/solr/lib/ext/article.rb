@@ -43,13 +43,7 @@ class Article
   end
 
   def solr_f_type
-    #join common types
-    case self.class.name
-    when 'TinyMceArticle', 'TextileArticle'
-      TextArticle.name
-    else
-      self.class.name
-    end
+    self.class.name
   end
 
   def solr_f_profile_type

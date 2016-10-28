@@ -146,11 +146,14 @@ class CmsController < MyProfileController
     parent = check_parent(params[:parent_id])
     if parent
       @article.parent = parent
+      @article.published = parent.published
+      @article.show_to_followers = parent.show_to_followers
       @parent_id = parent.id
     end
 
     @article.profile = profile
     @article.author = user
+    @article.editor = current_person.editor
     @article.last_changed_by = user
     @article.created_by = user
 
@@ -398,17 +401,13 @@ class CmsController < MyProfileController
 
   def available_article_types
     articles = [
-      TinyMceArticle,
-      TextileArticle,
+      TextArticle,
       Event
     ]
     articles += special_article_types if params && params[:cms]
     parent_id = params ? params[:parent_id] : nil
     if @parent && @parent.blog?
       articles -= Article.folder_types.map(&:constantize)
-    end
-    if @user_is_admin
-      articles << RawHTMLArticle
     end
     articles
   end

@@ -99,7 +99,7 @@ class Api::HelpersTest < ActiveSupport::TestCase
   end
 
   should 'parse_content_type return all content types as an array' do
-    assert_equivalent ['TextileArticle','TinyMceArticle'], parse_content_type("TextileArticle,TinyMceArticle")
+    assert_equivalent ['Event','TextArticle'], parse_content_type("Event,TextArticle")
   end
 
   should 'find_article return article by id in list passed for user with permission' do
@@ -233,7 +233,7 @@ class Api::HelpersTest < ActiveSupport::TestCase
 
   should 'accept json as fields parameter when calling present partial' do
     model = mock
-    params[:fields] = {only: [:name, {user: [:login]}]}.to_json
+    params[:fields] = {only: [:name, {user: [:login]}]}
     expects(:present).with(model, {:only => ['name', {'user' => ['login']}]})
     present_partial(model, {})
   end
