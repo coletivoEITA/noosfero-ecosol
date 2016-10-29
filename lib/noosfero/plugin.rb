@@ -599,6 +599,13 @@ class Noosfero::Plugin
     {:results => scope.paginate(paginate_options)}
   end
 
+  def search_order asset
+  end
+  def catalog_search_extras_begin
+  end
+  def catalog_search_extras_end
+  end
+
   # -> Suggests terms based on asset and query
   # returns = [a, b, c, ...]
   def find_suggestions(query, context, asset, options={:limit => 5})

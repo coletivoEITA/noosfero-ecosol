@@ -15,7 +15,7 @@
       <ul class="nav navbar-nav">
         <% links.each do |link| %>
           <li>
-            <%= block.sanitize_link(link_to link[:name], block.expand_address(link[:address]), target: link[:target], class: "#{'icon-' + link[:icon] if link[:icon]}", title: link[:title]) %>
+            <%= block.sanitize_link(link_to link[:name], block.expand_address(link[:address]), target: link[:target], class: "#{'icon-' + link[:icon] if link[:icon]}", title: link[:title]).html_safe %>
           </li>
         <% end %>
       </ul>

@@ -1,4 +1,4 @@
-<%= form_tag({controller: :catalog, profile: profile.identifier, action: :index}, onsubmit: 'return catalog.search.submit()', method: 'get', id: 'catalog-search') do %>
+<%= form_tag({controller: 'products_plugin/catalog', profile: profile.identifier, action: :index}, onsubmit: 'return catalog.search.submit()', method: 'get', id: 'catalog-search') do %>
 
   <%= hidden_field_tag :use_show_more, if @use_show_more then '1' else '0' end %>
   <%= hidden_field_tag :page, @pg_page %>
@@ -38,9 +38,9 @@
 
   <div id="catalog-results-tools">
     <div id="catalog-result-qtty-wrap">
-      <%= @not_searched ?
+      <%= (@not_searched ?
         _('<b>Total:</b> %{number} products') % {number: '<span id="catalog-result-qtty">' + @products.total_entries.to_s + '</span>'}
-        : _('Your search returned %{number} products') % {number: '<span id="catalog-result-qtty">' + @products.total_entries.to_s + '</span>'}
+        : _('Your search returned %{number} products') % {number: '<span id="catalog-result-qtty">' + @products.total_entries.to_s + '</span>'}).html_safe
       %>
     </div>
     <div id="catalog-orderby">

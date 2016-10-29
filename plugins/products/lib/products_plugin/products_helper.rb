@@ -4,7 +4,7 @@ module ProductsPlugin::ProductsHelper
 
   def product_path(product)
     if product.enterprise.enabled?
-      product.enterprise.public_profile_url.merge controller: 'products_plugin/page', action: 'show', id: product
+      product.enterprise.public_profile_url.merge controller: 'products_plugin/page', action: :show, id: product.id
     else
       product.enterprise.url
     end
