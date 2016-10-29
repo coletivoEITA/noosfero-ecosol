@@ -7,7 +7,7 @@
 
   <div class='header'><strong><%= _('Insert media') %></strong><%= button('vertical-toggle', _('Show/Hide'), '#') %></div>
 
-  <%= render(:partial => 'textile_quick_reference') if @article.is_a?(TextileArticle) %>
+  <%= render(:partial => 'textile_quick_reference') if @article.editor?(Article::Editor::TEXTILE) %>
   <div class='text-editor-sidebar-box' id='media-upload-box'>
     <div id='media-upload-form'>
       <%= form_tag({ :action => 'media_upload' }, :multipart => true) do %>
@@ -48,4 +48,4 @@
 </script>
 
 <%= render :partial => 'media_new_folder', :locals => {:default_folder => default_folder} %>
-<%= javascript_include_tag 'jquery.fileupload.js', 'tmpl.js', 'media-panel.js' %>
+<%= javascript_include_tag 'vendor/jquery.fileupload.js', 'vendor/tmpl.js', 'media-panel.js' %>

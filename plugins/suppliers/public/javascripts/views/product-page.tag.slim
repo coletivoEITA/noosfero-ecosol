@@ -162,7 +162,7 @@ product-page
       if (e.target.name == 'name')
         this.run_at = new Date()
 
-      if (available == 'false' && !this.hasLoadedUnavailableProducts)
+      if (available != 'true' && !this.hasLoadedUnavailableProducts)
         this.loadUnavailableProducts()
       else
         setTimeout(function(run_at) {
@@ -183,6 +183,10 @@ product-page
 
 
       for (var i in this.products) {
+        if (name != "" && this.products[i].name == "") {
+          this.products[i].selected = false
+          continue;
+        }
         if (name && this.products[i].name) {
           if (this.products[i].name.toLowerCase().indexOf(name) < 0) {
             this.products[i].selected = false

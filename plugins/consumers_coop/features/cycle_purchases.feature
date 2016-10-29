@@ -3,11 +3,12 @@ Feature: cycle_purchases
   I want to see purchases from consumers' orders
 
   Background:
-    Given "OrdersCycle" plugin is enabled
+    Given "Payments" plugin is enabled
     Given "Orders" plugin is enabled
     Given "Suppliers" plugin is enabled
+    Given "OrdersCycle" plugin is enabled
     Given "ConsumersCoop" plugin is enabled
-    And feature "products_for_enterprises" is enabled on environment
+
     And the following product_categories
       | name        |
       | Beer        |
@@ -26,6 +27,7 @@ Feature: cycle_purchases
     And the following community
       | identifier  | name       | owner   |
       | collective  | Collective | manager |
+
     And "Manager" is admin of "Collective"
     And consumer is member of collective
     And the consumers coop is enabled on "Collective"

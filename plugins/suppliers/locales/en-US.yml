@@ -202,6 +202,8 @@ en-US: &en-US
         adition: adition
         remotion: remotion
         stock_modal_qtt: "In the inventory now: %{stock}"
+        stock_qtt_validation_error: "Validation Error: The quantity field needs to be filled"
+        stock_desc_validation_error: "Validation Error: The description field needs to be filled"
         use_stock: "Use inventory"
         about_product: "About the product"
         the_supplier_price: "Supplier price"
@@ -221,6 +223,8 @@ en-US: &en-US
         validation_error_product_category_id: "Validation error: Please, fill the field Category"
         validation_error_supplier_id: "Validation error: Please, fill the field Supplier"
         validation_error_name: "Validation error: Please, fill the field Name"
+        validation_error_supplier_price: "Validation error: Please, fill the field Supplier Price"
+        validation_error_margin_percentage: "Validation error: Please, fill the field Margin"
         import:
           action: "Import spreadsheet"
           help: "Format your spreadsheet to have exactly the fields bellow with header. Then, save it choosing the CSV file type (.csv extension)."

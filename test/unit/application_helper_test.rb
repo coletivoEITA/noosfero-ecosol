@@ -545,12 +545,6 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal ["1 for b", "2 for c", "3 for a"], unique_with_count(%w(a b c a c a))
   end
 
-  should 'show task information with the requestor' do
-    person = create_user('usertest').person
-    task = create(Task, :requestor => person)
-    assert_match person.name, task_information(task)
-  end
-
   should 'return nil when :show_zoom_button_on_article_images is not enabled in environment' do
     env = Environment.default
     env.stubs(:enabled?).with(:show_zoom_button_on_article_images).returns(false)
@@ -615,7 +609,7 @@ class ApplicationHelperTest < ActionView::TestCase
 
   should 'reference to article' do
     c = fast_create(Community)
-    a = fast_create(TinyMceArticle, :profile_id => c.id)
+    a = fast_create(TextArticle, :profile_id => c.id)
     assert_equal(
       "<a href=\"/#{c.identifier}/#{a.slug}\">x</a>",
       reference_to_article('x', a) )
@@ -623,7 +617,7 @@ class ApplicationHelperTest < ActionView::TestCase
 
   should 'reference to article, with anchor' do
     c = fast_create(Community)
-    a = fast_create(TinyMceArticle, :profile_id => c.id)
+    a = fast_create(TextArticle, :profile_id => c.id)
     assert_equal(
       "<a href=\"/#{c.identifier}/#{a.slug}#place\">x</a>",
       reference_to_article('x', a, 'place') )
@@ -632,7 +626,7 @@ class ApplicationHelperTest < ActionView::TestCase
   should 'reference to article, in a blog' do
     c = fast_create(Community)
     b = fast_create(Blog, :profile_id => c.id)
-    a = fast_create(TinyMceArticle, :profile_id => c.id, :parent_id => b.id)
+    a = fast_create(TextArticle, :profile_id => c.id, :parent_id => b.id)
     a.save! # needed to link to the parent blog
     assert_equal(
       "<a href=\"/#{c.identifier}/#{b.slug}/#{a.slug}\">x</a>",
@@ -643,7 +637,7 @@ class ApplicationHelperTest < ActionView::TestCase
     c = fast_create(Community)
     c.domains << build(Domain, :name=>'domain.xyz')
     b = fast_create(Blog, :profile_id => c.id)
-    a = fast_create(TinyMceArticle, :profile_id => c.id, :parent_id => b.id)
+    a = fast_create(TextArticle, :profile_id => c.id, :parent_id => b.id)
     a.save!
     assert_equal(
       "<a href=\"http://domain.xyz/#{b.slug}/#{a.slug}\">x</a>",
@@ -856,7 +850,7 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal "Clone Blog", label_for_clone_article(Blog.new)
     assert_equal "Clone Event", label_for_clone_article(Event.new)
     assert_equal "Clone Forum", label_for_clone_article(Forum.new)
-    assert_equal "Clone Article", label_for_clone_article(TinyMceArticle.new)
+    assert_equal "Clone Article", label_for_clone_article(TextArticle.new)
   end
 
   should "return top url of environment" do
@@ -880,6 +874,117 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal c.top_url, top_url
   end
 
+  should "current editor return the editor defined in article" do
+    person = fast_create(Person)
+    @article = fast_create(Article)
+    @article.editor = Article::Editor::TEXTILE
+    @article.save
+    stubs(:current_person).returns(person)
+    assert_equal Article::Editor::TEXTILE, current_editor
+  end
+
+  should "current editor be tiny mce if an article is present and no editor is defined" do
+    person = fast_create(Person)
+    @article = fast_create(Article)
+    @article.editor = nil
+    @article.save
+    stubs(:current_person).returns(person)
+    assert_equal Article::Editor::TINY_MCE, current_editor
+  end
+
+  should "current editor be the person editor if there is no article" do
+    person = fast_create(Person)
+    request = mock()
+    stubs(:current_person).returns(person)
+    person.stubs(:editor).returns(Article::Editor::TEXTILE)
+    assert_equal Article::Editor::TEXTILE, current_editor
+  end
+
+
+  should "current editor be tiny mce if there is no article and no person editor is defined" do
+    person = fast_create(Person)
+    stubs(:current_person).returns(person)
+    person.stubs(:editor).returns(nil)
+    assert_equal Article::Editor::TINY_MCE, current_editor
+  end
+
+  should "current editor return the editor defined in article even if there is a person editor defined" do
+    person = fast_create(Person)
+    @article = fast_create(Article)
+    @article.editor = Article::Editor::TEXTILE
+    @article.save
+    stubs(:current_person).returns(person)
+    person.stubs(:editor).returns(Article::Editor::TINY_MCE)
+    assert_equal Article::Editor::TEXTILE, current_editor
+  end
+
+  should "current editor be tiny mce if an article is present and no editor is defined  even if there is a person editor defined" do
+    person = fast_create(Person)
+    @article = fast_create(Article)
+    @article.editor = nil
+    @article.save
+    stubs(:current_person).returns(person)
+    person.stubs(:editor).returns(Article::Editor::TINY_MCE)
+    assert_equal Article::Editor::TINY_MCE, current_editor
+  end
+
+  should "current editor concat the mode passed as parameter" do
+    person = fast_create(Person)
+    @article = fast_create(Article)
+    @article.editor = Article::Editor::TEXTILE
+    @article.save
+    stubs(:current_person).returns(person)
+    mode = 'something'
+    assert_equal Article::Editor::TEXTILE + '_' + mode, current_editor(mode)
+  end
+  should "current_editor_is? be true if the test editor is equal to defined one" do
+    stubs(:current_editor).returns(Article::Editor::TEXTILE)
+    assert current_editor_is?(Article::Editor::TEXTILE)
+  end
+
+  should "current_editor_is? be false if the test editor is different to defined one" do
+    stubs(:current_editor).returns(Article::Editor::TINY_MCE)
+    refute current_editor_is?(Article::Editor::TEXTILE)
+  end
+
+  should "current_editor_is? be false if the test editor is nil" do
+    stubs(:current_editor).returns(Article::Editor::TEXTILE)
+    refute current_editor_is?(nil)
+    stubs(:current_editor).returns(Article::Editor::TINY_MCE)
+    refute current_editor_is?(nil)
+  end
+
+  should 'show task information with the requestor' do
+    person = create_user('usertest').person
+    task = create(Task, :requestor => person)
+    assert_match person.name, task_information(task)
+  end
+
+  should 'show task information with variables information on suggest article tasks' do
+    person = create_user('usertest').person
+    task = create(SuggestArticle, :name => person.name, :target => person)
+    assert_match person.name, task_information(task)
+  end
+
+  should 'show task information with target detail information on suggest article tasks' do
+    person = create_user('usertest').person
+    task = create(SuggestArticle, :target => person)
+    assert_match /in.*#{person.name}/, task_information(task)
+  end
+
+  should "show task information without target detail information on suggest article tasks if it's in the same profile" do
+    profile = fast_create(Community)
+    task = create(SuggestArticle, :target => profile)
+    assert_no_match /in.*#{profile.name}/, task_information(task, {:profile => profile.identifier})
+  end
+
+  should "show task information with target detail information on suggest article with profile parameter to another profile" do
+    profile = fast_create(Community)
+    another_profile = fast_create(Community)
+    task = create(SuggestArticle, :target => profile)
+    assert_match /in.*#{profile.name}/, task_information(task, {:profile => another_profile.identifier})
+  end
+
   protected
   include NoosferoTestHelper
 
@@ -892,3 +997,4 @@ class ApplicationHelperTest < ActionView::TestCase
   end
 
 end
+

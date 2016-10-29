@@ -350,9 +350,9 @@ class ArticleTest < ActiveSupport::TestCase
 
   should 'list most commented articles' do
     Article.delete_all
-    a1 = create(TextileArticle, :name => "art 1", :profile_id => profile.id)
-    a2 = create(TextileArticle, :name => "art 2", :profile_id => profile.id)
-    a3 = create(TextileArticle, :name => "art 3", :profile_id => profile.id)
+    a1 = create(TextArticle, :name => "art 1", :profile_id => profile.id)
+    a2 = create(TextArticle, :name => "art 2", :profile_id => profile.id)
+    a3 = create(TextArticle, :name => "art 3", :profile_id => profile.id)
 
     2.times { create(Comment, :title => 'test', :body => 'asdsad', :author => profile, :source => a2).save! }
     4.times { create(Comment, :title => 'test', :body => 'asdsad', :author => profile, :source => a3).save! }
@@ -658,14 +658,14 @@ class ArticleTest < ActiveSupport::TestCase
   should 'identify if belongs to blog' do
     p = create_user('user_blog_test').person
     blog = fast_create(Blog, :name => 'Blog test', :profile_id => p.id)
-    post = fast_create(TextileArticle, :name => 'First post', :profile_id => p.id, :parent_id => blog.id)
+    post = fast_create(TextArticle, :name => 'First post', :profile_id => p.id, :parent_id => blog.id)
     assert post.belongs_to_blog?
   end
 
   should 'not belongs to blog' do
     p = create_user('user_blog_test').person
     folder = fast_create(Folder, :name => 'Not Blog', :profile_id => p.id)
-    a = fast_create(TextileArticle, :name => 'Not blog post', :profile_id => p.id, :parent_id => folder.id)
+    a = fast_create(TextArticle, :name => 'Not blog post', :profile_id => p.id, :parent_id => folder.id)
     refute a.belongs_to_blog?
   end
 
@@ -965,7 +965,7 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   should 'have short lead' do
-    a = fast_create(TinyMceArticle, :profile_id => profile.id, :body => '<p>' + ('a' *180) + '</p>')
+    a = fast_create(TextArticle, :body => '<p>' + ('a' *180) + '</p>')
     assert_equal 170, a.short_lead.length
   end
 
@@ -975,7 +975,7 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   should 'track action when a published article is created outside a community' do
-    article = create(TinyMceArticle, :profile_id => profile.id)
+    article = create(TextArticle, :profile_id => profile.id)
     ta = article.activity
     assert_equal article.name, ta.get_name
     assert_equal article.url, ta.get_url
@@ -990,7 +990,7 @@ class ArticleTest < ActiveSupport::TestCase
     community.add_member(p2)
     User.current = p1.user
 
-    article = create(TinyMceArticle, :profile_id => community.id)
+    article = create(TextArticle, :profile_id => community.id)
     activity = article.activity
 
     process_delayed_job_queue
@@ -999,7 +999,7 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   should 'destroy activity when a published article is removed' do
-    a = create(TinyMceArticle, :profile_id => profile.id)
+    a = create(TextArticle, :profile_id => profile.id)
     assert_difference 'ActionTracker::Record.count', -1 do
       a.destroy
     end
@@ -1032,7 +1032,7 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   should 'create activity' do
-    a = create TextileArticle, :name => 'bar', :profile_id => profile.id, :published => true
+    a = create TextArticle, :name => 'bar', :profile_id => profile.id, :published => true
     a.activity.destroy
     assert_nil a.activity
 
@@ -1054,34 +1054,6 @@ class ArticleTest < ActiveSupport::TestCase
     assert_equal profile, article.action_tracker_target
   end
 
-  should "have defined the is_trackable method defined" do
-    assert Article.method_defined?(:is_trackable?)
-  end
-
-  should "the common trackable conditions return the correct value" do
-    a =  Article.new
-    a.published = a.advertise = true
-    assert_equal true, a.published?
-    assert_equal false, a.notifiable?
-    assert_equal true, a.advertise?
-    assert_equal false, a.is_trackable?
-
-    a.published=false
-    assert_equal false, a.published?
-    assert_equal false, a.is_trackable?
-
-    a.published=true
-    a.advertise=false
-    assert_equal false, a.advertise?
-    assert_equal false, a.is_trackable?
-  end
-
-  should "not be trackable if article is inside a private community" do
-    private_community = fast_create(Community, :public_profile => false)
-    a =  fast_create(TinyMceArticle, :profile_id => private_community.id)
-    assert_equal false, a.is_trackable?
-  end
-
   should 'create the notification to organization and all organization members' do
     Profile.destroy_all
     ActionTracker::Record.destroy_all
@@ -1091,7 +1063,7 @@ class ArticleTest < ActiveSupport::TestCase
     member_1 = User.current.person
     community.add_member(member_1)
 
-    article = create TinyMceArticle, :name => 'Tracked Article 1', :profile_id => community.id
+    article = create TextArticle, :name => 'Tracked Article 1', :profile_id => community.id
     first_activity = article.activity
     assert_equal [first_activity], ActionTracker::Record.where(verb: 'create_article')
 
@@ -1101,7 +1073,7 @@ class ArticleTest < ActiveSupport::TestCase
     member_2 = fast_create(Person)
     community.add_member(member_2)
 
-    article2 = create TinyMceArticle, :name => 'Tracked Article 2', :profile_id => community.id
+    article2 = create TextArticle, :name => 'Tracked Article 2', :profile_id => community.id
     second_activity = article2.activity
     assert_equivalent [first_activity, second_activity], ActionTracker::Record.where(verb: 'create_article')
 
@@ -1117,7 +1089,7 @@ class ArticleTest < ActiveSupport::TestCase
     ActionTracker::Record.destroy_all
     ActionTrackerNotification.destroy_all
     User.current = profile.user
-    article = create(TinyMceArticle, :profile_id => profile.id)
+    article = create(TextArticle, :profile_id => profile.id)
 
     process_delayed_job_queue
     assert_equal friend, ActionTrackerNotification.last.profile
@@ -1129,7 +1101,7 @@ class ArticleTest < ActiveSupport::TestCase
     f1.follow(profile, circle)
 
     User.current = profile.user
-    article = create TinyMceArticle, :name => 'Tracked Article 1', :profile_id => profile.id
+    article = create TextArticle, :name => 'Tracked Article 1', :profile_id => profile.id
     assert_equal 1, ActionTracker::Record.where(verb: 'create_article').count
     process_delayed_job_queue
     assert_equal 2, ActionTrackerNotification.where(action_tracker_id: article.activity.id).count
@@ -1138,7 +1110,7 @@ class ArticleTest < ActiveSupport::TestCase
     circle2 = Circle.create!(:person=> f2, :name => "Zombies", :profile_type => 'Person')
     f2.follow(profile, circle2)
 
-    article2 = create TinyMceArticle, :name => 'Tracked Article 2', :profile_id => profile.id
+    article2 = create TextArticle, :name => 'Tracked Article 2', :profile_id => profile.id
     assert_equal 2, ActionTracker::Record.where(verb: 'create_article').count
     process_delayed_job_queue
     assert_equal 3, ActionTrackerNotification.where(action_tracker_id: article2.activity.id).count
@@ -1155,7 +1127,7 @@ class ArticleTest < ActiveSupport::TestCase
     ActionTracker::Record.destroy_all
     ActionTrackerNotification.destroy_all
     User.current = profile.user
-    article = create(TinyMceArticle, :profile_id => profile.id)
+    article = create(TextArticle, :profile_id => profile.id)
     activity = article.activity
 
     process_delayed_job_queue
@@ -1178,7 +1150,7 @@ class ArticleTest < ActiveSupport::TestCase
     community.add_member(p2)
     User.current = p1.user
 
-    article = create(TinyMceArticle, :profile_id => community.id)
+    article = create(TextArticle, :profile_id => community.id)
     activity = article.activity
 
     process_delayed_job_queue
@@ -1420,7 +1392,7 @@ class ArticleTest < ActiveSupport::TestCase
 
   should 'retrieve latest info from topic when has no comments' do
     forum = fast_create(Forum, :name => 'Forum test', :profile_id => profile.id)
-    post = fast_create(TextileArticle, :name => 'First post', :profile_id => profile.id, :parent_id => forum.id, :updated_at => Time.now.in_time_zone, :author_id => profile.id)
+    post = fast_create(TextArticle, :name => 'First post', :profile_id => profile.id, :parent_id => forum.id, :updated_at => Time.now.in_time_zone, :author_id => profile.id)
     assert_equal post.updated_at, post.info_from_last_update[:date]
     assert_equal profile.name, post.info_from_last_update[:author_name]
     assert_equal profile.url, post.info_from_last_update[:author_url]
@@ -1428,19 +1400,15 @@ class ArticleTest < ActiveSupport::TestCase
 
   should 'retrieve latest info from comment when has comments' do
     forum = fast_create(Forum, :name => 'Forum test', :profile_id => profile.id)
-    post = fast_create(TextileArticle, :name => 'First post', :profile_id => profile.id, :parent_id => forum.id, :updated_at => Time.now.in_time_zone)
+    post = fast_create(TextArticle, :name => 'First post', :profile_id => profile.id, :parent_id => forum.id, :updated_at => Time.now.in_time_zone)
     post.comments << build(Comment, :name => 'Guest', :email => 'guest@example.com', :title => 'test comment', :body => 'hello!')
     assert_equal post.comments.last.created_at, post.info_from_last_update[:date]
     assert_equal "Guest", post.info_from_last_update[:author_name]
     assert_nil post.info_from_last_update[:author_url]
   end
 
-  should 'tiny mce editor is disabled by default' do
-    refute Article.new.tiny_mce?
-  end
-
   should 'return only folders' do
-    not_folders = [RssFeed, TinyMceArticle, Event, TextileArticle]
+    not_folders = [RssFeed, TextArticle, Event, TextArticle]
     folders = [Folder, Blog, Gallery, Forum]
 
     not_folders.each do |klass|
@@ -1455,7 +1423,7 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   should 'return no folders' do
-    not_folders = [RssFeed, TinyMceArticle, Event, TextileArticle]
+    not_folders = [RssFeed, TextArticle, Event, TextArticle]
     folders = [Folder, Blog, Gallery, Forum]
 
     not_folders.each do |klass|
@@ -1495,7 +1463,7 @@ class ArticleTest < ActiveSupport::TestCase
 
   should 'get images paths in article body' do
     Environment.any_instance.stubs(:default_hostname).returns('noosfero.org')
-    a = build TinyMceArticle, :profile => @profile
+    a = build TextArticle, :profile => @profile
     a.body = 'Noosfero <img src="http://noosfero.com/test.png" /> test <img src="http://test.com/noosfero.png" />'
     assert_includes a.body_images_paths, 'http://noosfero.com/test.png'
     assert_includes a.body_images_paths, 'http://test.com/noosfero.png'
@@ -1503,7 +1471,7 @@ class ArticleTest < ActiveSupport::TestCase
 
   should 'always put article image first in images paths list in article body' do
     Environment.any_instance.stubs(:default_hostname).returns('noosfero.org')
-    a = create(TinyMceArticle, :name => 'test', :image_builder => {
+    a = create(TextArticle, :name => 'test', :image_builder => {
       :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png')
     }, :profile_id => @profile.id)
     a.save!
@@ -1514,7 +1482,7 @@ class ArticleTest < ActiveSupport::TestCase
 
   should 'escape utf8 characters correctly' do
     Environment.any_instance.stubs(:default_hostname).returns('noosfero.org')
-    a = build TinyMceArticle, profile: @profile
+    a = build TextArticle, profile: @profile
     a.body = 'Noosfero <img src="http://noosfero.com/cabeça.png" /> '
     assert_includes a.body_images_paths, 'http://noosfero.com/cabe%C3%A7a.png'
 
@@ -1525,7 +1493,7 @@ class ArticleTest < ActiveSupport::TestCase
 
   should 'get absolute images paths in article body' do
     Environment.any_instance.stubs(:default_hostname).returns('noosfero.org')
-    a = build TinyMceArticle, :profile => @profile
+    a = build TextArticle, :profile => @profile
     a.body = 'Noosfero <img src="test.png" alt="Absolute" /> test <img src="/relative/path.png" />'
     assert_includes a.body_images_paths, 'http://noosfero.org/test.png'
     assert_includes a.body_images_paths, 'http://noosfero.org/relative/path.png'
@@ -1555,13 +1523,13 @@ class ArticleTest < ActiveSupport::TestCase
   should 'find more recent contents' do
     Article.delete_all
 
-    c1 = fast_create(TinyMceArticle, :name => 'Testing article 1', :body => 'Article body 1', :profile_id => profile.id, :created_at => DateTime.now - 4)
-    c2 = fast_create(TinyMceArticle, :name => 'Testing article 2', :body => 'Article body 2', :profile_id => profile.id, :created_at => DateTime.now - 1)
-    c3 = fast_create(TinyMceArticle, :name => 'Testing article 3', :body => 'Article body 3', :profile_id => profile.id, :created_at => DateTime.now - 3)
+    c1 = fast_create(TextArticle, :name => 'Testing article 1', :body => 'Article body 1', :profile_id => profile.id, :created_at => DateTime.now - 4)
+    c2 = fast_create(TextArticle, :name => 'Testing article 2', :body => 'Article body 2', :profile_id => profile.id, :created_at => DateTime.now - 1)
+    c3 = fast_create(TextArticle, :name => 'Testing article 3', :body => 'Article body 3', :profile_id => profile.id, :created_at => DateTime.now - 3)
 
     assert_equal [c2,c3,c1] , Article.more_recent
 
-    c4 = fast_create(TinyMceArticle, :name => 'Testing article 4', :body => 'Article body 4', :profile_id => profile.id, :created_at => DateTime.now - 2)
+    c4 = fast_create(TextArticle, :name => 'Testing article 4', :body => 'Article body 4', :profile_id => profile.id, :created_at => DateTime.now - 2)
     assert_equal [c2,c4,c3,c1] , Article.more_recent
   end
 
@@ -1612,18 +1580,6 @@ class ArticleTest < ActiveSupport::TestCase
     a = build(Article, :hits => 4)
     assert_equal 4, a.hits
     assert_equal "4 views", a.more_popular_label
-  end
-
-  should 'return only text articles' do
-    Article.delete_all
-
-    c1 = fast_create(TinyMceArticle, :name => 'Testing article 1', :body => 'Article body 1', :profile_id => profile.id)
-    c2 = fast_create(TextArticle, :name => 'Testing article 2', :body => 'Article body 2', :profile_id => profile.id)
-    c3 = fast_create(Event, :name => 'Testing article 3', :body => 'Article body 3', :profile_id => profile.id)
-    c4 = fast_create(RssFeed, :name => 'Testing article 4', :body => 'Article body 4', :profile_id => profile.id)
-    c5 = fast_create(TextileArticle, :name => 'Testing article 5', :body => 'Article body 5', :profile_id => profile.id)
-
-    assert_equivalent [c1,c2,c5], Article.text_articles
   end
 
   should 'delegate region info to profile' do
@@ -1718,7 +1674,7 @@ class ArticleTest < ActiveSupport::TestCase
     author = fast_create(Person)
     community.add_member(author)
     forum = Forum.create(:profile => community, :name => 'Forum test', :body => 'Forum test')
-    post = fast_create(TextileArticle, :name => 'First post', :profile_id => community.id, :parent_id => forum.id, :author_id => author.id)
+    post = fast_create(TextArticle, :name => 'First post', :profile_id => community.id, :parent_id => forum.id, :author_id => author.id)
 
     assert post.allow_edit?(author)
   end
@@ -1752,7 +1708,7 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   should 'store first image in tracked action' do
-    a = create TinyMceArticle, :name => 'Tracked Article', :body => '<p>Foo<img src="foo.png" />Bar</p>', :profile_id => profile.id
+    a = create TextArticle, :name => 'Tracked Article', :body => '<p>Foo<img src="foo.png" />Bar</p>', :profile_id => profile.id
     assert_equal 'foo.png', a.first_image
     assert_equal 'foo.png', ActionTracker::Record.last.get_first_image
   end
@@ -1776,7 +1732,7 @@ class ArticleTest < ActiveSupport::TestCase
   should 'update path if parent is changed' do
     f1 = create(Folder, :name => 'Folder 1', :profile => profile)
     f2 = create(Folder, :name => 'Folder 2', :profile => profile)
-    article = create(TinyMceArticle, :name => 'Sample Article', :parent_id => f1.id, :profile => profile)
+    article = create(TextArticle, :name => 'Sample Article', :parent_id => f1.id, :profile => profile)
     assert_equal [f1.path,article.slug].join('/'), article.path
 
     article.parent = f2
@@ -1846,20 +1802,20 @@ class ArticleTest < ActiveSupport::TestCase
   should 'identify if belongs to forum' do
     p = create_user('user_forum_test').person
     forum = fast_create(Forum, :name => 'Forum test', :profile_id => p.id)
-    post = fast_create(TextileArticle, :name => 'First post', :profile_id => p.id, :parent_id => forum.id)
+    post = fast_create(TextArticle, :name => 'First post', :profile_id => p.id, :parent_id => forum.id)
     assert post.belongs_to_forum?
   end
 
   should 'not belongs to forum' do
     p = create_user('user_forum_test').person
     blog = fast_create(Blog, :name => 'Not Forum', :profile_id => p.id)
-    a = fast_create(TextileArticle, :name => 'Not forum post', :profile_id => p.id, :parent_id => blog.id)
+    a = fast_create(TextArticle, :name => 'Not forum post', :profile_id => p.id, :parent_id => blog.id)
     refute a.belongs_to_forum?
   end
 
   should 'not belongs to forum if do not have a parent' do
     p = create_user('user_forum_test').person
-    a = fast_create(TextileArticle, :name => 'Orphan post', :profile_id => p.id)
+    a = fast_create(TextArticle, :name => 'Orphan post', :profile_id => p.id)
     refute a.belongs_to_forum?
   end
 
@@ -1875,13 +1831,12 @@ class ArticleTest < ActiveSupport::TestCase
   should 'return articles with specific types' do
     Article.delete_all
 
-    c1 = fast_create(TinyMceArticle, :name => 'Testing article 1', :body => 'Article body 1', :profile_id => profile.id)
-    c2 = fast_create(TextArticle, :name => 'Testing article 2', :body => 'Article body 2', :profile_id => profile.id)
+    c1 = fast_create(TextArticle, :name => 'Testing article 1', :body => 'Article body 2', :profile_id => profile.id)
     c3 = fast_create(Event, :name => 'Testing article 3', :body => 'Article body 3', :profile_id => profile.id)
     c4 = fast_create(RssFeed, :name => 'Testing article 4', :body => 'Article body 4', :profile_id => profile.id)
-    c5 = fast_create(TextileArticle, :name => 'Testing article 5', :body => 'Article body 5', :profile_id => profile.id)
+    c5 = fast_create(TextArticle, :name => 'Testing article 5', :body => 'Article body 5', :profile_id => profile.id)
 
-    assert_equivalent [c1,c2], Article.with_types(['TinyMceArticle', 'TextArticle'])
+    assert_equivalent [c1,c5], Article.with_types(['TextArticle'])
     assert_equivalent [c3], Article.with_types(['Event'])
   end
 
@@ -2348,4 +2303,23 @@ class ArticleTest < ActiveSupport::TestCase
   should 'have can_display_blocks with default true' do
     assert Article.can_display_blocks?
   end
+
+  should 'is_editor true if the article editor is the same as te editor parameter' do
+    article = Article.new(:editor => Article::Editor::TEXTILE)
+    assert article.editor?(Article::Editor::TEXTILE)
+    article = Article.new(:editor => Article::Editor::TINY_MCE)
+    assert article.editor?(Article::Editor::TINY_MCE)
+    article = Article.new(:editor => Article::Editor::RAW_HTML)
+    assert article.editor?(Article::Editor::RAW_HTML)
+  end
+
+  should 'is_editor false if the article editor is not the same as te editor parameter' do
+    article = Article.new(:editor => Article::Editor::TEXTILE)
+    assert !article.editor?(Article::Editor::TINY_MCE)
+    article = Article.new(:editor => Article::Editor::TINY_MCE)
+    assert !article.editor?(Article::Editor::TEXTILE)
+    article = Article.new(:editor => Article::Editor::RAW_HTML)
+    assert !article.editor?(Article::Editor::TINY_MCE)
+  end
+
 end

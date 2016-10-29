@@ -25,6 +25,15 @@
       end.safe_join
     %>
 
+    <script type="text/javascript">
+      DEFAULT_LOADING_MESSAGE = <%="'#{ _('loading...') }'".html_safe %>;
+      PERMANENT_NOTIFICATIONS = <%= @environment.permanent_notifications %>;
+      noosfero.profile = <%= (@profile.identifier if @profile).to_json.html_safe %>
+    </script>
+
+    <% if current_editor_is?(Article::Editor::TINY_MCE) %>
+      <%= render :file => 'shared/tiny_mce' %>
+    <% end %>
   </head>
   <body class="<%= h body_classes %>">
     <a href="#content" id="link-go-content"><span><%= _("Go to the content") %></span></a>

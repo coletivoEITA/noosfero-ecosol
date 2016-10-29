@@ -9,7 +9,7 @@ platform :jruby do
   gem 'rmagick4j'
 end
 
-gem 'rails',                    '~> 4.2.4'
+gem 'rails',                    '~> 4.2.7'
 gem 'fast_gettext',             '~> 0.9'
 gem 'acts-as-taggable-on',      '~> 3.5'
 gem 'rails_autolink',           '~> 1.1.5'
@@ -39,11 +39,11 @@ gem 'message_bus'
 
 # js
 # while https://github.com/rails-api/active_model_serializers/issues/1143 is not released
-gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
+gem 'active_model_serializers', '0.10.0'
 # while https://github.com/fnando/i18n-js/pull/354 is not released
 gem 'i18n-js', github: 'coletivoEITA/i18n-js'
-gem 'js-routes', '>= 1.1.2'
-gem 'riot_js-rails', '>= 0.5.0'
+gem 'js-routes', '= 1.2.6'
+gem 'riot_js-rails'#, path: '../../others/riot_js-rails'
 gem 'sprockets-es6'
 
 #############################################
@@ -87,12 +87,12 @@ end
 
 # API dependencies
 gem 'grape',                    '~> 0.12'
-gem 'grape-entity',             '0.4.8'
+gem 'grape-entity',             '~>0.4.8'
 gem 'grape_logging'
 gem 'rack-cors'
 gem 'rack-contrib'
 gem 'api-pagination',           '>= 4.1.1'
-gem 'liquid',                    '~> 3.0.3'
+gem 'liquid',                    '>= 3.0.3'
 
 # asset pipeline
 gem 'uglifier', '>= 1.0.3'
@@ -128,10 +128,10 @@ end
 group :cucumber do
   gem 'capybara',               '~> 2.2'
   gem 'launchy'
-  gem 'cucumber'
+  gem 'cucumber',                '~> 1.3'
   gem 'cucumber-rails',         '~> 1.4.2', :require => false
   gem 'database_cleaner',       '~> 1.3'
-  gem 'selenium-webdriver',     '>= 2.50'
+  gem 'selenium-webdriver',     '>= 2.53'
   gem 'chromedriver-helper' if ENV['SELENIUM_DRIVER'] == 'chrome'
 end
 

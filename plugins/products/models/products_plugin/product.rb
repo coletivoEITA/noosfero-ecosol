@@ -75,6 +75,10 @@ module ProductsPlugin
     extend ActsAsHavingSettings::ClassMethods
     acts_as_having_settings field: :data
 
+    track_actions :create_product, :after_create, keep_params: [:name, :url ], if: Proc.new { |a| a.notifiable? }, custom_user: :action_tracker_user
+    track_actions :update_product, :before_update, keep_params: [:name, :url], if: Proc.new { |a| a.notifiable? }, custom_user: :action_tracker_user
+    track_actions :remove_product, :before_destroy, keep_params: [:name], if: Proc.new { |a| a.notifiable? }, custom_user: :action_tracker_user
+
     # FIXME: transliterate input and name column
     scope :name_like, -> (name) { where "products.name ILIKE ?", "%#{name}%" }
     scope :with_product_category_id, -> (id) { where product_category_id: id }
@@ -117,10 +121,6 @@ module ProductsPlugin
     scope :recent, -> limit=nil { order('id DESC').limit(limit) }
 
     after_update :save_image
-
-    track_actions :create_product, :after_create, keep_params: [:name, :url ], if: Proc.new { |a| a.is_trackable? }, custom_user: :action_tracker_user
-    track_actions :update_product, :before_update, keep_params: [:name, :url], if: Proc.new { |a| a.is_trackable? }, custom_user: :action_tracker_user
-    track_actions :remove_product, :before_destroy, keep_params: [:name], if: Proc.new { |a| a.is_trackable? }, custom_user: :action_tracker_user
 
     def self.product_categories_of products
       ProductCategory.find products.collect(&:product_category_id).compact.select{ |id| not id.zero? }
@@ -320,6 +320,11 @@ module ProductsPlugin
 
     def validate_uniqueness_of_column_name?
       false
+    end
+
+    def notifiable?
+      # shopping_cart create products without profile
+      self.profile.present?
     end
 
     def is_trackable?
