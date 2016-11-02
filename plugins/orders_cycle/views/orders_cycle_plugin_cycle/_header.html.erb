@@ -8,7 +8,7 @@
   <% if cycle.new? %>
     <div class="cycle-edit-link"><%= t('views.cycle._title.new_cycle') %></div>
   <% else %>
-    <%= link_to "#{t('views.cycle._title.order_cycle') if not listing}#{cycle.name_with_code}", {:action => 'edit', :id => cycle.id }, :class => "cycle-edit-link" %>
+    <%= link_to "#{cycle.name}", {:action => 'edit', :id => cycle.id }, :class => "cycle-edit-link" %>
   <% end %>
 
   <%= t('views.cycle._brief.confirmed_orders', :count => cycle.sales.ordered.count) if listing and not cycle.new? %>
