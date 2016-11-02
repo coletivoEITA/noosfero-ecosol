@@ -24,16 +24,17 @@ order-items-table
         span
           '{I18n.toCurrency(order.total_price)}
 
-      payment each="{payment,index in order.payments}" payment='{payment}'
+      payment each="{payment,index in order.payments}" payment='{payment}' if='{order.admin}'
 
-      .title
-        '{t('views.consumer._total.total_yet_to_pay')}
-      .value
-        span
-          '{I18n.toCurrency(order.remaining_total)}
-      .payed show='{order.remaining_total == 0}'
-        span
-          |	✓
+      .total_yet_to_pay if='{order.admin}'
+        .title
+          '{t('views.consumer._total.total_yet_to_pay')}
+        .value
+          span
+            '{I18n.toCurrency(order.remaining_total)}
+        .payed show='{order.remaining_total == 0}'
+          span
+            |	✓
 
   div if='{order.items.length == 0}'
     '{t('views.item._index.empty_order')}
