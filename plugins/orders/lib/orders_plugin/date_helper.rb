@@ -6,14 +6,14 @@ module OrdersPlugin::DateHelper
 
   def date_range_field form, start_field, end_field, options = {}
     start_time = form.object.send(start_field) || Time.now
-    end_time = form.object.send(end_field) || Time.now+1.week
+    end_time   = form.object.send(end_field)   || Time.now+1.week
 
     render 'orders_plugin/shared/daterangepicker/form_field', form: form, options: options,
       start_field: start_field, end_field: end_field, start_time: start_time, end_time: end_time
   end
 
   def datetime_range_field form, start_field, end_field, options = {}
-    date_range_field form, start_field, end_field, timePicker: true, timePickerIncrement: 15, timePicker12Hour: false
+    date_range_field form, start_field, end_field, timePicker: true
   end
 
   def labelled_datetime_range_field form, start_field, end_field, label, options = {}

@@ -145,24 +145,22 @@ orders = {
 
   daterangepicker: {
 
-    init: function(rangeSelector, _options) {
-      var options = $.extend({}, orders.daterangepicker.defaultOptions, _options);
-      var rangeField = $(rangeSelector)
-      var container = rangeField.parents('.daterangepicker-field-container')
-      var startField = container.find('input[data-field=start]')
-      var endField = container.find('input[data-field=end]')
+    defaultOptions: {},
 
-      var startDate = moment(startField.val(), moment.ISO_8601).format(options.format)
-      var endDate = moment(endField.val(), moment.ISO_8601).format(options.format)
-      var rangeValue = startDate+options.separator+endDate
-      rangeField.val(rangeValue)
+    init: function(rangeSelector, _options) {
+      var options    = $.extend({}, orders.daterangepicker.defaultOptions, _options);
+      var rangeField = $(rangeSelector)
+      var container  = rangeField.parents('.daterangepicker-field-container')
+
+      var startField = container.find('input[data-field=start]')
+      var endField   = container.find('input[data-field=end]')
+      var startDate  = moment(startField.val(), moment.ISO_8601).format(options.locale.format)
+      var endDate    = moment(endField.val(), moment.ISO_8601).format(options.locale.format)
+
+      options.startDate = startDate
+      options.endDate   = endDate
 
       rangeField.daterangepicker(options)
-      .on('apply.daterangepicker change', function(ev, picker) {
-        picker = rangeField.data('daterangepicker')
-        startField.val(picker.startDate.toDate().toISOString())
-        endField.val(picker.endDate.toDate().toISOString())
-      });
     },
   },
 
