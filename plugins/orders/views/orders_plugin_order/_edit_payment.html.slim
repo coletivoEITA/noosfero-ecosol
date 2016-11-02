@@ -1,5 +1,8 @@
+- return unless profile.consumers_coop_settings.payments_enabled
+
 - return if profile.payment_methods.count == 0
-- return unless order.status == 'edition'
+
+- return unless ['edition', 'draft'].include? order.status
 
 - edition = order.may_edit?(user, @admin)
 - return unless edition
