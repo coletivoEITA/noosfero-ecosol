@@ -10,8 +10,6 @@ pt-BR: &pt-BR
         orders_cycles: Feiras Virtuais
         products: Produtos
         volunteering: Voluntariado
-        products: Produtos
-        volunteering: Voluntariado
         leave: Sair da comunidade
         suppliers: Fornecedores
         consumers: Consumidores
@@ -20,10 +18,6 @@ pt-BR: &pt-BR
     controllers:
       myprofile:
         distribution_settings: "Configurações salvas"
-
-    models:
-      header_image:
-        fn_of_uploaded_file_w: "%{fn} do arquivo enviado é maior que o máximo permitido de 2.0 MB"
 
     views:
       layouts:

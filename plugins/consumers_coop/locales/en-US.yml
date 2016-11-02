@@ -14,13 +14,11 @@ en-US: &en-US
         suppliers: Suppliers
         consumers: Consumers
         settings: Settings
+
     controllers:
       myprofile:
         distribution_settings: "Distribution settings saved."
 
-    models:
-      header_image:
-        fn_of_uploaded_file_w: "%{fn} of uploaded file was larger than the maximum size of 2.0 MB"
     views:
       layouts:
         _admin_submenu:
