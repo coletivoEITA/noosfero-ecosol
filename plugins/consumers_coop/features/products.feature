@@ -48,7 +48,7 @@ Feature: products
     And I follow "Products" within ".consumers-coop-plugin_consumers-coop-menu-block"
     And I wait 2 seconds to finish the request
     And I execute script $('.fast_edition').eq(0).show()
-    And I click ".fast_edition"
+    And I click "product-item:nth-of-type(1) .fast_edition"
     # final price is 8.25
     And I fill in "supplier_price" with "7.5"
     # final price is 8.33
