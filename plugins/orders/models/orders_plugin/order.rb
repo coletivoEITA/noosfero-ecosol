@@ -409,17 +409,20 @@ class OrdersPlugin::Order < ApplicationRecord
   protected
 
   def create_transaction
+    return if status == 'draft'
+
     self.create_financial_transaction(
       profile_id: self.profile_id,
-      quantity: self.total,
-      description: "new payment"
+      value: self.total,
+      description: "new order"
     )
   end
 
   def update_transaction
-    unless self.financial_transaction
-      self.create_financial_transaction
-    end
+    return if status == 'draft'
+
+    self.create_financial_transaction unless self.financial_transaction
+
     if self.financial_transaction && self.financial_transaction.value != self.total
       self.financial_transaction.value = self.total
       self.financial_transaction.save
