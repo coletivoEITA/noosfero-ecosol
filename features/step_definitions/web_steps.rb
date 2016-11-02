@@ -269,6 +269,10 @@ Then /^display "([^\"]*)"$/ do |element|
   evaluate_script("jQuery('#{element}').show() && false;")
 end
 
+Then /^I execute script (.*)$/ do |script|
+  execute_script script
+end
+
 Then /^I fill in tinyMCE "(.*?)" with "(.*?)"$/ do |field, content|
   n = 0
   begin

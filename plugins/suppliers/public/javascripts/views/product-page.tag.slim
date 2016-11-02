@@ -18,7 +18,7 @@ product-page
       form.form-inline onsubmit="return false"
         .form-group
           .name
-            input type="text" placeholder="{t('views.product.product_name')}" onkeyup="{search}" name="name"
+            input type="text" placeholder="{t('views.product.product_name')}" onkeyup="{search}" name="product_name"
 
         .form-group.category
           select name="category_id" onchange="{search}"
@@ -120,7 +120,7 @@ product-page
     }
     this.loadOpts(opts)
 
-    
+
     massAction(e) {
      if (this.mass_action_select.value == 'activate') {
       this.changeState('activate')
@@ -174,7 +174,7 @@ product-page
     theRealSearch() {
       var count = 0
 
-      var name = $('input[name="name"]')[0].value
+      var name = $('input[name="product_name"]')[0].value
       if (name)
         name = name.toLowerCase()
       var category = $('select[name="category_id"]')[0].value
