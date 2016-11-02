@@ -23,7 +23,7 @@ class Profile
   has_many :hubs, class_name: 'SuppliersPlugin::Hub', dependent: :destroy
 
   def supplier_settings
-    @supplier_settings ||= Noosfero::Plugin::Settings.new self, SuppliersPlugin
+    @supplier_settings ||= SuppliersPlugin::Settings.new self
   end
 
   def dummy?
