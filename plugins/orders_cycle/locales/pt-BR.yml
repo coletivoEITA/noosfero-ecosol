@@ -246,7 +246,7 @@ pt-BR: &pt-BR
           filter: Filtro
           new_cycle: "Nova feira"
           no_cycles_to_show: "Sem feiras a mostrar"
-          open_cycles: "Feiras abertas"
+          open_cycles: "Feiras virtuais abertas"
           orders_cycles: "Feiras virtuais"
           show_cycles_from_year: "Mostre as feiras do ano"
 
