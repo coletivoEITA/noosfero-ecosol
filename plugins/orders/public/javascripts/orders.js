@@ -38,7 +38,17 @@ orders = {
     add_payment: function(context) {
       var data = $(context).siblings(".order-input-data")
       $('#payment_orders_plugin_order_id').val(data.attr('data-id'))
-      $('#payment_value').val("")
+
+      // pre-fill with the remaining total
+			var yet_to_pay = $(context).parents('form').find('.total_yet_to_pay .value span').eq(0)
+			if (yet_to_pay) {
+				yet_to_pay = yet_to_pay.html().replace("R$", "").replace('.','').replace(',','.').trim()  
+      }
+			else {
+				yet_to_pay = ""
+      }
+      $('#payment_value').val(yet_to_pay)
+
       $('#payment_description').val("")
 
       var pm = $('#payment_payment_method_id')
