@@ -21,6 +21,7 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
     if params[:commit]
       params[:profile_data][:consumers_coop_settings][:enabled] = params[:profile_data][:consumers_coop_settings][:enabled] == 'true' rescue false
       params[:profile_data][:volunteers_settings][:cycle_volunteers_enabled] = params[:profile_data][:volunteers_settings][:cycle_volunteers_enabled] == '1' rescue false
+      params[:profile_data][:consumers_coop_settings][:payments_enabled] = params[:profile_data][:consumers_coop_settings][:payments_enabled] == 'true' rescue false
 
       was_enabled = profile.consumers_coop_settings.enabled
 

@@ -21,7 +21,7 @@ div class="order-view #{"editable" if order.may_edit? user, @admin rescue false}
         .space
 
         - cycle_order = OrdersCyclePlugin::CycleOrder.where(sale_id: order.id).first
-        - if cycle_order && cycle_order.cycle && cycle_order.cycle.status == 'delivery' && order.status != "received"
+        - if profile.consumers_coop_settings.payments_enabled && cycle_order && cycle_order.cycle && cycle_order.cycle.status == 'delivery' && order.status != "received"
           = link_to_function t('orders_plugin.views.admin._edit.add_payment'), "orders.order.add_payment(this)", class: 'action-button', 'data-toggle' => "modal", 'data-target' => ".add-payment-modal"
           .space
 
