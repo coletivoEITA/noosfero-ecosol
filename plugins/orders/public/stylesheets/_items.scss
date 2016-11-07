@@ -6,7 +6,9 @@
 
   &.empty {
     border-top: $border dotted black;
-    text-align: center;
+    order-items-table {
+      text-align: center;
+    }
   }
 
   .order-total {

@@ -293,6 +293,15 @@ en-US: &en-US
           cancel: Cancel
           submit: Submit
           saved: Saved..
+        new_order:
+          add: "Add order"
+          adding_order: "Adding an order"
+          choose_the_consumer: "Choose the consumer below" 
+          is_consumer_registered: "Is the consumer of this order registered?"
+          consumer_registered: "He/She is registered - define who is the consumer"
+          consumer_not_registered: "He/She is not registered - insert data about the buyer"
+          consumer_name: "Consumer's name"
+          consumer_email: "Consumer's e-mail"
 
       mailer:
         message_to_admins:

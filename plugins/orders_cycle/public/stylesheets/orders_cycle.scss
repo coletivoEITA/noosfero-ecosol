@@ -231,6 +231,9 @@
     margin-top: 5px;
     margin-bottom: 5px;
     font-size: 12px;
+    &:focus {
+      outline: 0px;
+    }
   }
   #cycle-header-warning {
     background-color: #FECBCA;
@@ -324,7 +327,7 @@
 }
 
 #content .main-block {
-  .report-modal.modal, .add-payment-modal.modal {
+  .report-modal.modal, .add-payment-modal.modal, .new-order-modal.modal {
     z-index: 1041;
 
     h4.modal-title {

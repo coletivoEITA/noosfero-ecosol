@@ -1,0 +1,31 @@
+.new-order-modal.modal.fade tabindex="-1" role="dialog"
+  .modal-dialog role="document"
+    .modal-content
+      .modal-header
+        button type="button" class="close left" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true"
+            |&times;
+        h4.modal-title
+          = t('orders_plugin.views.admin.new_order.adding_order')
+      .modal-body
+        = form_for :order, remote: true,url: {controller: :orders_cycle_plugin_admin_order, action: :create} do |f|
+
+          = labelled_field f, :registered, t('views.admin.new_order.is_consumer_registered'), \
+          labelled_radio(f, :registered, t('views.admin.new_order.consumer_not_registered'),false) + \
+          labelled_radio(f, :registered, t('views.admin.new_order.consumer_registered'), true)
+
+          - options = profile.members.collect {|m| [m.name, m.id]}
+          = labelled_form_field(t('views.admin.new_order.choose_the_consumer'), f.select(:profile_id, options))
+          = f.hidden_field :cycle_id, value: @cycle.id
+          .consumer-data
+            = f.fields_for :consumer_data do |ff|
+              = labelled_form_field(t('views.admin.new_order.consumer_name'), ff.text_field(:name, class: 'name')) 
+              = labelled_form_field(t('views.admin.new_order.consumer_email'), ff.email_field(:email, class: 'email')) 
+          .btn-group
+            = f.button t('views.admin.add_payment.cancel'), name: "cancel", class: 'action-button', "data-dismiss" => "modal"
+            | &nbsp;
+            = f.button t('views.admin.add_payment.submit'), name: "submit", class: 'action-button'
+
+
+javascript:
+  jQuery(".new-order-modal input[type='radio']").on('click', orders.set_new_order_consumers_select)

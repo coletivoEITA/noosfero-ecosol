@@ -294,6 +294,18 @@ pt-BR: &pt-BR
           cancel: Cancelar
           submit: Enviar
           saved: Salvo..
+        new_order:
+          add: "Adicionar pedido"
+          adding_order: "Adicionando pedido"
+          choose_the_consumer: "Escolha o consumidor abaixo" 
+          is_consumer_registered: "O consumidor desse novo pedido é registrado?"
+          consumer_registered: "Está registrado - defina quem é o consumidor"
+          consumer_not_registered: "Não está registrado - inserir dados do consumidor"
+          consumer_name: "Nome do consumidor"
+          consumer_email: "E-mail do consumidor"
+          supply_profile_id: "Por favor, escolha um consumidor"
+          supply_name: "Por favor, preencha o nome do consumidor"
+          supply_email: "Por favor, preencha o email do consumidor"
 
       mailer:
         message_to_admins:

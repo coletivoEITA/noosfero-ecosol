@@ -65,6 +65,16 @@ orders = {
         orders.order.submit(form)
       }
     },
+
+    new_order: function(context) {
+      var $modal = $('.new-order-modal.modal form');
+      $modal.find("input[type='radio']").eq(1).attr('checked', true)
+      $modal.find("input.name").val('')
+      $modal.find("input.email").val('')
+      $modal.find("#order_profile_id").val('')
+      $('.new-order-modal #order_profile_id').show();
+      $('.new-order-modal .consumer-data').hide();
+    }
   },
 
   item: {
@@ -193,6 +203,17 @@ orders = {
       $("#order_payment_data_other_method").hide()
     }
   },
+
+  set_new_order_consumers_select: function(ev) {
+    if (ev.target.value == "true") {
+      $('.new-order-modal #order_profile_id').show();
+      $('.new-order-modal .consumer-data').hide();
+    }
+    else { 
+      $('.new-order-modal #order_profile_id').hide();
+      $('.new-order-modal .consumer-data').show();
+    }
+  }
 };
 
 $(window).resize(orders.setOrderMaxHeight);
