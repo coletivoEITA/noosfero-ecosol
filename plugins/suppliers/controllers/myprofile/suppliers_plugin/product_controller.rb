@@ -24,7 +24,7 @@ class SuppliersPlugin::ProductController < MyProfileController
 
   def edit
     @product = profile.products.supplied.find params[:id]
-    @product.update params.require(:product).permit(:name, :product_category_id, :price, :margin, :available, :unit_id, :supplier_price)
+    @product.update params.require(:product).permit(:name, :product_category_id, :margin_percentage, :available, :unit_id, :supplier_price)
 
     render nothing: true
   end

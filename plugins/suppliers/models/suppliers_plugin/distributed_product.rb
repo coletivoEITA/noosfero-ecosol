@@ -30,7 +30,7 @@ class SuppliersPlugin::DistributedProduct < SuppliersPlugin::BaseProduct
   end
 
   def supplier_price= value
-    self.from_product.update_column :price, value if self.from_product
+    self.supplier_product.update_column :price, value if self.supplier_product
   end
 
   protected
