@@ -19,8 +19,8 @@ $filter-bg: #BCDC91;
     margin-right: -($wireframe-padding - $border);
 
     .title, .filter-box, .submit {
-      padding-left: $wireframe-padding + $padding;
-      padding-right: $wireframe-padding + $padding;
+      padding-left: ($wireframe-padding + $padding)/2;
+      padding-right: ($wireframe-padding + $padding)/2;
     }
   }
 
@@ -31,9 +31,15 @@ $filter-bg: #BCDC91;
     font-size: 13px;
   }
 
-  .submit {
-    padding: $padding;
+  .filter-box .submit {
+    margin-top: 23px;
 
+    input[type=submit] {
+      margin-left: 8px;
+    }
+  }
+  .filter-box .submit, .submit {
+    padding: $padding;
     input[type=submit] {
       font-weight: bold;
       text-transform: uppercase;
@@ -42,7 +48,7 @@ $filter-bg: #BCDC91;
       color: #FFFFFF;
       border: $border solid white;
       border-radius: $border-radius;
-      font-size: 9px;
+      font-size: 10px;
       text-align: center;
       margin: none;
       width: auto !important;

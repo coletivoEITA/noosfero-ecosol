@@ -8,7 +8,7 @@ $actions-bg: #D7FFB9;
   &.wireframe-size {
     margin-left: -($wireframe-padding);
     margin-right: -($wireframe-padding);
-    padding: $padding ($wireframe-padding + $padding);
+    padding: $padding ($wireframe-padding)/2;
   }
 
   .labels, .buttons {
