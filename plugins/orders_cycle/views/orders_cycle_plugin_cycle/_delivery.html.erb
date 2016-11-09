@@ -2,5 +2,7 @@
   <%= hideable_help_text t('views.cycle._delivery.header_help') %>
 </div>
 
+<%= render 'financial_plugin/cycle_report', :cycle => @cycle %>
+
 <%= render 'orders_cycle_plugin_cycle/cycle_sales' %>
 

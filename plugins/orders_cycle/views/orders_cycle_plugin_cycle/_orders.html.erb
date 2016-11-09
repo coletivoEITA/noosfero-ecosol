@@ -2,6 +2,8 @@
   <%= content_tag('div', t('views.cycle._orders.header_help')) %>
 </div>
 
+<%= render 'financial_plugin/cycle_report', :cycle => @cycle %>
+
 <% if @cycle.orders? or @cycle.passed_by? 'orders' %>
   <% if @cycle.orders? %>
     <% header = t('views.cycle._orders.the_orders_period_is_') %>
