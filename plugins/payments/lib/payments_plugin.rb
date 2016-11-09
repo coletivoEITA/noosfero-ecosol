@@ -1,7 +1,7 @@
 class PaymentsPlugin < Noosfero::Plugin
 
   def stylesheet?
-    true
+    false
   end
 
   def self.plugin_name
