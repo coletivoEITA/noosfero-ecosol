@@ -27,6 +27,10 @@
     margin-bottom: $half-margin;
     margin-left: -2*$border;
     padding-right: 2*$border;
+
+    h2 {
+      background-color: transparent !important;
+    }
   }
   #cycle-header {
     border-bottom: 2*$border solid #ddd;
@@ -367,7 +371,7 @@
     @extend .container-clean;
 
     //wireframe size
-    width: $wireframe  + 2*$wireframe-padding;
+    width: $wireframe;
     margin-left: -$wireframe-padding;
     padding: 0 $wireframe-padding;
 

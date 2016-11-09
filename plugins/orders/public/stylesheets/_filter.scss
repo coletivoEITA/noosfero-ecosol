@@ -1,8 +1,15 @@
 @import 'base';
 
-$filter-border-color: #d6e9bc;
-$filter-bg: #BCDC91;
+$filter-border-color: #ccc;
+$filter-bg: #EAEAEA;
 
+.controller-consumers_coop_plugin_cycle #filter {
+  background-color: $filter-bg;
+  width: $wireframe;
+  .filter-box {
+    border-bottom: $border solid $filter-border-color;
+  }
+}
 #filter {
   background-color: $filter-bg;
   padding: 0;
@@ -44,7 +51,7 @@ $filter-bg: #BCDC91;
       font-weight: bold;
       text-transform: uppercase;
       padding: $half-padding $padding;
-      background-color: #4B583C;
+      background-color: #153d35;
       color: #FFFFFF;
       border: $border solid white;
       border-radius: $border-radius;
@@ -56,7 +63,7 @@ $filter-bg: #BCDC91;
   }
 
   .filter-box {
-    border-bottom: $border solid $filter-border-color;
+    border-bottom: 1px solid $filter-border-color;
     @extend .container-clean;
     @import 'field';
 

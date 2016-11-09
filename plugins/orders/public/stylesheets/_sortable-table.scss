@@ -26,7 +26,7 @@ $sortable-table-negative-area: 3*$base;
   &.checkable {
     > .table-content {
       > .value-row {
-        width: $wireframe + 2*$sortable-table-negative-area;
+        width: $wireframe;
         margin-left: -$sortable-table-negative-area;
       }
     }
