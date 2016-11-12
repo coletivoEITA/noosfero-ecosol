@@ -1,0 +1,22 @@
+pt-BR: &pt-BR
+
+  number:
+    currency:
+      format:
+        xlsx_currency: "[$R$-416]* #,##0.00;[RED]-[$R$-416]* #,##0.00"
+
+  financial_plugin:
+    controllers:
+      myprofile:
+        cycle:
+          cycle_report: "Relatório financeiro do ciclo %{name} - %{date} - %{profile_identifier}.xlsx"
+    lib:
+      report:
+        cash_totalization: "Totalização de caixa"
+        revenue_totalization: "Totalização de receitas"
+
+pt_BR:
+  <<: *pt-BR
+pt:
+  <<: *pt-BR
+
