@@ -29,3 +29,5 @@
 
 javascript:
   jQuery(".new-order-modal input[type='radio']").on('click', orders.set_new_order_consumers_select)
+  jQuery(".new-order-modal form").submit(function(ev) { $(".new-order-modal button").prop('disabled', true)  })
+  jQuery(document).on('ajax:complete',   function(ev) { $(".new-order-modal button").prop('disabled', false) })
