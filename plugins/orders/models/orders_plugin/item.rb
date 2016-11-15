@@ -72,6 +72,7 @@ class OrdersPlugin::Item < ApplicationRecord
   before_save :save_calculated_prices
   before_save :step_status
   before_create :sync_fields
+  after_save :update_order
 
   extend CurrencyHelper::ClassMethods
 
@@ -326,6 +327,10 @@ class OrdersPlugin::Item < ApplicationRecord
     return if self.status == status
     self.update_column :status, status
     self.order.update_column :building_next_status, true if self.order.status != status and not self.order.building_next_status
+  end
+
+  def update_order
+    self.order.create_transaction
   end
 
   protected

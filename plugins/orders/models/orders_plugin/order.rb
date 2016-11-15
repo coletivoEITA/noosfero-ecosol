@@ -106,12 +106,9 @@ class OrdersPlugin::Order < ApplicationRecord
   before_validation :change_status
   after_save :send_notifications
 
-  # FINANCIAL CALLBACKS
-  if defined? FinancialPlugin
-    has_one      :financial_transaction, class_name: "FinancialPlugin::Transaction", as: :source, dependent: :destroy
-    after_create :create_transaction
-    after_save   :update_transaction
-  end
+  # FINANCIAL PLUGIN
+  has_many     :financial_transactions, class_name: "FinancialPlugin::Transaction", dependent: :destroy, foreign_key: "order_id"
+  after_save   :create_transaction
 
   extend CodeNumbering::ClassMethods
   code_numbering :code, scope: -> { self.profile.orders }
@@ -406,28 +403,47 @@ class OrdersPlugin::Order < ApplicationRecord
   end
   has_currency :remaining_total
 
-  protected
-
+  # cases:
+  # order is still being created in draft: return
+  # order is being saved with total == last_value: return
+  # order is being confirmed: create transaction with total
+  # order is being resaved: create transaction with total - last_value
+  # order is being returned to draft: create negative transaction to equal it to zero
   def create_transaction
-    return if status == 'draft'
+    last_value = self.financial_transactions.sum(:value)
+    # avoid outdated values
+    self.items.reload
+    return if self.total == last_value && !(status == 'draft' && !['new', 'draft', nil].include?(status_was))
 
-    self.create_financial_transaction(
-      profile_id: self.profile_id,
-      value: self.total,
-      description: "new order"
+    return if status == 'draft' and ['new', 'draft', nil].include? status_was
+
+    if status == 'draft'
+      value = -1 * last_value
+    else
+      value = self.total - last_value
+    end
+
+    # when Order is from OrdersPlugin, it doesn't have the cycle method defined, do it by hand so
+    if defined? self.cycle
+      cycle = self.cycle
+    else
+      cycle_order = OrdersCyclePlugin::CycleOrder.where(sale_id: self.id).includes(cycle: :profile).first
+      cycle = cycle_order.cycle
+    end
+    target_profile = cycle.present? ? cycle.profile : nil
+
+    self.financial_transactions.create!(
+      origin_id: self.profile_id,
+      target: cycle,
+      target_profile: target_profile,
+      value: value,
+      description: "Order",
+      date: DateTime.now,
+      direction: :out,
     )
   end
 
-  def update_transaction
-    return if status == 'draft'
-
-    self.create_financial_transaction unless self.financial_transaction
-
-    if self.financial_transaction && self.financial_transaction.value != self.total
-      self.financial_transaction.value = self.total
-      self.financial_transaction.save
-    end
-  end
+  protected
 
   def check_status
     self.status ||= 'draft'
