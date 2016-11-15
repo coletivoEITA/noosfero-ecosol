@@ -14,6 +14,7 @@ module OrdersCyclePlugin::OrderBase
     # has_one :through doesn't have a setter
     #
     attr_accessible :cycle
+    has_many :cycles, through: :cycle_sales, source: :cycle
     def cycle
       self.cycles.first
     end

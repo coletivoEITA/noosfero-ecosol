@@ -112,9 +112,7 @@ class OrdersCyclePlugin::Cycle < ApplicationRecord
 
   # FINANCIAL CALLBACKS
   if defined? FinancialPlugin
-    has_many :financial_transactions, class_name: "FinancialPlugin::Transaction", as: :context
-    scope :expenses, -> { financial_transactions.outputs }
-    scope :earnings, -> { financial_transactions.inputs }
+    has_many :financial_transactions, class_name: "FinancialPlugin::Transaction", as: :target
   end
 
   validates_presence_of :profile

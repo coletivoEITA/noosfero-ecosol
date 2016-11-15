@@ -25,6 +25,8 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
   has_many :suppliers, through: :offered_product
   has_one :supplier, through: :offered_product
 
+  after_save :update_order
+
   # what items were selled from this item
   def selled_items
     self.order.cycle.selled_items.where(profile_id: self.consumer.id, orders_plugin_item: {product_id: self.product_id})
@@ -40,5 +42,11 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
     return unless self.repeat_cycle and distributed_product
     self.repeat_cycle.products.where(from_products_products: {id: distributed_product.id}).first
   end
+
+  def update_order
+    self.order.create_transaction
+  end
+
+  protected
 
 end
