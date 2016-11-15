@@ -14,6 +14,10 @@ pt-BR: &pt-BR
       report:
         cash_totalization: "Totalização de caixa"
         revenue_totalization: "Totalização de receitas"
+    views:
+      cycle:
+        add-transaction:
+          adding_transaction: "Adicionando movimentação"
 
 pt_BR:
   <<: *pt-BR
