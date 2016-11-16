@@ -41,7 +41,7 @@ orders = {
 
       // pre-fill with the remaining total
 			var yet_to_pay = $(context).parents('form').find('.total_yet_to_pay .value span').eq(0)
-			if (yet_to_pay) {
+			if (yet_to_pay && yet_to_pay.html()) {
 				yet_to_pay = yet_to_pay.html().replace("R$", "").replace('.','').replace(',','.').trim()  
       }
 			else {
@@ -60,9 +60,14 @@ orders = {
     payment: {
       submit: function() {
         var id = $("#payment_orders_plugin_order_id").val()
-        var order = $('#order-'+id)
-        var form = order.find('form')
-        orders.order.submit(form)
+        var inputs = $('#order-'+id+" order-items-table order-item-quantity-price").find('input')
+        console.log(inputs)
+        var index = 0
+        for (var i in inputs) { if (inputs.get(i).value != "") { index = i; break } }
+
+        console.log(input)
+        var input = inputs.get(index)
+        $(input).parents("order-item-quantity-price").get(0)._tag.quantityUpdate(input)
       }
     },
 
@@ -71,6 +76,7 @@ orders = {
       $modal.find("input[type='radio']").eq(1).attr('checked', true)
       $modal.find("input.name").val('')
       $modal.find("input.email").val('')
+      $modal.find("button").prop('disabled', false)
       $modal.find("#order_profile_id").val('')
       $('.new-order-modal #order_profile_id').show();
       $('.new-order-modal .consumer-data').hide();

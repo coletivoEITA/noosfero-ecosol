@@ -52,6 +52,7 @@ order-items-table
       }
 
       _.merge(this.order, order)
+      _.merge(this.order.payments, order.payments)
       this.update()
     }
 
