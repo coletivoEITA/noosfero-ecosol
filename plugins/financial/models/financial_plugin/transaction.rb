@@ -1,5 +1,5 @@
 class FinancialPlugin::Transaction < ApplicationRecord
-  attr_accessible :origin_id, :target, :target_profile, :target_profile, :operator_id, :description, :date, :value, :direction, :balance
+  attr_accessible :origin_id, :target, :target_profile, :target_profile, :order, :operator_id, :description, :date, :value, :direction, :balance
 
   belongs_to :target,         polymorphic: true
   belongs_to :target_profile, class_name: "Profile"
