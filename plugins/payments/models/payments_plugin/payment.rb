@@ -10,34 +10,35 @@ class PaymentsPlugin::Payment < ApplicationRecord
   validates_presence_of :profile_id
   validates_presence_of :payment_method_id
   validates_presence_of :operator_id
-  validates_presence_of :value
-  validates_presence_of :orders_plugin_order_id
+  validates :value, numericality: {greater_than: 0}
 
-  # FINANCIAL CALLBACKS
-  if defined? FinancialPlugin
-    has_one      :financial_transaction, class_name: "FinancialPlugin::Transaction", as: :source, dependent: :destroy
-    after_create :create_transaction
-    after_save   :update_transaction
-  end
+  # FINANCIAL CALLBACK AND ASSOCIATION
+  has_one      :financial_transaction, class_name: "FinancialPlugin::Transaction", dependent: :destroy, foreign_key: :payment_id
+  after_create :create_transaction
 
 
   protected
 
   def create_transaction
-    self.create_financial_transaction(
-      profile_id: self.profile_id,
-      operator_id: self.operator_id,
-      value: self.value,
-      description: "new payment"
-    )
-  end
-
-  def update_transaction
-    self.create_transaction unless self.financial_transaction
-    if self.financial_transaction.value != self.value
-      self.financial_transaction.value = self.value
-      self.financial_transaction.save
+    # when Order is from OrdersPlugin, it doesn't have the cycle method defined, do it by hand so
+    if defined? self.order.cycle
+      cycle = self.order.cycle
+    else
+      cycle_order = OrdersCyclePlugin::CycleOrder.where(sale_id: self.order.id).includes(cycle: :profile).first
+      cycle = cycle_order.cycle
     end
+    target_profile = cycle.present? ? cycle.profile : nil
+    self.create_financial_transaction!(
+      origin_id: self.profile_id,
+      target: cycle,
+      target_profile: target_profile,
+      operator_id: self.operator_id,
+      order: self.order,
+      value: self.value,
+      description: "Payment of value " + self.value.to_s,
+      date: DateTime.now,
+      direction: :in
+    )
   end
 
 end
