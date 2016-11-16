@@ -37,7 +37,8 @@ class PaymentsPlugin::Payment < ApplicationRecord
       value: self.value,
       description: "Payment of value " + self.value.to_s,
       date: DateTime.now,
-      direction: :in
+      direction: :in,
+      payment_method_id: self.payment_method_id
     )
   end
 

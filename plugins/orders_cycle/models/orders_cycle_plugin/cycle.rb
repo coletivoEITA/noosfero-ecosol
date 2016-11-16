@@ -256,6 +256,14 @@ class OrdersCyclePlugin::Cycle < ApplicationRecord
     @add_products_job ||= Delayed::Job.find_by id: self.data[:add_products_job_id]
   end
 
+  def transactions_for_report
+    {
+      order:   financial_transactions.orders,
+      payment: financial_transactions.payments,
+      income:  financial_transactions.manual.inputs,
+      expense: financial_transactions.manual.outputs,
+    }
+  end
   protected
 
   def add_products_on_edition_state

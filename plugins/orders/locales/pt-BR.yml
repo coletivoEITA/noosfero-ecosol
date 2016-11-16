@@ -306,6 +306,28 @@ pt-BR: &pt-BR
           supply_profile_id: "Por favor, escolha um consumidor"
           supply_name: "Por favor, preencha o nome do consumidor"
           supply_email: "Por favor, preencha o email do consumidor"
+        financial:
+          financial_report: "Relatório financeiro - %{name}"
+          open: Abrir
+          close: Fechar
+          inputs: "Entradas:"
+          outputs: "Saídas:"
+          cash: "Caixa final:"
+          type: "Tipo"
+          value: "Valor"
+          date: "Data/hora"
+          description: "Descrição"
+          add_input: "+ entrada"
+          add_output: "+ saída"
+          export_spreadsheet: "Exportar Planilha"
+          payment: "Pagamento"
+          order: "Pedido"
+          expense: "Despesas"
+          income: "Entradas"
+          cash_totalization: "Totalização de caixa"
+          revenue_totalization: "Totalização de receitas"
+          responsible: "Responsável"
+          payment_method: "Método de pagamento"
 
       mailer:
         message_to_admins:
