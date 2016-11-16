@@ -27,6 +27,7 @@ class OrdersCyclePluginAdminOrderController < OrdersPluginOrderController
     @order.profile = profile
     @order.consumer = @consumer
     @order.cycle = @cycle
+    @order.status = OrdersCyclePlugin::Cycle::SaleStatusMap[@cycle.status]
     @order.save!
   end
 end
