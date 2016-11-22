@@ -11,14 +11,14 @@
         .modal-body
           = f.hidden_field :cycle_id, value: @cycle.id
           = f.hidden_field :direction, value: "in"
-          = labelled_form_field(t('views.admin.financial.value'), f.number_field(:value, step: 0.01)) 
-          = labelled_form_field(t('views.admin.financial.description'), f.text_area(:description))
+          = labelled_form_field(t('orders_plugin.views.admin.financial.value'), f.number_field(:value, step: 0.01)) 
+          = labelled_form_field(t('orders_plugin.views.admin.financial.description'), f.text_area(:description))
 
         .modal-footer
           .btn-group
-            = f.button t('views.admin.add_payment.cancel'), name: "cancel", class: 'action-button', "data-dismiss" => "modal"
+            = f.button t('orders_plugin.views.admin.financial.cancel'), name: "cancel", class: 'action-button', "data-dismiss" => "modal"
             | &nbsp;
-            = f.button t('views.admin.add_payment.submit'), name: "submit", class: 'action-button'
+            = f.button t('orders_plugin.views.admin.financial.submit'), name: "submit", class: 'action-button'
 
 javascript:
 

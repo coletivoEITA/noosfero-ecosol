@@ -15,7 +15,7 @@ class FinancialPlugin::Transaction < ApplicationRecord
   scope :inputs,  -> { where direction: :in }
   scope :manual,  -> { where(order_id: nil).where(payment_id: nil) }
   scope :orders,  -> { outputs.where("order_id is not NULL").where(payment_id: nil) }
-  scope :payments,  -> { inputs.where("order_id is not NULL").where("payment_id is not NULL").includes(:payment_method) }
+  scope :payments,  -> { inputs.where("order_id is not NULL").where("payment_id is not NULL").eager_load(:payment_method, :payment) }
 
   validates_presence_of :direction, :value, :date
 end
