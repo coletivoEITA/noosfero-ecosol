@@ -322,12 +322,14 @@ pt-BR: &pt-BR
           export_spreadsheet: "Exportar Planilha"
           payment: "Pagamento"
           order: "Pedido"
-          expense: "Despesas"
+          expense: "Saídas"
           income: "Entradas"
           cash_totalization: "Totalização de caixa"
           revenue_totalization: "Totalização de receitas"
           responsible: "Responsável"
           payment_method: "Método de pagamento"
+          cancel: "Cancelar"
+          submit: "Enviar"
 
       mailer:
         message_to_admins:
