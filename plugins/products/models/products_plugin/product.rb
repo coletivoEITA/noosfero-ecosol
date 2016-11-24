@@ -75,9 +75,9 @@ module ProductsPlugin
     extend ActsAsHavingSettings::ClassMethods
     acts_as_having_settings field: :data
 
-    track_actions :create_product, :after_create, keep_params: [:name, :url ], if: Proc.new { |a| a.notifiable? }, custom_user: :action_tracker_user
-    track_actions :update_product, :before_update, keep_params: [:name, :url], if: Proc.new { |a| a.notifiable? }, custom_user: :action_tracker_user
-    track_actions :remove_product, :before_destroy, keep_params: [:name], if: Proc.new { |a| a.notifiable? }, custom_user: :action_tracker_user
+    track_actions :create_product, :after_create, keep_params: [:name, :url ], if: -> a { a.notifiable? }, custom_user: :action_tracker_user
+    track_actions :update_product, :before_update, keep_params: [:name, :url], if: -> a { a.notifiable? }, custom_user: :action_tracker_user
+    track_actions :remove_product, :before_destroy, keep_params: [:name], if: -> a { a.notifiable? }, custom_user: :action_tracker_user
 
     # FIXME: transliterate input and name column
     scope :name_like, -> (name) { where "products.name ILIKE ?", "%#{name}%" }
