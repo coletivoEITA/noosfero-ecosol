@@ -176,6 +176,10 @@ SQL
     self.update! archived: false
   end
 
+  def notifiable?
+    false
+  end
+
   protected
 
   def validate_uniqueness_of_column_name?
