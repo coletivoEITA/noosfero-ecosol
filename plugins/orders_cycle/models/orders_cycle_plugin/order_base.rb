@@ -4,14 +4,18 @@ module OrdersCyclePlugin::OrderBase
   extend ActiveSupport::Concern
   included do
 
+    # has_one is used by inverse_of
     has_many :cycle_sales, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :sale_id
+    has_one :cycle_sale, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :sale_id
     has_many :cycle_purchases, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :purchase_id
+    has_one :cycle_purchase, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :purchase_id
+
     def all_cycles
       self.cycle_sales.includes(:cycle).map(&:cycle) + self.cycle_purchases.includes(:cycle).map(&:cycle)
     end
 
     ##
-    # has_one :through doesn't have a setter
+    # has_one :cycle, through: :cycle_{sale,purchase} doesn't have a setter
     #
     attr_accessible :cycle
     has_many :cycles, through: :cycle_sales, source: :cycle

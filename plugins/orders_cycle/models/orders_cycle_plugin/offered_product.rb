@@ -85,6 +85,9 @@ class OrdersCyclePlugin::OfferedProduct < SuppliersPlugin::BaseProduct
     end
   end
 
+  def notifiable?
+    false
+  end
   def solr_index?
     false
   end
