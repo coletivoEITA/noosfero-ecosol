@@ -26,3 +26,6 @@ When /^I open the order with "([^"]*)"$/ do |text|
   evaluate_script("$('.order span:contains(#{text})')")['0'].click
 end
 
+When /^I fill the daterangepicker "([^"]*)" with "([^"]*)"$/ do |name, date|
+  execute_script("$('input[name=\"#{name}\"]').val('#{date}')")
+end

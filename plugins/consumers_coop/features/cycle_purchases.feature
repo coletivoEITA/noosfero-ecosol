@@ -33,18 +33,20 @@ Feature: cycle_purchases
     And the consumers coop is enabled on "Collective"
     And "supplier" is a supplier of "Collective"
     And I am logged in as "manager"
+    And I wait 2 seconds to finish the request
     And I am on collective's homepage
     And I follow "Orders Cycles"
     And I follow "New cycle"
     And I fill in "Name" with "Test cycle 1"
-    And I fill in "cycle[start_finish_range]" with "Wednesday, May 11, 2016 6:28 PM to Wednesday, May 18, 2020 6:28 PM"
-    And I press "Apply"
-    And I fill in "cycle[delivery_start_delivery_finish_range]" with "Wednesday, May 19, 2021 4:00 PM to Wednesday, May 19, 2021 6:00 PM"
-    And I press "Apply"
+    And I fill the daterangepicker "cycle[start]" with "2016-05-11T18:28:00+00:00"
+    And I fill the daterangepicker "cycle[finish]" with "2020-05-18T18:28:00+00:00"
+    And I fill the daterangepicker "cycle[delivery_start]" with "2020-05-18T18:28:00+00:00"
+    And I fill the daterangepicker "cycle[delivery_finish]" with "Wednesday, May 19, 2021 6:00 PM"
     And I press "Create and open orders"
     #And I should see "Close orders"
     And there are no pending jobs
     And I am logged in as "consumer"
+    And I wait 2 seconds to finish the request
     And I am on collective's homepage
     And I press "see orders' cycle"
     And I follow "New order"

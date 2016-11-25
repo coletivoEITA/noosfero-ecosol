@@ -673,7 +673,6 @@ When /^wait for the captcha signup time$/ do
 end
 
 Given /^there are no pending jobs$/ do
-  require'pry';binding.pry
   silence_stream(STDOUT) do
     Delayed::Worker.new.work_off
     sleep 1
