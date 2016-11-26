@@ -37,7 +37,14 @@
       float: right;
     }
     table {
+      margin-bottom: 10px;
+    }
+    .total {
+      font-size: 14px;
       margin-bottom: 40px;
+      .title {
+        font-weight: bold;
+      }
     }
   }
   .footer {
