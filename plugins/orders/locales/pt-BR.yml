@@ -330,6 +330,7 @@ pt-BR: &pt-BR
           payment_method: "Método de pagamento"
           cancel: "Cancelar"
           submit: "Enviar"
+          total: "Total: "
 
       mailer:
         message_to_admins:

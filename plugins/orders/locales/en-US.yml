@@ -302,6 +302,31 @@ en-US: &en-US
           consumer_not_registered: "He/She is not registered - insert data about the buyer"
           consumer_name: "Consumer's name"
           consumer_email: "Consumer's e-mail"
+        financial:
+          financial_report: "Financial Report - %{name}"
+          open: Open
+          close: Close
+          inputs: "Inputs:"
+          outputs: "Outputs:"
+          cash: "Final Cash:"
+          type: "Type"
+          value: "Value"
+          date: "Date/time"
+          description: "Description"
+          add_input: "+ input"
+          add_output: "+ output"
+          export_spreadsheet: "Export Spreadsheet"
+          payment: "Payment"
+          order: "Order"
+          expense: "Outputs"
+          income: "Inputs"
+          cash_totalization: "Cash totalization"
+          revenue_totalization: "Revenue totalization"
+          responsible: "Responsible"
+          payment_method: "Payment method"
+          cancel: "Cancel"
+          submit: "Submit"
+          total: "Total: "
 
       mailer:
         message_to_admins:
