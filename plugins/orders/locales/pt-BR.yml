@@ -38,6 +38,7 @@ pt-BR: &pt-BR
         profile_subject: "[%{profile}] %{subject}"
         order_was_confirmed: "[%{name}] Seu pedido foi confirmado"
         order_was_cancelled: "[%{name}] Seu pedido foi cancelado"
+        order_was_received: "[%{name}] Seu pedido foi declarado como recebido"
       date_helper:
         a: "%A"
         b_d_at_hh_m: "%d/%m/%y às %H:%M"
@@ -212,6 +213,15 @@ pt-BR: &pt-BR
           address_completion: "Complemento do endereço"
           payment_number: "Pagamento %{number}"
           product_added: "Produto adicionado"
+          products: "Produtos"
+          payments: "Pagamentos"
+          payment: "Pagamento"
+          value: "Valor"
+          payment_method: "Método de pagamento"
+          date: Data
+          total_bought: "Total comprado"
+          total_payed: "Total pago"
+          remaining_total: "Faltante"
 
       message:
         _fields:
