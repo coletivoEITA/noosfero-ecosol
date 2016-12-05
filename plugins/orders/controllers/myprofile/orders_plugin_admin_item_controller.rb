@@ -51,7 +51,7 @@ class OrdersPluginAdminItemController < MyProfileController
 
     @item   = @order.items.find_by product_id: @product.id
     @item ||= @order.items.build product: @product
-    @item.next_status_quantity_set @actor_name, (@item.next_status_quantity(@actor_name) || @item.status_quantity || 0) + 1
+    @item.status_quantity = (@item.status_quantity || 0) + 1
     @item.save!
 
     serializer = OrdersPlugin::OrderSerializer.new @item.order.reload, scope: self, actor_name: @actor_name
