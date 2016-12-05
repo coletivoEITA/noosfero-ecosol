@@ -25,31 +25,32 @@
             = item.price_as_currency_number
             |&nbsp;
 
-  h2= t("views.item._index.payments")
-  table
-    thead
-      th= t('views.item._index.payment')
-      th= t('views.item._index.value')
-      th= t('views.item._index.payment_method')
-      th= t('views.item._index.date')
-    tbody
-      - @order.payments.each_with_index do |payment,index|
-        tr
-          td
-            = t("views.item._index.payment_number", {number: index+1})
-            |&nbsp;
-          td
-            = CurrencyHelper.number_as_currency(payment.value)
-            |&nbsp;
+  - if @order.payments.size > 0
+    h2= t("views.item._index.payments")
+    table
+      thead
+        th= t('views.item._index.payment')
+        th= t('views.item._index.value')
+        th= t('views.item._index.payment_method')
+        th= t('views.item._index.date')
+      tbody
+        - @order.payments.each_with_index do |payment,index|
+          tr
+            td
+              = t("views.item._index.payment_number", {number: index+1})
+              |&nbsp;
+            td
+              = CurrencyHelper.number_as_currency(payment.value)
+              |&nbsp;
 
-          - method = I18n.t('models.payment_methods.'+payment.payment_method.slug, {scope: "payments_plugin"}) 
-          - if payment.payment_method.slug == 'other' && @order.payment_data["other_method"].present?
-            - method += " - " + @order.payment_data["other_method"]
-          td
-            = method
-            |&nbsp;
-          td
-            = payment.created_at.strftime I18n.t('orders_plugin.lib.date_helper.m_d_y_hh_m')
+            - method = I18n.t('models.payment_methods.'+payment.payment_method.slug, {scope: "payments_plugin"}) 
+            - if payment.payment_method.slug == 'other' && @order.payment_data["other_method"].present?
+              - method += " - " + @order.payment_data["other_method"]
+            td
+              = method
+              |&nbsp;
+            td
+              = payment.created_at.strftime I18n.t('orders_plugin.lib.date_helper.m_d_y_hh_m')
 
   br
   - total = @order.total_price
@@ -62,18 +63,19 @@
         td
           span= total
 
-      - payments = @order.payments.sum(:value)
-      tr
-        td
-          strong= t("views.item._index.total_payed")
-          |&nbsp;
-        td
-          span= payments
-
-      - if total - payments > 0
+      - if @order.status == 'received'
+        - payments = @order.payments.sum(:value)
         tr
           td
-            strong= t("views.item._index.remaining_total")
+            strong= t("views.item._index.total_payed")
             |&nbsp;
           td
-            span= total - payments
+            span= payments
+
+        - if total - payments > 0
+          tr
+            td
+              strong= t("views.item._index.remaining_total")
+              |&nbsp;
+            td
+              span= total - payments
