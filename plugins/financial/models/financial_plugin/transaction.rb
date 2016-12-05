@@ -1,5 +1,5 @@
 class FinancialPlugin::Transaction < ApplicationRecord
-  attr_accessible :origin_id, :target, :target_profile, :target_profile, :order, :operator_id, :description, :date, :value, :direction, :balance, :cycle_id
+  attr_accessible :origin_id, :target, :target_profile, :target_profile, :order, :operator_id, :description, :date, :value, :direction, :balance, :cycle_id, :payment_method_id
 
   default_scope { order(date: :asc) }
 
