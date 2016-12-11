@@ -35,7 +35,7 @@ module TinymceHelper
       EOS
     end
 
-    apply_etherpadlite_options options
+    apply_etherpadlite_options options if options[:toolbar2]
 
     #cleanup non tinymce options
     options = options.except :mode
