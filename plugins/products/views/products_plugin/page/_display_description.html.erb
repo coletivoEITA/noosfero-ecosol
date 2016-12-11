@@ -1,7 +1,7 @@
 <%= render :file => 'shared/tiny_mce', :locals => {:mode => 'simple'} %>
 <% if !@product.description.blank? %>
   <div id="product-description-content" property="dcterms:description">
-    <%= @product.description %>
+    <%= @product.description.html_safe %>
   </div>
   <%= edit_product_button_to_remote(@product, 'description', _('Edit description'), {:title => _('Edit the description of your product and give consumers more information about what you are advertising'), :class => current_editor}) %>
 <% else %>

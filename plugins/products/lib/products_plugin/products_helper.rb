@@ -67,7 +67,7 @@ module ProductsPlugin::ProductsHelper
       end
     end
     hierarchy.shift if options[:remove_last_category]
-    hierarchy.reverse.join(options[:separator] || ' &rarr; ')
+    hierarchy.reverse.safe_join((options[:separator] || ' &rarr; ').html_safe)
   end
 
   def options_for_select_categories(categories, selected = nil)
