@@ -43,14 +43,14 @@ class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
       subject: t('lib.mailer.profile_subject') % {profile: profile.name, subject: subject}
   end
 
-  def order_confirmation order
+  def sale_confirmation order
     profile = @profile = order.profile
     self.environment = profile.environment
     @order = order
     @consumer = order.consumer
 
-    to       = if order.is_a? OrdersPlugin::Purchase then order.profile else order.consumer end
-    reply_to = if order.is_a? OrdersPlugin::Purchase then order.consumer else order.profile end
+    to       = order.consumer
+    reply_to = order.profile
 
     mail \
       to:       profile_recipients(to),
@@ -59,14 +59,14 @@ class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
       subject:  t('lib.mailer.order_was_confirmed') % {name: profile.name}
   end
 
-  def order_received order
+  def sale_received order
     profile = @profile = order.profile
     self.environment = profile.environment
     @order = order
     @consumer = order.consumer
 
-    to       = if order.is_a? OrdersPlugin::Purchase then order.profile else order.consumer end
-    reply_to = if order.is_a? OrdersPlugin::Purchase then order.consumer else order.profile end
+    to       = @consumer
+    reply_to = order.profile
 
     mail \
       to:       profile_recipients(to),
@@ -75,15 +75,64 @@ class OrdersPlugin::Mailer < Noosfero::Plugin::MailerBase
       subject:  t('lib.mailer.order_was_received') % {name: profile.name}
   end
 
-  def order_cancellation order
+  def sale_cancellation order
     profile = @profile = order.profile
     self.environment   = profile.environment
     @order       = order
     @consumer    = order.consumer
     @environment = profile.environment
 
-    to       = if order.is_a? OrdersPlugin::Purchase then order.profile else order.consumer end
-    reply_to = if order.is_a? OrdersPlugin::Purchase then order.consumer else order.profile end
+    to       = @consumer
+    reply_to = order.profile
+
+    mail \
+      to:       profile_recipients(to),
+      from:     environment.noreply_email,
+      reply_to: profile_recipients(reply_to),
+      subject: t('lib.mailer.order_was_cancelled') % {name: profile.name}
+  end
+
+  def purchase_confirmation order
+    profile = @profile = order.profile
+    self.environment = profile.environment
+    @order = order
+    @consumer = order.consumer
+
+    to       = order.profile
+    reply_to = @consumer
+
+    mail \
+      to:       profile_recipients(to),
+      from:     environment.noreply_email,
+      reply_to: profile_recipients(reply_to),
+      subject:  t('lib.mailer.purchase_was_created') % {name: profile.name}
+  end
+
+  def purchase_received order
+    profile = @profile = order.profile
+    self.environment = profile.environment
+    @order = order
+    @consumer = order.consumer
+
+    to       = order.profile
+    reply_to = @consumer
+
+    mail \
+      to:       profile_recipients(to),
+      from:     environment.noreply_email,
+      reply_to: profile_recipients(reply_to),
+      subject:  t('lib.mailer.order_was_received') % {name: profile.name}
+  end
+
+  def purchase_cancellation order
+    profile = @profile = order.profile
+    self.environment   = profile.environment
+    @order       = order
+    @consumer    = order.consumer
+    @environment = profile.environment
+
+    to       = order.profile
+    reply_to = @consumer
 
     mail \
       to:       profile_recipients(to),

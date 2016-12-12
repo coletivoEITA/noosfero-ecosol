@@ -364,9 +364,11 @@ en-US: &en-US
           greetings: Greetings
           order_code_of_profile: "Order %{code} of %{name}"
           order_data_confirmed: "Order data confirmed:"
-          the_delivery_period_w: "The delivery period will occur %{date}."
+          the_delivery_period_w: "The delivery period to consumers will occur %{date}."
           your_order_can_be_che: "Your order can be checked or changed in the following link:"
           your_order_made_on_co: "Your order made %{terms.profile.at_article.singular} %{name} in %{date} is confirmed."
+          collective_made_a_purchase: "%{name} placed a collective order to you in %{date}."
+          see_below_the_items: "See below the items of the order:"
         order_cancellation:
           dear_name: "Dear %{name},"
           greetings: Greetings

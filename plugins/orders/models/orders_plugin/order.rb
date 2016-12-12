@@ -104,7 +104,6 @@ class OrdersPlugin::Order < ApplicationRecord
 
   before_validation :check_status
   before_validation :change_status
-  after_save :send_notifications
 
   # FINANCIAL PLUGIN
   has_many     :financial_transactions, class_name: "FinancialPlugin::Transaction", dependent: :destroy, foreign_key: "order_id"
@@ -471,18 +470,4 @@ class OrdersPlugin::Order < ApplicationRecord
     end
   end
 
-  def send_notifications
-    # shopping_cart has its notifications
-    return if source == 'shopping_cart_plugin'
-    # ignore when status is being rewinded
-    return if (Statuses.index(self.status) <= Statuses.index(self.status_was) rescue false)
-
-    if self.status == 'ordered' and self.status_was != 'ordered'
-      OrdersPlugin::Mailer.order_confirmation(self).deliver
-    elsif self.status == 'cancelled' and self.status_was != 'cancelled'
-      OrdersPlugin::Mailer.order_cancellation(self).deliver
-    elsif self.status == 'received' and self.status_was != 'received'
-      OrdersPlugin::Mailer.order_received(self).deliver
-    end
-  end
 end

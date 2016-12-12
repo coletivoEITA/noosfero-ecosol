@@ -368,9 +368,11 @@ pt-BR: &pt-BR
           greetings: "Saudações,"
           order_code_of_profile: "Pedido %{code} de %{name}"
           order_data_confirmed: "Pedido confirmado"
-          the_delivery_period_w: "O período de entrega ocorrerá em %{date}."
+          the_delivery_period_w: "O período de entrega aos consumidores ocorrerá em %{date}."
           your_order_can_be_che: "Seu pedido pode ser checado ou alterado no seguinte link:"
           your_order_made_on_co: "Seu pedido feito no coletivo de consumo %{name} em %{date} foi confirmado."
+          collective_made_a_purchase: "%{name} fez um pedido coletivo a você em %{date}."
+          see_below_the_items: "Veja abaixo os items do pedido:"
         order_received:
           dear_name: "Olá %{name},"
           greetings: "Saudações solidárias,"
