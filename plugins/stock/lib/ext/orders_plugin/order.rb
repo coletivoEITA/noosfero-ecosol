@@ -35,7 +35,9 @@ module OrdersPlugin
       allocations = []
       self.items.each do |item|
         product = item.from_product
-        if product.use_stock
+        # when purchase is directly on supplier, get the product instead
+        product = item.product if product.nil?
+        if product && product.use_stock
           allocation = StockPlugin::Allocation.create product_id: product.id, quantity: (-1 * item.status_quantity), description: "order #{self.id} product #{product.name}"
           allocations << allocation.id
         end
