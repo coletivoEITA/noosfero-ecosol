@@ -4,10 +4,10 @@ html
     meta content=("text/html; charset=utf-8") http-equiv="Content-Type"
 
   body
-    p= t'orders_plugin.views.mailer.order_confirmation.dear_name', name: @consumer.name
+    p= t'orders_plugin.views.mailer.order_confirmation.dear_name', name: @profile.name
 
     p= t'orders_plugin.views.mailer.order_confirmation.collective_made_a_purchase',
-      name: @profile.name, date: day_time(@order.updated_at)
+      name: @consumer.name, date: day_time(@order.updated_at)
 
     - if @order.respond_to? :cycle
       p= t'orders_plugin.views.mailer.order_confirmation.the_delivery_period_w',
