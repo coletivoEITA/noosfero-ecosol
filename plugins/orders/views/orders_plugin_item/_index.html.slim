@@ -5,7 +5,7 @@
   order-items-table
 
 javascript:
-  riot.mount($('#order-#{@order.id} order-items-table'), {
-    order: #{OrdersPlugin::OrderSerializer.new(@order, scope: self, actor_name: actor_name).to_json},
+  riot.mount($('#order-#{order.id} order-items-table'), {
+    order: #{OrdersPlugin::OrderSerializer.new(order, scope: self, actor_name: actor_name).to_json},
   })
 

@@ -24,7 +24,7 @@
               span.box-field.items= order.items_summary
               span.box-field.value= order.total_price_consumer_ordered_as_currency_number
             .box-edit style=("display: none")
-              = render 'orders_plugin_order/show_simple', order: order
+              = render 'orders_plugin_order/show', order: order, actor_name: :consumer
 
       - unless user
         = button 'remove', t('views.public.repeat.clear_orders_session'),
