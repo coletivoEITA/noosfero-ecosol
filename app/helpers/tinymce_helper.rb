@@ -35,7 +35,7 @@ module TinymceHelper
       EOS
     end
 
-    apply_etherpadlite_options options if options[:toolbar2]
+    apply_etherpadlite_options options
 
     #cleanup non tinymce options
     options = options.except :mode
@@ -51,7 +51,7 @@ module TinymceHelper
       :plugin_etherpadlite_padWidth => environment.tinymce_plugin_etherpadlite_padWidth,
       :plugin_etherpadlite_padHeight => environment.tinymce_plugin_etherpadlite_padHeight
     options[:plugins] << "etherpadlite"
-    options[:toolbar2] += " | etherpadlite"
+    options[:toolbar2] += " | etherpadlite" if options[:toolbar2]
   end
 
   def menubar mode
