@@ -42,11 +42,11 @@ module OrdersPlugin
     end
 
     def total_price
-      object.total_price actor_name
+      object.total_price actor_name, admin
     end
 
     def remaining_total
-      object.remaining_total actor_name
+      object.remaining_total actor_name, admin
     end
 
     def items

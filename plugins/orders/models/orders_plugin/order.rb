@@ -355,16 +355,24 @@ class OrdersPlugin::Order < ApplicationRecord
 
   # total_price considering last state
   def total_price actor_name = :consumer, admin = false
-    # for admins, we want the next_status while we concluded the finish status change
+    items ||= (self.ordered_items rescue nil) || self.items
+    # for admins, we want the last filled status
     if admin
-      price = :status_price
+      sum = 0
+      items.each do |item|
+        price = 0
+        StatusDataMap.values.each do |v|
+          p = item.send "price_#{v}"
+          price = p if p.present?
+        end
+        sum += price
+      end
     else
       data = StatusDataMap[self.status] || StatusDataMap[Statuses.first]
       price = "price_#{data}".to_sym
+      sum = items.collect(&price).inject(0){ |s, p| s + p.to_f }
     end
-
-    items ||= (self.ordered_items rescue nil) || self.items
-    items.collect(&price).inject(0){ |sum, p| sum + p.to_f }
+    sum
   end
   has_currency :total_price
 
