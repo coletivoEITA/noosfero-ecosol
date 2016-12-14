@@ -369,6 +369,13 @@ en-US: &en-US
           your_order_made_on_co: "Your order made %{terms.profile.at_article.singular} %{name} in %{date} is confirmed."
           collective_made_a_purchase: "%{name} placed a collective order to you in %{date}."
           see_below_the_items: "See below the items of the order:"
+        order_received:
+          dear_name: "Hi %{name},"
+          greetings: Greetings
+          order_data_received: "See below the items of the order:"
+          your_order_made_on_co: "Your order made %{terms.profile.at_article.singular} %{name} in %{date} was declared received."
+        purchase_received:
+          the_order_made_on_co: "The order made by the group %{name} in %{date} was declared received."
         order_cancellation:
           dear_name: "Dear %{name},"
           greetings: Greetings
