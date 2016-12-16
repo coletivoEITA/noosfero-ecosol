@@ -4,7 +4,7 @@ class SuppliersPlugin::Consumer < SuppliersPlugin::Supplier
 
   after_save :sync_profile
 
-  attr_accessible :name, :email, :phone, :cell_phone, :hub_id, :address, :city, :state, :zip
+  attr_accessible :email, :phone, :cell_phone, :hub_id, :address, :city, :state, :zip
 
   belongs_to :profile, foreign_key: :consumer_id
   belongs_to :supplier, foreign_key: :profile_id
@@ -15,8 +15,14 @@ class SuppliersPlugin::Consumer < SuppliersPlugin::Supplier
   def name= value
     self['name'] = value
   end
+  def name
+    self['name']
+  end
   def description= value
     self['description'] = value
+  end
+  def description
+    self['description']
   end
 
   def hub_name
@@ -33,7 +39,7 @@ class SuppliersPlugin::Consumer < SuppliersPlugin::Supplier
     fields.each do |profile_k, consumer_k|
       profile_v  = profile.send "#{profile_k}"
       consumer_v = self.send "#{consumer_k}"
-      if profile_v.present? && profile_v != consumer_v
+      if profile_v.present? && consumer_v.blank?
         self.send "#{consumer_k}=", profile_v
         dirty = true
       end
