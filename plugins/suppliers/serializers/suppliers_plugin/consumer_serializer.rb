@@ -4,6 +4,7 @@ module SuppliersPlugin
     attribute :id
     attribute :consumer_id
     attribute :name
+    attribute :profile_name
     attribute :phone
     attribute :cell_phone
     attribute :email
@@ -23,6 +24,10 @@ module SuppliersPlugin
 
     def purchases
       []
+    end
+
+    def profile_name
+      object.profile.name
     end
   end
 end

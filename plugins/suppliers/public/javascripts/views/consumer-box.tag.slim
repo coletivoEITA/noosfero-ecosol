@@ -8,6 +8,8 @@ consumer-box.col-xs-12.col-md-6 show='{consumer.selected}' onclick="{detail}" da
           div
             a.name target='_blank' href='{consumerUrl}'
               |{consumer.name}
+              span if="{consumer.name != consumer.profile_name}"
+                |  ({consumer.profile_name})
           div
             a.email href='mailto:{consumer.email}'
               |{consumer.email}
@@ -20,6 +22,8 @@ consumer-box.col-xs-12.col-md-6 show='{consumer.selected}' onclick="{detail}" da
     this.consumer = opts.consumer
     this.consumerUrl = Routes.profile_path({profile: this.consumer.identifier})
     this.consumer.selected = true;
+    if (!this.consumer.name)
+      this.consumer.name = this.consumer.profile_name
 
     detail(e) {
       this.parent.edit(this.consumer)

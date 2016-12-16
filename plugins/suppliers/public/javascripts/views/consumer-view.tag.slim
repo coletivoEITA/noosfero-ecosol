@@ -11,6 +11,8 @@ consumer-view.modal.fade tabindex="-1" role="dialog"
               .title-box
                 h1
                   |{consumer.name}
+                  span if="{consumer.name != consumer.profile_name}"
+                    |  ({consumer.profile_name})
               a.cs-button href="" onclick='{remove}' 
                 |{cs.t("views.consumer.index.remove")}
 
