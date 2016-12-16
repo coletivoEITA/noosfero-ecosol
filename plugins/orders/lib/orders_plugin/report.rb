@@ -153,17 +153,21 @@ module OrdersPlugin::Report
         ["B#{sbs}:C#{sbs}", "D#{sbs}:E#{sbs}", "F#{sbs}:G#{sbs}"].each{ |c| sheet.merge_cells c }
 
         sbs += 1
-        sheet.add_row [t('lib.report.payment_method'),t('lib.report.hub'), t('lib.report.delivery_option'), '','',t('lib.report.created'), t('lib.report.modified')],
+        sheet.add_row [t('lib.report.hub'), t('lib.report.payment_method'), t('lib.report.delivery_option'), '','',t('lib.report.created'), t('lib.report.modified')],
           style: bluecell
         ["D#{sbs}:E#{sbs}"].each{ |c| sheet.merge_cells c }
         # sp = index of the start of the products list / ep = index of the end of the products list
         sp = sbs + 3
         productsEnd = ep = sp + order.items.count - 1
 
-        payment_method = order.payment_data[:method]
-        payment_method = payment_method.nil? ? '' : t("payments_plugin.models.payment_methods."+payment_method)
+        if order.payments.count > 0
+          payment_method = order.payments.collect {|payment| payment.value.to_s + " (#{t("payments_plugin.models.payment_methods."+payment.payment_method.slug)})" }.join(", ")
+        else
+          payment_method = order.payment_data[:method]
+          payment_method = payment_method.nil? ? '' : t("payments_plugin.models.payment_methods."+payment_method)
+        end
 
-        sheet.add_row [payment_method, order.suppliers_consumer.hub_name, order.supplier_delivery_data[:name], '','',order.created_at, order.updated_at],
+        sheet.add_row [order.suppliers_consumer.hub_name, payment_method, order.supplier_delivery_data[:name], '','',order.created_at, order.updated_at],
           style: [default, default, default, default, default, date, date]
         sbs += 1
         sheet.add_row [t('lib.report.product_cod'), t('lib.report.supplier'), t('lib.report.product_name'),
