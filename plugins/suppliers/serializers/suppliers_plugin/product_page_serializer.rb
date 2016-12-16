@@ -51,6 +51,7 @@ module SuppliersPlugin
         .group('from_products_products.name')
         .group('from_products_products.unit_id')
         .group('from_products_products.price')
+        .where("products.available": params['available'])
     end
 
     def units
