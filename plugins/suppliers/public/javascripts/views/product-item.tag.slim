@@ -163,7 +163,7 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
 
     setCategory(e, item) {
       this.product.product_category_id = item.id
-      this.product.category = this.parent.categories[this.product.product_category_id]
+      this.product.category = item.name
     }
     setUnit(e, item) {
       this.product.unit_id = item.id
@@ -177,8 +177,6 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
     this.on('mount', function () {
       this.updatePrice()
       this.update()
-      this.setCategory({}, {id: this.product.product_category_id})
-      this.setUnit({}, {id: this.product.unit_id})
       this.parent.typeaheadCategoryInit($(this.root).find('input[name="product_category_id"]'), this.setCategory)
       this.parent.typeaheadUnitInit($(this.root).find('input[name="unit_id"]'), this.setUnit)
     })
