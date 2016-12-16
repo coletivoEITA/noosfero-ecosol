@@ -61,11 +61,9 @@ orders = {
       submit: function() {
         var id = $("#payment_orders_plugin_order_id").val()
         var inputs = $('#order-'+id+" order-items-table order-item-quantity-price").find('input')
-        console.log(inputs)
         var index = 0
         for (var i in inputs) { if (inputs.get(i).value != "") { index = i; break } }
 
-        console.log(input)
         var input = inputs.get(index)
         $(input).parents("order-item-quantity-price").get(0)._tag.quantityUpdate(input)
       }
