@@ -44,7 +44,7 @@ module OrdersPlugin
     def update_url
       return unless scope.respond_to? :url_for
       if admin
-        scope.url_for controller: :orders_plugin_admin_item, action: :edit, id: object.id, actor_name: actor_name
+        scope.url_for controller: :orders_cycle_plugin_admin_item, action: :edit, id: object.id, actor_name: actor_name
       else
         scope.url_for controller: :orders_plugin_item, action: :edit, id: object.id
       end
