@@ -183,7 +183,7 @@ product-page
 
 
       for (var i in this.products) {
-        if (name != "" && this.products[i].name == "") {
+        if (name != "" && (this.products[i].name == "" || this.products[i].name == null)) {
           this.products[i].selected = false
           continue;
         }
