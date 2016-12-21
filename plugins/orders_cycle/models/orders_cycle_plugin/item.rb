@@ -26,6 +26,8 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
   has_one :supplier, through: :offered_product
 
   after_save :update_order
+  after_save :change_purchases, if: :cycle
+  before_destroy :remove_purchase_item, if: :cycle
 
   # what items were selled from this item
   def selled_items
@@ -48,5 +50,23 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
   end
 
   protected
+
+  def change_purchases
+    debugger
+    return unless ["orders", 'purchases'].include? self.cycle.status
+
+    if id_changed?
+      self.sale.add_purchase_item self
+    elsif defined? quantity_consumer_ordered_was or defined? quantity_supplier_accepted_was
+      self.sale.update_purchase_item self
+    end
+  end
+
+  def remove_purchase_item
+    return unless supplier_product = self.product.supplier_product
+    return unless purchase = supplier_product.orders_cycles_purchases.for_cycle(self.order.cycle).first
+
+    self.order.remove_purchase_item self, purchase
+  end
 
 end
