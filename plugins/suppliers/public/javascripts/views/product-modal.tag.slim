@@ -33,7 +33,7 @@ product-modal.modal.fade tabindex="-1" role="dialog"
 
               .form-group
                 select name="supplier_id" id="p-supplier_id" if="{!product.id}"
-                  option each="{id,name in parent.suppliers}" value="{id}"
+                  option each="{id,name in parent.active_suppliers}" value="{id}"
                     |{name}
 
               .form-group

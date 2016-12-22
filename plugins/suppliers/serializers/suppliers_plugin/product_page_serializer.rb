@@ -24,6 +24,8 @@ module SuppliersPlugin
     def suppliers
       hash = {"0": scope.t("suppliers_plugin.views.product.supplier")}
       s = profile.suppliers.order(:name_abbreviation, :name)
+      s = s.active if params[:available] == 'true'
+
       s.each do |supplier|
         hash[supplier.id] = supplier.abbreviation_or_name
       end

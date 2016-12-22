@@ -107,8 +107,11 @@ product-page
         _.merge(this.categories,opts.categories)
 
       this.filter_supplier = opts.filter.supplier
-      if (this.suppliers == undefined)
+      if (this.suppliers == undefined) {
         this.suppliers = opts.suppliers
+        // at this moment, only active suppliers are listed
+        this.active_suppliers = opts.suppliers
+      }
       else
         _.merge(this.suppliers,opts.suppliers)
 
