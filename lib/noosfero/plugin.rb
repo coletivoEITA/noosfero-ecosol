@@ -600,10 +600,15 @@ class Noosfero::Plugin
   end
 
   def search_order asset
+    nil
   end
+
   def catalog_search_extras_begin
+    nil
   end
+
   def catalog_search_extras_end
+    nil
   end
 
   # -> Suggests terms based on asset and query
