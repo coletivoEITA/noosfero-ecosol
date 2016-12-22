@@ -52,8 +52,8 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
   protected
 
   def change_purchases
-    debugger
     return unless ["orders", 'purchases'].include? self.cycle.status
+    return if self.order.status == 'draft'
 
     if id_changed?
       self.sale.add_purchase_item self
