@@ -53,7 +53,7 @@
               = payment.created_at.strftime I18n.t('orders_plugin.lib.date_helper.m_d_y_hh_m')
 
   br
-  - total = @order.total_price
+  - total = @order.total_price.round(2)
   table
     tbody
       tr
