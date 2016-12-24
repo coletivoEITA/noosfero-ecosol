@@ -31,8 +31,7 @@ class FilePresenter < Presenter
       'file-' + self.class.to_s.split(/:+/).map(&:underscore)[1..-1].join('-'),
       'content-type_' + self.content_type.split('/')[0],
       'content-type_' + self.content_type.gsub(/[^a-z0-9]/i,'-')
-    ] if self.content_type.present?
-    list
+    ].flatten
   end
 
   # Enable file presenter to customize the css classes on view_page.rhtml
