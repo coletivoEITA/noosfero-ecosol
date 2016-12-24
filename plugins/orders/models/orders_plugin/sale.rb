@@ -42,7 +42,7 @@ class OrdersPlugin::Sale < OrdersPlugin::Order
     # ignore when status is being rewinded
     return if (Statuses.index(self.status) <= Statuses.index(self.status_was) rescue false)
 
-    if self.status == 'ordered' and self.status_was != 'ordered'
+    if self.status == 'ordered' and not [nil, 'ordered'].include? self.status_was
       OrdersPlugin::Mailer.sale_confirmation(self).deliver
     elsif self.status == 'cancelled' and self.status_was != 'cancelled'
       OrdersPlugin::Mailer.sale_cancellation(self).deliver
