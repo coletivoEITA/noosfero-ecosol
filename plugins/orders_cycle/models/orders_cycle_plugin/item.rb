@@ -5,8 +5,6 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
   # see also: repeat_product
   attr_accessor :repeat_cycle
 
-  delegate :cycle, to: :order
-
   # OVERRIDE OrdersPlugin::Item
   belongs_to :order, class_name: '::OrdersCyclePlugin::Order', foreign_key: :order_id, touch: true
   belongs_to :sale, class_name: '::OrdersCyclePlugin::Sale', foreign_key: :order_id, touch: true
@@ -28,6 +26,11 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
   after_save :update_order
   after_save :change_purchases, if: :cycle
   before_destroy :remove_purchase_item, if: :cycle
+
+  def cycle
+    return nil unless defined? self.order.cycle
+    self.order.cycle
+  end
 
   # what items were selled from this item
   def selled_items
