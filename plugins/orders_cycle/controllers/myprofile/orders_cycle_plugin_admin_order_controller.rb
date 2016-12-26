@@ -20,7 +20,6 @@ class OrdersCyclePluginAdminOrderController < OrdersPluginOrderController
         render js: "alert('"+t("views.admin.new_order.supply_email")+"')"
         return
       end
-      @order.consumer_data = params[:consumer_data]
       @consumer = user
     end
 
@@ -29,6 +28,10 @@ class OrdersCyclePluginAdminOrderController < OrdersPluginOrderController
     @order.cycle = @cycle
     @order.status = OrdersCyclePlugin::Cycle::SaleStatusMap[@cycle.status]
     @order.save!
+    if params[:order][:registered] == "false"
+      @order.consumer_data = params[:order][:consumer_data]
+      @order.save!
+    end
   end
 end
 
