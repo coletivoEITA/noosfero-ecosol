@@ -16,7 +16,7 @@ li class="product #{status.join ' '}" data-category-name="#{product.product_cate
         = link_to_product_from_catalog product, url_options: catalog_params, class: 'product-big', style: "background-image: url('#{product.default_image(:big)}')"
       - else
         .no-image= _('No image')
-      .catalog-item-extras= extra_content.join("\n")
+      .catalog-item-extras= extra_content.safe_join("\n")
 
     li.product-link= link_to_product_from_catalog product, url_options: catalog_params
     - if @show_supplier or product.distributed?
