@@ -129,7 +129,7 @@ module ProfileHelper
 
   def treat_products(products)
     if profile.kind_of?(Enterprise) && profile.environment.enabled?('products_for_enterprises')
-      link_to _('Products/Services'), :controller => 'catalog', :action => 'index'
+      link_to _('Products/Services'), :controller => 'products_plugin/catalog', :action => 'index'
     end
   end
 
