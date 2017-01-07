@@ -2,6 +2,7 @@ module ProductsPlugin
   class SearchController < ::SearchController
 
     helper ProductsHelper
+    helper CatalogHelper
 
     def products
       @scope = @environment.products.enabled.is_public.includes(
