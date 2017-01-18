@@ -69,7 +69,7 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
     return unless supplier_product = self.product.supplier_product
     return unless purchase = supplier_product.orders_cycles_purchases.for_cycle(self.order.cycle).first
 
-    self.order.remove_purchases_items self, purchase
+    self.sale.remove_purchases_items self, purchase
   end
 
 end
