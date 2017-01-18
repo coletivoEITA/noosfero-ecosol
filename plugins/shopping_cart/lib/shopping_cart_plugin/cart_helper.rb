@@ -13,7 +13,7 @@ module ShoppingCartPlugin::CartHelper
   end
 
   def cart_applet
-    button_to_function 'cart', '&nbsp;<span class="cart-qtty"></span>', "cart.toggle()", class: 'cart-applet-indicator', type: 'primary'
+    button_to_function 'cart', '&nbsp;<span class="cart-qtty"></span>'.html_safe, "cart.toggle()", class: 'cart-applet-indicator', type: 'primary'
   end
 
   def cart_minimized
