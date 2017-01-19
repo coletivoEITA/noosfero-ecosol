@@ -260,26 +260,26 @@ pt-BR: &pt-BR
           redistribution_situation: "Distribuição dos produtos"
           name: "Nome"
 
+      manage_products:
+        compare_tab:
+          see_supplier: 'Ver produto original na página do fornecedor "%{supplier}".'
+          see: 'Ver produto original.'
+          no_diff: 'Este produto não tem nenhuma diferença com o que está na página do fornecedor.'
+          diff_count: 'Este produto está com <b>%{n}</b> diferenças com relação ao mesmo produto na página do fornecedor:'
+        distribution_tab:
+          title: "Esse produto é distribuído para os seguintes consumidores(as):"
+          save: "Salvar"
+        basket_tab:
+          make_a_basket: 'Faça deste produto uma cesta adicionando mais um produto!'
+          search: 'encontre e adicione seus produtos'
+          component: 'Componente'
+          quantity: 'Quantidade'
+
+      control_panel:
+        suppliers: "Gerenciar fornecedores"
+        products: "Gerenciar produtos distribuídos"
+
       backup:
-        manage_products:
-          compare_tab:
-            see_supplier: 'Ver produto original na página do fornecedor "%{supplier}".'
-            see: 'Ver produto original.'
-            no_diff: 'Este produto não tem nenhuma diferença com o que está na página do fornecedor.'
-            diff_count: 'Este produto está com <b>%{n}</b> diferenças com relação ao mesmo produto na página do fornecedor:'
-          distribution_tab:
-            title: "Esse produto é distribuído para os seguintes consumidores(as):"
-            save: "Salvar"
-          basket_tab:
-            make_a_basket: 'Faça deste produto uma cesta adicionando mais um produto!'
-            search: 'encontre e adicione seus produtos'
-            component: 'Componente'
-            quantity: 'Quantidade'
-
-        control_panel:
-          suppliers: "Gerenciar fornecedores"
-          products: "Gerenciar produtos distribuídos"
-
         product:
           _edit:
             distribution_setts: "Configurações de distribuição do produto"
