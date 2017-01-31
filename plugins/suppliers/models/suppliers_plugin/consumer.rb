@@ -2,7 +2,7 @@ class SuppliersPlugin::Consumer < SuppliersPlugin::Supplier
 
   self.table_name = :suppliers_plugin_suppliers
 
-  after_save :sync_profile
+  before_save :sync_profile
 
   attr_accessible :email, :phone, :cell_phone, :hub_id, :address, :city, :state, :zip
 
