@@ -431,17 +431,19 @@ class OrdersPlugin::Order < ApplicationRecord
     end
 
     # when Order is from OrdersPlugin, it doesn't have the cycle method defined, do it by hand so
-    if defined? self.cycle
-      cycle = self.cycle
-    else
-      cycle_order = OrdersCyclePlugin::CycleOrder.where(sale_id: self.id).includes(cycle: :profile).first
-      cycle = cycle_order.cycle
+    if defined? OrdersCyclePlugin
+      if respond_to? :cycle
+        target = self.cycle
+      else
+        cycle_order = OrdersCyclePlugin::CycleOrder.where(sale_id: self.id).includes(cycle: :profile).first
+        target = cycle_order.cycle if cycle_order
+      end
+      target_profile = target.present? ? target.profile : nil
     end
-    target_profile = cycle.present? ? cycle.profile : nil
 
     self.financial_transactions.create!(
       origin_id: self.profile_id,
-      target: cycle,
+      target: target,
       target_profile: target_profile,
       value: value,
       description: "Order",
