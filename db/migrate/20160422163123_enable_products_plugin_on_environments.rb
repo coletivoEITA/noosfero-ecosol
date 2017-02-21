@@ -5,7 +5,7 @@ class Profile < ApplicationRecord
 end
 class Environment < ApplicationRecord
   has_many :profiles
-  has_many :products, through: :profiles
+  has_many :products, through: :profiles, class_name: '::Product'
 
   extend ActsAsHavingSettings::ClassMethods
   acts_as_having_settings field: :settings
