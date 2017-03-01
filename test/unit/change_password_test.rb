@@ -16,8 +16,8 @@ class ChangePasswordTest < ActiveSupport::TestCase
     change.status = Task::Status::FINISHED
     change.password = 'right'
     change.password_confirmation = 'wrong'
-    assert !change.valid?
-    assert change.errors[:password.to_s].present?
+    refute change.valid?
+    assert change.errors[:password_confirmation].present?
 
     change.password_confirmation = 'right'
     assert change.valid?
@@ -29,7 +29,8 @@ class ChangePasswordTest < ActiveSupport::TestCase
     change.password_confirmation = 'newpass'
     change.finish
 
-    assert User.find(person.user.id).authenticated?('newpass')
+    person.user.activate
+    assert person.user.authenticated?('newpass')
   end
 
   should 'not require password and password confirmation when cancelling' do
@@ -68,6 +69,12 @@ class ChangePasswordTest < ActiveSupport::TestCase
     task = ChangePassword.create!(:requestor => person)
     email = TaskMailer.generic_message('task_created', task)
     assert_match(/#{task.requestor.name} wants to change its password/, email.subject)
+  end
+
+  should 'set email template when it exists' do
+    template = EmailTemplate.create!(:template_type => :user_change_password, :name => 'template1', :owner => Environment.default)
+    task = ChangePassword.create!(:requestor => person)
+    assert_equal template.id, task.email_template_id
   end
 
 end

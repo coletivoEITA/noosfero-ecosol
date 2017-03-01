@@ -1,26 +1,26 @@
 module ProfileHelper
 
-  COMMON_CATEGORIES = ActiveSupport::OrderedHash.new
+  COMMON_CATEGORIES = {}
   COMMON_CATEGORIES[:content] = [:blogs, :image_galleries, :events, :article_tags]
   COMMON_CATEGORIES[:interests] = [:interests]
   COMMON_CATEGORIES[:general] = nil
 
-  PERSON_CATEGORIES = ActiveSupport::OrderedHash.new
+  PERSON_CATEGORIES = {}
   PERSON_CATEGORIES[:basic_information] = [:nickname, :sex, :birth_date, :location, :privacy_setting, :created_at]
   PERSON_CATEGORIES[:contact] = [:contact_phone, :cell_phone, :comercial_phone, :contact_information, :email, :personal_website, :jabber_id]
   PERSON_CATEGORIES[:location] = [:address, :address_reference, :zip_code, :city, :state, :district, :country, :nationality]
   PERSON_CATEGORIES[:work] = [:organization, :organization_website, :professional_activity]
   PERSON_CATEGORIES[:study] = [:schooling, :formation, :area_of_study]
-  PERSON_CATEGORIES[:network] = [:friends, :communities, :enterprises]
+  PERSON_CATEGORIES[:network] = [:friends, :followers, :followed_profiles, :communities, :enterprises]
   PERSON_CATEGORIES.merge!(COMMON_CATEGORIES)
 
-  ORGANIZATION_CATEGORIES = ActiveSupport::OrderedHash.new
+  ORGANIZATION_CATEGORIES = {}
   ORGANIZATION_CATEGORIES[:basic_information] = [:display_name, :created_at, :foundation_year, :type, :language, :members_count, :location, :address_reference, :historic_and_current_context, :admins]
   ORGANIZATION_CATEGORIES[:contact] = [:contact_person, :contact_phone, :contact_email, :organization_website, :jabber_id]
   ORGANIZATION_CATEGORIES[:economic] = [:business_name, :acronym, :economic_activity, :legal_form, :products, :activities_short_description, :management_information]
   ORGANIZATION_CATEGORIES.merge!(COMMON_CATEGORIES)
 
-  CATEGORY_MAP = ActiveSupport::OrderedHash.new
+  CATEGORY_MAP = {}
   CATEGORY_MAP[:person] = PERSON_CATEGORIES
   CATEGORY_MAP[:organization] = ORGANIZATION_CATEGORIES
 
@@ -42,7 +42,8 @@ module ProfileHelper
     :created_at => _('Profile created at'),
     :members_count => _('Members'),
     :privacy_setting => _('Privacy setting'),
-    :article_tags => _('Tags')
+    :article_tags => _('Tags'),
+    :followed_profiles => _('Following')
   }
 
   EXCEPTION = {
@@ -84,7 +85,7 @@ module ProfileHelper
       entries.map do |entry|
         content = self.send("treat_#{field}", entry)
         unless content.blank?
-          content_tag('tr', content_tag('td', title(field, entry), :class => 'field-name') + content_tag('td', content))
+          content_tag('tr', content_tag('td', title(field, entry), :class => 'field-name') + content_tag('td', content.to_s.html_safe))
         end
       end.join("\n")
     end
@@ -128,7 +129,7 @@ module ProfileHelper
 
   def treat_products(products)
     if profile.kind_of?(Enterprise) && profile.environment.enabled?('products_for_enterprises')
-      link_to _('Products/Services'), :controller => 'catalog', :action => 'index'
+      link_to _('Products/Services'), :controller => 'products_plugin/catalog', :action => 'index'
     end
   end
 
@@ -142,6 +143,14 @@ module ProfileHelper
 
   def treat_image_galleries(gallery)
     link_to(n_('One picture', '%{num} pictures', gallery.images.published.count) % { :num => gallery.images.published.count }, gallery.url)
+  end
+
+  def treat_followers(followers)
+    link_to(profile.followers.count, {:action=>"followed", :controller=>"profile", :profile=>"#{profile.identifier}"})
+  end
+
+  def treat_followed_profiles(followed_profiles)
+    link_to(profile.followed_profiles.count, {:action=>"following", :controller=>"profile", :profile=>"#{profile.identifier}"})
   end
 
   def treat_events(events)

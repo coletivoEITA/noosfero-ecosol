@@ -1,11 +1,11 @@
-require File.dirname(__FILE__) + '/../../../../test/test_helper'
+require 'test_helper'
 
 class VotePluginTest < ActiveSupport::TestCase
 
   def setup
     @plugin = VotePlugin.new
     @person = create_user('user').person
-    @article = TinyMceArticle.create!(:profile => @person, :name => 'An article')
+    @article = TextArticle.create!(:profile => @person, :name => 'An article')
     @comment = Comment.create!(:source => @article, :author => @person, :body => 'test')
   end
 

@@ -1,0 +1,17 @@
+<div class="exchange-summary-wrapper">
+
+  <div class="exchange-proposal-part profile">
+    <h4><%= _("%s will offer") % profile.name %></h4>
+
+    <%= render :partial => 'proposal_element_list', :locals => {:proposal => proposal, :profile => profile, :actor => 'profile' } %>
+  </div>
+
+  <div class="exchange-proposal-part theother">
+    <h4><%= _("%s will offer") % @theother.name %></h4>
+
+    <%= render :partial => 'proposal_element_list', :locals => {:proposal => proposal, :profile => @theother, :actor => 'theother' } %>
+  </div>
+
+  <div class="clean">
+  </div>
+</div>

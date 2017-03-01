@@ -1,24 +1,16 @@
 require_relative "../test_helper"
 require 'users_controller'
 
-# Re-raise errors caught by the controller.
-class UsersController; def rescue_action(e) raise e end; end
-
 class UsersControllerTest < ActionController::TestCase
 
   def setup
     @controller = UsersController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
 
-    Environment.destroy_all
-    @environment = fast_create(Environment, :is_default => true)
- 
+    @environment = Environment.default
 
     admin_user = create_user_with_permission('adminuser', 'manage_environment_users', environment)
     login_as('adminuser')
   end
-
   attr_accessor :environment
 
   should 'not access without right permission' do
@@ -69,7 +61,6 @@ class UsersControllerTest < ActionController::TestCase
 
   should 'set admin role' do
     person = create_user.person
-    Role.create!(:name => 'Admin', :key => 'environment_administrator', :environment => environment, :permissions => ['view_environment_admin_panel'])
     assert_equal false, person.is_admin?
     post :set_admin_role, :id => person.id, :q => ''
     person.reload
@@ -78,14 +69,13 @@ class UsersControllerTest < ActionController::TestCase
 
   should 'reset admin role' do
     person = create_user.person
-    Role.create!(:name => 'Admin', :key => 'environment_administrator', :environment => environment, :permissions => ['view_environment_admin_panel'])
 
     environment.add_admin(person)
     assert person.is_admin?
 
     post :reset_admin_role, :id => person.id, :q => ''
     person.reload
-    assert !person.is_admin?
+    refute person.is_admin?
   end
 
   should 'activate user' do
@@ -147,6 +137,38 @@ class UsersControllerTest < ActionController::TestCase
       post :destroy_user, :id => 99999
     end
     assert_redirected_to :action => 'index'
+  end
+
+  should 'redirect to index after send email with success' do
+    post :send_mail, mailing: { subject: "Subject", body: "Body" }, recipients: { profile_admins: "false", env_admins: "false" }
+    assert_redirected_to :action => 'index'
+    assert_match /The e-mails are being sent/, session[:notice]
+  end
+
+  should 'mailing recipients_roles should be empty when none is set' do
+    post :send_mail, mailing: { subject: "Subject", body: "Body" }, recipients: { profile_admins: "false", env_admins: "false" }
+    mailing = EnvironmentMailing.last
+    assert_equal mailing.recipients_roles, []
+  end
+
+  should 'mailing recipients_roles should be set correctly' do
+    post :send_mail, mailing: { subject: "Subject", body: "Body" }, recipients: { profile_admins: "true", env_admins: "true" }
+    mailing = EnvironmentMailing.last
+    assert_equal mailing.recipients_roles, ["profile_admin", "environment_administrator"]
+  end
+
+  should 'send mail to admins recipients' do
+    admin_user = create_user('new_admin').person
+    admin_user_2 = create_user('new_admin_2').person
+
+    environment.add_admin admin_user
+    environment.add_admin admin_user_2
+
+    assert_equal 2, environment.admins.count
+    assert_difference "MailingSent.count", 2 do
+      post :send_mail, mailing: { subject: "UnB", body: "Hail UnB" }, recipients: { profile_admins: "false", env_admins: "true" }
+      process_delayed_job_queue
+    end
   end
 
 end

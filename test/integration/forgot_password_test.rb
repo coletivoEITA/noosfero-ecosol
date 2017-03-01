@@ -1,9 +1,9 @@
 require_relative "../test_helper"
 
-class ForgotPasswordTest < ActionController::IntegrationTest
+class ForgotPasswordTest < ActionDispatch::IntegrationTest
 
   def setup
-    ActionController::Integration::Session.any_instance.stubs(:https?).returns(true)
+    ActionDispatch::Integration::Session.any_instance.stubs(:https?).returns(true)
   end
 
   def test_forgot_password_with_login
@@ -25,7 +25,7 @@ class ForgotPasswordTest < ActionController::IntegrationTest
     assert_template 'password_recovery_sent'
 
     assert_equal 1, ChangePassword.count
-    code = ChangePassword.find(:first).code
+    code = ChangePassword.first.code
 
     get "/account/new_password/#{code}"
     assert_response :success
@@ -58,7 +58,7 @@ class ForgotPasswordTest < ActionController::IntegrationTest
     assert_template 'password_recovery_sent'
 
     assert_equal 1, ChangePassword.count
-    code = ChangePassword.find(:first).code
+    code = ChangePassword.first.code
 
     get "/account/new_password/#{code}"
     assert_response :success

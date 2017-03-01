@@ -1,0 +1,273 @@
+# translation of noosfero.po to
+# Krishnamurti Lelis Lima Vieira Nunes <krishna@colivre.coop.br>, 2007.
+# noosfero - Brazilian Portuguese translation
+# Copyright (C) 2007,
+# Forum Brasileiro de Economia Solidaria <http://www.fbes.org.br/>
+# Copyright (C) 2007,
+# Ynternet.org Foundation <http://www.ynternet.org/>
+# This file is distributed under the same license as noosfero itself.
+# Joenio Costa <joenio@colivre.coop.br>, 2008.
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: noosfero 0.44.4\n"
+"POT-Creation-Date: 2013-10-15 09:01-0300\n"
+"PO-Revision-Date: 2013-03-13 17:47-0300\n"
+"Last-Translator: Rodrigo Souto <rodrigo@colivre.coop.br>\n"
+"Language-Team: LANGUAGE TEAM <E-MAIL@ADDRESS or HOME PAGE>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 1.0.2\n"
+
+#: app/views/comment/notifier/mail_to_followers.rhtml:7
+#: app/views/comment/notifier/mail.rhtml:7
+#: plugins/exchange/views/exchange_plugin_element/_view.html.erb:44
+msgid "Comment:"
+msgstr "Comentário:"
+
+#: plugins/exchange/lib/exchange_plugin.rb:12
+msgid "A plugin that implement an exchange system inside noosfero."
+msgstr ""
+
+#: plugins/exchange/lib/exchange_plugin.rb:25
+msgid "My Exchanges"
+msgstr "Minha trocas"
+
+#: plugins/exchange/lib/exchange_plugin/mailer.rb:8
+#: plugins/exchange/lib/exchange_plugin/mailer.rb:20
+msgid "[%{environment}] You have a new proposal of exchange!"
+msgstr "[%{environment}] Você tem uma nova proposta de troca!"
+
+#: plugins/exchange/lib/exchange_plugin/mailer.rb:34
+msgid "[%{environment}] You have a new exchange message!"
+msgstr "[%{environment}] Você tem uma nova mensagem na troca!"
+
+#: plugins/escambo/views/profile/_knowledges.html.erb:2
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_knowledges.html.erb:3
+msgid "Knowledges"
+msgstr "Saberes"
+
+#: plugins/evaluation/views/evaluation_plugin_profile/_enterprise_evaluation.html.erb:8
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:11
+#: plugins/exchange/views/exchange_plugin_myprofile/exchange_console.html.erb:11
+msgid "%m/%d/%Y at %H:%Mh"
+msgstr "%d/%m/%Y às %H:%Mh"
+
+#: plugins/evaluation/views/evaluation_plugin_profile/_enterprise_evaluation.html.erb:29
+#: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:12
+msgid "Score"
+msgstr "Nota"
+
+#: plugins/evaluation/views/evaluation_plugin_profile/_enterprise_evaluation.html.erb:33
+#: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:27
+msgid "The deal happened?"
+msgstr "A troca se concretizou?"
+
+#: plugins/exchange/views/exchange_plugin_shared/_start_exchange.html.erb:9
+msgid "Start an exchange"
+msgstr "Fazer escambo"
+
+#: plugins/exchange/views/exchange_plugin/mailer/new_message_notification.html.erb:9
+msgid "%{sender} sent a %{message} in the exchange."
+msgstr "%{sender} enviou uma %{message} na troca."
+
+#: plugins/exchange/views/exchange_plugin/mailer/new_message_notification.html.erb:11
+msgid "message"
+msgstr "mensagem"
+
+#: plugins/exchange/views/exchange_plugin/mailer/start_exchange_notification.html.erb:9
+msgid ""
+"You have a new %{exchange} waiting for you! %{origin} wants to exchange."
+msgstr ""
+
+#: plugins/exchange/views/exchange_plugin/mailer/start_exchange_notification.html.erb:11
+msgid "exchange"
+msgstr "troca"
+
+#: plugins/exchange/views/exchange_plugin/mailer/new_proposal_notification.html.erb:9
+msgid "%{origin} made a new %{proposal} for you."
+msgstr "{origin} fez uma nova %{proposal} para você."
+
+#: plugins/exchange/views/exchange_plugin/mailer/new_proposal_notification.html.erb:11
+msgid "proposal"
+msgstr "proposta"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_exchange_summary.html.erb:4
+#: plugins/exchange/views/exchange_plugin_myprofile/_exchange_summary.html.erb:10
+msgid "%s will offer"
+msgstr "%s irá oferecer"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_message.html.erb:6
+msgid "%m/%d/%y <br> %H:%M"
+msgstr "%d/%m/%y <br> %H:%M"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_evaluation.html.erb:8
+msgid "Your evaluation (still to be done)"
+msgstr "Sua avaliação (a ser feita)"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_evaluation.html.erb:17
+msgid "%s evaluation (still to be done)"
+msgstr "Avaliação de %s (a ser feita)"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_messages.html.erb:20
+msgid "Type your message"
+msgstr "Digite sua mensagem"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_messages.html.erb:21
+msgid "Send message"
+msgstr "Enviar mensagem"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:6
+msgid "Send this proposal"
+msgstr "Enviar esta proposta"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:10
+msgid "Delete this proposal"
+msgstr "Apagar esta proposta"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:15
+msgid "Set up a counter-offer"
+msgstr "Montar contra-proposta"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:19
+msgid "Cancel Negociation"
+msgstr "Cancelar negociação"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:25
+msgid "Accept proposal and finish Exchange"
+msgstr "Aceitar proposta e finalizar troca"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_buttons.html.erb:30
+msgid "*To finish this exchange, the other part must accept this proposal!"
+msgstr ""
+"*Para que esta troca seja finalizada, a outra parte deve aceitar esta "
+"proposta!"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_knowledges.html.erb:6
+msgid "%s has no knowledges registered."
+msgstr "%s não tem saberes registrados"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:7
+msgid "Please evaluate the behaviour of %s during the exchange process"
+msgstr "Por favor, avalie o comportamento de %s durante o processo de troca:"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_evaluation_form.html.erb:31
+msgid "Submit Evaluation"
+msgstr "Enviar avaliação"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_offers.html.erb:6
+msgid "%s has no offers registered."
+msgstr "%s não tem ofertas registrados"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_states.html.erb:30
+msgid "Proposal"
+msgstr "proposta"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_states.html.erb:36
+msgid "Negociation"
+msgstr "negociação"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_states.html.erb:42
+msgid "Evaluation"
+msgstr "avaliação"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_add_money.html.erb:1
+msgid "Add amount in money"
+msgstr "Adicionar quantia em dinheiro"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_header.html.erb:3
+msgid "%{origin} proposed and %{target} accepted!"
+msgstr ""
+"<strong> %{origin} </strong> propos e <strong> %{target} </strong> aceitou!"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_header.html.erb:8
+msgid "%{origin} proposes"
+msgstr "<strong> %{origin} </strong> propôs"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_add_unreg_item.html.erb:1
+msgid "Add not registered product"
+msgstr "Adicionar produto não registrado"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:2
+msgid "%s's Exchanges"
+msgstr "Trocas de %s"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:5
+msgid "Active Exchanges"
+msgstr "Trocas ativas"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:10
+msgid "Exchange created at %{time} by %{profile}"
+msgstr "Troca criada em %{time} por %{profile}"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:15
+msgid "Open Exchange"
+msgstr "Abrir detalhes da troca"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:33
+msgid "Closed Exchanges"
+msgstr "Trocas encerradas"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:40
+msgid ""
+"Exchange with %{the_other} created at %{time} by %{profile} and closed at "
+"%{closed_time}"
+msgstr ""
+"Troca com %{the_other} criada em %{time} por %{profile} e fechada em "
+"%{closed_time}"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/index.html.erb:47
+msgid "See history"
+msgstr "Ver histórico"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:11
+msgid "Proposal sent %s"
+msgstr "Proposta enviada em %s"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:28
+msgid "You offer"
+msgstr "Oferta"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:32
+msgid "What you can offer?"
+msgstr "O que você pode oferecer"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposals.html.erb:47
+msgid "You ask"
+msgstr "Pedido"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/exchange_console.html.erb:3
+msgid "Exchange Negociation"
+msgstr "Negociação da troca"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/exchange_console.html.erb:11
+msgid "Concluded at %s"
+msgstr "Concluído em %s"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/exchange_console.html.erb:16
+msgid "exchange arranged between %{origin} & %{target}"
+msgstr ""
+"troca combinada entre <strong> %{origin} </strong> & <strong> %{target} </"
+"strong>"
+
+#: plugins/exchange/views/exchange_plugin_myprofile/exchange_console.html.erb:27
+msgid "Negociation history"
+msgstr "Histórico da negociação"
+
+#: plugins/exchange/views/exchange_plugin_element/_view.html.erb:13
+#: plugins/exchange/views/exchange_plugin_element/_view.html.erb:25
+msgid "Qty"
+msgstr "Qtd"
+
+#: plugins/exchange/views/exchange_plugin_element/_view.html.erb:37
+#: plugins/exchange/views/exchange_plugin_element/_view.html.erb:72
+msgid "Comment (optional)"
+msgstr "Comentário (opcional)"
+
+#: plugins/exchange/views/exchange_plugin_element/_view.html.erb:66
+msgid "Unregistered item"
+msgstr "Produto/serviço não registrado"

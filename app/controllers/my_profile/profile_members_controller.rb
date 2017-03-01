@@ -5,8 +5,27 @@ class ProfileMembersController < MyProfileController
   protect 'manage_memberships', :profile
 
   def index
-    @members = profile.members_by_name
-    @member_role = environment.roles.find_by_name('member')
+    @filters = params[:filters] || {:roles => []}
+    all_roles = Profile::Roles.organization_member_roles(environment.id) | Profile::Roles.organization_custom_roles(environment.id, profile.id)
+    @filters[:roles] = all_roles unless @filters[:roles].present?
+    @data = {}
+    field = 'name'
+    field = 'email' if @filters[:name] =~ /\@/
+
+    @data[:members] = profile.members_by(field,@filters[:name]).by_role(@filters[:roles])
+    session[:members_filtered] = @data[:members].map{|m|m.id} if request.post?
+    @data[:roles] = all_roles
+
+  end
+
+  def send_mail
+    session[:members_filtered] = params[:members_filtered].select{|value| value!="0"}
+    if session[:members_filtered].present?
+      redirect_to :controller => :profile, :action => :send_mail
+    else
+      session[:notice] = _("Select at least one member.")
+      redirect_to :action => :index
+    end
   end
 
   def update_roles
@@ -44,13 +63,13 @@ class ProfileMembersController < MyProfileController
       redirect_to :action => 'index'
     else
       @member = Person.find(params[:person])
-      @roles = environment.roles.find(:all).select{ |r| r.has_kind?('Profile') }
+      @roles = environment.roles.all.select{ |r| r.has_kind?('Profile') }
       render :action => 'affiliate'
     end
   end
 
   def remove_role
-    @association = RoleAssignment.find(:all, :conditions => {:id => params[:id], :target_id => profile.id})
+    @association = RoleAssignment.where(:id => params[:id], :target_id => profile.id)
     if @association.destroy
       session[:notice] = 'Member succefully unassociated'
     else
@@ -61,6 +80,7 @@ class ProfileMembersController < MyProfileController
 
   def change_role
     @roles = Profile::Roles.organization_member_roles(environment.id)
+    @custom_roles = profile.custom_roles
     begin
       @member = profile.members.find(params[:id])
     rescue ActiveRecord::RecordNotFound
@@ -103,7 +123,7 @@ class ProfileMembersController < MyProfileController
     @collection = :profile_admins
 
     if profile.community?
-      member = profile.members.find_by_identifier(params[:id])
+      member = profile.members.find_by(identifier: params[:id])
       profile.add_admin(member)
     end
     render :layout => false
@@ -114,7 +134,7 @@ class ProfileMembersController < MyProfileController
     @collection = :profile_admins
 
     if profile.community?
-      member = profile.members.find_by_identifier(params[:id])
+      member = profile.members.find_by(identifier: params[:id])
       profile.remove_admin(member)
     end
     render :layout => false
@@ -122,7 +142,7 @@ class ProfileMembersController < MyProfileController
 
   def search_user
     role = Role.find(params[:role])
-    render :text => environment.people.find(:all, :conditions => ['LOWER(name) LIKE ? OR LOWER(identifier) LIKE ?', "%#{params['q_'+role.key]}%", "%#{params['q_'+role.key]}%"]).
+    render :text => environment.people.where('LOWER(name) LIKE ? OR LOWER(identifier) LIKE ?', "%#{params['q_'+role.key]}%", "%#{params['q_'+role.key]}%").
       select { |person| !profile.members_by_role(role).include?(person) }.
       map {|person| {:id => person.id, :name => person.name} }.
       to_json
@@ -156,6 +176,15 @@ class ProfileMembersController < MyProfileController
         redirect_to :controller => 'profile_editor'
       end
     end
+  end
+
+  def search_members
+    field = 'name'
+    field = 'email' if params[:filter_name] =~ /\@/
+
+    result = profile.members_like field, params[:filter_name]
+    result = result.select{|member| member.can_view_field?(current_person, "email") } if field=="email"
+    render :json => result.map { |member| {:label => "#{member.name}#{member.can_view_field?(current_person, "email") ? " <#{member.email}>" : ""}", :value => member.name }}
   end
 
 end

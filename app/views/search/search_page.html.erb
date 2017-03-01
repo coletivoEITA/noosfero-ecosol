@@ -1,5 +1,5 @@
-<%= render partial: 'search_form', locals: { hint: _("Type words about %s you're looking for") % _("the #{@asset.to_s.singularize}") } %>
-<%= render partial: 'search_content' %>
+<%= render :partial => 'search_form', :locals => { :hint => _("Type words about the %s you're looking for").html_safe % _(@asset.to_s.singularize) } %>
+<%= render :partial => 'search_content' %>
 
 <div style="clear: both"></div>
 
@@ -9,6 +9,4 @@
   <% end %>
 <% end %>
 
-<%= javascript_include_tag 'search' %>
-<%= javascript_include_tag 'http://maps.google.com/maps/api/js?sensor=true' %>
-<%= javascript_include_tag 'google_maps' %>
+

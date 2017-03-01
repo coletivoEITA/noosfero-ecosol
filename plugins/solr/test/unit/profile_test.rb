@@ -94,7 +94,7 @@ class ProfileTest < ActiveSupport::TestCase
     p = create(Profile, :name => 'wanted')
 
     assert Profile.find_by_contents('wanted')[:results].include?(p)
-    assert ! Profile.find_by_contents('not_wanted')[:results].include?(p)
+    refute  Profile.find_by_contents('not_wanted')[:results].include?(p)
   end
 
   # This problem should be solved; talk to Bráulio if it fails
@@ -134,7 +134,7 @@ class ProfileTest < ActiveSupport::TestCase
   should 'index comments title together with article' do
     TestSolr.enable
     owner = create_user('testuser').person
-    art = fast_create(TinyMceArticle, :profile_id => owner.id, :name => 'ytest')
+    art = fast_create(TextArticle, :profile_id => owner.id, :name => 'ytest')
     c1 = Comment.create(:title => 'a nice comment', :body => 'anything', :author => owner, :source => art ); c1.save!
 
     assert_includes Article.find_by_contents('nice')[:results], art

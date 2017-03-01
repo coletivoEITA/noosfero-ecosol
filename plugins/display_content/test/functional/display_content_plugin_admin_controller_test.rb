@@ -1,16 +1,10 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require File.dirname(__FILE__) + '/../../controllers/display_content_plugin_admin_controller'
-
-
-# Re-raise errors caught by the controller.
-class DisplayContentPluginAdminControllerController; def rescue_action(e) raise e end; end
+require_relative '../test_helper'
+require_relative '../../controllers/display_content_plugin_admin_controller'
 
 class DisplayContentPluginAdminControllerTest < ActionController::TestCase
 
   def setup
     @controller = DisplayContentPluginAdminController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
 
     @environment = Environment.default
     user_login = create_admin_user(@environment)
@@ -45,7 +39,7 @@ class DisplayContentPluginAdminControllerTest < ActionController::TestCase
 
   should 'index action returns an json with node content' do
     Article.delete_all
-    article = fast_create(TextileArticle, :name => 'test article 1', :profile_id => environment.portal_community.id)
+    article = fast_create(TextArticle, :name => 'test article 1', :profile_id => environment.portal_community.id)
 
     get :index, :block_id => block.id
     json_response = ActiveSupport::JSON.decode(@response.body)
@@ -57,7 +51,7 @@ class DisplayContentPluginAdminControllerTest < ActionController::TestCase
 
   should 'index action returns an json with node checked if the node is in the nodes list' do
     Article.delete_all
-    article = fast_create(TextileArticle, :name => 'test article 1', :profile_id => environment.portal_community.id)
+    article = fast_create(TextArticle, :name => 'test article 1', :profile_id => environment.portal_community.id)
     block.nodes= [article.id]
     block.save!
 
@@ -73,8 +67,8 @@ class DisplayContentPluginAdminControllerTest < ActionController::TestCase
   should 'index action returns an json with node undetermined if the node is in the parent nodes list' do
     Article.delete_all
     f = fast_create(Folder, :name => 'test folder 1', :profile_id => environment.portal_community.id)
-    article = fast_create(TextileArticle, :name => 'test article 1', :profile_id => environment.portal_community.id, :parent_id => f.id)
-    article2 = fast_create(TextileArticle, :name => 'test article 2', :profile_id => environment.portal_community.id, :parent_id => f.id)
+    article = fast_create(TextArticle, :name => 'test article 1', :profile_id => environment.portal_community.id, :parent_id => f.id)
+    article2 = fast_create(TextArticle, :name => 'test article 2', :profile_id => environment.portal_community.id, :parent_id => f.id)
     block.nodes = [article.id]
     block.save!
 
@@ -87,7 +81,7 @@ class DisplayContentPluginAdminControllerTest < ActionController::TestCase
   should 'index action returns an json with node closed if the node has article with children' do
     Article.delete_all
     f = fast_create(Folder, :name => 'test folder 1', :profile_id => environment.portal_community.id)
-    article = fast_create(TextileArticle, :name => 'test article 1', :profile_id => environment.portal_community.id, :parent_id => f.id)
+    article = fast_create(TextArticle, :name => 'test article 1', :profile_id => environment.portal_community.id, :parent_id => f.id)
 
     get :index, :block_id => block.id
     json_response = ActiveSupport::JSON.decode(@response.body)
@@ -101,8 +95,8 @@ class DisplayContentPluginAdminControllerTest < ActionController::TestCase
   should 'index action returns an json with all the children nodes if some parent is in the parents list' do
     Article.delete_all
     f = fast_create(Folder, :name => 'test folder 1', :profile_id => environment.portal_community.id)
-    a1 = fast_create(TextileArticle, :name => 'test article 1', :profile_id => environment.portal_community.id, :parent_id => f.id)
-    a2 = fast_create(TextileArticle, :name => 'test article 2', :profile_id => environment.portal_community.id, :parent_id => f.id)
+    a1 = fast_create(TextArticle, :name => 'test article 1', :profile_id => environment.portal_community.id, :parent_id => f.id)
+    a2 = fast_create(TextArticle, :name => 'test article 2', :profile_id => environment.portal_community.id, :parent_id => f.id)
     block.checked_nodes= {a1.id => true}
     block.save!
 
@@ -124,9 +118,9 @@ class DisplayContentPluginAdminControllerTest < ActionController::TestCase
   should 'index action returns an json with all the children nodes and root nodes if some parent is in the parents list and there is others root articles' do
     Article.delete_all
     f = fast_create(Folder, :name => 'test folder 1', :profile_id => environment.portal_community.id)
-    a1 = fast_create(TextileArticle, :name => 'test article 1', :profile_id => environment.portal_community.id, :parent_id => f.id)
-    a2 = fast_create(TextileArticle, :name => 'test article 2', :profile_id => environment.portal_community.id, :parent_id => f.id)
-    a3 = fast_create(TextileArticle, :name => 'test article 3', :profile_id => environment.portal_community.id)
+    a1 = fast_create(TextArticle, :name => 'test article 1', :profile_id => environment.portal_community.id, :parent_id => f.id)
+    a2 = fast_create(TextArticle, :name => 'test article 2', :profile_id => environment.portal_community.id, :parent_id => f.id)
+    a3 = fast_create(TextArticle, :name => 'test article 3', :profile_id => environment.portal_community.id)
     block.checked_nodes= {a2.id => true, a3.id => true}
     block.save!
 
@@ -154,9 +148,9 @@ class DisplayContentPluginAdminControllerTest < ActionController::TestCase
   should 'index action returns an json without children nodes if the parent is not in the parents list' do
     Article.delete_all
     f = fast_create(Folder, :name => 'test folder 1', :profile_id => environment.portal_community.id)
-    a1 = fast_create(TextileArticle, :name => 'test article 1', :profile_id => environment.portal_community.id, :parent_id => f.id)
-    a2 = fast_create(TextileArticle, :name => 'test article 2', :profile_id => environment.portal_community.id, :parent_id => f.id)
-    a3 = fast_create(TextileArticle, :name => 'test article 3', :profile_id => environment.portal_community.id)
+    a1 = fast_create(TextArticle, :name => 'test article 1', :profile_id => environment.portal_community.id, :parent_id => f.id)
+    a2 = fast_create(TextArticle, :name => 'test article 2', :profile_id => environment.portal_community.id, :parent_id => f.id)
+    a3 = fast_create(TextArticle, :name => 'test article 3', :profile_id => environment.portal_community.id)
 
     get :index, :block_id => block.id
     json_response = ActiveSupport::JSON.decode(@response.body)

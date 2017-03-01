@@ -1,4 +1,5 @@
 module CommentHelper
+  include DatesHelper
 
   def article_title(article, args = {})
     title = article.title
@@ -15,7 +16,7 @@ module CommentHelper
         content_tag('span', show_date(article.published_at), :class => 'date') +
         content_tag('span', [_(", by %s") % link_to(article.author_name, article.author_url)], :class => 'author') +
         content_tag('span', comments, :class => 'comments'),
-        :class => 'created-at'
+        :class => 'publishing-info'
       )
     end
     title
@@ -65,7 +66,7 @@ module CommentHelper
 
   def link_for_edit(comment)
     if comment.can_be_updated_by?(user)
-      {:link => expirable_comment_link(comment, :edit, _('Edit'), url_for(:profile => profile.identifier, :controller => :comment, :action => :edit, :id => comment.id),:class => 'modal')}
+      {:link => expirable_comment_link(comment, :edit, _('Edit'), url_for(:profile => profile.identifier, :controller => :comment, :action => :edit, :id => comment.id), :modal => true)}
     end
   end
 

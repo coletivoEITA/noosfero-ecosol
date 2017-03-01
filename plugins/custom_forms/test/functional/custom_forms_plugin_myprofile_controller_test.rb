@@ -1,14 +1,10 @@
-require File.dirname(__FILE__) + '/../../../../test/test_helper'
-require File.dirname(__FILE__) + '/../../controllers/custom_forms_plugin_myprofile_controller'
-
-# Re-raise errors caught by the controller.
-class CustomFormsPluginMyprofileController; def rescue_action(e) raise e end; end
+require 'test_helper'
+require_relative '../../controllers/custom_forms_plugin_myprofile_controller'
 
 class CustomFormsPluginMyprofileControllerTest < ActionController::TestCase
   def setup
     @controller = CustomFormsPluginMyprofileController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+
     @profile = create_user('profile').person
     login_as(@profile.identifier)
     environment = Environment.default
@@ -34,7 +30,7 @@ class CustomFormsPluginMyprofileControllerTest < ActionController::TestCase
     form = CustomFormsPlugin::Form.create!(:profile => profile, :name => 'Free Software')
     assert CustomFormsPlugin::Form.exists?(form.id)
     post :remove, :profile => profile.identifier, :id => form.id
-    assert !CustomFormsPlugin::Form.exists?(form.id)
+    refute CustomFormsPlugin::Form.exists?(form.id)
   end
 
   should 'create a form' do
@@ -69,7 +65,7 @@ class CustomFormsPluginMyprofileControllerTest < ActionController::TestCase
         }
     end
 
-    form = CustomFormsPlugin::Form.find_by_name('My Form')
+    form = CustomFormsPlugin::Form.find_by(name: 'My Form')
     assert_equal 'logged', form.access
     assert_equal begining, form.begining.strftime(format)
     assert_equal ending, form.ending.strftime(format)
@@ -113,7 +109,7 @@ class CustomFormsPluginMyprofileControllerTest < ActionController::TestCase
         :fields_attributes => fields
       }
     end
-    form = CustomFormsPlugin::Form.find_by_name('My Form')
+    form = CustomFormsPlugin::Form.find_by(name: 'My Form')
     assert_equal num_fields, form.fields.count
     lst = 10
     form.fields.each do |f|
@@ -150,7 +146,7 @@ class CustomFormsPluginMyprofileControllerTest < ActionController::TestCase
         :fields_attributes => fields
       }
     end
-    form = CustomFormsPlugin::Form.find_by_name('My Form')
+    form = CustomFormsPlugin::Form.find_by(name: 'My Form')
     assert_equal 2, form.fields.count
     assert form.fields.first.name == "1"
     assert form.fields.last.name == "0"
@@ -184,8 +180,9 @@ class CustomFormsPluginMyprofileControllerTest < ActionController::TestCase
     form = CustomFormsPlugin::Form.create!(:profile => profile, :name => 'Free Software')
 
     get :edit, :profile => profile.identifier, :id => form.id
+    expects(:current_editor).returns(Article::Editor::TINY_MCE)
 
-    assert_tag :tag => 'textarea', :attributes => { :id => 'form_description', :class => 'mceEditor' }
+    assert_tag :tag => 'textarea', :attributes => { :id => 'form_description', :class => /#{current_editor}/ }
   end
 
   should 'export submissions as csv' do

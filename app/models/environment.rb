@@ -1,23 +1,48 @@
 # A Environment is like a website to be hosted in the platform. It may
 # contain multiple Profile's and can be identified by several different
 # domains.
-class Environment < ActiveRecord::Base
+class Environment < ApplicationRecord
 
-  attr_accessible :name, :is_default, :signup_welcome_text_subject, :signup_welcome_text_body, :terms_of_use, :message_for_disabled_enterprise, :news_amount_by_folder, :default_language, :languages, :description, :organization_approval_method, :enabled_plugins, :enabled_features, :redirection_after_login, :redirection_after_signup, :contact_email, :theme, :reports_lower_bound, :noreply_email, :signup_welcome_screen_body, :members_whitelist_enabled, :members_whitelist, :highlighted_news_amount, :portal_news_amount
+  attr_accessible :name, :is_default, :signup_welcome_text_subject,
+                  :signup_welcome_text_body, :terms_of_use,
+                  :message_for_disabled_enterprise, :news_amount_by_folder,
+                  :default_language, :languages, :description,
+                  :organization_approval_method, :enabled_plugins,
+                  :enabled_features, :redirection_after_login,
+                  :redirection_after_signup, :contact_email, :theme,
+                  :reports_lower_bound, :noreply_email,
+                  :signup_welcome_screen_body, :members_whitelist_enabled,
+                  :members_whitelist, :highlighted_news_amount,
+                  :portal_news_amount, :date_format, :signup_intro,
+                  :enable_feed_proxy, :http_feed_proxy, :https_feed_proxy,
+                  :disable_feed_ssl
 
   has_many :users
 
-  self.partial_updates = false
+  # allow roles use
+  def self.dangerous_attribute_method? name
+    false
+  end
 
   has_many :tasks, :dependent => :destroy, :as => 'target'
   has_many :search_terms, :as => :context
+  has_many :custom_fields, :dependent => :destroy
+  has_many :email_templates, :foreign_key => :owner_id
 
   IDENTIFY_SCRIPTS = /(php[0-9s]?|[sp]htm[l]?|pl|py|cgi|rb)/
+
+  validates_inclusion_of :date_format,
+                         :in => [ 'numbers_with_year', 'numbers',
+                                  'month_name_with_year', 'month_name',
+                                  'past_time'],
+                         :if => :date_format
 
   def self.verify_filename(filename)
     filename += '.txt' if File.extname(filename) =~ IDENTIFY_SCRIPTS
     filename
   end
+
+  NUMBER_OF_BOXES = 4
 
   PERMISSIONS['Environment'] = {
     'view_environment_admin_panel' => N_('View environment admin panel'),
@@ -27,15 +52,18 @@ class Environment < ActiveRecord::Base
     'manage_environment_roles' => N_('Manage environment roles'),
     'manage_environment_validators' => N_('Manage environment validators'),
     'manage_environment_users' => N_('Manage environment users'),
+    'manage_environment_organizations' => N_('Manage environment organizations'),
     'manage_environment_templates' => N_('Manage environment templates'),
     'manage_environment_licenses' => N_('Manage environment licenses'),
     'manage_environment_trusted_sites' => N_('Manage environment trusted sites'),
     'edit_appearance'      => N_('Edit appearance'),
+    'edit_raw_html_block'      => N_('Edit Raw HTML block'),
+    'manage_email_templates' => N_('Manage Email Templates'),
   }
 
   module Roles
     def self.admin(env_id)
-      Role.find_by_key_and_environment_id('environment_administrator', env_id)
+      Role.find_by(key: 'environment_administrator', environment_id: env_id)
     end
   end
 
@@ -72,7 +100,8 @@ class Environment < ActiveRecord::Base
         'edit_profile_design',
         'manage_products',
         'manage_friends',
-        'perform_task'
+        'perform_task',
+        'view_tasks'
       ]
     )
   end
@@ -90,7 +119,7 @@ class Environment < ActiveRecord::Base
   def admins
     admin_role = Environment::Roles.admin(self)
     return [] if admin_role.blank?
-    Person.members_of(self).all(:conditions => ['role_assignments.role_id = ?', admin_role.id])
+    Person.members_of(self).where 'role_assignments.role_id = ?', admin_role.id
   end
 
   # returns the available features for a Environment, in the form of a
@@ -101,7 +130,6 @@ class Environment < ActiveRecord::Base
       'disable_asset_enterprises' => _('Disable search for enterprises'),
       'disable_asset_people' => _('Disable search for people'),
       'disable_asset_communities' => _('Disable search for communities'),
-      'disable_asset_products' => _('Disable search for products'),
       'disable_asset_events' => _('Disable search for events'),
       'disable_categories' => _('Disable categories'),
       'disable_header_and_footer' => _('Disable header/footer editing by users'),
@@ -110,8 +138,8 @@ class Environment < ActiveRecord::Base
       'disable_select_city_for_contact' => _('Disable state/city select for contact form'),
       'disable_contact_person' => _('Disable contact for people'),
       'disable_contact_community' => _('Disable contact for groups/communities'),
+      'forbid_destroy_profile' => _('Forbid users of removing profiles'),
 
-      'products_for_enterprises' => _('Enable products for enterprises'),
       'enterprise_registration' => _('Enterprise registration'),
       'enterprise_activation' => _('Enable activation of enterprises'),
       'enterprises_are_disabled_when_created' => _('Enterprises are disabled when created'),
@@ -139,7 +167,9 @@ class Environment < ActiveRecord::Base
       'allow_change_of_redirection_after_login' => _('Allow users to set the page to redirect after login'),
       'display_my_communities_on_user_menu' => _('Display on menu the list of communities the user can manage'),
       'display_my_enterprises_on_user_menu' => _('Display on menu the list of enterprises the user can manage'),
-      'restrict_to_members' => _('Show content only to members')
+      'restrict_to_members' => _('Show content only to members'),
+
+      'enable_appearance' => _('Enable appearance editing by users'),
     }
   end
 
@@ -172,10 +202,11 @@ class Environment < ActiveRecord::Base
   # Relationships and applied behaviour
   # #################################################
 
+  extend ActsAsHavingBoxes::ClassMethods
   acts_as_having_boxes
 
   after_create do |env|
-    3.times do
+    NUMBER_OF_BOXES.times do
       env.boxes << Box.new
     end
 
@@ -196,30 +227,24 @@ class Environment < ActiveRecord::Base
 
   has_many :organizations
   has_many :enterprises
-  has_many :products, :through => :enterprises
   has_many :people
   has_many :communities
   has_many :licenses
 
   has_many :categories
-  has_many :display_categories, :class_name => 'Category', :conditions => 'display_color is not null and parent_id is null', :order => 'display_color'
+  has_many :display_categories, -> {
+    order('display_color').where('display_color is not null and parent_id is null')
+  }, class_name: 'Category'
 
-  has_many :product_categories, :conditions => { :type => 'ProductCategory'}
   has_many :regions
   has_many :states
   has_many :cities
 
   has_many :roles, :dependent => :destroy
 
-  has_many :qualifiers
-  has_many :certifiers
-
   has_many :mailings, :class_name => 'EnvironmentMailing', :foreign_key => :source_id, :as => 'source'
 
   acts_as_accessible
-
-  has_many :units, :order => 'position'
-  has_many :production_costs, :as => :owner
 
   def superior_intances
     [self, nil]
@@ -229,7 +254,8 @@ class Environment < ActiveRecord::Base
   # #################################################
 
   # store the Environment settings as YAML-serialized Hash.
-  acts_as_having_settings :field => :settings
+  extend ActsAsHavingSettings::ClassMethods
+  acts_as_having_settings field: :settings
 
   # introduce and explain to users something about the signup
   settings_items :signup_intro, :type => String
@@ -342,6 +368,8 @@ class Environment < ActiveRecord::Base
   settings_items :members_whitelist_enabled, :type => :boolean, :default => false
   settings_items :members_whitelist, :type => Array, :default => []
 
+  settings_items :permanent_notifications, :type => :boolean, :default => false
+
   def in_whitelist?(person)
     !members_whitelist_enabled || members_whitelist.include?(person.id)
   end
@@ -363,6 +391,16 @@ class Environment < ActiveRecord::Base
   def enable_plugin(plugin)
     self.enabled_plugins += [plugin.to_s]
     self.enabled_plugins.uniq!
+    self.save!
+  end
+
+  def enable_all_plugins
+    Noosfero::Plugin.available_plugin_names.each do |plugin|
+      plugin_name = plugin.to_s + "Plugin"
+      unless self.enabled_plugins.include?(plugin_name)
+        self.enabled_plugins += [plugin_name]
+      end
+    end
     self.save!
   end
 
@@ -409,9 +447,7 @@ class Environment < ActiveRecord::Base
   end
 
   DEFAULT_FEATURES = %w(
-    disable_asset_products
     disable_gender_icon
-    products_for_enterprises
     disable_select_city_for_contact
     enterprise_registration
     media_panel
@@ -419,6 +455,7 @@ class Environment < ActiveRecord::Base
     show_balloon_with_profile_links_when_clicked
     show_zoom_button_on_article_images
     use_portal_community
+    enable_appearance
   )
 
   before_create :enable_default_features
@@ -668,7 +705,7 @@ class Environment < ActiveRecord::Base
 
   # the default Environment.
   def self.default
-    self.find(:first, :conditions => [ 'is_default = ?', true ] )
+    self.where('is_default = ?', true).first
   end
 
   # returns an array with the top level categories for this environment.
@@ -677,7 +714,7 @@ class Environment < ActiveRecord::Base
   end
 
   def default_domain
-    @default_domain ||= self.domains.find_by_is_default(true) || self.domains.find(:first, :order => 'id')
+    @default_domain ||= self.domains.find_by(is_default: true) || self.domains.order(:id).first
   end
 
   def default_protocol
@@ -706,8 +743,9 @@ class Environment < ActiveRecord::Base
     url << (Noosfero.url_options.key?(:host) ? Noosfero.url_options[:host] : default_hostname)
     url << ':' << Noosfero.url_options[:port].to_s if Noosfero.url_options.key?(:port)
     url << Noosfero.root('')
-    url
+    url.html_safe
   end
+  alias_method :url, :top_url
 
   def to_s
     self.name || '?'
@@ -715,7 +753,7 @@ class Environment < ActiveRecord::Base
 
   has_many :articles, :through => :profiles
   def recent_documents(limit = 10, options = {}, pagination = true)
-    self.articles.recent(limit, options, pagination)
+    self.articles.is_public.recent(limit, options, pagination)
   end
 
   has_many :events, :through => :profiles, :source => :articles, :class_name => 'Event'
@@ -735,6 +773,10 @@ class Environment < ActiveRecord::Base
     else
       []
     end
+  end
+
+  def theme_ids
+    settings[:themes] || []
   end
 
   def themes=(values)
@@ -785,7 +827,7 @@ class Environment < ActiveRecord::Base
   end
 
   def community_default_template
-    template = Community.find_by_id settings[:community_template_id]
+    template = Community.find_by id: settings[:community_template_id]
     template if template && template.is_template?
   end
 
@@ -798,7 +840,7 @@ class Environment < ActiveRecord::Base
   end
 
   def person_default_template
-    template = Person.find_by_id settings[:person_template_id]
+    template = Person.find_by id: settings[:person_template_id]
     template if template && template.is_template?
   end
 
@@ -811,7 +853,7 @@ class Environment < ActiveRecord::Base
   end
 
   def enterprise_default_template
-    template = Enterprise.find_by_id settings[:enterprise_template_id]
+    template = Enterprise.find_by id: settings[:enterprise_template_id]
     template if template && template.is_template?
   end
   alias_method :enterprise_template, :enterprise_default_template
@@ -821,7 +863,7 @@ class Environment < ActiveRecord::Base
   end
 
   def inactive_enterprise_template
-    template = Enterprise.find_by_id settings[:inactive_enterprise_template_id]
+    template = Enterprise.find_by id: settings[:inactive_enterprise_template_id]
     template if template && template.is_template
   end
 
@@ -858,7 +900,7 @@ class Environment < ActiveRecord::Base
   end
 
   def portal_folders
-    (settings[:portal_folders] || []).map{|fid| portal_community.articles.find(:first, :conditions => { :id => fid }) }.compact
+    (settings[:portal_folders] || []).map{|fid| portal_community.articles.where(id: fid).first }.compact
   end
 
   def portal_folders=(folders)
@@ -944,10 +986,6 @@ class Environment < ActiveRecord::Base
     end
   end
 
-  def highlighted_products_with_image(options = {})
-    Product.find(:all, {:conditions => {:highlighted => true, :profile_id => self.enterprises.find(:all, :select => :id) }, :joins => :image}.merge(options))
-  end
-
   settings_items :home_cache_in_minutes, :type => :integer, :default => 5
   settings_items :general_cache_in_minutes, :type => :integer, :default => 15
   settings_items :profile_cache_in_minutes, :type => :integer, :default => 15
@@ -988,6 +1026,14 @@ class Environment < ActiveRecord::Base
 
   def has_license?
     self.licenses.any?
+  end
+
+  def to_liquid
+    HashWithIndifferentAccess.new :name => name
+  end
+
+  def permissions_for(person)
+    person.role_assignments.where(resource: self).map {|ra| ra.role.permissions}.flatten.uniq
   end
 
   private

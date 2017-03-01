@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../../../../test/test_helper'
+require 'test_helper'
 
 class CustomFormsPlugin::AnswerTest < ActiveSupport::TestCase
   should 'validates presence of field' do
@@ -10,7 +10,7 @@ class CustomFormsPlugin::AnswerTest < ActiveSupport::TestCase
     field = CustomFormsPlugin::Field.create!(:name => 'License', :form => form)
     answer.field = field
     answer.valid?
-    assert !answer.errors.include?(:field)
+    refute answer.errors.include?(:field)
   end
 
   should 'belong to a submission' do
@@ -31,7 +31,7 @@ class CustomFormsPlugin::AnswerTest < ActiveSupport::TestCase
 
     answer.value = "GPL"
     answer.valid?
-    assert !answer.errors.include?(:value)
+    refute answer.errors.include?(:value)
   end
 
   should 'make string representation show answers' do

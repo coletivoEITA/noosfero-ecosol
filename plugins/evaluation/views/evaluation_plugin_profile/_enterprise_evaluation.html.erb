@@ -1,0 +1,39 @@
+<% my_evaluation = evaluation.evaluator == profile unless defined? my_evaluation %>
+
+<div class="evaluation-snippet <%= my_evaluation ? 'left' : 'right' %>">
+
+  <p>
+    <%= _('Evaluation done by %{evaluator} at %{time}') % {
+      :evaluator => link_to(evaluation.evaluator.name, evaluation.evaluator.url),
+      :time => evaluation.created_at.strftime(_("%m/%d/%Y at %H:%Mh")),
+    } %>
+  </p>
+
+  <%= profile_link_with_image evaluation.evaluator, :thumb %>
+
+  <div class="arrow-wrap <%= my_evaluation ? 'left' : 'right' %>">
+    <div class="arrow">
+    </div>
+  </div>
+
+  <div class="evaluation-text">
+
+    <div class="evaluation-message">
+      <%= evaluation.text %>
+    </div>
+
+    <div class="evaluation-footer">
+      <div class="evaluation-score">
+        <h5><%= _('Score') %></h5>
+        <%= render :partial => 'evaluation_plugin_shared/star_value', :locals => {:value => evaluation.score.to_f} %>
+      </div>
+      <div class="evaluation-result">
+        <h5><%= _('The deal happened?') %></h5>
+        <%= evaluation.result_message %>
+      </div>
+    </div>
+  </div>
+
+  <div class="clean"></div>
+
+</div>

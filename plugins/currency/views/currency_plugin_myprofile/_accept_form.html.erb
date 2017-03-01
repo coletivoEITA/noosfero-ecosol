@@ -1,0 +1,28 @@
+<%= form_tag :action => :accept do |f| %>
+
+  <div id="results" class="<%= 'empty' if @currencies.empty? %>">
+    <% if @currencies.empty? %>
+      <%= _('No results') %>
+    <% end %>
+
+    <% @currencies.each do |currency| %>
+      <div class="result">
+
+        <%= check_box_tag 'id[]', currency.id %>
+        <span>
+          <% if organizer = currency.organizers.first %>
+            <%= _('%{name}, currency offered by %{organizer}') % {
+              :name => currency.name_with_symbol, :organizer => link_to(organizer.name, organizer.url, :target => '_blank')} %>
+          <% else %>
+            <%= currency.name_with_symbol %>
+          <% end %>
+        </span>
+
+        <div class="clean"></div>
+      </div>
+    <% end %>
+  </div>
+
+  <%= submit_tag _('OK'), :class => 'currency-action-button' %>
+  <%= modal_close_button _('cancel') %>
+<% end %>

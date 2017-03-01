@@ -16,22 +16,10 @@ class ProfileDescriptionBlock < Block
     _('PROFILE DESCRIPTION')
   end
 
-  def content(args={})
-    description =  if self.owner.description.blank?
-                      "Description field is empty or
-                        not enabled on enviroment"
-                   else
-                      self.owner.description
-                   end
-    block = self
-    s = show_name
-    proc do
-      render(
-        :file => 'blocks/profile_description',
-        :locals => { :block => block, :show_name => s ,
-                     :description => description}
-      )
-    end
+  def api_content
+    description = self.owner.description.present? ? self.owner.description : _("Description field is empty or not enabled on enviroment")
+    hash = { description: description }
+    Grape::Presenters::Presenter.represent(hash).as_json
   end
 
   def cacheable?

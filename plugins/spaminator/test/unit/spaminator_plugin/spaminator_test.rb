@@ -87,7 +87,7 @@ class SpaminatorPlugin::SpaminatorTest < ActiveSupport::TestCase
 
     spaminator.send(:process_person_by_comments, person)
     assert_equal 0, report.spammers_by_comments
-    assert !person.abuser?
+    refute person.abuser?
 
     fast_create(Comment, :author_id => person, :spam => true)
     spaminator.send(:process_person_by_comments, person)
@@ -96,7 +96,8 @@ class SpaminatorPlugin::SpaminatorTest < ActiveSupport::TestCase
   end
 
   should 'process person by network' do
-    person = create_user('spammer').person
+    user   = User.current = create_user 'spammer'
+    person = user.person
     person.created_at = Time.now - 2.months
     person.save!
     c1 = fast_create(Community)
@@ -107,17 +108,17 @@ class SpaminatorPlugin::SpaminatorTest < ActiveSupport::TestCase
     fast_create(Comment, :author_id => person)
 
     spaminator.send(:process_person_by_no_network, person)
-    assert !person.abuser?
+    refute person.abuser?
     assert_equal 0, report.spammers_by_no_network
     assert_equal 0, report.spams_by_no_network
     assert person.visible
 
     c1.remove_member(person)
     spaminator.send(:process_person_by_no_network, person)
-    assert !person.abuser?
+    refute person.abuser?
     assert_equal 1, report.spammers_by_no_network
     assert_equal 2, report.spams_by_no_network
-    assert !person.visible
+    refute person.visible
   end
 
   should 'mark person as spammer' do
@@ -126,7 +127,7 @@ class SpaminatorPlugin::SpaminatorTest < ActiveSupport::TestCase
       spaminator.send(:mark_as_spammer, person)
     end
     person.reload
-    assert !person.visible
+    refute person.visible
   end
 
   should 'send email notification after disabling person' do

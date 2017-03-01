@@ -17,8 +17,19 @@ module Noosfero
     end
 
     def self.setup!(host)
-      if Noosfero::MultiTenancy.on? and ActiveRecord::Base.postgresql?
-        Noosfero::MultiTenancy.db_by_host = host
+      return unless Noosfero::MultiTenancy.on?
+      Noosfero::MultiTenancy.db_by_host = host
+    end
+
+    class Middleware
+      def initialize(app)
+        @app = app
+      end
+
+      def call(env)
+        request = Rack::Request.new(env)
+        Noosfero::MultiTenancy.setup!(request.host)
+        @app.call(env)
       end
     end
 
@@ -26,7 +37,7 @@ module Noosfero
 
     def self.load_map
       db_file = Rails.root.join('config', 'database.yml')
-      db_config = YAML.load_file(db_file)
+      db_config = YAML.load(ERB.new(File.read(db_file)).result)
       map = { }
       db_config.each do |env, attr|
         next unless env.match(/_#{Rails.env}$/) and attr['adapter'] =~ /^postgresql$/i
@@ -37,7 +48,7 @@ module Noosfero
 
     def self.is_hosted_environment?
       db_file = Rails.root.join('config', 'database.yml')
-      db_config = YAML.load_file(db_file)
+      db_config = YAML.load(ERB.new(File.read(db_file)).result)
       db_config.select{ |env, attr| Rails.env.to_s.match(/_#{env}$/) }.any?
     end
 

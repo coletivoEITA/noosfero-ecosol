@@ -27,6 +27,10 @@
     margin-bottom: $half-margin;
     margin-left: -2*$border;
     padding-right: 2*$border;
+
+    h2 {
+      background-color: transparent !important;
+    }
   }
   #cycle-header {
     border-bottom: 2*$border solid #ddd;
@@ -38,6 +42,7 @@
 
       th {
         border-bottom: 0;
+        padding-left: 5px;
       }
     }
 
@@ -222,8 +227,17 @@
 #cycle-admin-page {
   @import 'field';
 
-  a.action-button {
+  .hideable-help {
+    font-size: 13px;
+  }
+
+  .action-button {
     margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    &:focus {
+      outline: 0px;
+    }
   }
   #cycle-header-warning {
     background-color: #FECBCA;
@@ -316,6 +330,34 @@
   margin-top: 10px;
 }
 
+#content .main-block {
+  .report-modal.modal, .add-payment-modal.modal, .new-order-modal.modal, .add-transaction-modal {
+    z-index: 1041;
+
+    h4.modal-title {
+      text-transform: uppercase;
+      margin: 0;
+    }
+    button.close {
+      -webkit-appearance: none;
+      padding: 0;
+      cursor: pointer;
+      background: 0 0;
+      border: 0;
+    }
+    .close {
+      float: right;
+      font-size: 21px;
+      font-weight: 700;
+      line-height: 1;
+      color: #000;
+      text-shadow: 0 1px 0 #fff;
+      filter: alpha(opacity=20);
+      opacity: .2;
+    }
+  }
+}
+
 
 .cycle {
 
@@ -329,7 +371,7 @@
     @extend .container-clean;
 
     //wireframe size
-    width: $wireframe  + 2*$wireframe-padding;
+    width: $wireframe;
     margin-left: -$wireframe-padding;
     padding: 0 $wireframe-padding;
 
@@ -381,7 +423,7 @@
 }
 
 #cycle-dates th {
-  width: 80px;
+  width: 60px;
   vertical-align: top;
   border-bottom: 0;
 
@@ -517,43 +559,49 @@
   }
 }
 
-#cycles-gadget {
-  margin-bottom: 30px;
+#content #cycles-gadget {
+  margin-top: 20px;
+  margin-bottom: 20px;
 
   #all-cycles {
     float: right;
   }
   h2 {
     color: #036475;
+    background-color: transparent;
+    font-size: 25px;
   }
 
+  tr:hover td {
+    background-color: transparent;
+  }
   td {
     padding-right: 8px;
     vertical-align: top;
+    font-size: 13px;
   }
-  td.first-column {
-    width: 300px;
+  .second-column .subtitle {
+    font-size: 13px;
+    margin-top: 5px;
   }
-  td.second-column {
-    width: 400px;
-  }
-  td.third-column {
-    vertical-align: bottom;
-  }
-  td.third-column form {
+  .third-column form {
     float: right;
     clear: both;
   }
-  .cycle .happening {
-    background-color: #ffe546;
-    line-height: 20px;
-    text-transform: uppercase;
-    padding: 0 8px;
-  }
-  .cycle .info {
-    background: #DDF2C5;
-    padding: 8px;
-    padding-right: 0;
+  .cycle {
+    margin-bottom: 10px;
+
+    .happening {
+      background-color: #ffe546;
+      line-height: 20px;
+      text-transform: uppercase;
+      padding: 0 8px;
+      font-size: 15px;
+    }
+    .info {
+      background: #DDF2C5;
+      padding: 8px;
+    }
   }
 }
 
@@ -597,13 +645,17 @@
 .cycle-delivery-option {
   float: left;
   display: inline-block;
-  padding: 2px 5px;
+  padding: 5px;
   margin-right: 10px;
   background-color: #E5E0EC;
   border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   -o-border-radius: 4px;
+
+  a {
+    padding-left: 5px;
+  }
 }
 
 .action-orders_cycle_plugin_cycle-new #colorbox, .action-orders_cycle_plugin_cycle-edit #colorbox {

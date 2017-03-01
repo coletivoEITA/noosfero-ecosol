@@ -1,14 +1,10 @@
-require File.dirname(__FILE__) + '/../test_helper'
-
-# Re-raise errors caught by the controller.
-class EnvironmentDesignController; def rescue_action(e) raise e end; end
+require_relative '../test_helper'
 
 class EnvironmentDesignControllerTest < ActionController::TestCase
 
   def setup
     @controller = EnvironmentDesignController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+
     Noosfero::Plugin::Manager.any_instance.stubs(:enabled_plugins).returns([PeopleBlockPlugin.new])
   end
 

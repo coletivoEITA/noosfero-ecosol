@@ -1,0 +1,55 @@
+<% content_for :extra_header do %>
+  <% unless logged_in? %>
+    <div id="presentation-wrap-1">
+      <div id="presentation-wrap-2">
+        <img src="/plugins/escambo/images/decoration-left.png" class="left"/>
+
+        <div id="presentation">
+          <div class="text">
+            O escambo é uma rede para trocas entre pontos de cultura. O ponto de cultura pode ser um artesão, um coletivo cultural, uma banda, um grupo de teatro, ou qualquer outra forma de manifestação cultural. No escambo você cadastra o que pode oferecer, o que te interessa e começa a trocar. Simples assim. Registre seu ponto de cultura e comece a trocar!
+          </div>
+
+          <div class="join">
+            <%= link_to _('Sign up'), {controller: 'account', action: 'signup'}, id: 'sign-up' %>
+            <%= modal_inline_link_to _('Login'), login_url, '#inlineLoginBox', id: 'login' %>
+
+            <%# link_to 'Saiba mais', {controller: :home, action: :how_it_works}, {id: 'know-more'} %>
+          </div>
+        </div>
+
+        <img src="/plugins/escambo/images/decoration-right.png" class="right"/>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<div id="enterprises-area">
+
+  <div>
+    <h2> <%= _('Some enterprises') %> </h2>
+    <%= link_to _('See all'), controller: :search, action: :enterprises %>
+  </div>
+
+  <span class="scroll-left"></span>
+
+  <div id="enterprises-crop-wrap">
+    <div id="enterprises-crop">
+      <% @enterprises.each do |enterprise| %>
+        <%= profile_image_link enterprise, :portrait %>
+      <% end %>
+    </div>
+  </div>
+
+  <span class="scroll-right"></span>
+
+  <div class="clean"></div>
+</div>
+
+<div id="items-area" class='controller-search'>
+  <div>
+    <h2> <%= _('Offers, knowledges and interests') %> </h2>
+    <%= link_to _('See all'), controller: :search %>
+  </div>
+  <%= render partial: 'search/search_form', locals: { hint: _('search for...') } %>
+  <%= render partial: 'escambo_search/results' %>
+</div>

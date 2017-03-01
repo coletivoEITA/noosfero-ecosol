@@ -3,18 +3,23 @@ class ProfileController < PublicController
   needs_profile
   before_filter :check_access_to_profile, :except => [:join, :join_not_logged, :index, :add]
   before_filter :store_location, :only => [:join, :join_not_logged, :report_abuse, :send_mail]
-  before_filter :login_required, :only => [:add, :join, :leave, :unblock, :leave_scrap, :remove_scrap, :remove_activity, :view_more_activities, :view_more_network_activities, :report_abuse, :register_report, :leave_comment_on_activity, :send_mail]
+  before_filter :login_required, :only => [:add, :join, :leave, :unblock, :leave_scrap, :remove_scrap, :remove_activity, :view_more_activities, :view_more_network_activities, :report_abuse, :register_report, :leave_comment_on_activity, :send_mail, :follow, :unfollow]
+  before_filter :allow_followers?, :only => [:follow, :unfollow]
+  before_filter :accept_only_post, :only => [:follow, :unfollow]
 
   helper TagsHelper
+  helper ActionTrackerHelper
+  helper CustomFieldsHelper
 
   protect 'send_mail_to_members', :profile, :only => [:send_mail]
 
+  ACTIVITIES_PER_PAGE = 15
+
   def index
-    @network_activities = !@profile.is_a?(Person) ? @profile.tracked_notifications.visible.paginate(:per_page => 15, :page => params[:page]) : []
-    if logged_in? && current_person.follows?(@profile)
-      @network_activities = @profile.tracked_notifications.visible.paginate(:per_page => 15, :page => params[:page]) if @network_activities.empty?
-      @activities = @profile.activities.paginate(:per_page => 15, :page => params[:page])
-    end
+    @offsets = {:wall => 0, :network => 0}
+    page = (params[:page] || 1).to_i
+    @network_activities = loop_fetch_activities(@profile.tracked_notifications, :network, page) if !@profile.is_a?(Person) || follow_profile?
+    @activities = loop_fetch_activities(@profile.activities, :wall, page) if follow_profile?
     @tags = profile.article_tags
     allow_access_to_page
   end
@@ -36,12 +41,12 @@ class ProfileController < PublicController
 
   def tag_feed
     @tag = params[:id]
-    tagged = profile.articles.paginate(:per_page => 20, :page => 1, :order => 'published_at DESC', :include => :tags, :conditions => ['tags.name LIKE ?', @tag])
+    tagged = profile.articles.paginate(:per_page => 20, :page => 1).order('published_at DESC').joins(:tags).where('tags.name LIKE ?', @tag)
     feed_writer = FeedWriter.new
     data = feed_writer.write(
       tagged,
-      :title => _("%s's contents tagged with \"%s\"") % [profile.name, @tag],
-      :description => _("%s's contents tagged with \"%s\"") % [profile.name, @tag],
+      :title => _("%s's contents tagged with \"%s\"").html_safe % [profile.name, @tag],
+      :description => _("%s's contents tagged with \"%s\"").html_safe % [profile.name, @tag],
       :link => url_for(profile.url)
     )
     render :text => data, :content_type => "text/xml"
@@ -64,9 +69,20 @@ class ProfileController < PublicController
     end
   end
 
+  def following
+    @followed_people = profile.followed_profiles.paginate(:per_page => per_page, :page => params[:npage], :total_entries => profile.followed_profiles.count)
+  end
+
+  def followed
+    @followed_by = profile.followers.paginate(:per_page => per_page, :page => params[:npage], :total_entries => profile.followers.count)
+  end
+
   def members
     #if is_cache_expired?(profile.members_cache_key(params))
-      @members = profile.members_by_name.includes(relations_to_include).paginate(:per_page => members_per_page, :page => params[:npage], :total_entries => profile.members.count)
+      sort = (params[:sort] == 'desc') ? params[:sort] : 'asc'
+      @profile_admins = profile.admins.includes(relations_to_include).order("name #{sort}").paginate(:per_page => members_per_page, :page => params[:npage])
+      @profile_members = profile.members.includes(relations_to_include).order("name #{sort}").paginate(:per_page => members_per_page, :page => params[:npage])
+      @profile_members_url = url_for(:controller => 'profile', :action => 'members')
     #end
   end
 
@@ -83,16 +99,24 @@ class ProfileController < PublicController
     @articles = profile.top_level_articles.includes([:profile, :parent])
   end
 
+  def join_modal
+      profile.add_member(user)
+      session[:notice] = _('%s administrator still needs to accept you as member.').html_safe % profile.name
+      redirect_to :action => :index
+  end
+
   def join
     if !user.memberships.include?(profile)
+      return if profile.community? && show_confirmation_modal?(profile)
+
       profile.add_member(user)
       if !profile.members.include?(user)
-        render :text => {:message => _('%s administrator still needs to accept you as member.') % profile.name}.to_json
+        render :text => {:message => _('%s administrator still needs to accept you as member.').html_safe % profile.name}.to_json
       else
-        render :text => {:message => _('You just became a member of %s.') % profile.name}.to_json
+        render :text => {:message => _('You just became a member of %s.').html_safe % profile.name}.to_json
       end
     else
-      render :text => {:message => _('You are already a member of %s.') % profile.name}.to_json
+      render :text => {:message => _('You are already a member of %s.').html_safe % profile.name}.to_json
     end
   end
 
@@ -114,7 +138,7 @@ class ProfileController < PublicController
         render :text => current_person.leave(profile, params[:reload])
       end
     else
-      render :text => {:message => _('You are not a member of %s.') % profile.name}.to_json
+      render :text => {:message => _('You are not a member of %s.').html_safe % profile.name}.to_json
     end
   end
 
@@ -134,10 +158,39 @@ class ProfileController < PublicController
     # FIXME this shouldn't be in Person model?
     if !user.memberships.include?(profile)
       AddFriend.create!(:person => user, :friend => profile)
-      render :text => _('%s still needs to accept being your friend.') % profile.name
+      render :text => _('%s still needs to accept being your friend.').html_safe % profile.name
     else
-      render :text => _('You are already a friend of %s.') % profile.name
+      render :text => _('You are already a friend of %s.').html_safe % profile.name
     end
+  end
+
+  def follow
+    if profile.followed_by?(current_person)
+      render :text => _("You are already following %s.") % profile.name, :status => 400
+    else
+      selected_circles = params[:circles].map{ |circle_name, circle_id| Circle.find_by(:id => circle_id) }.select{ |c| c.present? }
+      if selected_circles.present?
+        current_person.follow(profile, selected_circles)
+        render :text => _("You are now following %s") % profile.name, :status => 200
+      else
+        render :text => _("Select at least one circle to follow %s.") % profile.name, :status => 400
+      end
+    end
+  end
+
+  def find_profile_circles
+    circles = Circle.where(:person => current_person, :profile_type => profile.class.name)
+    render :partial => 'blocks/profile_info_actions/circles', :locals => { :circles => circles, :profile_types => Circle.profile_types.to_a }
+  end
+
+  def unfollow
+    follower = params[:follower_id].present? ? Person.find_by(id: params[:follower_id]) : current_person
+
+    if follower && follower.follows?(profile)
+      follower.unfollow(profile)
+    end
+    redirect_url = params["redirect_to"] ? params["redirect_to"] : profile.url
+    redirect_to redirect_url
   end
 
   def check_friendship
@@ -152,10 +205,22 @@ class ProfileController < PublicController
     end
   end
 
+  def follow_article
+    article = profile.environment.articles.find params[:article_id]
+    article.person_followers << user
+    redirect_to article.url
+  end
+
+  def unfollow_article
+    article = profile.environment.articles.find params[:article_id]
+    article.person_followers.delete(user)
+    redirect_to article.url
+  end
+
   def unblock
     if current_user.person.is_admin?(profile.environment)
       profile.unblock
-      session[:notice] = _("You have unblocked %s successfully. ") % profile.name
+      session[:notice] = _("You have unblocked %s successfully. ").html_safe % profile.name
       redirect_to :controller => 'profile', :action => 'index'
     else
       message = _('You are not allowed to unblock enterprises in this environment.')
@@ -169,6 +234,7 @@ class ProfileController < PublicController
     @scrap = Scrap.new(params[:scrap])
     @scrap.sender= sender
     @scrap.receiver= receiver
+    @scrap.marked_people = treat_followed_entries(params[:filter_followed])
     @tab_action = params[:tab_action]
     @message = @scrap.save ? _("Message successfully sent.") : _("You can't leave an empty message.")
     activities = @profile.activities.paginate(:per_page => 15, :page => params[:page]) if params[:not_load_scraps].nil?
@@ -187,23 +253,52 @@ class ProfileController < PublicController
       render :partial => 'profile_activities_list', :locals => {:activities => activities}
     else
       network_activities = @profile.tracked_notifications.visible.paginate(:per_page => 15, :page => params[:page])
-      render :partial => 'profile_network_activities', :locals => {:network_activities => network_activities}
+      render :partial => 'profile_network_activities', :locals => {:activities => network_activities}
     end
   end
 
-  def view_more_activities
-    @activities = @profile.activities.paginate(:per_page => 10, :page => params[:page])
-    render :partial => 'profile_activities_list', :locals => {:activities => @activities}
+  def search_followed
+    result = []
+    circles = find_by_contents(:circles, user, user.circles.where(:profile_type => 'Person'), params[:q])[:results]
+    followed = find_by_contents(:followed, user, Profile.followed_by(user), params[:q])[:results]
+    result = circles + followed
+    render :text => prepare_to_token_input_by_class(result).to_json
   end
 
-  def view_more_network_activities
-    @activities = @profile.tracked_notifications.paginate(:per_page => 10, :page => params[:page])
-    render :partial => 'profile_network_activities', :locals => {:network_activities => @activities}
+  def loop_fetch_activities(base_activities, kind, page)
+    activities = nil
+    while activities.nil? || (activities.empty? && page <= activities.total_pages)
+      activities = base_activities.offset(@offsets[kind.to_sym]).paginate(:per_page => ACTIVITIES_PER_PAGE, :page => page)
+      activities = filter_activities(activities, kind.to_sym)
+      page += 1
+    end
+    activities
+  end
+
+  def view_more_activities
+    @activities = nil
+    @offsets = params[:offsets]
+    page = (params[:page] || 1).to_i
+    kind = params[:kind]
+
+    if kind == 'wall'
+      base_activities = @profile.activities
+      partial = 'profile_activities_list'
+    else
+      base_activities = @profile.tracked_notifications
+      partial = 'profile_network_activities'
+    end
+
+    @activities = loop_fetch_activities(base_activities, kind, page)
+    render :partial => partial, :locals => {:activities => @activities}
   end
 
   def more_comments
     profile_filter = @profile.person? ? {:user_id => @profile} : {:target_id => @profile}
-    activity = ActionTracker::Record.find(:first, :conditions => {:id => params[:activity]}.merge(profile_filter))
+    activity = ActionTracker::Record.where(:id => params[:activity])
+    activity = activity.where(profile_filter) if !logged_in? || !current_person.follows?(@profile)
+    activity = activity.first
+
     comments_count = activity.comments.count
     comment_page = (params[:comment_page] || 1).to_i
     comments_per_page = 5
@@ -223,7 +318,7 @@ class ProfileController < PublicController
   end
 
   def more_replies
-    activity = Scrap.find(:first, :conditions => {:id => params[:activity], :receiver_id => @profile, :scrap_id => nil})
+    activity = Scrap.where(:id => params[:activity], :receiver_id => @profile, :scrap_id => nil).first
     comments_count = activity.replies.count
     comment_page = (params[:comment_page] || 1).to_i
     comments_per_page = 5
@@ -270,7 +365,7 @@ class ProfileController < PublicController
   def remove_notification
     begin
       raise if !can_edit_profile
-      notification = ActionTrackerNotification.find(:first, :conditions => {:profile_id => profile.id, :action_tracker_id => params[:activity_id]})
+      notification = ActionTrackerNotification.where(profile_id: profile.id, action_tracker_id: params[:activity_id]).first
       notification.destroy
       render :text => _('Notification successfully removed.')
     rescue
@@ -321,7 +416,7 @@ class ProfileController < PublicController
         user.register_report(abuse_report, profile)
 
         if !params[:content_type].blank?
-          abuse_report = AbuseReport.find_by_reporter_id_and_abuse_complaint_id(user.id, profile.opened_abuse_complaint.id)
+          abuse_report = AbuseReport.find_by(reporter_id: user.id, abuse_complaint_id: profile.opened_abuse_complaint.id)
           Delayed::Job.enqueue DownloadReportedImagesJob.new(abuse_report, article)
         end
 
@@ -354,7 +449,10 @@ class ProfileController < PublicController
   end
 
   def send_mail
+    params[:mailing][:recipient_ids] = params[:mailing][:recipient_ids].split ', ' rescue []
     @mailing = profile.mailings.build(params[:mailing])
+    @mailing.data = session[:members_filtered] ? {:members_filtered => session[:members_filtered]} : {}
+    @email_templates = profile.email_templates.where template_type: :organization_members
     if request.post?
       @mailing.locale = locale
       @mailing.person = user
@@ -366,7 +464,6 @@ class ProfileController < PublicController
       end
     end
   end
-
 
   protected
 
@@ -409,4 +506,43 @@ class ProfileController < PublicController
     [:image, :domains, :preferred_domain, :environment]
   end
 
+  def allow_followers?
+    render_not_found unless profile.allow_followers?
+  end
+
+  def treat_followed_entries(entries)
+    return [] if entries.blank? || profile != user
+
+    followed = []
+    entries.split(',').map do |entry|
+      klass, identifier = entry.split('_')
+      case klass
+      when 'Person'
+        followed << Person.find(identifier)
+      when 'Circle'
+        circle = Circle.find(identifier)
+        followed += Profile.in_circle(circle)
+      end
+    end
+    followed.uniq
+  end
+
+  def filter_activities(activities, kind)
+    @offsets ||= {:wall => 0, :network => 0}
+    return activities if environment.admins.include?(user)
+    activities = Array(activities)
+    initial_count = activities.count
+    activities.delete_if do |activity|
+      activity = ActivityPresenter.for(activity)
+      next if activity.involved?(user)
+      activity.hidden_for?(user)
+    end
+    @offsets[kind] = @offsets[kind].to_i
+    @offsets[kind] += initial_count - activities.count
+    activities
+  end
+
+  def follow_profile?
+    logged_in? && current_person.follows?(@profile)
+  end
 end

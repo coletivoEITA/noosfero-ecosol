@@ -1,8 +1,6 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative '../test_helper'
 
 require 'comment_controller'
-# Re-raise errors caught by the controller.
-class CommentController; def rescue_action(e) raise e end; end
 
 class RelevantContentBlockTest < ActiveSupport::TestCase
 
@@ -11,8 +9,6 @@ class RelevantContentBlockTest < ActiveSupport::TestCase
 
   def setup
     @controller = CommentController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
 
     @profile = create_user('testinguser').person
     @environment = @profile.environment
@@ -44,19 +40,62 @@ class RelevantContentBlockTest < ActiveSupport::TestCase
     assert_equal RelevantContentPlugin::RelevantContentBlock.expire_on, {:environment=>[:article], :profile=>[:article]}
   end
 
+
+  should 'check most voted articles from profile with relevant content block' do
+    community = fast_create(Community)
+    article = fast_create(Article, {:name=>'2 votes', :profile_id => community.id})
+    2.times{
+      person = fast_create(Person)
+      person.vote_for(article)
+    }
+    article = fast_create(Article, {:name=>'10 votes', :profile_id => community.id})
+    10.times{
+        person = fast_create(Person)
+        person.vote_for(article)
+    }
+
+    Box.create!(owner: community)
+    community.boxes[0].blocks << RelevantContentPlugin::RelevantContentBlock.new
+
+    data = Article.most_voted(community, 5)
+    assert_equal false, data.empty?
+  end
+
+end
+
+require 'boxes_helper'
+
+class RelevantContentBlockViewTest < ActionView::TestCase
+  include BoxesHelper
+
+  def setup
+    @profile = create_user('testinguser').person
+  end
+
   should 'not crash if vote plugin is not found' do
     box = fast_create(Box, :owner_id => @profile.id, :owner_type => 'Profile')
     block = RelevantContentPlugin::RelevantContentBlock.new(:box => box)
 
     Environment.any_instance.stubs(:enabled_plugins).returns(['RelevantContent'])
+    ActionView::Base.any_instance.expects(:block_title).returns("")
     # When the plugin is disabled from noosfero instance, its constant name is
     # undefined.  To test this case, I have to manually undefine the constant
     # if necessary.
     Object.send(:remove_const, VotePlugin.to_s) if defined? VotePlugin
 
     assert_nothing_raised do
-      block.content
+      render_block_content(block)
     end
   end
 
+  should 'not escape html in block content' do
+    fast_create(Article, profile_id: @profile.id, hits: 10)
+    box = fast_create(Box, :owner_id => @profile.id, :owner_type => 'Profile')
+    block = RelevantContentPlugin::RelevantContentBlock.new(:box => box)
+
+    Environment.any_instance.stubs(:enabled_plugins).returns(['RelevantContent'])
+    ActionView::Base.any_instance.expects(:block_title).returns("")
+
+    assert_tag_in_string render_block_content(block), tag: 'span', attributes: { class: 'title mread' }
+  end
 end

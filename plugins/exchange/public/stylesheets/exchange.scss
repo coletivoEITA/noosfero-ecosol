@@ -1,0 +1,617 @@
+@import 'base';
+
+$console-width: $wireframe + $intercolumn;
+
+/* Colors */
+
+$color-exchange: #394E41;
+
+$color-text-area-border: #C5AAA5;
+
+/* Borders */
+$border-proposal: 6*$border;
+
+/* Images */
+
+$image-exchange: '/plugins/exchange/images/exchange.png';
+$image-exchange-empty: '/plugins/exchange/images/exchange-empty.png';
+$image-trash: '/plugins/exchange/images/exchange-empty.png';
+
+$profile-thumb-size: 4*$base;
+
+/* Buttons */
+
+.exchange {
+  @extend .action-button;
+}
+.exchange-add {
+  width: $intercolumn;
+  height: $intercolumn;
+  float: right;
+  padding: 0;
+  margin: 0px;
+}
+
+.controller-profile_editor a.control-panel-my-exchanges {
+  background-image: url($image-exchange);
+  background-size: 48px 48px;
+}
+
+/* end */
+
+body.controller-exchange_plugin_myprofile {
+  background-color: #FAF7DC;
+}
+
+#exchange-exchange-wrapper {
+  margin-left: -$intercolumn/2;
+  width: $console-width;
+
+  h1, h2 {
+    padding-left: $intercolumn;
+  }
+
+  #exchange-header {
+    border: $border solid #C5AAA5;
+    background: #ECE4DB;
+    margin: $margin auto;
+
+    #exchange-enterprise-headers {
+      
+      .exchange-enterprise {
+        width: $module05 + $intercolumn + $padding - $border;
+        height: 4*$base;
+        float: left;
+
+        &.profile {
+          background: #7857B8;
+
+          .name, .profile-image {
+            float: left;
+          }
+          .profile-image {
+            padding-left: 2*$padding;
+          }
+        }
+        &.theother {
+          background: #C32478;
+
+          .name, .profile-image {
+            float: right;
+          }
+          .profile-image {
+            padding-right: 2*$padding;
+          }
+        }
+
+        .name {
+          font-size: 21px;
+          padding-top: $padding;
+          color: white;
+        }
+        
+        .profile-image {
+          padding-left: $padding;
+          padding-right: $padding;
+          margin-top: -$base;
+          height: 6*$base;
+          width: 6*$base;
+          background-size: 6*$base;
+          background-size: contain; /* css3 enabled */
+        }
+      }
+
+      #exchange-exchange-symbol {
+        width: 28px;
+        height: 22px;
+        margin-top: $half-margin;
+        position: absolute;
+        left: $module05 + $padding;
+        background: url($image-exchange);
+        background-repeat: no-repeat;
+      }
+    }
+  }
+
+  #concluded-message {
+    text-align: right;
+    margin-right: $half-margin;
+    padding-right: $padding;
+  }
+
+  #exchange-accepted-header {
+    padding: $half-padding $padding;
+    color: white;
+    background: #394E41;
+    font-size: 20px;
+    text-align: center;
+  }
+
+  #exchange-evaluation-wrap {
+    border-bottom: $border solid black;
+
+    #exchange-evaluation {
+      @extend .container-clean;
+      margin: $margin $half-margin;
+      padding: 0 $padding;
+
+      #exchange-profile-evaluation {
+        float: left;
+        overflow: hidden;
+        width: $module05;
+      }
+      #exchange-theother-evaluation {
+        float: right;
+        overflow: hidden;
+        width: $module05;
+      }
+
+      .evaluation-snippet {
+
+        .evaluation-text {
+          background: white;
+        }
+        .evaluation-footer {
+          overflow: hidden;
+        }
+        .evaluation-score {
+          width: $module05;
+          float: left;
+        }
+        .evaluation-result {
+          width: $module05;
+          float: left;
+        }
+      }
+    }
+  }
+
+  .exchange-summary-wrapper {
+
+    .exchange-proposal-part {
+      background: transparent;
+
+    }
+  }
+
+  .exchange-proposal-wrap {
+    margin: $margin 0;
+    margin-left: -$border-proposal;
+    width: $console-width + 2*$border-proposal;
+
+    .exchange-proposal-sent {
+      padding: $half-padding $intercolumn + $border-proposal;
+      text-align: right;
+    }
+
+    .exchange-proposal {
+      border: $border-proposal double #E47455;
+      border-radius: 10px;
+      overflow: hidden;
+
+      &.sent {
+        .exchange-proposal-header {
+          text-align: left;
+        }
+      }
+      &.received {
+        .exchange-proposal-header {
+          text-align: right;
+        }
+      }
+
+      .exchange-proposal-header {
+        padding: $half-padding $intercolumn;
+        background: #7857B8;
+        font-size: 16pt;
+        color: white;
+      }
+
+      .exchange-proposal-header-buttons {
+        @extend .container-clean;
+        padding: $half-padding $intercolumn;
+        background: #DFD3ED;
+
+        form {
+          float: left;
+
+          .action-button {
+            margin-right: $half-padding;
+          }
+        }
+
+        .finish-help-text {
+          float: right;
+          padding: $half-padding 0;
+        }
+      }
+
+      .exchange-proposal-messages {
+        padding: $padding $intercolumn;
+        background: #F0E9F6;
+        border-bottom: $border solid #BDA8DC;
+
+        .exchange-messages {
+
+          &.empty {
+            display: none;
+          }
+
+          .exchange-message {
+            @extend .container-clean;
+            margin-bottom: $margin;
+
+            &.profile {
+              .exchange-message-thumb, .arrow-wrap, .exchange-message-body {
+                float: left;
+              }
+            }
+            &.theother {
+              .exchange-message-thumb, .arrow-wrap, .exchange-message-body {
+                float: right;
+              }
+            }
+            
+            &#exchange-new-message {
+              .exchange-message-body {
+
+                textarea {
+                  width: 100%;
+                  height: 5*$base;
+                  padding: 0;
+                  border: none;
+                  resize: none;
+                }
+              }
+              .action-button {
+                float: right;
+              }
+            }
+
+            .exchange-message-thumb {
+              float: left;
+
+              img {
+                width: $profile-thumb-size;
+                height: $profile-thumb-size;
+              }
+              .date {
+                padding: $half-padding 0;
+                font-size: 10px;
+              }
+            }
+
+            .exchange-message-body {
+              width: $module06 + $intercolumn;
+              min-height: 5*$base;
+              padding: $padding;
+              border: $border solid $color-text-area-border;
+              background: white;  
+            }
+
+            $arrow-size: $base/2;
+            $arrow-inner-size: $base/2 - $border;
+            .arrow-wrap {
+              margin-top: $profile-thumb-size/2 - $arrow-size;
+              width: 0;
+              height: 0;
+              position: relative;
+
+              .arrow {
+                margin-top: -$arrow-inner-size;
+              }
+              &.left {
+                left: $border;
+                border-style: solid;
+                border-width: $arrow-size $arrow-size $arrow-size 0;
+                border-color: transparent $color-text-area-border transparent transparent;
+                .arrow {
+                  margin-left: $border;
+                  border-style: solid;
+                  border-width: $arrow-inner-size $arrow-inner-size $arrow-inner-size 0;
+                  border-color: transparent white transparent transparent;
+                }
+              }
+              &.right {
+                left: -$border;
+                border-style: solid;
+                border-width: $arrow-size 0 $arrow-size $arrow-size;
+                border-color: transparent transparent transparent $color-text-area-border;
+                .arrow {
+                  margin-left: -($arrow-inner-size + $border);
+                  border-style: solid;
+                  border-width: $arrow-inner-size 0 $arrow-inner-size $arrow-inner-size;
+                  border-color: transparent transparent transparent white;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* States */
+#exchange-states {
+  @extend .container-clean;
+  padding-bottom: $padding;
+  padding-left: 3*$padding;
+  margin-bottom: $margin;
+
+  .exchange-outer-border {
+    float: left;
+    width: 7*$base;
+    height: 7*$base;
+    margin-left: 5*$margin;
+  }
+
+  .exchange-state {
+    margin: auto;
+    text-align: center;
+  }
+
+  .exchange-past {
+    margin-top: 10px;
+    float: left;
+    text-align: center;
+    border: 4*$border solid #7F005C;
+    border-radius: 40px;
+    height: 40px;
+    width: 40px;
+    color: white;
+    background: #7F005C;
+  }
+  .exchange-active {
+    float: left;
+    text-align: center;
+    border: 15*$border double #ECE4DB;
+    border-radius: 40px;
+    height: 40px;
+    width: 40px;
+    background: #7F005C;
+    color: white;
+    font-weight: bold;
+  }
+  .exchange-future {
+    float: left;
+    margin-top: 10px;
+    text-align: center;
+    border: 4*$border solid #7F005C;
+    border-radius: 40px;
+    height: 40px;
+    width: 40px;
+    background: white;
+    color: #7F005C;
+  }
+
+  .exchange-state_name {
+    padding-top: $padding;
+    margin-left: -$padding;
+    color: #28370C;
+  }
+  .exchange-state_number {
+    font-size: 30px;
+    margin: 3px;
+  }
+}
+
+.exchange-proposal-part {
+  float: left;
+  width: $module05 + $intercolumn/2;
+  padding: $padding;
+
+  &.profile {
+    background: #F0E9F6;
+  }
+  &.theother {
+    background: #F8F4FB;
+  }
+
+  h3, h4 {
+    padding-left: $padding;
+  }
+
+  .proposal-offers {
+    padding: 0;
+    margin: 0;
+    margin-top: $margin;
+
+    h6.element-title {
+      display: inline;
+    }
+
+    li {
+      background: #D8CAEA;
+      padding: $half-padding $padding;
+      margin-bottom: $half-margin;
+      list-style-type: none;
+      height: 2*$base;
+    }
+  }
+
+  .exchange-button-wrapper {
+    @extend .container-clean;
+
+    .exchange-add-money,
+    .exchange-add-unreg-item {
+      float: left;
+      margin-left: $half-margin;
+      width: $module05/2 - $intercolumn - $half-margin/2;
+
+      input {
+
+
+      }
+    }
+  }
+
+  .exchange-elements-list {
+    margin: 0;
+    padding: 0;
+    width: $module05 + $intercolumn/2;
+    margin-bottom: 3*$margin;
+
+    .exchange-element {
+      min-height: 4*$base; 
+      margin-bottom: $half-margin;
+      position: relative;
+      list-style-type: none;
+
+      &.profile {
+        background: #D8CAEA;
+      }
+      &.theother {
+        background: #F3C3D4;
+      }
+
+      .exchange-element-image {
+        width: $module05 + $intercolumn/2;
+        height: 12*$base;
+        background-size: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      .exchange-element-control {
+        @extend .container-clean;
+        position: absolute;
+        top: $half-padding;
+        right: $half-padding;
+
+        .exchange-trash {
+          float: left;
+          position: relative;
+          top: $half-padding/2;
+          right: $half-padding/2;
+        }
+
+        .exchange-qty {
+          @extend .container-clean;
+          float: left;
+          margin: 0;
+          margin-right: $half-margin;
+          padding: $border;
+          border-radius: $border-radius;
+          background: #7857B8;
+          color: white;
+          font-weight: bold;
+
+          &.readonly {
+            padding: $half-padding;
+          }
+
+          .label, .value {
+            float: left;
+          }
+
+          .label {
+            padding: 0 $half-padding;
+            padding-top: $half-padding/2 + $border;
+          }
+
+          .value {
+            padding-left: $padding;
+            width: $module;
+            text-align: center;
+          }
+
+          .exchange-qty-input {
+            width: $module;
+            padding: $half-padding/2;
+            margin: 0;
+            border: none;
+            border-radius: $border-radius;
+            background: whitesmoke;
+            color: black;
+          }
+        }
+      }
+
+      label {
+        display: block;
+      }
+      input, textarea {
+        width: $module05 - $padding;
+        box-sizing: border-box;
+      }
+      label, textarea, input, select {
+        margin-left: $padding;
+      }
+
+      &.exchange_plugin_unregistered_item {
+
+        .title {
+          margin-bottom: $margin !important;
+        }
+      }
+
+      .title, .desc, .comment {
+        padding: $padding;
+      }
+      .title {
+        padding-bottom: 0;
+        @extend .pstyle-tp1;
+      }
+      select.title {
+        padding: 0;
+        margin-top: $padding;
+      }
+      .desc {
+        
+        > p {
+          margin: 0;
+        }
+      }
+
+      .exchange-select {
+        background: transparent;
+        font: inherit;
+        color: white;
+      }
+    }
+  }
+}
+
+/* Index */
+
+.exchange-index {
+  @extend .container-clean;
+  border-top: $border solid black;
+  padding: $padding;
+
+  .exchange-index-col1 {
+    float: left;
+    width: $module02;
+    margin-right: $margin;
+  }
+
+  .exchange-index-col2 {
+    float: left;
+    width: $module06;
+    margin-right: $margin;
+
+    #exchange-states {
+      padding-bottom: 0;
+      margin: 0;
+
+      .exchange-outer-border { 
+        margin: $half-margin;
+      }
+    }
+  }
+
+  .exchange-index-col3 {
+    float: left;
+    width: $module02;
+    
+    img {
+      height: 7*$base;
+      width: 7*$base;
+    }
+    h4 {
+      padding-top: $half-padding;
+    }
+  }
+}
+

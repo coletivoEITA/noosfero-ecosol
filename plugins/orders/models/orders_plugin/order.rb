@@ -1,18 +1,12 @@
-class OrdersPlugin::Order < ActiveRecord::Base
+class OrdersPlugin::Order < ApplicationRecord
+
+  # if abstract_class is true then it will trigger https://github.com/rails/rails/issues/20871
+  #self.abstract_class = true
 
   Statuses = ::OrdersPlugin::Item::Statuses
   DbStatuses = ::OrdersPlugin::Item::DbStatuses
   UserStatuses = ::OrdersPlugin::Item::UserStatuses
   StatusText = ::OrdersPlugin::Item::StatusText
-
-  # oh, we need a payments plugin!
-  PaymentMethods = {
-    money: proc{ _'Money' },
-    check: proc{ _'shopping_cart|Check' },
-    credit_card: proc{ _'Credit card' },
-    bank_transfer: proc{ _'Bank transfer' },
-    boleto: proc{ _'Boleto' },
-  }
 
   # remember to translate on changes
   ActorData = [
@@ -37,12 +31,9 @@ class OrdersPlugin::Order < ActiveRecord::Base
     supplier: StatusAccessMap.map{ |s, a| s if a == :supplier }.compact,
   }
 
-  # workaround for STI
-  self.table_name = :orders_plugin_orders
-  self.abstract_class = true
-
   attr_accessible :status, :consumer, :profile,
-    :supplier_delivery_id, :consumer_delivery_id, :supplier_delivery_data, :consumer_delivery_data
+    :supplier_delivery_id, :consumer_delivery_id,
+    :supplier_delivery_data, :consumer_delivery_data, :payment_data
 
   belongs_to :profile
   # may be override by subclasses
@@ -51,15 +42,17 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   belongs_to :session, primary_key: :session_id, foreign_key: :session_id, class_name: 'Session'
 
-  has_many :items, class_name: 'OrdersPlugin::Item', foreign_key: :order_id, dependent: :destroy, order: 'name ASC'
+  has_many :items, -> { order 'name ASC' }, class_name: 'OrdersPlugin::Item', foreign_key: :order_id, dependent: :destroy, inverse_of: :order
   has_many :products, through: :items
 
   belongs_to :supplier_delivery, class_name: 'DeliveryPlugin::Method'
   belongs_to :consumer_delivery, class_name: 'DeliveryPlugin::Method'
 
-  scope :alphabetical, -> { joins(:consumer).order 'profiles.name ASC' }
-  scope :latest, -> { order 'code ASC' }
-  scope :default_order, -> { order 'code DESC' }
+  has_many :payments, class_name: PaymentsPlugin::Payment, foreign_key: :orders_plugin_order_id
+
+  scope :alphabetical, -> { joins(:consumer).reorder 'profiles.name ASC' }
+  scope :latest, -> { reorder 'code ASC' }
+  scope :default_order, -> { reorder 'code DESC' }
 
   scope :of_session, -> session_id { where session_id: session_id }
   scope :of_user, -> session_id, consumer_id=nil do
@@ -69,45 +62,41 @@ class OrdersPlugin::Order < ActiveRecord::Base
     where cond
   end
 
-  scope :latest, order: 'created_at DESC'
+  scope :latest, -> { order 'created_at DESC' }
 
-  scope :draft,     conditions: {status: 'draft'}
-  scope :planned,   conditions: {status: 'planned'}
-  scope :cancelled, conditions: {status: 'cancelled'}
-  scope :not_cancelled, conditions: ["status <> 'cancelled'"]
-  scope :ordered,   conditions: ['ordered_at IS NOT NULL']
-  scope :confirmed, conditions: ['ordered_at IS NOT NULL']
-  scope :accepted,  conditions: ['accepted_at IS NOT NULL']
-  scope :separated, conditions: ['separated_at IS NOT NULL']
-  scope :delivered, conditions: ['delivered_at IS NOT NULL']
-  scope :received,  conditions: ['received_at IS NOT NULL']
+  scope :draft,     -> { where status: 'draft' }
+  scope :planned,   -> { where status: 'planned' }
+  scope :cancelled, -> { where status: 'cancelled' }
+  scope :not_cancelled, -> { where "status <> 'cancelled'" }
+  scope :ordered,   -> { where 'ordered_at IS NOT NULL' }
+  scope :confirmed, -> { where 'ordered_at IS NOT NULL' }
+  scope :accepted,  -> { where 'accepted_at IS NOT NULL' }
+  scope :separated, -> { where 'separated_at IS NOT NULL' }
+  scope :delivered, -> { where 'delivered_at IS NOT NULL' }
+  scope :received,  -> { where 'received_at IS NOT NULL' }
 
-  scope :for_profile, lambda{ |profile| {conditions: {profile_id: profile.id}} }
-  scope :for_profile_id, lambda{ |profile_id| {conditions: {profile_id: profile_id}} }
-  scope :for_supplier, lambda{ |profile| {conditions: {profile_id: profile.id}} }
-  scope :for_supplier_id, lambda{ |profile_id| {conditions: {profile_id: profile_id}} }
-  scope :for_consumer, lambda{ |consumer| {conditions: {consumer_id: (consumer.id rescue nil)}} }
-  scope :for_consumer_id, lambda{ |consumer_id| {conditions: {consumer_id: consumer_id}} }
+  scope :for_profile, -> (profile) { where profile_id: profile.id }
+  scope :for_profile_id, -> (profile_id) { where profile_id: profile_id }
+  scope :for_supplier, -> (profile) { where profile_id: profile.id }
+  scope :for_supplier_id, -> (profile_id) { where profile_id: profile_id }
+  scope :for_consumer, -> (consumer) { where consumer_id: (consumer.id rescue nil) }
+  scope :for_consumer_id, -> (consumer_id) { where consumer_id: consumer_id }
 
-  scope :months, select: 'DISTINCT(EXTRACT(months FROM orders_plugin_orders.created_at)) as month', order: 'month DESC'
-  scope :years, select: 'DISTINCT(EXTRACT(YEAR FROM orders_plugin_orders.created_at)) as year', order: 'year DESC'
+  scope :months, -> { select('DISTINCT(EXTRACT(months FROM orders_plugin_orders.created_at)) as month').order('month DESC') }
+  scope :years, -> { select('DISTINCT(EXTRACT(YEAR FROM orders_plugin_orders.created_at)) as year').order('year DESC') }
 
-  scope :by_month, lambda { |month|
-    where 'EXTRACT(month FROM orders_plugin_orders.created_at) <= :month AND EXTRACT(month FROM orders_plugin_orders.created_at) >= :month',{ month: month }
+  scope :by_month, -> (month) {
+    where 'EXTRACT(month FROM orders_plugin_orders.created_at) <= :month AND EXTRACT(month FROM orders_plugin_orders.created_at) >= :month', month: month
   }
-  scope :by_year, lambda { |year|
-    where 'EXTRACT(year FROM orders_plugin_orders.created_at) <= :year AND EXTRACT(year FROM orders_plugin_orders.created_at) >= :year', { year: year }
+  scope :by_year, -> (year) {
+    where 'EXTRACT(year FROM orders_plugin_orders.created_at) <= :year AND EXTRACT(year FROM orders_plugin_orders.created_at) >= :year', year: year
   }
-  scope :by_range, lambda { |start_time, end_time|
-    where 'orders_plugin_orders.created_at >= :start AND orders_plugin_orders.created_at <= :end', { start: start_time, end: end_time }
+  scope :by_range, -> (start_time, end_time) {
+    where 'orders_plugin_orders.created_at >= :start AND orders_plugin_orders.created_at <= :end', start: start_time, end: end_time
   }
 
-  scope :with_status, lambda { |status|
-    where status: status
-  }
-  scope :with_code, lambda { |code|
-    where code: code
-  }
+  scope :with_status, -> (status) { where status: status }
+  scope :with_code, -> (code) { where code: code }
 
   validates_presence_of :profile
   # consumer is optional, as orders can be made by unlogged users
@@ -115,10 +104,13 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   before_validation :check_status
   before_validation :change_status
-  after_save :send_notifications
+
+  # FINANCIAL PLUGIN
+  has_many     :financial_transactions, class_name: "FinancialPlugin::Transaction", dependent: :destroy, foreign_key: "order_id"
+  after_save   :create_transaction
 
   extend CodeNumbering::ClassMethods
-  code_numbering :code, scope: proc{ self.profile.orders }
+  code_numbering :code, scope: -> { self.profile.orders }
 
   serialize :data
 
@@ -189,6 +181,8 @@ class OrdersPlugin::Order < ActiveRecord::Base
           products_by_supplier[supplier] << sp
           sp.quantity_ordered ||= 0
           sp.quantity_ordered += item.status_quantity * source_sp.quantity
+          sp.use_stock = item.offered_product.use_stock
+          sp.stored = item.offered_product.stored
         end
       else
         # the case where cycles and offered products are not involved, so item is linked directly to a Product
@@ -289,7 +283,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
     return @current_status = 'open' if self.open?
     @current_status = self['status']
   end
-  def status_message
+  def status_message status = current_status
     I18n.t StatusText[current_status]
   end
 
@@ -361,16 +355,24 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   # total_price considering last state
   def total_price actor_name = :consumer, admin = false
-    # for admins, we want the next_status while we concluded the finish status change
+    items ||= (self.ordered_items rescue nil) || self.items
+    # for admins, we want the last filled status
     if admin
-      price = :status_price
+      sum = 0
+      items.each do |item|
+        price = 0
+        StatusDataMap.values.each do |v|
+          p = item.send "price_#{v}"
+          price = p if p.present?
+        end
+        sum += price
+      end
     else
       data = StatusDataMap[self.status] || StatusDataMap[Statuses.first]
       price = "price_#{data}".to_sym
+      sum = items.collect(&price).inject(0){ |s, p| s + p.to_f }
     end
-
-    items ||= (self.ordered_items rescue nil) || self.items
-    items.collect(&price).inject(0){ |sum, p| sum + p.to_f }
+    sum
   end
   has_currency :total_price
 
@@ -391,7 +393,7 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
     self.items.each do |item|
       # already filled?
-      next if (quantity = item.send "quantity_#{to_data}").present?
+      next if (item.send "quantity_#{to_data}").present?
       item.send "quantity_#{to_data}=", item.send("quantity_#{from_data}")
       item.send "price_#{to_data}=", item.send("price_#{from_data}")
       item.save if save
@@ -400,6 +402,54 @@ class OrdersPlugin::Order < ActiveRecord::Base
 
   def enable_product_diff
     self.items.each{ |i| i.product_diff = true }
+  end
+
+  def remaining_total actor_name = :consumer, admin = false
+    remaining = self.total(actor_name, admin) - self.payments.sum(:value)
+    remaining >= 0 ? remaining : 0
+  end
+  has_currency :remaining_total
+
+  # cases:
+  # order is still being created in draft: return
+  # order is being saved with total == last_value: return
+  # order is being confirmed: create transaction with total
+  # order is being resaved: create transaction with total - last_value
+  # order is being returned to draft: create negative transaction to equal it to zero
+  def create_transaction
+    last_value = self.financial_transactions.sum(:value)
+    # avoid outdated values
+    self.items.reload
+    return if self.total == last_value && !(status == 'draft' && !['new', 'draft', nil].include?(status_was))
+
+    return if status == 'draft' and ['new', 'draft', nil].include? status_was
+
+    if status == 'draft'
+      value = -1 * last_value
+    else
+      value = self.total - last_value
+    end
+
+    # when Order is from OrdersPlugin, it doesn't have the cycle method defined, do it by hand so
+    if defined? OrdersCyclePlugin
+      if respond_to? :cycle
+        target = self.cycle
+      else
+        cycle_order = OrdersCyclePlugin::CycleOrder.where(sale_id: self.id).includes(cycle: :profile).first
+        target = cycle_order.cycle if cycle_order
+      end
+      target_profile = target.present? ? target.profile : nil
+    end
+
+    self.financial_transactions.create!(
+      origin_id: self.profile_id,
+      target: target,
+      target_profile: target_profile,
+      value: value,
+      description: "Order",
+      date: DateTime.now,
+      direction: :out,
+    )
   end
 
   protected
@@ -427,19 +477,6 @@ class OrdersPlugin::Order < ActiveRecord::Base
       Statuses.each do |status|
         self.send "#{status}_at=", nil
       end
-    end
-  end
-
-  def send_notifications
-    # shopping_cart has its notifications
-    return if source == 'shopping_cart_plugin'
-    # ignore when status is being rewinded
-    return if (Statuses.index(self.status) <= Statuses.index(self.status_was) rescue false)
-
-    if self.status == 'ordered' and self.status_was != 'ordered'
-      OrdersPlugin::Mailer.order_confirmation(self).deliver
-    elsif self.status == 'cancelled' and self.status_was != 'cancelled'
-      OrdersPlugin::Mailer.order_cancellation(self).deliver
     end
   end
 

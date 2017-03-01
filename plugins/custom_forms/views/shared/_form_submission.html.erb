@@ -1,7 +1,7 @@
 <% self.extend(CustomFormsPlugin::Helper) %>
 
 <% @form.fields.each do |field| %>
-  <%= display_custom_field(field, @submission, f.object_name) %>
+  <%= display_custom_field(field, @submission, f.object_name).html_safe %>
 <% end %>
 
 <%= render :file => 'shared/tiny_mce' %>

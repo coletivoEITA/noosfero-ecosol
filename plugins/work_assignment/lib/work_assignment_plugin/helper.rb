@@ -1,22 +1,7 @@
 module WorkAssignmentPlugin::Helper
-  include CmsHelper
-
-  def display_submissions(work_assignment, user)
-    return if work_assignment.submissions.empty?
-    content_tag('table',
-      content_tag('tr',
-        content_tag('th', c_('Author'), :style => 'width: 50%') +
-        content_tag('th', _('Submission date')) +
-        content_tag('th', _('Versions'), :style => 'text-align: center') +
-        content_tag('th', '') +
-        content_tag('th', '')
-      ).html_safe +
-      work_assignment.children.order('name ASC').map {|author_folder| display_author_folder(author_folder, user)}.join("\n").html_safe
-    )
-  end
 
   def display_author_folder(author_folder, user)
-    return if author_folder.children.empty?
+    return if author_folder.children(true).empty?
     content_tag('tr',
       content_tag('td', link_to_last_submission(author_folder, user)) +
       content_tag('td', time_format(author_folder.children.last.created_at)) +
@@ -58,7 +43,7 @@ module WorkAssignmentPlugin::Helper
     end
   end
 
-  # FIXME Copied from custom-froms. Consider passing it to core...
+  # FIXME Copied from custom_forms. Consider passing it to core...
   def time_format(time)
     minutes = (time.min == 0) ? '' : ':%M'
     hour = (time.hour == 0 && minutes.blank?) ? '' : ' %H'
@@ -69,11 +54,11 @@ module WorkAssignmentPlugin::Helper
   def display_delete_button(article)
     expirable_button article, :delete, _('Delete'),
     {:controller =>'cms', :action => 'destroy', :id => article.id },
-    :method => :post, :confirm => delete_article_message(article)
+    method: :post, 'data-confirm' => delete_article_message(article)
   end
 
   def display_privacy_button(author_folder, user)
-    folder = environment.articles.find_by_id(author_folder.id)
+    folder = environment.articles.find_by id: author_folder.id
     work_assignment = folder.parent
     @back_to = url_for(work_assignment.url)
 

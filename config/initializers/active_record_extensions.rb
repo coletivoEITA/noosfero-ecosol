@@ -2,8 +2,6 @@ require 'upload_sanitizer'
 
 module ActiveRecordExtension
 
-  extend ActiveSupport::Concern
-
   module ClassMethods
     def reflect_on_association(name)
       reflection = super
@@ -14,4 +12,5 @@ module ActiveRecordExtension
     end
   end
 end
-ActiveRecord::Base.send(:include, ActiveRecordExtension)
+
+ApplicationRecord.send :include, ActiveRecordExtension

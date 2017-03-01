@@ -114,7 +114,7 @@ class TaskTest < ActiveSupport::TestCase
     task1 = Task.create!
     task2 = build(Task, :code => task1.code)
 
-    assert !task2.valid?
+    refute task2.valid?
     assert task2.errors[:code.to_s].present?
   end
 
@@ -131,7 +131,7 @@ class TaskTest < ActiveSupport::TestCase
 
     task.cancel
 
-    assert_nil Task.find_by_code(task.code)
+    assert_equal [], Task.from_code(task.code)
   end
 
   should 'be able to find active tasks' do
@@ -139,7 +139,7 @@ class TaskTest < ActiveSupport::TestCase
     task.requestor = sample_user
     task.save!
 
-    assert_not_nil Task.find_by_code(task.code)
+    assert_not_nil Task.from_code(task.code)
   end
 
   should 'use 36-chars codes by default' do
@@ -179,6 +179,31 @@ class TaskTest < ActiveSupport::TestCase
     task.stubs(:target_notification_message).returns('some non nil message to be sent to target')
 
     TaskMailer.expects(:target_notification).never
+    task.save!
+  end
+
+  should 'not send notification to target if notification is disabled in profile' do
+    task = Task.new
+    target = fast_create(Organization)
+    target.stubs(:notification_emails).returns(['adm@example.com'])
+    target.stubs(:profile_admin_mail_notification).returns(false)
+    task.target = target
+    task.stubs(:target_notification_message).returns('some non nil message to be sent to target')
+    TaskMailer.expects(:target_notification).never
+    task.save!
+  end
+
+  should 'send notification to target if notification is enabled in profile' do
+    task = Task.new
+    target = fast_create(Organization)
+    target.stubs(:notification_emails).returns(['adm@example.com'])
+    target.stubs(:profile_admin_mail_notification).returns(true)
+    task.target = target
+    task.stubs(:target_notification_message).returns('some non nil message to be sent to target')
+
+    mailer = mock
+    mailer.expects(:deliver).once
+    TaskMailer.expects(:target_notification).returns(mailer).once
     task.save!
   end
 
@@ -299,25 +324,7 @@ class TaskTest < ActiveSupport::TestCase
     task.activate
   end
 
-  should 'filter tasks to a profile' do
-    requestor = fast_create(Person)
-    person = fast_create(Person)
-    another_person = fast_create(Person)
-    environment = Environment.default
-    environment.add_admin(person)
-    t1 = create(Task, :requestor => requestor, :target => person)
-    t2 = create(Task, :requestor => requestor, :target => person)
-    t3 = create(Task, :requestor => requestor, :target => environment)
-    t4 = create(Task, :requestor => requestor, :target => another_person)
-
-    assert_includes Task.to(person), t1
-    assert_includes Task.to(person), t2
-    assert_includes Task.to(person), t3
-    assert_not_includes Task.to(person), t4
-    assert_includes Task.to(another_person), t4
-  end
-
-  should 'filter tasks by type with named_scope' do
+  should 'filter tasks by type with scope' do
     class CleanHouse < Task; end
     class FeedDog < Task; end
     requestor = fast_create(Person)
@@ -335,10 +342,10 @@ class TaskTest < ActiveSupport::TestCase
 
   should 'order tasks by some attribute correctly' do
     Task.destroy_all
-    t1 = fast_create(Task, :status => 4, :created_at => Time.now + 1.hour)
-    t2 = fast_create(Task, :status => 3, :created_at => Time.now + 2.hour)
-    t3 = fast_create(Task, :status => 2, :created_at => Time.now + 3.hour)
-    t4 = fast_create(Task, :status => 1, :created_at => Time.now + 4.hour)
+    t1 = fast_create(Task, :status => 4, :created_at => Time.now.in_time_zone + 1.hour)
+    t2 = fast_create(Task, :status => 3, :created_at => Time.now.in_time_zone + 2.hour)
+    t3 = fast_create(Task, :status => 2, :created_at => Time.now.in_time_zone + 3.hour)
+    t4 = fast_create(Task, :status => 1, :created_at => Time.now.in_time_zone + 4.hour)
 
     assert_equal [t1,t2,t3,t4], Task.order_by('created_at', 'asc')
     assert_equal [t4,t3,t2,t1], Task.order_by('created_at', 'desc')
@@ -391,15 +398,15 @@ class TaskTest < ActiveSupport::TestCase
     t = Task.new
     t.spam = true
     assert t.spam?
-    assert !t.ham?
+    refute t.ham?
 
     t.spam = false
     assert t.ham?
-    assert !t.spam?
+    refute t.spam?
 
     t.spam = nil
-    assert !t.spam?
-    assert !t.ham?
+    refute t.spam?
+    refute t.ham?
   end
 
   should 'be able to select non-spam tasks' do
@@ -430,6 +437,109 @@ class TaskTest < ActiveSupport::TestCase
     t1.ham!
     t1.reload
     assert t1.ham?
+  end
+
+  should 'be able to assign a responsible to a task' do
+    person = fast_create(Person)
+    task = fast_create(Task)
+    task.responsible = person
+    task.save!
+    assert_equal person, task.responsible
+  end
+
+  should 'store who finish the task' do
+    t = Task.create
+    person = fast_create(Person)
+    t.finish(person)
+    assert_equal person, t.reload.closed_by
+  end
+
+  should 'store who cancel the task' do
+    t = Task.create
+    person = fast_create(Person)
+    t.cancel(person)
+    assert_equal person, t.reload.closed_by
+  end
+
+  should 'named scope to get tasks of a profile' do
+    requestor = fast_create(Person)
+    person = fast_create(Person)
+    another_person = fast_create(Person)
+    t1 = create(Task, :requestor => requestor, :target => person)
+    t2 = create(Task, :requestor => requestor, :target => another_person)
+    t3 = create(Task, :requestor => requestor, :target => person)
+
+    assert_equivalent [t1,t3], Task.to(person)
+  end
+
+  should 'named scope to get environment tasks if passed profile is environment admin' do
+    requestor = fast_create(Person)
+    person = fast_create(Person)
+    another_person = fast_create(Person)
+    environment = Environment.default
+    environment.add_admin(person)
+    t1 = create(Task, :requestor => requestor, :target => person)
+    t2 = create(Task, :requestor => requestor, :target => another_person)
+    t3 = create(Task, :requestor => requestor, :target => environment)
+
+    assert_equivalent [t1,t3], Task.to(person)
+  end
+
+  should 'named scope to not get environment tasks if passed profile is not environment admin' do
+    requestor = fast_create(Person)
+    person = fast_create(Person)
+    another_person = fast_create(Person)
+    environment = Environment.default
+    t1 = create(Task, :requestor => requestor, :target => person)
+    t2 = create(Task, :requestor => requestor, :target => another_person)
+    t3 = create(Task, :requestor => requestor, :target => environment)
+
+    assert_equivalent [t1], Task.to(person)
+  end
+
+  should 'named scope to get communities tasks if passed profile has perform_task permission' do
+    requestor = fast_create(Person)
+    person = fast_create(Person)
+    another_person = fast_create(Person)
+    community = fast_create(Community)
+    community.add_member(person)
+    person.expects(:has_permission?).with(:perform_task, community).returns(true)
+    t1 = create(Task, :requestor => requestor, :target => person)
+    t2 = create(Task, :requestor => requestor, :target => another_person)
+    t3 = create(Task, :requestor => requestor, :target => community)
+
+    assert_equivalent [t1, t3], Task.to(person)
+  end
+
+
+  should 'named scope to not get communities tasks if passed profile has no perform_task permission in community' do
+    requestor = fast_create(Person)
+    person = fast_create(Person)
+    another_person = fast_create(Person)
+    community = fast_create(Community)
+    community.add_member(person)
+    person.expects(:has_permission?).with(:perform_task, community).returns(false)
+    t1 = create(Task, :requestor => requestor, :target => person)
+    t2 = create(Task, :requestor => requestor, :target => another_person)
+    t3 = create(Task, :requestor => requestor, :target => community)
+
+    assert_equivalent [t1], Task.to(person)
+  end
+
+  should 'named scope to return environment, person and communities tasks if user has permission' do
+    requestor = fast_create(Person)
+    person = fast_create(Person)
+    another_person = fast_create(Person)
+    community = fast_create(Community)
+    community.add_member(person)
+    person.expects(:has_permission?).with(:perform_task, community).returns(true)
+    environment = Environment.default
+    environment.add_admin(person)
+    t1 = create(Task, :requestor => requestor, :target => person)
+    t2 = create(Task, :requestor => requestor, :target => another_person)
+    t3 = create(Task, :requestor => requestor, :target => community)
+    t4 = create(Task, :requestor => requestor, :target => environment)
+    assert_equivalent [t1,t3,t4], Task.to(person)
   end
 
   protected

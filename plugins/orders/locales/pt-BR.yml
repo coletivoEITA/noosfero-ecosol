@@ -38,6 +38,7 @@ pt-BR: &pt-BR
         profile_subject: "[%{profile}] %{subject}"
         order_was_confirmed: "[%{name}] Seu pedido foi confirmado"
         order_was_cancelled: "[%{name}] Seu pedido foi cancelado"
+        order_was_received: "[%{name}] Seu pedido foi declarado como recebido"
       date_helper:
         a: "%A"
         b_d_at_hh_m: "%d/%m/%y às %H:%M"
@@ -60,10 +61,11 @@ pt-BR: &pt-BR
         price_unit: "%{price}%{unit}"
       report:
         closed_orders: "Pedidos fechados"
-        created: criado
-        modified: modificado
-        payment_method: forma de pagamento
-        delivery_option: forma de entrega ou retirada
+        created: Criado
+        modified: Modificado
+        payment_method: Forma de pagamento
+        delivery_option: Forma de entrega ou retirada
+        hub: Núcleo
 
         member_name: "Nome do(a) consumidor(a)"
         order_code: "Código do Pedido"
@@ -74,12 +76,12 @@ pt-BR: &pt-BR
         product_cod: "Cód. produto"
         product_name: "nome do produto"
         products_report: "relatório de produtos"
-        projected_stock: "estoque projetado"
+        projected_stock: "estoque depois"
         qtt_to_be_parcelled: "qtd a ser encomendada"
         qty_ordered: "qtd pedida"
         selled_total: "Total vendido"
         selled_value: "Valor vendido"
-        stock_qtt: "qtd estoque"
+        stock_qtt: "estoque antes"
         supplier: "%{terms.supplier.singular.capitalize}"
         total_parcel_value: "Valor total usando estoque"
         total_selled_value: "Valor total vendido"
@@ -98,13 +100,17 @@ pt-BR: &pt-BR
           login_first: "Faça login primeiro"
           order_cancelled: "Pedido cancelado"
           order_confirmed: "Pedido confirmado"
+          order_confirmed_with_stock_changes: "Pedido confirmado, mas alguns items tiveram suas quantidades alteradas por falta de disponibilidade em estoque."
           order_removed: "Pedido removido"
           please_login_first: "Please login first"
           you_are_not_the_owner: "Você não é o autor desse pedido"
+          delivery_method: "Forma de entrega ou coleta"
       myprofile:
         admin:
           orders_report: "Relatório de pedidos - %{date} - %{profile_identifier} - %{name}.xlsx"
+          orders_report_by_hub: "Relatório de pedidos no núcleo %{hub} - %{date} - %{profile_identifier} - %{name}.xlsx"
           products_report: "Relatório de produtos - %{date} - %{profile_identifier} - %{name}.xlsx"
+          products_report_by_hub: "Relatório de produtos no núcleo {hub} - %{date} - %{profile_identifier} - %{name}.xlsx"
     models:
       order:
         statuses:
@@ -142,6 +148,7 @@ pt-BR: &pt-BR
         payment_data:
           method: "Método"
           change: "Troco"
+          other_method: "Método escolhido"
     helpers:
       help:
         hide: "esconder ajuda"
@@ -177,13 +184,18 @@ pt-BR: &pt-BR
       consumer:
         _total:
           total: Total
+          order_total: Total do pedido
+          total_yet_to_pay: Total ainda a pagar
 
       item:
+        no_stock: "Este produto não está mais em estoque"
         _edit:
           remove_from_order: "Remover do pedido"
           removed: 'removido'
           submit: 'OK'
           this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
+          ordered_more_than_in_stock: "A quantidade do produto %{name} em estoque é menor do que foi pedido. A quantidade no seu pedido foi mudada para o máximo disponível no momento."
+          saved: "Salvo.."
 
         _add:
           label: 'Adiciona produto'
@@ -192,11 +204,24 @@ pt-BR: &pt-BR
         _index:
           header: "Compra %{profile_code} - %{profile} / Venda %{consumer}"
           empty_order: "Pedido vazio"
-          supplier: "%{terms.supplier.singular}"
+          supplier: 'fornecedor'
           product: "produto"
           quantity: "qtd"
-          price_total: "valor (%{currency})"
+          price_total: "valor (R$)"
           status: "etapa"
+          info_about_delivery: "Informações sobre a forma de entrega/coleta escolhida"
+          address_completion: "Complemento do endereço"
+          payment_number: "Pagamento %{number}"
+          product_added: "Produto adicionado"
+          products: "Produtos"
+          payments: "Pagamentos"
+          payment: "Pagamento"
+          value: "Valor"
+          payment_method: "Método de pagamento"
+          date: Data
+          total_bought: "Total comprado"
+          total_payed: "Total pago"
+          remaining_total: "Faltante"
 
       message:
         _fields:
@@ -235,17 +260,26 @@ pt-BR: &pt-BR
         _actor_data:
           consumer_heading: "Dados %{terms.consumer.from_article.singular}"
           supplier_heading: "Dados %{terms.supplier.from_article.singular}"
+        _payment_edition:
+          choose_payment_method: "Escolha um método de pagamento"
+          other_method: "Defina o método"
+
       admin:
         reports:
-          generate: "Gerar planilhas"
-          products_spreadsheet: "Produtos"
-          orders_spreadsheet: "Pedidos"
+          generate: "exportar planilhas"
+          products_spreadsheet: "Por fornecedor"
+          orders_spreadsheet: "Por consumidor"
+          suppliers_spreadsheet: "Por fornecedor"
+          consumers_spreadsheet: "Por consumidor"
+          choose_hub: "Escolha um núcleo" 
+          all_hubs: "todos os núcleos" 
+          close: "Fechar"
         index:
           no_orders_to_show: "Nenhum pedido para visualizar."
           code: "código"
           last_update: "últ. atualização"
           order_date: "data do pedido"
-          total: "total (%{currency})"
+          total: "total (R$)"
           situation: "situação"
           none_selected: "Nenhum pedido selecionado"
         _edit:
@@ -261,6 +295,53 @@ pt-BR: &pt-BR
           see_redistribution: "veja redistribuição"
           the_collective_member: "O(a) consumidor(a) %{terms.profile.from_article.singular} receberá um email que discrimina todas as mudanças feitas em seu pedido."
           warn_member_of_the_ch: "Avise o(a) consumidor(a) das mudanças em seu pedido"
+          add_payment: "Adicionar pagamento"
+        add_payment:
+          adding_payment: "Adicionando pagamento"
+          payment_method: "Forma de pagamento"
+          value: "Valor do pagamento"
+          description: "Descrição"
+          cancel: Cancelar
+          submit: Enviar
+          saved: Salvo..
+        new_order:
+          add: "Adicionar pedido"
+          adding_order: "Adicionando pedido"
+          choose_the_consumer: "Escolha o consumidor abaixo" 
+          is_consumer_registered: "O consumidor desse novo pedido é registrado?"
+          consumer_registered: "Está registrado - defina quem é o consumidor"
+          consumer_not_registered: "Não está registrado - inserir dados do consumidor"
+          consumer_name: "Nome do consumidor"
+          consumer_email: "E-mail do consumidor"
+          supply_profile_id: "Por favor, escolha um consumidor"
+          supply_name: "Por favor, preencha o nome do consumidor"
+          supply_email: "Por favor, preencha o email do consumidor"
+        financial:
+          financial_report: "Relatório financeiro - %{name}"
+          open: Abrir
+          close: Fechar
+          inputs: "Entradas:"
+          outputs: "Saídas:"
+          cash: "Caixa final:"
+          type: "Tipo"
+          value: "Valor"
+          date: "Data/hora"
+          description: "Descrição"
+          add_input: "+ entrada"
+          add_output: "+ saída"
+          export_spreadsheet: "Exportar Planilha"
+          payment: "Pagamento"
+          order: "Pedido"
+          expense: "Saídas"
+          income: "Entradas"
+          cash_totalization: "Totalização de caixa"
+          revenue_totalization: "Totalização de receitas"
+          responsible: "Responsável"
+          payment_method: "Método de pagamento"
+          cancel: "Cancelar"
+          submit: "Enviar"
+          total: "Total: "
+
       mailer:
         message_to_admins:
           a_service_of_s: "Um serviço de %{environment}."
@@ -287,9 +368,18 @@ pt-BR: &pt-BR
           greetings: "Saudações,"
           order_code_of_profile: "Pedido %{code} de %{name}"
           order_data_confirmed: "Pedido confirmado"
-          the_delivery_period_w: "O período de entrega ocorrerá em %{date}."
+          the_delivery_period_w: "O período de entrega aos consumidores ocorrerá em %{date}."
           your_order_can_be_che: "Seu pedido pode ser checado ou alterado no seguinte link:"
           your_order_made_on_co: "Seu pedido feito no coletivo de consumo %{name} em %{date} foi confirmado."
+          collective_made_a_purchase: "%{name} fez um pedido coletivo a você em %{date}."
+          see_below_the_items: "Veja abaixo os items do pedido:"
+        order_received:
+          dear_name: "Olá %{name},"
+          greetings: "Saudações solidárias,"
+          order_data_received: "Veja abaixo detalhes do pedido entregue"
+          your_order_made_on_co: "Seu pedido feito no coletivo de consumo %{name} em %{date} foi declarado entregue."
+        purchase_received:
+          the_order_made_on_co: "O pedido feito pelo coletivo de consumo %{name} em %{date} foi declarado entregue."
         order_cancellation:
           dear_name: "Olá %{name},"
           greetings: "Saudações,"

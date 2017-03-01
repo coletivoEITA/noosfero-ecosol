@@ -1,13 +1,8 @@
 require_relative "../test_helper"
 require 'account_controller'
 
-# Re-raise errors caught by the controller.
-class AccountController; def rescue_action(e) raise e end; end
-
 class AccountControllerTest < ActionController::TestCase
-  # Be sure to include AuthenticatedTestHelper in test/test_helper.rb instead
-  # Then, you can remove it from this and the units test.
-  include AuthenticatedTestHelper
+
   all_fixtures
 
   def teardown
@@ -16,8 +11,7 @@ class AccountControllerTest < ActionController::TestCase
 
   def setup
     @controller = AccountController.new
-    @request = ActionController::TestRequest.new
-    @response = ActionController::TestResponse.new
+
     disable_signup_bot_check
   end
 
@@ -38,6 +32,14 @@ class AccountControllerTest < ActionController::TestCase
     User.expects(:authenticate).with('fake', 'fake', is_a(Environment))
     @request.env["HTTP_REFERER"] = '/bli'
     post :login, :user => { :login => 'fake', :password => 'fake' }
+  end
+
+  should 'fail login if a user is inactive and show a warning message' do
+    user = User.create!(login: 'testuser', email: 'test@email.com', password:'test', password_confirmation:'test', activation_code: nil)
+    post :login, :user => { :login => 'testuser', :password => 'test' }
+
+    assert_match 'not activated', session[:notice]
+    assert_nil session[:user]
   end
 
   def test_should_fail_login_and_not_redirect
@@ -105,6 +107,15 @@ class AccountControllerTest < ActionController::TestCase
     end
   end
 
+  def test_shoud_save_with_custom_field_on_signup
+    assert_difference 'User.count' do
+      assert_difference 'CustomFieldValue.count' do
+        CustomField.create!(:name => "zombies", :format=>"String", :default_value => "awrrr", :customized_type=>"Profile", :active => true, :required => true, :signup => true, :environment => Environment.default)
+        new_user({},{"profile_data"=> {"custom_values"=>{"zombies"=>{"value"=>"BRAINSSS"}}}})
+      end
+    end
+  end
+
   def test_should_logout
     login_as :johndoe
     get :logout
@@ -141,14 +152,14 @@ class AccountControllerTest < ActionController::TestCase
     users(:johndoe).update_attribute :remember_token_expires_at, 5.minutes.ago
     @request.cookies["auth_token"] = cookie_for(:johndoe)
     get :index
-    assert !@controller.send(:logged_in?)
+    refute @controller.send(:logged_in?)
   end
 
   should 'fail cookie login' do
     users(:johndoe).remember_me
     @request.cookies["auth_token"] = auth_token('invalid_auth_token')
     get :index
-    assert !@controller.send(:logged_in?)
+    refute @controller.send(:logged_in?)
   end
 
   def test_should_display_anonymous_user_options
@@ -186,7 +197,7 @@ class AccountControllerTest < ActionController::TestCase
     post :change_password, :current_password => 'wrong', :new_password => 'blabla', :new_password_confirmation => 'blabla'
     assert_response :success
     assert_template 'change_password'
-    assert ! User.find_by_login('ze').authenticated?('blabla')
+    refute  User.find_by(login: 'ze').authenticated?('blabla')
     assert_equal users(:ze), @controller.send(:current_user)
   end
 
@@ -195,8 +206,8 @@ class AccountControllerTest < ActionController::TestCase
     post :change_password, :current_password => 'test', :new_password => 'blabla', :new_password_confirmation => 'blibli'
     assert_response :success
     assert_template 'change_password'
-    assert !assigns(:current_user).authenticated?('blabla')
-    assert !assigns(:current_user).authenticated?('blibli')
+    refute assigns(:current_user).authenticated?('blabla')
+    refute assigns(:current_user).authenticated?('blibli')
     assert_equal users(:ze), @controller.send(:current_user)
   end
 
@@ -224,6 +235,16 @@ class AccountControllerTest < ActionController::TestCase
     assert_template 'password_recovery_sent'
   end
 
+  should 'not respond to forgotten password change if captcha verification fails' do
+    create_user('test')
+    @controller.stubs(:verify_recaptcha).returns(false)
+    post :forgot_password, :value => 'test'
+    change = assigns(:change_password)
+    assert change.errors.has_key?(:base)
+    assert_response :success
+    assert_tag :tag => 'div', :attributes => { :id => 'errorExplanation', :class => 'errorExplanation' }
+  end
+
   should 'respond to forgotten password change request with email' do
     change = ChangePassword.new
     create_user('test', :email => 'test@localhost.localdomain')
@@ -239,28 +260,20 @@ class AccountControllerTest < ActionController::TestCase
   end
 
   should 'provide interface for entering new password' do
-    change = ChangePassword.new
-    ChangePassword.expects(:find_by_code).with('osidufgiashfkjsadfhkj99999').returns(change)
-    person = mock
-    person.stubs(:identifier).returns('joe')
-    person.stubs(:name).returns('Joe')
-    change.stubs(:requestor).returns(person)
+    code = 'osidufgiashfkjsadfhkj99999'
+    person = create_user('joe').person
+    change = ChangePassword.create! code: code, requestor: person
 
-    get :new_password, :code => 'osidufgiashfkjsadfhkj99999'
+    get :new_password, code: code
     assert_equal change, assigns(:change_password)
   end
 
   should 'actually change password after entering new password' do
-    change = ChangePassword.new
-    ChangePassword.expects(:find_by_code).with('osidufgiashfkjsadfhkj99999').returns(change)
+    code = 'osidufgiashfkjsadfhkj99999'
+    person = create_user('joe').person
+    ChangePassword.create! code: code, requestor: person
 
-    requestor = mock
-    requestor.stubs(:identifier).returns('joe')
-    change.stubs(:requestor).returns(requestor)
-    change.expects(:update_attributes!).with({'password' => 'newpass', 'password_confirmation' => 'newpass'})
-    change.expects(:finish)
-
-    post :new_password, :code => 'osidufgiashfkjsadfhkj99999', :change_password => { :password => 'newpass', :password_confirmation => 'newpass' }
+    post :new_password, code: code, change_password: { password: 'newpass', password_confirmation: 'newpass' }
 
     assert_template 'new_password_ok'
   end
@@ -273,15 +286,16 @@ class AccountControllerTest < ActionController::TestCase
     assert_template 'invalid_change_password_code'
   end
 
-  should 'require password confirmation correctly to enter new pasword' do
+  should 'require password confirmation correctly to enter new password' do
     user = create_user('testuser', :email => 'testuser@example.com', :password => 'test', :password_confirmation => 'test')
+    user.activate
     change = ChangePassword.create!(:requestor => user.person)
 
     post :new_password, :code => change.code, :change_password => { :password => 'onepass', :password_confirmation => 'another_pass' }
     assert_response :success
     assert_template 'new_password'
 
-    assert !User.find(user.id).authenticated?('onepass')
+    refute User.find(user.id).authenticated?('onepass')
   end
 
   should 'display login popup' do
@@ -322,8 +336,6 @@ class AccountControllerTest < ActionController::TestCase
     person = create_user('mylogin').person
     login_as(person.identifier)
 
-    EnterpriseActivation.expects(:find_by_code).with('some_invalid_code').returns(nil).at_least_once
-
     get :activation_question, :enterprise_code => 'some_invalid_code'
 
     assert_template 'invalid_enterprise_code'
@@ -335,9 +347,7 @@ class AccountControllerTest < ActionController::TestCase
 
     ent = fast_create(Enterprise, :name => 'test enterprise', :identifier => 'test_ent', :enabled => true)
     ent.update_attribute(:cnpj, '0'*14)
-    task = mock
-    task.expects(:enterprise).returns(ent).at_least_once
-    EnterpriseActivation.expects(:find_by_code).with('0123456789').returns(task).at_least_once
+    EnterpriseActivation.create! code: '0123456789', enterprise: ent
 
     get :activation_question, :enterprise_code => '0123456789'
 
@@ -349,10 +359,7 @@ class AccountControllerTest < ActionController::TestCase
     login_as(person.identifier)
 
     ent = fast_create(Enterprise, :name => 'test enterprise', :identifier => 'test_ent')
-
-    task = mock
-    task.expects(:enterprise).returns(ent).at_least_once
-    EnterpriseActivation.expects(:find_by_code).with('0123456789').returns(task).at_least_once
+    EnterpriseActivation.create! code: '0123456789', enterprise: ent
 
     get :activation_question, :enterprise_code => '0123456789'
 
@@ -364,10 +371,7 @@ class AccountControllerTest < ActionController::TestCase
     login_as(person.identifier)
 
     ent = fast_create(Enterprise, :name => 'test enterprise', :identifier => 'test_ent', :enabled => false)
-
-    task = mock
-    task.expects(:enterprise).returns(ent).at_least_once
-    EnterpriseActivation.expects(:find_by_code).with('0123456789').returns(task).at_least_once
+    EnterpriseActivation.create! code: '0123456789', enterprise: ent
 
     get :activation_question, :enterprise_code => '0123456789'
 
@@ -380,10 +384,7 @@ class AccountControllerTest < ActionController::TestCase
 
     ent = fast_create(Enterprise, :name => 'test enterprise', :identifier => 'test_ent', :enabled => false)
     ent.update_attribute(:foundation_year, 1998)
-
-    task = mock
-    task.expects(:enterprise).returns(ent).at_least_once
-    EnterpriseActivation.expects(:find_by_code).with('0123456789').returns(task).at_least_once
+    EnterpriseActivation.create! code: '0123456789', enterprise: ent
 
     get :activation_question, :enterprise_code => '0123456789'
 
@@ -396,10 +397,7 @@ class AccountControllerTest < ActionController::TestCase
 
     ent = fast_create(Enterprise, :name => 'test enterprise', :identifier => 'test_ent', :enabled => false)
     ent.update_attribute(:cnpj, '0'*14)
-
-    task = mock
-    task.expects(:enterprise).returns(ent).at_least_once
-    EnterpriseActivation.expects(:find_by_code).with('0123456789').returns(task).at_least_once
+    EnterpriseActivation.create! code: '0123456789', enterprise: ent
 
     get :activation_question, :enterprise_code => '0123456789'
 
@@ -413,10 +411,7 @@ class AccountControllerTest < ActionController::TestCase
     ent = fast_create(Enterprise, :name => 'test enterprise', :identifier => 'test_ent', :enabled => false)
     ent.update_attribute(:foundation_year, 1998)
     ent.block
-
-    task = mock
-    task.expects(:enterprise).returns(ent).at_least_once
-    EnterpriseActivation.expects(:find_by_code).with('0123456789').returns(task).at_least_once
+    EnterpriseActivation.create! code: '0123456789', enterprise: ent
 
     get :activation_question, :enterprise_code => '0123456789'
 
@@ -429,10 +424,7 @@ class AccountControllerTest < ActionController::TestCase
 
     ent = fast_create(Enterprise, :name => 'test enterprise', :identifier => 'test_ent', :enabled => false)
     ent.update_attribute(:foundation_year, 1998)
-
-    task = mock
-    task.expects(:enterprise).returns(ent).at_least_once
-    EnterpriseActivation.expects(:find_by_code).with('0123456789').returns(task).at_least_once
+    EnterpriseActivation.create! code: '0123456789', enterprise: ent
 
     get :activation_question, :enterprise_code => '0123456789'
 
@@ -442,10 +434,7 @@ class AccountControllerTest < ActionController::TestCase
   should 'require login for accept terms' do
     ent = fast_create(Enterprise, :name => 'test enterprise', :identifier => 'test_ent', :enabled => false)
     ent.update_attribute(:foundation_year, 1998)
-
-    task = mock
-    task.expects(:enterprise).returns(ent).never
-    EnterpriseActivation.expects(:find_by_code).with('0123456789').returns(task).never
+    EnterpriseActivation.create! code: '0123456789', enterprise: ent
 
     post :accept_terms, :enterprise_code => '0123456789', :answer => '1998'
 
@@ -458,16 +447,13 @@ class AccountControllerTest < ActionController::TestCase
 
     ent = fast_create(Enterprise, :name => 'test enterprise', :identifier => 'test_ent', :enabled => false)
     ent.update_attribute(:foundation_year, 1998)
-
-    task = mock
-    task.expects(:enterprise).returns(ent).at_least_once
-    EnterpriseActivation.expects(:find_by_code).with('0123456789').returns(task).at_least_once
+    EnterpriseActivation.create! code: '0123456789', enterprise: ent
 
     post :accept_terms, :enterprise_code => '0123456789', :answer => '1997'
 
     ent.reload
 
-    assert_nil User.find_by_login('test_user')
+    assert_nil User.find_by(login: 'test_user')
     assert ent.blocked?
     assert_template 'blocked'
   end
@@ -482,8 +468,7 @@ class AccountControllerTest < ActionController::TestCase
 
     ent = fast_create(Enterprise, :name => 'test enterprise', :identifier => 'test_ent', :enabled => false)
     ent.update_attribute(:foundation_year, 1998)
-    task = EnterpriseActivation.create!(:enterprise => ent)
-    EnterpriseActivation.expects(:find_by_code).with('0123456789').returns(task).at_least_once
+    EnterpriseActivation.create! code: '0123456789', enterprise: ent
 
     post :accept_terms, :enterprise_code => '0123456789', :answer => '1998'
 
@@ -499,10 +484,7 @@ class AccountControllerTest < ActionController::TestCase
     ent.update_attribute(:foundation_year, 1998)
     ent.block
     ent.save
-
-    task = mock
-    task.expects(:enterprise).returns(ent).at_least_once
-    EnterpriseActivation.expects(:find_by_code).with('0123456789').returns(task).at_least_once
+    EnterpriseActivation.create! code: '0123456789', enterprise: ent
 
     get :accept_terms, :enterprise_code => '0123456789', :answer => 1998
 
@@ -515,8 +497,7 @@ class AccountControllerTest < ActionController::TestCase
     env.save!
     ent = fast_create(Enterprise, :name => 'test enterprise', :identifier => 'test_ent', :enabled => false)
     ent.update_attribute(:foundation_year, 1998)
-    task = EnterpriseActivation.create!(:enterprise => ent)
-    EnterpriseActivation.expects(:find_by_code).with('0123456789').returns(task).never
+    EnterpriseActivation.create! code: '0123456789', enterprise: ent
 
     post :activate_enterprise, :enterprise_code => '0123456789', :answer => '1998', :terms_accepted => true
 
@@ -524,29 +505,27 @@ class AccountControllerTest < ActionController::TestCase
   end
 
   should 'not activate if user does not accept terms' do
-    ent = fast_create(Enterprise, :name => 'test enterprise', :identifier => 'test_ent', :enabled => false)
-    ent.update_attribute(:foundation_year, 1998)
     p = create_user('test_user', :password => 'blih', :password_confirmation => 'blih', :email => 'test@noosfero.com').person
     login_as(p.identifier)
 
-    task = EnterpriseActivation.create!(:enterprise => ent)
-    EnterpriseActivation.expects(:find_by_code).with('0123456789').returns(task).at_least_once
+    ent = fast_create(Enterprise, :name => 'test enterprise', :identifier => 'test_ent', :enabled => false)
+    ent.update_attribute(:foundation_year, 1998)
+    EnterpriseActivation.create! code: '0123456789', enterprise: ent
 
     post :activate_enterprise, :enterprise_code => '0123456789', :answer => '1998', :terms_accepted => false
     ent.reload
 
-    assert !ent.enabled
+    refute ent.enabled
     assert_not_includes ent.members, p
   end
 
   should 'activate enterprise and make logged user admin' do
-    ent = fast_create(Enterprise, :name => 'test enterprise', :identifier => 'test_ent', :enabled => false)
-    ent.update_attribute(:foundation_year, 1998)
     p = create_user('test_user', :password => 'blih', :password_confirmation => 'blih', :email => 'test@noosfero.com').person
     login_as(p.identifier)
 
-    task = EnterpriseActivation.create!(:enterprise => ent)
-    EnterpriseActivation.expects(:find_by_code).with('0123456789').returns(task).at_least_once
+    ent = fast_create(Enterprise, :name => 'test enterprise', :identifier => 'test_ent', :enabled => false)
+    ent.update_attribute(:foundation_year, 1998)
+    EnterpriseActivation.create! code: '0123456789', enterprise: ent
 
     post :activate_enterprise, :enterprise_code => '0123456789', :answer => '1998', :terms_accepted => true
     ent.reload
@@ -564,8 +543,7 @@ class AccountControllerTest < ActionController::TestCase
     env.save!
     ent = fast_create(Enterprise, :name => 'test enterprise', :identifier => 'test_ent', :enabled => false)
     ent.update_attribute(:foundation_year, 1998)
-    task = EnterpriseActivation.create!(:enterprise => ent)
-    EnterpriseActivation.expects(:find_by_code).with('0123456789').returns(task).at_least_once
+    EnterpriseActivation.create! code: '0123456789', enterprise: ent
 
     post :activate_enterprise, :enterprise_code => '0123456789', :answer => '1998', :terms_accepted => true
 
@@ -623,6 +601,11 @@ class AccountControllerTest < ActionController::TestCase
     end
   end
 
+  should 'fill session for new users' do
+    post :signup, :user => { :login => 'testuser', :password => '123456', :password_confirmation => '123456', :email => 'testuser@example.com' }, :profile_data => { :organization => 'example.com' }
+    assert_equal assigns(:user).session, session
+  end
+
   should 'signup filling in mandatory person fields' do
     Person.any_instance.stubs(:required_fields).returns(['organization'])
     assert_difference 'User.count' do
@@ -653,7 +636,7 @@ class AccountControllerTest < ActionController::TestCase
     env.enable('skip_new_user_email_confirmation')
     env.save!
     new_user(:login => 'activated_user')
-    user = User.find_by_login('activated_user')
+    user = User.find_by(login: 'activated_user')
     assert user.activated?
   end
 
@@ -705,25 +688,27 @@ class AccountControllerTest < ActionController::TestCase
   should 'merge user data with extra stuff from plugins' do
     class Plugin1 < Noosfero::Plugin
       def user_data_extras
-        {:foo => 'bar'}
+        {:foo => 'bar'.html_safe }
       end
     end
 
     class Plugin2 < Noosfero::Plugin
       def user_data_extras
-        {:test => 5}
+        proc do
+          {:test => 5}
+        end
       end
     end
     Noosfero::Plugin.stubs(:all).returns([Plugin1.name, Plugin2.name])
 
-    e = User.find_by_login('ze').environment
+    e = User.find_by(login: 'ze').environment
     e.enable_plugin(Plugin1.name)
     e.enable_plugin(Plugin2.name)
 
     login_as 'ze'
 
     xhr :get, :user_data
-    assert_equal User.find_by_login('ze').data_hash(@controller.gravatar_default).merge({ 'foo' => 'bar', 'test' => 5 }), ActiveSupport::JSON.decode(@response.body)
+    assert_equal User.find_by(login: 'ze').data_hash(@controller.gravatar_default).merge({ 'foo' => 'bar', 'test' => 5 }), ActiveSupport::JSON.decode(@response.body)
   end
 
   should 'activate user when activation code is present and correct' do
@@ -742,6 +727,8 @@ class AccountControllerTest < ActionController::TestCase
     get :activate
     assert_nil assigns(:message)
     post :login, :user => {:login => 'testuser', :password => 'test123'}
+
+    assert_match 'not activated', session[:notice]
     assert_nil session[:user]
   end
 
@@ -751,6 +738,8 @@ class AccountControllerTest < ActionController::TestCase
     get :activate, :activation_code => 'wrongcode'
     assert_nil assigns(:message)
     post :login, :user => {:login => 'testuser', :password => 'test123'}
+
+    assert_match 'not activated', session[:notice]
     assert_nil session[:user]
   end
 
@@ -797,12 +786,12 @@ class AccountControllerTest < ActionController::TestCase
   should 'add extra content on signup forms from plugins' do
     class Plugin1 < Noosfero::Plugin
       def signup_extra_contents
-        proc {"<strong>Plugin1 text</strong>"}
+        proc {"<strong>Plugin1 text</strong>".html_safe}
       end
     end
     class Plugin2 < Noosfero::Plugin
       def signup_extra_contents
-        proc {"<strong>Plugin2 text</strong>"}
+        proc {"<strong>Plugin2 text</strong>".html_safe}
       end
     end
     Noosfero::Plugin.stubs(:all).returns([Plugin1.name, Plugin2.name])
@@ -919,12 +908,12 @@ class AccountControllerTest < ActionController::TestCase
   should 'add extra content on login form from plugins' do
     class Plugin1 < Noosfero::Plugin
       def login_extra_contents
-        proc {"<strong>Plugin1 text</strong>"}
+        proc {"<strong>Plugin1 text</strong>".html_safe}
       end
     end
     class Plugin2 < Noosfero::Plugin
       def login_extra_contents
-        proc {"<strong>Plugin2 text</strong>"}
+        proc {"<strong>Plugin2 text</strong>".html_safe}
       end
     end
     Noosfero::Plugin.stubs(:all).returns([Plugin1.name, Plugin2.name])
@@ -1026,4 +1015,15 @@ class AccountControllerTest < ActionController::TestCase
                                 :national_region_type_id => NationalRegionType::CITY,
                                 :parent_national_region_code => parent_region.national_region_code)
   end
+
+  should 'not lock users out of login if environment is restrict to members' do
+    Environment.default.enable(:restrict_to_members)
+    get :login
+    assert_response :success
+
+    post :login, :user => {:login => 'johndoe', :password => 'test'}
+    assert session[:user]
+    assert_response :redirect
+  end
+
 end

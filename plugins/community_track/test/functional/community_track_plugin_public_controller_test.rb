@@ -1,8 +1,5 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require File.dirname(__FILE__) + '/../../controllers/public/community_track_plugin_public_controller'
-
-# Re-raise errors caught by the controller.
-class CommunityTrackPluginPublicController; def rescue_action(e) raise e end; end
+require_relative '../test_helper'
+require_relative '../../controllers/public/community_track_plugin_public_controller'
 
 class CommunityTrackPluginPublicControllerTest < ActionController::TestCase
 
@@ -52,7 +49,7 @@ class CommunityTrackPluginPublicControllerTest < ActionController::TestCase
   should 'do not show more link in all tracks if there is no more tracks to show' do
     CommunityTrackPlugin::Track.destroy_all
     get :all_tracks, :id => @block.id
-    assert !assigns['show_more']
+    refute assigns['show_more']
     assert_no_match /track_list_more_#{@block.id}/, @response.body
   end
 
@@ -98,6 +95,21 @@ class CommunityTrackPluginPublicControllerTest < ActionController::TestCase
     post :select_community, :profile => user.person.identifier, :community_identifier => nil
     assert_equal 1, assigns(:failed).count
     assert_tag :tag => 'div', :attributes => {:id => 'errorExplanation'}
+  end
+
+  should 'do not repeat tracks when paging a block with random order' do
+    @track.destroy
+    @block.order = 'random'
+    @block.save!
+
+    per_page = 4
+    (per_page*3).times {|i| create_track("track_#{i}", @community) }
+
+    tracks = 3.times.flat_map do |i|
+      xhr :get, :view_tracks, :id => @block.id, :page => i+1, :per_page => per_page
+      assigns[:tracks].all
+    end
+    assert_equal tracks.count, tracks.uniq.count
   end
 
 end

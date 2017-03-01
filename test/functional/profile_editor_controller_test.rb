@@ -1,16 +1,12 @@
 require_relative "../test_helper"
 require 'profile_editor_controller'
 
-# Re-raise errors caught by the controller.
-class ProfileEditorController; def rescue_action(e) raise e end; end
-
 class ProfileEditorControllerTest < ActionController::TestCase
   all_fixtures
 
   def setup
     @controller = ProfileEditorController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+
     @profile = create_user('default_user').person
     Environment.default.affiliate(@profile, [Environment::Roles.admin(Environment.default.id)] + Profile::Roles.all_roles(Environment.default.id))
     login_as('default_user')
@@ -199,7 +195,7 @@ class ProfileEditorControllerTest < ActionController::TestCase
   end
 
   should 'display properly that the profile is non-public' do
-    profile.update_attributes!(:public_profile => false)
+    profile.update!(:public_profile => false)
     get :edit, :profile => profile.identifier
     assert_tag :tag => 'input', :attributes => { :type => 'radio', :checked => 'checked', :name => 'profile_data[public_profile]', :value => 'false' }
     assert_tag :tag => 'input', :attributes => { :type => 'radio', :name => 'profile_data[public_profile]', :value => 'true' }
@@ -230,7 +226,7 @@ class ProfileEditorControllerTest < ActionController::TestCase
 
   should 'back when update community info fail' do
     org = fast_create(Community)
-    Community.any_instance.expects(:update_attributes!).raises(ActiveRecord::RecordInvalid)
+    Community.any_instance.expects(:update!).raises(ActiveRecord::RecordInvalid)
     post :edit, :profile => org.identifier
 
     assert_template 'edit'
@@ -240,7 +236,7 @@ class ProfileEditorControllerTest < ActionController::TestCase
   should 'back when update enterprise info fail' do
     org = fast_create(Enterprise)
 
-    Enterprise.any_instance.expects(:update_attributes!).raises(ActiveRecord::RecordInvalid)
+    Enterprise.any_instance.expects(:update!).raises(ActiveRecord::RecordInvalid)
     post :edit, :profile => org.identifier
     assert_template 'edit'
     assert_response :success
@@ -333,7 +329,7 @@ class ProfileEditorControllerTest < ActionController::TestCase
 
     post :edit, :profile => org.identifier, :profile_data => { :closed => 'false' }
     org.reload
-    assert !org.closed
+    refute org.closed
   end
 
   should 'not display option to close when it is enterprise' do
@@ -395,8 +391,6 @@ class ProfileEditorControllerTest < ActionController::TestCase
     user2 = create_user('usertwo').person
     AddFriend.create!(:person => user1, :friend => user2)
     @controller.stubs(:user).returns(user2)
-    user2.stubs(:has_permission?).with('edit_profile', anything).returns(true)
-    user2.expects(:has_permission?).with(:manage_friends, anything).returns(true)
     login_as('usertwo')
     get :index, :profile => 'usertwo'
     assert_tag :tag => 'div', :attributes => { :class => 'pending-tasks' }
@@ -404,14 +398,32 @@ class ProfileEditorControllerTest < ActionController::TestCase
 
   should 'not show task if user has no permission' do
     user1 = profile
+    community = fast_create(Community)
     user2 = create_user('usertwo').person
-    task = AddFriend.create!(:person => user1, :friend => user2)
+    task = AddMember.create!(person: user1, organization: community)
     @controller.stubs(:user).returns(user2)
-    user2.stubs(:has_permission?).with('edit_profile', anything).returns(true)
-    user2.expects(:has_permission?).with(:manage_friends, anything).returns(false)
+    give_permission(user2, 'invite_members', community)
     login_as('usertwo')
     get :index, :profile => 'usertwo'
     assert_no_tag :tag => 'div', :attributes => { :class => 'pending-tasks' }
+  end
+
+  should 'limit task list' do
+    user2 = create_user('usertwo').person
+    6.times { AddFriend.create!(:person => create_user.person, :friend => user2) }
+    login_as('usertwo')
+    get :index, :profile => 'usertwo'
+    assert_select '.pending-tasks > ul > li', 5
+  end
+
+  should 'display task count in task list' do
+    user2 = create_user('usertwo').person
+    6.times { AddFriend.create!(:person => create_user.person, :friend => user2) }
+    login_as('usertwo')
+    get :index, :profile => 'usertwo'
+    assert_select '.pending-tasks h2' do |elements|
+      assert_match /6/, elements.first.content
+    end
   end
 
   should 'show favorite enterprises button for person' do
@@ -477,13 +489,13 @@ class ProfileEditorControllerTest < ActionController::TestCase
   should 'not enable enterprise without confirmation' do
     ent = fast_create(Enterprise, :enabled => false)
     post :enable, :profile => ent.identifier
-    assert !assigns(:to_enable).enabled?
+    refute assigns(:to_enable).enabled?
   end
 
   should 'disable enterprise after confirmation' do
     ent = fast_create(Enterprise, :enabled => true)
     post :disable, :profile => ent.identifier, :confirmation => 1
-    assert !assigns(:to_disable).enabled?
+    refute assigns(:to_disable).enabled?
   end
 
   should 'not disable enterprise without confirmation' do
@@ -522,8 +534,8 @@ class ProfileEditorControllerTest < ActionController::TestCase
 
   should 'render TinyMce Editor for header and footer' do
     get :header_footer, :profile => profile.identifier
-    assert_tag :tag => 'textarea', :attributes => { :id => 'custom_header', :class => 'mceEditor' }
-    assert_tag :tag => 'textarea', :attributes => { :id => 'custom_footer', :class => 'mceEditor' }
+    assert_tag :tag => 'textarea', :attributes => { :id => 'custom_header', :class => Article::Editor::TINY_MCE }
+    assert_tag :tag => 'textarea', :attributes => { :id => 'custom_footer', :class => Article::Editor::TINY_MCE }
   end
 
   should 'save footer and header' do
@@ -582,20 +594,6 @@ class ProfileEditorControllerTest < ActionController::TestCase
     assert_tag :tag => 'a', :attributes => { :href => "/myprofile/#{enterprise.identifier}/profile_editor/header_footer" }
   end
 
-  should 'not list the manage products button if the environment disabled it' do
-    env = Environment.default
-    env.disable('products_for_enterprises')
-    env.save!
-    ent = fast_create(Enterprise)
-
-    u = create_user_with_permission('test_user', 'edit_profile', ent)
-    login_as('test_user')
-
-    get :index, :profile => ent.identifier
-
-    assert_no_tag :tag => 'span', :content => 'Manage Products and Services'
-  end
-
   should 'display categories if environment disable_categories disabled' do
     Environment.any_instance.stubs(:enabled?).with(anything).returns(false)
     get :edit, :profile => profile.identifier
@@ -626,6 +624,17 @@ class ProfileEditorControllerTest < ActionController::TestCase
     assert_tag :tag => 'a', :attributes => { :href => '/myprofile/default_user/cms' }
   end
 
+  should 'display email template link for organizations in control panel' do
+    profile = fast_create(Organization)
+    get :index, :profile => profile.identifier
+    assert_tag :tag => 'a', :attributes => { :href => "/myprofile/#{profile.identifier}/profile_email_templates" }
+  end
+
+  should 'not display email template link in control panel for person' do
+    get :index, :profile => profile.identifier
+    assert_no_tag :tag => 'a', :attributes => { :href => "/myprofile/#{profile.identifier}/email_templates" }
+  end
+
   should 'offer to create blog in control panel' do
     get :index, :profile => profile.identifier
     assert_tag :tag => 'a', :attributes => { :href => "/myprofile/default_user/cms/new?type=Blog" }
@@ -649,9 +658,10 @@ class ProfileEditorControllerTest < ActionController::TestCase
 
     profile.domains << Domain.new(:name => 'myowndomain.net')
     profile.environment.domains << Domain.new(:name => 'myenv.net')
-    ActionController::TestRequest.any_instance.stubs(:host).returns(profile.hostname)
 
+    @request.env['HTTP_HOST'] = profile.hostname
     get :edit, :profile => profile.identifier
+
     assert_tag :tag => 'select', :attributes => { :name => 'profile_data[preferred_domain_id]' }, :descendant => { :tag => "option", :content => 'myowndomain.net' }
     assert_tag :tag => 'select', :attributes => { :name => 'profile_data[preferred_domain_id]' }, :descendant => { :tag => "option", :content => 'myenv.net' }
 
@@ -665,9 +675,10 @@ class ProfileEditorControllerTest < ActionController::TestCase
 
     profile.domains << Domain.new(:name => 'myowndomain.net')
     profile.environment.domains << Domain.new(:name => 'myenv.net')
-    ActionController::TestRequest.any_instance.stubs(:host).returns(profile.hostname)
 
+    @request.env['HTTP_HOST'] = profile.hostname
     get :edit, :profile => profile.identifier
+
     assert_tag :tag => "select", :attributes => { :name => 'profile_data[preferred_domain_id]'}, :descendant => { :tag => 'option', :content => '&lt;Select domain&gt;', :attributes => { :value => '' } }
 
     post :edit, :profile => profile.identifier, :profile_data => { :preferred_domain_id => '' }
@@ -804,7 +815,7 @@ class ProfileEditorControllerTest < ActionController::TestCase
   end
 
   should 'show profile nickname on title' do
-    profile.update_attributes(:nickname => 'my nick')
+    profile.update(:nickname => 'my nick')
     get :index, :profile => profile.identifier
     assert_tag :tag => 'h1', :attributes => { :class => 'block-title'}, :descendant => {
       :tag => 'span', :attributes => { :class => 'control-panel-title' }, :content => 'my nick'
@@ -822,6 +833,38 @@ class ProfileEditorControllerTest < ActionController::TestCase
     community = fast_create(Community)
     get :destroy_profile, :profile => community.identifier
     assert_template 'destroy_profile'
+  end
+
+  should 'not be able to destroy profile if forbid_destroy_profile is enabled' do
+    environment = Environment.default
+    user = create_user('user').person
+    login_as('user')
+    environment.enable('forbid_destroy_profile')
+    assert_no_difference 'Profile.count' do
+      post :destroy_profile, :profile => user.identifier
+    end
+  end
+
+  should 'display destroy_profile button' do
+    environment = Environment.default
+    user = create_user_with_permission('user', 'destroy_profile')
+    login_as('user')
+    community = fast_create(Community)
+    community.add_admin(user)
+    get :edit, :profile => community.identifier
+    assert_tag :tag => 'a', :attributes => { :href => "/myprofile/#{community.identifier}/profile_editor/destroy_profile" }
+  end
+
+  should 'not display destroy_profile button' do
+    environment = Environment.default
+    environment.enable('forbid_destroy_profile')
+    environment.save!
+    user = create_user_with_permission('user', 'destroy_profile')
+    login_as('user')
+    community = fast_create(Community)
+    community.add_admin(user)
+    get :edit, :profile => community.identifier
+    assert_no_tag :tag => 'a', :attributes => { :href => "/myprofile/#{community.identifier}/profile_editor/destroy_profile" }
   end
 
   should 'be able to destroy a person' do
@@ -883,7 +926,7 @@ class ProfileEditorControllerTest < ActionController::TestCase
   should 'have welcome_page only for template' do
     organization = fast_create(Organization, :is_template => false)
     @controller.stubs(:profile).returns(organization)
-    assert !@controller.send(:has_welcome_page)
+    refute @controller.send(:has_welcome_page)
 
     organization = fast_create(Organization, :is_template => true)
     @controller.stubs(:profile).returns(organization)
@@ -891,7 +934,7 @@ class ProfileEditorControllerTest < ActionController::TestCase
 
     person = fast_create(Person, :is_template => false)
     @controller.stubs(:profile).returns(person)
-    assert !@controller.send(:has_welcome_page)
+    refute @controller.send(:has_welcome_page)
 
     person = fast_create(Person, :is_template => true)
     @controller.stubs(:profile).returns(person)
@@ -916,14 +959,14 @@ class ProfileEditorControllerTest < ActionController::TestCase
 
   should 'create welcome_page with public false by default' do
     get :welcome_page, :profile => fast_create(Person, :is_template => true).identifier
-    assert !assigns(:welcome_page).published
+    refute assigns(:welcome_page).published
   end
 
   should 'update welcome page and redirect to index' do
     person_template = create_user('person_template').person
     person_template.is_template = true
 
-    welcome_page = fast_create(TinyMceArticle, :body => 'Initial welcome page')
+    welcome_page = fast_create(TextArticle, :body => 'Initial welcome page')
     person_template.welcome_page = welcome_page
     person_template.save!
     welcome_page.profile = person_template
@@ -962,7 +1005,7 @@ class ProfileEditorControllerTest < ActionController::TestCase
   should 'add extra content provided by plugins on edit' do
     class TestProfileEditPlugin < Noosfero::Plugin
       def profile_editor_extras
-        "<input id='field_added_by_plugin' value='value_of_field_added_by_plugin'/>"
+        "<input id='field_added_by_plugin' value='value_of_field_added_by_plugin'/>".html_safe
       end
     end
     Noosfero::Plugin.stubs(:all).returns([TestProfileEditPlugin.to_s])
@@ -978,7 +1021,7 @@ class ProfileEditorControllerTest < ActionController::TestCase
     class TestProfileEditPlugin < Noosfero::Plugin
       def profile_editor_extras
         lambda do
-          render :text => "<input id='field_added_by_plugin' value='value_of_field_added_by_plugin'/>"
+          (render :text => "<input id='field_added_by_plugin' value='value_of_field_added_by_plugin'/>".html_safe).html_safe
         end
       end
     end
@@ -1003,12 +1046,12 @@ class ProfileEditorControllerTest < ActionController::TestCase
   should 'add extra content on person info from plugins' do
     class Plugin1 < Noosfero::Plugin
       def profile_info_extra_contents
-        proc {"<strong>Plugin1 text</strong>"}
+        proc {"<strong>Plugin1 text</strong>".html_safe}
       end
     end
     class Plugin2 < Noosfero::Plugin
       def profile_info_extra_contents
-        proc {"<strong>Plugin2 text</strong>"}
+        proc {"<strong>Plugin2 text</strong>".html_safe}
       end
     end
     Noosfero::Plugin.stubs(:all).returns([Plugin1.to_s, Plugin2.to_s])
@@ -1025,12 +1068,12 @@ class ProfileEditorControllerTest < ActionController::TestCase
   should 'add extra content on organization info from plugins' do
     class Plugin1 < Noosfero::Plugin
       def profile_info_extra_contents
-        proc {"<strong>Plugin1 text</strong>"}
+        proc {"<strong>Plugin1 text</strong>".html_safe}
       end
     end
     class Plugin2 < Noosfero::Plugin
       def profile_info_extra_contents
-        proc {"<strong>Plugin2 text</strong>"}
+        proc {"<strong>Plugin2 text</strong>".html_safe}
       end
     end
     Noosfero::Plugin.stubs(:all).returns([Plugin1.to_s, Plugin2.to_s])
@@ -1086,49 +1129,11 @@ class ProfileEditorControllerTest < ActionController::TestCase
   should 'not redirect if the profile_hostname is the same as environment hostname' do
     Person.any_instance.stubs(:hostname).returns('hostname.org')
     Environment.any_instance.stubs(:default_hostname).returns('hostname.org')
-    ActionController::TestRequest.any_instance.stubs(:host).returns('hostname.org')
+
+    @request.env['HTTP_HOST'] = 'hostname.org'
     get :index, :profile => profile.identifier
+
     assert_response :success
-  end
-
-  should 'display field to choose number of products if enterprise and enabled on environment' do
-    enterprise = fast_create(Enterprise)
-    enterprise.environment.enable('products_for_enterprises')
-    get :edit, :profile => enterprise.identifier
-    assert_tag :tag => 'div', :descendant => { :tag => 'h2', :content => 'Products/Services catalog' }
-    assert_tag :tag => 'div',
-               :attributes => { :class => 'formfield type-text' },
-               :descendant => {:tag => 'input', :attributes => {:id => 'profile_data_products_per_catalog_page'} }
-  end
-
-  should 'not display field to choose number of products if enterprise but disabled on environment' do
-    enterprise = fast_create(Enterprise)
-    enterprise.environment.disable('products_for_enterprises')
-    get :edit, :profile => enterprise.identifier
-    assert_no_tag :tag => 'div', :descendant => { :tag => 'h2', :content => 'Products/Services catalog' }
-    assert_no_tag :tag => 'div',
-               :attributes => { :class => 'formfield type-text' },
-               :descendant => {:tag => 'input', :attributes => {:id => 'profile_data_products_per_catalog_page'} }
-  end
-
-  should 'not display field to choose number of products if enabled on environment but not enterprise' do
-    community = fast_create(Community)
-    community.environment.enable('products_for_enterprises')
-    get :edit, :profile => community.identifier
-    assert_no_tag :tag => 'div', :descendant => { :tag => 'h2', :content => 'Products/Services catalog' }
-    assert_no_tag :tag => 'div',
-               :attributes => { :class => 'formfield type-text' },
-               :descendant => {:tag => 'input', :attributes => {:id => 'profile_data_products_per_catalog_page'} }
-  end
-
-  should 'not display field to choose number of products if disabled on environment and not enterprise' do
-    community = fast_create(Community)
-    community.environment.disable('products_for_enterprises')
-    get :edit, :profile => community.identifier
-    assert_no_tag :tag => 'div', :descendant => { :tag => 'h2', :content => 'Products/Services catalog' }
-    assert_no_tag :tag => 'div',
-               :attributes => { :class => 'formfield type-text' },
-               :descendant => {:tag => 'input', :attributes => {:id => 'profile_data_products_per_catalog_page'} }
   end
 
   should 'show head and footer for admin' do
@@ -1153,56 +1158,42 @@ class ProfileEditorControllerTest < ActionController::TestCase
     assert_tag :tag => 'div', :descendant => { :tag => 'a', :content => 'Edit Header and Footer' }
   end
 
-  should 'deactivate organization profile' do
-    @request.env['HTTP_REFERER'] = 'http://localhost:3000/admin/admin_panel/manage_organizations_status'
-    user = create_user('user').person
-    Environment.default.add_admin user
-    login_as('user')
+  should 'user cant edit header and footer if environment dont permit' do
+    environment = Environment.default
+    environment.settings[:disable_header_and_footer_enabled] = true
+    environment.save!
 
-    community = fast_create(Community)
-    assert_equal true, community.enable
-
-    get :index, :profile => community.identifier
-    get :deactivate_profile, {:profile => community.identifier, :id => community.id}
-    assert_equal @request.session[:notice], "The profile '#{community.name}' was deactivated."
-  end
-
-  should 'activate organization profile' do
-    @request.env['HTTP_REFERER'] = 'http://localhost:3000/admin/admin_panel/manage_organizations_status'
-    user = create_user('user').person
-    Environment.default.add_admin user
-    login_as('user')
-
-    community = fast_create(Community)
-    assert_equal true, community.disable
-
-    get :index, :profile => community.identifier
-    get :activate_profile, {:profile => community.identifier, :id => community.id}
-    assert_equal @request.session[:notice], "The profile '#{community.name}' was activated."
-  end
-
-  should 'not deactivate organization profile if user is not an admin' do
-    @request.env['HTTP_REFERER'] = 'http://localhost:3000/admin/admin_panel/manage_organizations_status'
     user = create_user('user').person
     login_as('user')
 
-    community = fast_create(Community)
-    get :index, :profile => community.identifier
-    get :deactivate_profile, {:profile => community.identifier, :id => community.id}
-    assert_not_equal @request.session[:notice], "The profile '#{community.name}' was disabled."
+    get :header_footer, :profile => user.identifier
+    assert_response :redirect
   end
 
-  should 'destroy organization profile' do
-    @request.env['HTTP_REFERER'] = 'http://localhost:3000/admin/admin_panel/manage_organizations_status'
+  should 'admin can edit header and footer if environment dont permit' do
     user = create_user('user').person
-    Environment.default.add_admin user
+
+    environment = Environment.default
+    environment.add_admin(user)
+    environment.settings[:disable_header_and_footer_enabled] = true
+    environment.save!
+
     login_as('user')
 
-    community = fast_create(Community)
-    assert_equal true, community.enable
-
-    get :index, :profile => community.identifier
-    post :destroy_profile, {:profile => community.identifier, :id => community.id}
-    assert_equal @request.session[:notice], "The profile was deleted."
+    get :header_footer, :profile => user.identifier
+    assert_response :success
   end
+
+  should 'not display button to manage roles on control panel of person' do
+    get :index, :profile => profile.identifier
+    assert_no_tag :tag => 'a', :attributes => { :href => "/myprofile/default_user/profile_roles" }
+  end
+
+  should 'save profile admin option to receive email for every task' do
+    comm = fast_create(Community)
+    assert comm.profile_admin_mail_notification
+    post :edit, :profile => comm.identifier, :profile_data => { :profile_admin_mail_notification => '0' }
+    refute comm.reload.profile_admin_mail_notification
+  end
+
 end

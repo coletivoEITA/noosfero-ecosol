@@ -3,12 +3,13 @@
 $actions-bg: #D7FFB9;
 
 #actions-box {
-  background: $actions-bg;
+  background-color: #fafafa;
+  width: $wireframe;
 
   &.wireframe-size {
-    margin-left: -($wireframe-padding);
-    margin-right: -($wireframe-padding);
-    padding: $padding ($wireframe-padding + $padding);
+    margin-left: -($wireframe-padding - $border);
+    margin-right: -($wireframe-padding - $border);
+    padding: $padding ($wireframe-padding)/2;
   }
 
   .labels, .buttons {

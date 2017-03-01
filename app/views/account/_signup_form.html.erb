@@ -1,12 +1,3 @@
-<% if @block_bot %>
-  <div class="atention" style="font-size: 150%;">
-    <strong><%=_('Are you a robot?')%></strong> <br />
-    <%=_('Please, prove that you are human by filling the captcha.')%>
-  </div>
-<% end %>
-
-<% @profile_data = @person %>
-
 <%= javascript_include_tag('sign_up_password_rate') %>
 
 <%= error_messages_for :user, :person, :header_message => _('The account could not be created') %>
@@ -107,14 +98,14 @@
     <%= render :partial => 'profile_editor/person_form', :locals => {:f => f} %>
   <% end %>
 
-  <%= @plugins.dispatch(:signup_extra_contents).collect { |content| instance_eval(&content) }.join("") %>
+  <%= safe_join(@plugins.dispatch(:signup_extra_contents).collect { |content| instance_eval(&content) }, "") %>
 
   <%# FIXME: not for final users %>
   <%# template_options(:people, 'profile_data') %>
 
   <% unless @terms_of_use.blank? %>
     <div id='terms-of-use-box' class='formfieldline'>
-      <%= labelled_check_box(_('I accept the %s') % link_to(_('terms of use'), {:controller => 'home', :action => 'terms'}, :target => '_blank'), 'user[terms_accepted]') %>
+      <%= labelled_check_box(_('I accept the %s').html_safe % link_to(_('terms of use'), {:controller => 'home', :action => 'terms'}, :target => '_blank'), 'user[terms_accepted]') %>
     </div>
   <% end %>
 
@@ -126,7 +117,8 @@
   <% end %>
 </div>
 
-<%= render 'shared/captcha' if @block_bot %>
+<%= recaptcha_tags :ajax => true, :display => {:theme => 'clean'} if @block_bot %>
+<%= render :partial => 'shared/custom_fields', :locals => {:f => f, :profile => @person, :signup => true} %>
 
 <p style="text-align: center">
   <%= submit_button('save', _('Create my account')) %>

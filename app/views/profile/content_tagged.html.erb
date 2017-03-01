@@ -5,7 +5,7 @@
 <h1><%= _('Content tagged with "%s"') % escaped_tag %></h1>
 
 <p>
-<%= link_to image_tag('icons-mime/rss-feed.png', :alt => _('Feed for this tag'), :title => _('Feed for this tag')), tag_feed_path, :class => 'blog-feed-link'%>
+<%= link_to image_tag('/images/icons-mime/rss-feed.png', :alt => _('Feed for this tag'), :title => _('Feed for this tag')), tag_feed_path, :class => 'blog-feed-link'%>
 </p>
 
 <% cache_timeout(@tag_cache_key, 4.hour) do %>
@@ -20,6 +20,6 @@
   <%= pagination_links @tagged, :param_name => 'npage' %>
 
   <div>
-    <%= link_to _('See content tagged with "%s" in the entire site') % escaped_tag, :controller => 'search', :action => 'tag', :tag => @tag %>
+    <%= link_to (_('See content tagged with "%s" in the entire site') % escaped_tag).html_safe, :controller => 'search', :action => 'tag', :tag => @tag %>
   </div>
 <% end %>

@@ -15,8 +15,8 @@ class ModerateUserRegistrationTest < ActiveSupport::TestCase
     t.email = user.email
     t.target= environment
     t.save!
-    assert !user.activated?
+    refute user.activated?
     t.perform
-    assert environment.users.find_by_id(user.id).activated?
+    assert environment.users.find_by(id: user.id).activated?
   end
 end

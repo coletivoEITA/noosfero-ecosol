@@ -37,7 +37,7 @@ Feature: comment
     And I fill in "Title" with "Hey ho, let's go!"
     And I fill in "Enter your comment" with "Hey ho, let's go!"
     When I press "Post comment"
-    Then I should see "Hey ho, let's go"
+    Then I should see "Hey ho, let"
 
   @selenium-fixme
   Scenario: redirect to right place after comment a picture
@@ -96,4 +96,4 @@ Feature: comment
   Scenario: hide post a comment button when clicked
     Given I am on /booking/article-to-comment
     And I follow "Post a comment"
-    Then "Post a comment" should not be visible within "#article"
+    Then "Post comment" should not be visible within "#article"

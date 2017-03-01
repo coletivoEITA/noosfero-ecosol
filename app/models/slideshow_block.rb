@@ -13,7 +13,7 @@ class SlideshowBlock < Block
   end
 
   def gallery
-    gallery_id ? Gallery.find(:first, :conditions => { :id => gallery_id }) : nil
+    if gallery_id then Gallery.where(id: gallery_id).first else nil end
   end
 
   def public_filename_for(image)
@@ -31,23 +31,6 @@ class SlideshowBlock < Block
 
   def block_images
     gallery.images.reject {|item| item.folder?}
-  end
-
-  def content(args={})
-    block = self
-    if gallery
-      images = block_images
-      if shuffle
-        images = images.shuffle
-      end
-      proc do
-        render :file => 'blocks/slideshow', :locals => { :block => block, :images => images }
-      end
-    else
-      proc do
-        render :file => 'blocks/slideshow', :locals => { :block => block, :images => nil }
-      end
-    end
   end
 
   def folder_choices

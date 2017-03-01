@@ -1,14 +1,11 @@
-require File.dirname(__FILE__) + '/../../../../test/test_helper'
-require File.dirname(__FILE__) + '/../../controllers/vote_plugin_profile_controller'
-
-# Re-raise errors caught by the controller.
-class VotePluginProfileController; def rescue_action(e) raise e end; end
+require 'test_helper'
+require_relative '../../controllers/vote_plugin_profile_controller'
 
 class VotePluginProfileControllerTest < ActionController::TestCase
 
   def setup
     @profile = create_user('profile').person
-    @article = TinyMceArticle.create!(:profile => @profile, :name => 'An article')
+    @article = TextArticle.create!(:profile => @profile, :name => 'An article')
     @comment = Comment.new(:source => @article, :author => @profile, :body => 'test')
     @comment.save!
     login_as(@profile.identifier)
@@ -27,12 +24,24 @@ class VotePluginProfileControllerTest < ActionController::TestCase
 
   should 'not vote if value is not allowed' do
     xhr :post, :vote, :profile => profile.identifier, :id => comment.id, :model => 'comment', :vote => 4
-    assert !profile.voted_on?(comment)
+    refute profile.voted_on?(comment)
   end
 
   should 'not vote in a disallowed model' do
     xhr :post, :vote, :profile => profile.identifier, :id => environment.id, :model => 'environment', :vote => 1
     assert profile.votes.empty?
+  end
+
+  should 'not vote if a target is archived' do
+    article = Article.create!(:profile => profile, :name => 'Archived article', :archived => false)
+    comment = Comment.create!(:body => 'Comment test', :source => article, :author => profile)
+    xhr :post, :vote, :profile => profile.identifier, :id => article.id, :model => 'article', :vote => 1
+    assert !profile.votes.empty?
+
+    article.update_attributes(:archived => true)
+    xhr :post, :vote, :profile => profile.identifier, :id => comment.id, :model => 'comment', :vote => 1
+
+    assert !profile.voted_for?(comment)
   end
 
   should 'like comment' do
@@ -43,7 +52,7 @@ class VotePluginProfileControllerTest < ActionController::TestCase
   should 'unlike comment' do
     xhr :post, :vote, :profile => profile.identifier, :id => comment.id, :model => 'comment', :vote => 1
     xhr :post, :vote, :profile => profile.identifier, :id => comment.id, :model => 'comment', :vote => 1
-    assert !profile.voted_for?(comment)
+    refute profile.voted_for?(comment)
   end
 
   should 'dislike comment' do
@@ -54,7 +63,7 @@ class VotePluginProfileControllerTest < ActionController::TestCase
   should 'undislike comment' do
     xhr :post, :vote, :profile => profile.identifier, :id => comment.id, :model => 'comment', :vote => -1
     xhr :post, :vote, :profile => profile.identifier, :id => comment.id, :model => 'comment', :vote => -1
-    assert !profile.voted_against?(comment)
+    refute profile.voted_against?(comment)
   end
 
   should 'dislike a liked comment' do

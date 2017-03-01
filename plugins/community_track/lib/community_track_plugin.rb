@@ -13,7 +13,7 @@ class CommunityTrackPlugin < Noosfero::Plugin
   end
 
   def content_types
-    if context.respond_to?(:params) && context.params
+    if context.kind_of?(CmsController) && context.respond_to?(:params) && context.params
       types = []
       parent_id = context.params[:parent_id]
       types << CommunityTrackPlugin::Track if context.profile.community? && !parent_id
@@ -25,7 +25,7 @@ class CommunityTrackPlugin < Noosfero::Plugin
     end
   end
 
-  def extra_blocks
+  def self.extra_blocks
     { CommunityTrackPlugin::TrackListBlock => {:position => 1}, CommunityTrackPlugin::TrackCardListBlock => {} }
   end
 

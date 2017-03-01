@@ -1,0 +1,286 @@
+product-modal.modal.fade tabindex="-1" role="dialog"
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        .row
+          .col-xs-12.right
+            button type="button" class="close left" data-dismiss="modal" aria-label="Close"
+              span.left.close-text
+                |{t("views.product.close")}
+              span aria-hidden="true"
+                |&times;
+          .col-xs-12
+            h1.title if="{product.id}"
+              |{product.name}
+            h1.title if="{!product.id}"
+              |{t('views.product.add_product')}
+  
+      .modal-body
+        .row
+          .col-xs-12.col-md-5
+            form enctype="multipart/form-data"
+              .form-group
+                .switch
+                  input.cmn-toggle.cmn-toggle-round type="checkbox" id="p-available" checked="{product.available}"
+                  label for="p-available"
+                span.enable_product
+                  |{t("views.product.enable_product")}
+
+              .form-group
+                label for="p-name"
+                  |{t("views.product.product_name")}
+                input type="text" value="{product.name}" id="p-name"
+
+              .form-group
+                select name="supplier_id" id="p-supplier_id" if="{!product.id}"
+                  option each="{id,name in parent.active_suppliers}" value="{id}"
+                    |{name}
+
+              .form-group
+                label for="p-description"
+                  |{t("views.product.description")}
+                textarea value="{product.description}" id="p-description"
+                
+              .form-group
+                label for="p-product_category_id"
+                  |{t("views.product.category")}
+                .white-wrap
+                  input type="text" value="{product.category}" id="p-product_category_id"
+
+              .form-group
+                label for="p-margin_percentage"
+                  |{t("views.product.margin")}
+                input type="number" value="{product.margin_percentage}" id="p-margin_percentage" step="0.01" oninput="{updatePrice}"
+
+              .form-group
+                label for="p-supplier-price"
+                  |{t("views.product.the_supplier_price")}
+                input type="text" value="{product.supplier_price}" id='p-supplier-price' oninput="{updatePrice}"
+
+              .form-group
+                p.final_price
+                  |{t('views.product.final_price_with_margin')}
+                  |&nbsp;
+                p
+                  |{t('views.product.currency')}
+                  |{product.price}
+
+              .form-group
+                label for="p-unit_id"
+                  |{t('views.product.unit')}
+                .white-wrap
+                  input type="text" value="{product.unit}" id="p-unit_id"
+
+              .form-group if="{!product.id}"
+                input type="checkbox" checked="{product.use_stock}" id="p-use_stock"
+                label for="p-use_stock" class="use_stock"
+                  |{t("views.product.use_stock")}
+
+              .form-group if="{!product.id}"
+                label for="p-initial_stock"
+                  |{t("views.product.initial_qtt_stock")}
+                input type="number" id="p-initial_stock"
+
+
+          .col-xs-12.col-md-7
+            .image-block
+              div.image-placeholder
+                img.picture src="{product.image_big}" if="{product.image_big}"
+                img src="" id="image-preview" style="display: none;"
+              .change_image onclick="{uploadImg}"
+                |{t('views.product.change_image')}
+              input type="file" id="image" accept="image/gif, image/jpeg, image/png" onchange="{showImage}" style="visibility: hidden; width: 1px; height: 1px;"
+
+      .modal-footer
+        button onclick="{save}" class="default"
+          |{t('views.product.save')}
+        button onclick="{close}" class="default grey"
+          i class="fa fa-times close-cross"
+          |{t('views.product.cancel')}
+        hr if="{product.id}"
+        a href="" onclick="{remove}" class="remove_product" if="{product.id}"
+          |{t('views.product.remove')}
+        span.warning if="{product.id}"
+          |{t('views.product.remove_warning')}
+          
+
+  javascript:
+    this.t = window.products.t
+
+    this.on('mount', function () {
+      this.parent.typeaheadCategoryInit($('#p-product_category_id'), this.setCategory)
+      this.parent.typeaheadUnitInit($('#p-unit_id'), this.setUnit)
+    })
+
+    setCategory(e, item) {
+      this.product.product_category_id             = item.id
+      this.productItem.product.product_category_id = item.id
+      this.product.category             = item.name
+      this.productItem.product.category = item.name
+      this.productItem.update()
+    }
+
+    setUnit(e, item) {
+      this.product.unit_id             = item.id
+      this.productItem.product.unit_id = item.id
+      this.product.unit                = item.name
+      this.productItem.product.unit    = item.name
+      this.productItem.update()
+    }
+
+    uploadImg() {
+      $('#image').click()
+    }
+
+    updatePrice() {
+      // update variables from form
+      this.product.margin_percentage = this['p-margin_percentage'].value
+      this.product.supplier_price = this['p-supplier-price'].value
+      if (this.product.margin_percentage)
+        this.product.price = (this.product.supplier_price * (this.product.margin_percentage/100 + 1)).toFixed(2)
+    }
+
+    updateProductFromForm() {
+      var keys = ['name', 'available', 'margin_percentage', 'description', 'use_stock', 'initial_stock'] // category, unit and prices are automatically updated
+      if (!this.product.id)
+        keys.push('supplier_id')
+
+      var self = this;
+      
+      keys.forEach(function(key) {
+        var input = self["p-"+key];
+
+        if (input == undefined) { console.log("Haven't found key "+key) }
+        else {
+          if (input.type == "checkbox") {
+            self.product[key] = input.checked;
+            self.productItem.product[key] = input.checked;
+          }
+          else {
+            self.product[key] = input.value;
+            self.productItem.product[key] = input.value;
+          }
+        }
+        self.productItem.update()
+
+      })
+    }
+
+    prepareModalForm() {
+      this.updateProductFromForm()
+
+      var data = Object();
+      var keys = ['name','description', 'available', 'product_category_id', 'unit_id', 'price', 'supplier_price', 'margin_percentage','use_stock', 'initial_stock', 'image_id']
+      if (!this.product.id)
+        keys.push('supplier_id')
+
+      var self = this;
+      keys.forEach( function(key) { data[key] = self.product[key] } )
+
+      return data;
+    }
+
+    save() {
+      var self = this
+
+      if (!this.validate())
+        return
+
+      var creating = (this.product.id == undefined)
+      if (creating)
+        var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'create'})
+      else
+        var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'edit/'+this.product.id})
+
+      $.post(saveUrl,{product: this.prepareModalForm()}, function(data) {
+          if (creating)
+            display_notice(self.t('views.product.created'))
+          else
+            display_notice(self.t('views.product.saved'))
+
+          if (creating && data && data['id']) {
+            $(this.root).find('form').first().reset()
+            self.parent.products.push(data)
+            self.parent.update()
+          }
+          var input = $('#image')[0]
+          if (input.files && input.files[0]) {
+            self.saveImage();
+          }
+
+          self.close();
+        }
+      );
+    }
+
+    validate() {
+      var keys = ['name', "supplier_id",'product_category_id']
+      
+      for (var i in keys) {
+        var input = this["p-"+keys[i]]
+
+        if (keys[i] == 'supplier_id' && this.product.id)
+          continue;
+        if (input.value == "" || input.value == "0") {
+          alert(this.t('views.product.validation_error_'+keys[i]))
+          $("product-modal").scrollTo(100,1000)
+          return false
+        }
+      }
+      return true
+    }
+
+    saveImage() {
+      var self = this
+      var saveUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'set_image/'+this.product.id})
+      
+      data = new FormData();
+      data.append('image_builder', $('#image')[0].files[0])
+      var opts = {
+        url: saveUrl,
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: 'json',
+        type: 'POST',
+        success: function(data) {
+          self.product.image_portrait = data.image_portrait
+          self.product.image_big = data.image_big
+          self.productItem.product.image_portrait = data.image_portrait
+          self.productItem.product.image_big = data.image_big
+        }
+      };
+      $.ajax(opts);
+    }
+
+    showImage(e) {
+      input = e.currentTarget
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          $('#image-preview').attr('src', e.target.result).show()
+          $('img.picture').slideUp()
+        };
+
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    remove() {
+      var self = this
+      var removeUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'destroy/'+this.product.id})
+      $.post(removeUrl, {}, function(response) {
+        display_notice(self.t("views.product.removed_product"))
+        self.parent.removeProduct(this.product.id)
+        self.close()
+      })
+    }
+    close() {
+      $(this.root).modal('hide');
+    }
+
+    $(this.root).on('show', function() {
+      this.update();
+    }.bind(this))

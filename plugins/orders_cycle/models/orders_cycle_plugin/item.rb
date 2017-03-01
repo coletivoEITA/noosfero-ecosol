@@ -5,8 +5,6 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
   # see also: repeat_product
   attr_accessor :repeat_cycle
 
-  delegate :cycle, to: :order
-
   # OVERRIDE OrdersPlugin::Item
   belongs_to :order, class_name: '::OrdersCyclePlugin::Order', foreign_key: :order_id, touch: true
   belongs_to :sale, class_name: '::OrdersCyclePlugin::Sale', foreign_key: :order_id, touch: true
@@ -25,6 +23,15 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
   has_many :suppliers, through: :offered_product
   has_one :supplier, through: :offered_product
 
+  after_save :update_order
+  after_save :change_purchases, if: :cycle
+  before_destroy :remove_purchase_item, if: :cycle
+
+  def cycle
+    return nil unless defined? self.order.cycle
+    self.order.cycle
+  end
+
   # what items were selled from this item
   def selled_items
     self.order.cycle.selled_items.where(profile_id: self.consumer.id, orders_plugin_item: {product_id: self.product_id})
@@ -39,6 +46,30 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
     distributed_product = self.from_product
     return unless self.repeat_cycle and distributed_product
     self.repeat_cycle.products.where(from_products_products: {id: distributed_product.id}).first
+  end
+
+  def update_order
+    self.order.create_transaction
+  end
+
+  protected
+
+  def change_purchases
+    return unless ["orders", 'purchases'].include? self.cycle.status
+    return if self.order.status == 'draft'
+
+    if id_changed?
+      self.sale.add_purchase_item self
+    elsif defined? quantity_consumer_ordered_was or defined? quantity_supplier_accepted_was
+      self.sale.update_purchase_item self
+    end
+  end
+
+  def remove_purchase_item
+    return unless supplier_product = self.product.supplier_product
+    return unless purchase = supplier_product.orders_cycles_purchases.for_cycle(self.order.cycle).first
+
+    self.sale.remove_purchases_items self, purchase
   end
 
 end

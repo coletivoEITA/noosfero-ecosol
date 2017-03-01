@@ -1,15 +1,11 @@
-require File.expand_path(File.dirname(__FILE__) + "/../../../../test/test_helper")
+require 'test_helper'
 require 'content_viewer_controller'
-
-# Re-raise errors caught by the controller.
-class ContentViewerController; def rescue_action(e) raise e end; end
 
 class ContentViewerControllerTest < ActionController::TestCase
 
   def setup
     @controller = ContentViewerController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+
     @profile = create_user('testinguser').person
 
     @organization = fast_create(Organization)
@@ -30,12 +26,20 @@ class ContentViewerControllerTest < ActionController::TestCase
 
     get :view_page, :profile => @organization.identifier, :page => submission.path
     assert_response :forbidden
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
 
     WorkAssignmentPlugin.stubs(:can_download_submission?).returns(true)
 
     get :view_page, :profile => @organization.identifier, :page => submission.path
     assert_response :success
+  end
+
+  should 'display users submissions' do
+    folder = work_assignment.find_or_create_author_folder(@person)
+    submission = UploadedFile.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :profile => organization, :parent => folder)
+    get :view_page, :profile => @organization.identifier, :page => work_assignment.path
+    assert_response :success
+    assert_match /rails.png/, @response.body
   end
 
   should "display 'Upload files' when create children of image gallery" do

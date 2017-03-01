@@ -1,6 +1,7 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative '../test_helper'
+require_relative '../../lib/solr_plugin/acts_as_faceted'
 
-class TestModel < ActiveRecord::Base
+class TestModel < ApplicationRecord
   def self.f_type_proc(facet, id_count_arr)
     id_count_arr.map do |type, count|
       h = {
@@ -68,7 +69,7 @@ class ActsAsFacetedTest < ActiveSupport::TestCase
 
   should 'show facets option for solr' do
     assert TestModel.solr_facets_options.include?(:f_type)
-    assert !TestModel.solr_facets_options.include?(:f_published_at)
+    refute TestModel.solr_facets_options.include?(:f_published_at)
   end
 
   should 'show facets fields for solr' do

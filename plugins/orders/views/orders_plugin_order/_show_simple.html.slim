@@ -1,12 +1,81 @@
 - actor_name ||= :consumer
 - other_actor_name = if actor_name == :supplier then :consumer else :supplier end
-- @view = true
 
-.order-view id="order-#{order.id}"
-  = form_for order, as: :order, url: '', html: {onsubmit: 'return false'} do |f|
-    .order-data
-      = render "orders_plugin_item/index", order: order, actor_name: actor_name
-      = render 'orders_plugin_order/delivery', order: order, actor_name: actor_name, edition: false, f: f
+.order-view id="order-#{@order.id}"
+  h2= t("views.item._index.products")
+  table
+    thead
+      th= t('views.item._index.supplier')
+      th= t('views.item._index.product')
+      th= t('views.item._index.quantity')
+      th= t('views.item._index.price_total')
+    tbody
+      - @order.items.each do |item|
+        tr
+          td
+            = item.supplier.present? ? item.supplier.name : item.supplier_name
+            |&nbsp;
+          td
+            = item.name
+            |&nbsp;
+          td
+            = item.status_quantity_localized
+            |&nbsp;
+          td
+            = item.price_as_currency_number
+            |&nbsp;
 
-javascript:
-  orders.setOrderMaxHeight()
+  - if @order.payments.size > 0
+    h2= t("views.item._index.payments")
+    table
+      thead
+        th= t('views.item._index.payment')
+        th= t('views.item._index.value')
+        th= t('views.item._index.payment_method')
+        th= t('views.item._index.date')
+      tbody
+        - @order.payments.each_with_index do |payment,index|
+          tr
+            td
+              = t("views.item._index.payment_number", {number: index+1})
+              |&nbsp;
+            td
+              = CurrencyHelper.number_as_currency(payment.value)
+              |&nbsp;
+
+            - method = I18n.t('models.payment_methods.'+payment.payment_method.slug, {scope: "payments_plugin"}) 
+            - if payment.payment_method.slug == 'other' && @order.payment_data["other_method"].present?
+              - method += " - " + @order.payment_data["other_method"]
+            td
+              = method
+              |&nbsp;
+            td
+              = payment.created_at.strftime I18n.t('orders_plugin.lib.date_helper.m_d_y_hh_m')
+
+  br
+  - total = @order.total_price.round(2)
+  table
+    tbody
+      tr
+        td
+          strong= t("views.item._index.total_bought")
+          |&nbsp;
+        td
+          span= total
+
+      - if @order.status == 'received'
+        - payments = @order.payments.sum(:value)
+        tr
+          td
+            strong= t("views.item._index.total_payed")
+            |&nbsp;
+          td
+            span= payments
+
+        - if total - payments > 0
+          tr
+            td
+              strong= t("views.item._index.remaining_total")
+              |&nbsp;
+            td
+              span= total - payments

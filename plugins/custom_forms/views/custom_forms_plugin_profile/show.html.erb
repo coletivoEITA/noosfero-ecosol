@@ -1,12 +1,14 @@
+<div id="custom-forms-plugin_submission">
+
 <h1><%= @form.name %></h1>
-<p><%= @form.description %></p>
+<p><%= (@form.description || "").html_safe %></p>
 
 <% if @submission.id.nil? %>
   <% if @form.expired? %>
     <% if @form.will_open? %>
-      <h2><%= _('Sorry, you can\'t fill this form yet') %></h2>
+      <h2><%= _('Sorry, you can\'t fill this form yet').html_safe %></h2>
     <% else %>
-      <h2><%= _('Sorry, you can\'t fill this form anymore') %></h2>
+      <h2><%= _('Sorry, you can\'t fill this form anymore').html_safe %></h2>
     <% end %>
   <% end %>
 
@@ -14,18 +16,19 @@
 
   <%= form_for :submission do |f| %>
     <% if !user %>
-      <%= required labelled_form_field _('Author name'), text_field_tag(:author_name, @submission.author_name) %>
-      <%= required labelled_form_field _('Author email'), text_field_tag(:author_email, @submission.author_email) %>
+      <%= required labelled_form_field _('Name'), text_field_tag(:author_name, @submission.author_name) %>
+      <%= required labelled_form_field _('Email'), text_field_tag(:author_email, @submission.author_email) %>
     <% end %>
 
     <%= render :partial => 'shared/form_submission', :locals => {:f => f} %>
 
-    <% button_bar do %>
+    <%= button_bar do %>
       <% if @form.expired? %>
         <%= submit_button :save, c_('Save'), :disabled => '', :class => 'disabled', :cancel => {:controller => :profile, :profile => profile.identifier} %>
       <% else %>
         <%= submit_button :save, c_('Save'), :cancel => {:controller => :profile, :profile => profile.identifier} %>
       <% end %>
+      <div class="notify"><%= _("Your e-mail will be visible to this form's owners.") %></div>
     <% end %>
 
   <% end %>
@@ -35,3 +38,4 @@
   <% end %>
 <% end %>
 
+</div><!-- end id="custom-forms-plugin_submission" -->

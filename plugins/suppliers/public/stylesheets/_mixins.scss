@@ -1,0 +1,135 @@
+@mixin input {
+  border-radius:    3px;
+  border: 1px solid #caced7; 
+  color:            #000;
+  line-height:      35px;
+  height:           35px;
+  font-size:        13px;
+  padding:          8px;
+}
+
+@mixin toggle-input($height: 20px) {
+  .switch {
+    margin: auto;
+    width: $height * 2;
+    height: $height;
+  }
+  .cmn-toggle {
+    position: absolute;
+    margin-left: -9999px !important;
+    visibility: hidden;
+  }
+  .cmn-toggle + label {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    user-select: none;
+  }
+  input.cmn-toggle-round + label {
+    padding: 2px;
+    width: $height*2;
+    max-width: auto;
+    height: $height;
+    background-color: #dddddd;
+    border-radius: $height;
+  }
+  input.cmn-toggle-round + label:before,
+  input.cmn-toggle-round + label:after {
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    bottom: 1px;
+    content: "";
+  }
+  input.cmn-toggle-round + label:before {
+    right: 1px;
+    background-color: #f1f1f1;
+    border-radius: $height;
+    transition: background 0.4s;
+    padding-left: 7px;
+    padding-top: 4px;
+    color: white;
+    font-weight: bold;
+  }
+  input.cmn-toggle-round + label:after {
+    width: $height - 2px;
+    background-color: #fff;
+    border-radius: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: margin 0.4s;
+  }
+  input.cmn-toggle-round:checked + label:before {
+    background-color: #53c740;
+  }
+  input.cmn-toggle-round:checked + label:after {
+    margin-left: $height;
+  }
+}
+
+@mixin modal-default {
+  hr {
+    width: 100%;
+    border-bottom: 1px solid $hr-green;
+  }
+  h1,h2 { background-color: transparent; }
+  h1 {
+    font-size: 18px;
+    font-weight: bold;
+    color: $cirandas-header-bg;
+    text-transform: uppercase;
+  }
+  h2 {
+    font-size: 16px;
+    font-weight: bold;
+    color: $cirandas-header-bg;
+    text-transform: uppercase;
+  }
+  .close-text {
+    font-size: 15px;
+    padding: 4px 8px 8px 0;
+  }
+  .close {
+    padding: 10px 0;
+    font-weight: normal;
+    opacity: 1;
+    float: right;
+  }
+  .form-group {
+    margin-bottom: 5px;
+
+    input,select {
+      margin-bottom: 10px;
+      border-radius: 0;
+      border: 0px;
+      border-bottom: 1px solid #555;
+      -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
+      box-shadow:         inset 0 0px 0px rgba(0, 0, 0, 0.075);
+
+      &:focus {
+        border: 1px solid #555;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 102, 102, 0.6);
+        box-shadow:         inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 102, 102, 0.6);
+      }
+    }
+  }
+  table.orders {
+    margin-bottom: 20px;
+
+    th {
+      background-color: $cirandas-header-bg;
+      color: white;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 15px;
+      text-align: center;
+    }
+    tr {
+      text-align: center;
+    }
+    td,th {
+      border: 1px solid black;
+    }
+  }
+}

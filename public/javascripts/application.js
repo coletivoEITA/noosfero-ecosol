@@ -2,41 +2,51 @@
 // This file is automatically included by javascript_include_tag :defaults
 /*
 * third party libraries
-*= require lodash.js
-*= require jquery-2.1.1.min.js
-*= require jquery-migrate-1.2.1.js
-*= require jquery.colorbox-min.js
-*= require jquery.cycle.all.min.js
-*= require jquery-ui-1.10.4/js/jquery-ui-1.10.4.min.js
-*= require jquery.scrollTo.js
-*= require jquery.form.js
-*= require jquery-validation/jquery.validate.js
-*= require jquery.cookie.js
-*= require jquery.ba-bbq.min.js
-*= require jquery.tokeninput.js
-*= require jquery.typewatch.js
-*= require jquery.textchange.js
-*= require jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.js
-*= require inputosaurus.js
-* require reflection.js
-*= require select-or-die/_src/selectordie
-*= require rails.js
+*= require vendor/lodash.js
+*= require vendor/jquery-2.1.1.min.js
+*= require vendor/jquery-migrate-1.2.1.js
+*= require vendor/jquery.cycle.all.min.js
+*= require vendor/jquery.colorbox-min.js
+*= require vendor/jquery-ui-1.10.4/js/jquery-ui-1.10.4.min.js
+*= require vendor/jquery.scrollTo.js
+*= require vendor/jquery.form.js
+*= require vendor/jquery-validation/jquery.validate.js
+*= require vendor/jquery.cookie.js
+*= require vendor/jquery.ba-bbq.min.js
+*= require vendor/jquery.tokeninput.js
+*= require vendor/jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.js
+*= require vendor/inputosaurus.js
+*= require vendor/reflection.js
+*= require vendor/rails.js
+*= require vendor/jrails.js
+*= require vendor/slick.js
+*= require vendor/autogrow.js
 *= require rails-extended.js
-*= require jrails.js
+*= require message-bus.js
+*= require vendor/riot-2.5.0
+*= require i18n
+*= require i18n/translations
+*= require js-routes
+*
 * noosfero libraries
 *= require_self
 *= require modal.js
 *= require form.js
 *= require timezone.js
+*= require loading-overlay.js
+*= require pagination.js
+*
 * views speficics
 *= require add-and-join.js
+*= require followers.js
+*= require manage-followers.js
 *= require report-abuse.js
-*= require manage-products.js
-*= require autogrow.js
-*= require pagination.js
-*= require loading-overlay.js
+*= require require_login.js
+*= require block-store.js
+*= require email_templates.js
 */
 
+// lodash configuration
 _.templateSettings = {
   interpolate: /\{\{(.+?)\}\}/g,
 };
@@ -44,6 +54,9 @@ _.templateSettings = {
 // scope for noosfero stuff
 noosfero = {
 };
+
+MessageBus.start()
+MessageBus.callbackInterval = 500;
 
 function noosfero_init() {
   // focus_first_field(); it is moving the page view when de form is down.
@@ -118,15 +131,13 @@ function convToValidEmail( str ) {
 }
 
 function updateUrlField(name_field, id) {
-  name_field = jQuery(name_field)
-  var old_name_value = name_field.get(0).defaultValue
-  var url_field = $(id);
+   url_field = jQuery('#'+id);
+   old_url_value = url_field.val();
+   new_url_value = convToValidIdentifier(name_field.value, "-");
 
-  var old_url_value = url_field.val()
-  var new_url_value = convToValidIdentifier(name_field.val(), "-")
-  url_field.val(new_url_value)
+   url_field.val(new_url_value);
 
-  if (old_name_value && !/^\s*$/.test(old_url_value) && old_url_value != new_url_value) {
+  if (old_url_value && !/^\s*$/.test(old_url_value) && old_url_value != new_url_value) {
     warn_value_change(url_field);
   }
 }
@@ -239,8 +250,6 @@ function update_loading(message) {
 function redirect_to(url) {
   document.location=url;
 }
-
-/* Products edition  */
 
 function numbersonly(e, separator) {
   var key;
@@ -415,9 +424,15 @@ function loading_for_button(selector) {
 function customUserDataCallback() {
 };
 
-// override this to take action after user_data load
-function customUserDataCallback() {
-};
+function hide_loading_for_button(selector) {
+  selector.css("cursor","");
+  $(".small-loading").remove();
+}
+
+function new_qualifier_row(selector, select_qualifiers, delete_button) {
+  index = jQuery(selector + ' tr').size() - 1;
+  jQuery(selector).append("<tr><td>" + select_qualifiers + "</td><td id='certifier-area-" + index + "'><select></select>" + delete_button + "</td></tr>");
+}
 
 function userDataCallback(data) {
   noosfero.user_data = data;
@@ -441,7 +456,7 @@ jQuery(function($) {
   $.ajaxSetup({
     cache: false,
     headers: {
-      'X-CSRF-Token': $.cookie("_noosfero_.XSRF-TOKEN")
+      'X-XSRF-TOKEN': $.cookie("_noosfero_.XSRF-TOKEN")
     }
   });
 
@@ -702,10 +717,9 @@ Array.min = function(array) {
 
 function hideAndGetUrl(link) {
   document.body.style.cursor = 'wait';
-  link = jQuery(link)
-  link.hide();
-  url = link.attr('href');
-  jQuery.getScript(link.attr('href') , function(){
+  jQuery(link).hide();
+  url = jQuery(link).attr('href');
+  jQuery.get(url, function( data ) {
     document.body.style.cursor = 'default';
   });
 }
@@ -974,12 +988,10 @@ function apply_zoom_to_images(zoom_text) {
 }
 
 function notifyMe(title, options) {
-  // This might be useful in the future
-  //
   // Let's check if the browser supports notifications
-  // if (!("Notification" in window)) {
-  //   alert("This browser does not support desktop notification");
-  // }
+   if (!("Notification" in window)) {
+     return null;
+   }
 
   // Let's check if the user is okay to get some notification
   var notification = null;
@@ -1005,7 +1017,9 @@ function notifyMe(title, options) {
     });
   }
 
-  setTimeout(function() {notification.close()}, 5000);
+  if(!PERMANENT_NOTIFICATIONS)
+    setTimeout(function() {notification.close()}, 5000);
+
   notification.onclick = function(){
     notification.close();
     // Chromium tweak
@@ -1035,3 +1049,37 @@ function add_new_file_fields() {
 }
 
 window.isHidden = function isHidden() { return (typeof(document.hidden) != 'undefined') ? document.hidden : !document.hasFocus() };
+
+function $_GET(id){
+    var a = new RegExp(id+"=([^&#=]*)");
+    var result_of_search = a.exec(window.location.search)
+    if(result_of_search != null){
+      return decodeURIComponent(result_of_search[1]);
+    }
+}
+
+var fullwidth=false;
+function toggle_fullwidth(itemId){
+  if(fullwidth){
+    jQuery(itemId).removeClass("fullwidth");
+    jQuery("#fullscreen-btn").show()
+    jQuery("#exit-fullscreen-btn").hide()
+    fullwidth = false;
+  }
+  else{
+    jQuery(itemId).addClass("fullwidth");
+    jQuery("#exit-fullscreen-btn").show()
+    jQuery("#fullscreen-btn").hide()
+    fullwidth = true;
+  }
+  jQuery(window).trigger("toggleFullwidth", fullwidth);
+}
+
+function fullscreenPageLoad(itemId){
+  jQuery(document).ready(function(){
+
+    if ($_GET('fullscreen') == 1){
+      toggle_fullwidth(itemId);
+    }
+  });
+}

@@ -1,0 +1,3 @@
+<%= link_to_remote _('Add amount in money'),
+  {url: {controller: :exchange_plugin_element, action: :create, actor: actor, element: {proposal_id: proposal.id, object_type: "CurrencyPlugin::Currency", profile_id: profile.id}}},
+  class: 'action-button exchange-add-money' %>

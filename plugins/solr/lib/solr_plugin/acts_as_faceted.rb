@@ -197,6 +197,6 @@ module SolrPlugin
 
   end
 
-  ActiveRecord::Base.extend ActsAsFaceted::ActsMethods
+  ApplicationRecord.extend ActsAsFaceted::ActsMethods
 
 end

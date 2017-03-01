@@ -1,0 +1,24 @@
+.add-transaction-modal.modal.fade tabindex="-1" role="dialog"
+  .modal-dialog role="document"
+    .modal-content
+      .modal-header
+        button type="button" class="close left" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true"
+            |&times;
+        h4.modal-title
+          = t('financial_plugin.views.cycle.add-transaction.adding_transaction')
+      = form_for :transaction, remote: true,url: {controller: :financial_plugin_cycle, action: :create} do |f|
+        .modal-body
+          = f.hidden_field :cycle_id, value: @cycle.id
+          = f.hidden_field :direction, value: "in"
+          = labelled_form_field(t('orders_plugin.views.admin.financial.value'), f.number_field(:value, step: 0.01)) 
+          = labelled_form_field(t('orders_plugin.views.admin.financial.description'), f.text_area(:description))
+
+        .modal-footer
+          .btn-group
+            = f.button t('orders_plugin.views.admin.financial.cancel'), name: "cancel", class: 'action-button', "data-dismiss" => "modal"
+            | &nbsp;
+            = f.button t('orders_plugin.views.admin.financial.submit'), name: "submit", class: 'action-button'
+
+javascript:
+

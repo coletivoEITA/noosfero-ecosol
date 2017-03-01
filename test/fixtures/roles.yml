@@ -35,8 +35,10 @@ four:
    - moderate_comments
    - perform_task
    - manage_environment_users
+   - manage_environment_organizations
    - manage_environment_templates
    - manage_environment_licenses
+   - manage_email_templates
 profile_admin:
   id: 5
   environment_id: 1
@@ -59,6 +61,7 @@ profile_admin:
    - manage_friends
    - validate_enterprise
    - publish_content
+   - manage_email_templates
 profile_member:
   id: 6
   environment_id: 1
@@ -94,7 +97,10 @@ environment_administrator:
    - manage_environment_validators
    - moderate_comments
    - manage_environment_users
+   - manage_environment_organizations
    - edit_profile
    - destroy_profile
    - manage_environment_templates
    - manage_environment_licenses
+   - edit_raw_html_block
+   - manage_email_templates

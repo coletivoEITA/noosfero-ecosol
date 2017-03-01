@@ -3,32 +3,12 @@ require_relative "../test_helper"
 class SearchHelperTest < ActiveSupport::TestCase
 
   include SearchHelper
-
-  should 'return whether on a multiple search' do
-    stubs(:params).returns({:action => 'index', :display => 'map'})
-    @results = {:articles => [1,2], :products => [1,2]}
-    assert multiple_search?
-
-    stubs(:params).returns({:action => 'products', :display => 'map'})
-    @results = {:products => [1,2]}
-    assert !multiple_search?
-  end
-
-  should 'return whether on a map search' do
-    stubs(:params).returns({:action => 'index', :display => 'map'})
-    @results = {:articles => [1,2], :products => [1,2]}
-    @query = ''
-    assert !map_search?
-
-    stubs(:params).returns({:action => 'products', :display => 'map'})
-    @results = {:products => [1,2]}
-    @query = 'test'
-    assert map_search?
-  end
+  include ActionView::Helpers::FormOptionsHelper
+  include ActionView::Helpers::FormTagHelper
 
   should 'display search page title' do
     title = 'page_title'
-    assert_equal search_page_title(title), '<h1>page_title</h1>' 
+    assert_equal search_page_title(title), '<h1>page_title</h1>'
   end
 
   should 'display search page title with category name' do
@@ -58,10 +38,10 @@ class SearchHelperTest < ActiveSupport::TestCase
   should 'display results with map' do
     stubs(:params).returns({:display => 'map'})
     @query = 'test'
-    @searches = {:products => {:results => [1,2]}}
+    @searches = {:enterprises => {:results => [1,2]}}
     expects('render').with({:partial => 'google_maps'}).returns('render_return')
     expects('content_tag').with('div', 'render_return', :class => 'map-or-list-search-results map')
-    display_results(@searches, :products)
+    display_results(@searches, :enterprises)
   end
 
   should 'return full city name with state' do
@@ -113,13 +93,93 @@ class SearchHelperTest < ActiveSupport::TestCase
     city.stubs(:name).returns('Feliz Deserto')
 	assert_equal 'Feliz Deserto', city_with_state(city)
   end
-    
+
   should 'return asset class from string' do
-    asset_names = ['products', 'events', 'articles', 'enterprises', 'people', 'communities']
-    asset_classes = [Product, Event, Article, Enterprise, Person, Community]
+    asset_names = ['events', 'articles', 'enterprises', 'people', 'communities']
+    asset_classes = [Event, Article, Enterprise, Person, Community]
     asset_names.each_index do |i|
       assert_equal asset_classes[i], asset_class(asset_names[i])
     end
   end
+
+  should 'return an empty string in assets_submenu for articles assets' do
+    @templates = {}
+    assert_equal '', assets_submenu(:articles)
+    @templates = {:articles => nil}
+    assert_equal '', assets_submenu(:articles)
+  end
+
+  should 'return an empty string in assets_submenu for people asset without template' do
+    @templates = {:people => nil}
+    assert_equal '', assets_submenu(:people)
+
+    @templates = {:people => []}
+    assert_equal '', assets_submenu(:people)
+  end
+
+  should 'return an empty string in assets_submenu for people asset with only one template' do
+    t = fast_create(Person, :is_template => true)
+    @templates = {:people => [t]}
+    assert_equal '', assets_submenu(:people)
+  end
+
+  should 'return a select of templates for people asset with more then one template' do
+    t1 = fast_create(Person, :is_template => true)
+    t2 = fast_create(Person, :is_template => true)
+    @templates = {:people => [t1,t2]}
+    SearchHelperTest.any_instance.stubs(:params).returns({})
+    assert_match /select/, assets_submenu(:people)
+    assert_match /#{t1.name}/, assets_submenu(:people)
+    assert_match /#{t2.name}/, assets_submenu(:people)
+  end
+
+  should 'return an empty string in assets_submenu for communities asset without template' do
+    @templates = {:communities => nil}
+    assert_equal '', assets_submenu(:communities)
+
+    @templates = {:communities => []}
+    assert_equal '', assets_submenu(:communities)
+  end
+
+  should 'return an empty string in assets_submenu for communities asset with only one template' do
+    t = fast_create(Community, :is_template => true)
+    @templates = {:communities => [t]}
+    assert_equal '', assets_submenu(:communities)
+  end
+
+  should 'return a select of templates for communities asset with more then one template' do
+    t1 = fast_create(Community, :is_template => true)
+    t2 = fast_create(Community, :is_template => true)
+    @templates = {:communities => [t1,t2]}
+    SearchHelperTest.any_instance.stubs(:params).returns({})
+    assert_match /select/, assets_submenu(:communities)
+    assert_match /#{t1.name}/, assets_submenu(:communities)
+    assert_match /#{t2.name}/, assets_submenu(:communities)
+  end
+
+  should 'return an empty string in assets_submenu for enterprises asset without template' do
+    @templates = {:enterprises => nil}
+    assert_equal '', assets_submenu(:enterprises)
+
+    @templates = {:enterprises => []}
+    assert_equal '', assets_submenu(:enterprises)
+  end
+
+  should 'return an empty string in assets_submenu for enterprises asset with only one template' do
+    t = fast_create(Enterprise, :is_template => true)
+    @templates = {:enterprises => [t]}
+    assert_equal '', assets_submenu(:enterprises)
+  end
+
+  should 'return a select of templates for enterprises asset with more then one template' do
+    t1 = fast_create(Enterprise, :is_template => true)
+    t2 = fast_create(Enterprise, :is_template => true)
+    @templates = {:enterprises => [t1,t2]}
+    SearchHelperTest.any_instance.stubs(:params).returns({})
+    assert_match /select/, assets_submenu(:enterprises)
+    assert_match /#{t1.name}/, assets_submenu(:enterprises)
+    assert_match /#{t2.name}/, assets_submenu(:enterprises)
+  end
+
 
 end

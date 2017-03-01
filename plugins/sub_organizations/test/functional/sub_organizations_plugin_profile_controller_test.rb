@@ -1,5 +1,5 @@
-require File.dirname(__FILE__) + '/../../../../test/test_helper'
-require File.dirname(__FILE__) + '/../../controllers/sub_organizations_plugin_profile_controller'
+require 'test_helper'
+require_relative '../../controllers/sub_organizations_plugin_profile_controller'
 
 # Re-raise errors caught by the controller.
 class SubOrganizationsPluginProfileController; def rescue_action(e) raise e end; end
@@ -8,8 +8,7 @@ class SubOrganizationsPluginProfileControllerTest < ActionController::TestCase
 
   def setup
     @controller = SubOrganizationsPluginProfileController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+
     @organization = Organization.create!(:name => 'My Organization', :identifier => 'my-organization')
     @person = create_user('person').person
     @organization.add_admin(@person)

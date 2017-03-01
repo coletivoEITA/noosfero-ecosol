@@ -10,7 +10,7 @@ class UserTest < ActiveSupport::TestCase
   def test_should_create_user
     assert_difference 'User.count' do
       user = new_user
-      assert !user.new_record?, "#{user.errors.full_messages.to_sentence}"
+      refute user.new_record?, "#{user.errors.full_messages.to_sentence}"
     end
   end
 
@@ -43,12 +43,12 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_should_reset_password
-    users(:johndoe).update_attributes(:password => 'new password', :password_confirmation => 'new password')
+    users(:johndoe).update(:password => 'new password', :password_confirmation => 'new password')
     assert_equal users(:johndoe), User.authenticate('johndoe', 'new password')
   end
 
   def test_should_not_rehash_password
-    users(:johndoe).update_attributes(:login => 'johndoe2')
+    users(:johndoe).update(:login => 'johndoe2')
     assert_equal users(:johndoe), User.authenticate('johndoe2', 'test')
   end
 
@@ -87,6 +87,14 @@ class UserTest < ActiveSupport::TestCase
     assert_equal person_count + 1, Person.count
   end
 
+  def test_should_create_person_with_identifier_different_from_login
+    user = User.create!(:login => 'new_user', :email => 'new_user@example.com', :password => 'test', :password_confirmation => 'test', :person_data => {:identifier => "new_test"})
+
+    assert Person.exists?(['user_id = ?', user.id])
+
+    assert user.login != user.person.identifier
+  end
+
   def test_login_validation
     u = User.new
     u.valid?
@@ -102,41 +110,45 @@ class UserTest < ActiveSupport::TestCase
 
     u.login = 'rightformat2007'
     u.valid?
-    assert ! u.errors[:login.to_s].present?
+    refute  u.errors[:login.to_s].present?
 
     u.login = 'rightformat'
     u.valid?
-    assert ! u.errors[:login.to_s].present?
+    refute  u.errors[:login.to_s].present?
 
     u.login = 'right_format'
     u.valid?
-    assert ! u.errors[:login.to_s].present?
+    refute  u.errors[:login.to_s].present?
   end
 
   def test_should_change_password
     user = create_user('changetest', :password => 'test', :password_confirmation => 'test', :email => 'changetest@example.com')
+    user.activate
     assert_nothing_raised do
       user.change_password!('test', 'newpass', 'newpass')
     end
-    assert !user.authenticated?('test')
+    refute user.authenticated?('test')
     assert user.authenticated?('newpass')
   end
 
   def test_should_give_correct_current_password_for_changing_password
     user = create_user('changetest', :password => 'test', :password_confirmation => 'test', :email => 'changetest@example.com')
+    user.activate
     assert_raise User::IncorrectPassword do
       user.change_password!('wrong', 'newpass', 'newpass')
     end
-    assert !user.authenticated?('newpass')
+    refute user.authenticated?('newpass')
     assert user.authenticated?('test')
   end
 
   should 'require matching confirmation when changing password by force' do
     user = create_user('changetest', :password => 'test', :password_confirmation => 'test', :email => 'changetest@example.com')
+    user.activate
+
     assert_raise ActiveRecord::RecordInvalid do
       user.force_change_password!('newpass', 'newpasswrong')
     end
-    assert !user.authenticated?('newpass')
+    refute user.authenticated?('newpass')
     assert user.authenticated?('test')
   end
 
@@ -145,14 +157,16 @@ class UserTest < ActiveSupport::TestCase
     assert_nothing_raised  do
       user.force_change_password!('newpass', 'newpass')
     end
+
+    user.activate
     assert user.authenticated?('newpass')
   end
 
   def test_should_create_person_when_creating_user
     count = Person.count
-    assert !Person.find_by_identifier('lalala')
+    refute Person.find_by(identifier: 'lalala')
     new_user(:login => 'lalala', :email => 'lalala@example.com')
-    assert Person.find_by_identifier('lalala')
+    assert Person.find_by(identifier: 'lalala')
   end
 
   should 'set the same environment for user and person objects' do
@@ -164,9 +178,9 @@ class UserTest < ActiveSupport::TestCase
 
   def test_should_destroy_person_when_destroying_user
     user = new_user(:login => 'lalala', :email => 'lalala@example.com')
-    assert Person.find_by_identifier('lalala')
+    assert Person.find_by(identifier: 'lalala')
     user.destroy
-    assert !Person.find_by_identifier('lalala')
+    refute Person.find_by(identifier: 'lalala')
   end
 
   def test_should_encrypt_password_with_salted_sha1
@@ -248,6 +262,7 @@ class UserTest < ActiveSupport::TestCase
 
     # when the user logs in, her password must be reencrypted with the new
     # method
+    user.activate
     user.authenticated?('test')
 
     # and the new password must be saved back to the database
@@ -265,6 +280,7 @@ class UserTest < ActiveSupport::TestCase
     User.expects(:system_encryption_method).returns(:md5).at_least_once
 
     # but the user provided the wrong password
+    user.activate
     user.authenticated?('WRONG_PASSWORD')
 
     # and then her password is not updated
@@ -283,7 +299,7 @@ class UserTest < ActiveSupport::TestCase
 
   should 'enable email' do
     user = create_user('cooler')
-    assert !user.enable_email
+    refute user.enable_email
     assert user.enable_email!
     assert user.enable_email
   end
@@ -297,9 +313,9 @@ class UserTest < ActiveSupport::TestCase
 
   should 'not has email activation pending if not have environment' do
     user = create_user('cooler')
-    user.expects(:environment).returns(nil)
+    user.expects(:environment).returns(nil).at_least_once
     EmailActivation.create!(:requestor => user.person, :target => Environment.default)
-    assert !user.email_activation_pending?
+    refute user.email_activation_pending?
   end
 
   should 'has moderate registration pending' do
@@ -310,7 +326,7 @@ class UserTest < ActiveSupport::TestCase
 
   should 'not has moderate registration pending if not have a pending task' do
     user = create_user('cooler')
-    assert !user.moderate_registration_pending?
+    refute user.moderate_registration_pending?
   end
 
   should 'be able to use [] operator to find users by login' do
@@ -355,7 +371,7 @@ class UserTest < ActiveSupport::TestCase
     Person.any_instance.stubs(:created_at).returns(DateTime.parse('16-08-2010'))
     expected_hash = {
       'login' => 'x_and_y', 'is_admin' => true, 'since_month' => 8,
-      'chat_enabled' => false, 'since_year' => 2010, 'email_domain' => nil, 
+      'chat_enabled' => false, 'since_year' => 2010, 'email_domain' => nil,
       'amount_of_friends' => 0, 'friends_list' => {}, 'enterprises' => [],
     }
 
@@ -462,9 +478,9 @@ class UserTest < ActiveSupport::TestCase
 
   should 'respond name with user name attribute' do
     user = create_user('testuser')
+    user.login = 'Login User'
     user.person = nil
     user.name = 'Another User'
-    user.login = 'Login User'
     assert_equal 'Another User', user.name
   end
 
@@ -493,6 +509,7 @@ class UserTest < ActiveSupport::TestCase
   should 'deliver e-mail with activation code after creation' do
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       new_user :email => 'pending@activation.com'
+      process_delayed_job_queue
     end
     assert_equal 'pending@activation.com', ActionMailer::Base.deliveries.last['to'].to_s
   end
@@ -512,14 +529,16 @@ class UserTest < ActiveSupport::TestCase
 
   should 'not authenticate a not activated user' do
     user = new_user :login => 'testuser', :password => 'test123', :password_confirmation => 'test123'
-    assert_nil User.authenticate('testuser', 'test123')
+    assert_raises User::UserNotActivated do
+      User.authenticate('testuser', 'test123')
+    end
   end
 
   should 'have activation code but no activated at when created' do
     user = new_user
     assert_not_nil user.activation_code
     assert_nil user.activated_at
-    assert !user.person.visible
+    refute user.person.visible
   end
 
   should 'activate an user' do
@@ -532,7 +551,7 @@ class UserTest < ActiveSupport::TestCase
 
   should 'return if the user is activated' do
     user = new_user
-    assert !user.activated?
+    refute user.activated?
     user.activate
     assert user.activated?
   end
@@ -546,6 +565,7 @@ class UserTest < ActiveSupport::TestCase
 
   should 'delay activation check with custom time' do
     NOOSFERO_CONF.stubs(:[]).with('hours_until_user_activation_check').returns(240)
+    NOOSFERO_CONF.stubs(:[]).with('exclude_profile_identifier_pattern')
     user = new_user
     job = Delayed::Job.last
     assert_match /UserActivationJob/, job.handler
@@ -564,7 +584,7 @@ class UserTest < ActiveSupport::TestCase
     user.activate
     assert user.deactivate
     assert_nil user.activated_at
-    assert !user.person.visible
+    refute user.person.visible
   end
 
   should 'return if the user is deactivated' do
@@ -572,7 +592,7 @@ class UserTest < ActiveSupport::TestCase
     user.activate
     assert user.activated?
     user.deactivate
-    assert !user.activated?
+    refute user.activated?
   end
 
   should 'activate right after creation when confirmation is not required' do
@@ -586,7 +606,7 @@ class UserTest < ActiveSupport::TestCase
   should 'cancel activation if user has no person associated' do
     user = new_user
     user.stubs(:person).returns(nil)
-    assert !user.activate
+    refute user.activate
   end
 
   should 'be able to skip the password requirement' do
@@ -620,6 +640,7 @@ class UserTest < ActiveSupport::TestCase
     env.save
 
     user = new_user :email => 'pending@activation.com'
+    process_delayed_job_queue
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       user.activate
       process_delayed_job_queue
@@ -640,6 +661,7 @@ class UserTest < ActiveSupport::TestCase
     env.save
 
     user = new_user :email => 'pending@activation.com'
+    process_delayed_job_queue
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       user.activate
       process_delayed_job_queue
@@ -659,6 +681,7 @@ class UserTest < ActiveSupport::TestCase
     env.save
 
     user = new_user :name => 'John Doe', :email => 'pending@activation.com'
+    process_delayed_job_queue
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       user.activate
       process_delayed_job_queue
@@ -704,6 +727,36 @@ class UserTest < ActiveSupport::TestCase
     user = User.new( :login => 'quire', :email => 'quire@example.com', :password => 'quire', :password_confirmation => 'quire' )
     user.save
     assert_equal 'quire', user.person.name
+  end
+
+  should 'generate private token' do
+    user = User.new
+    SecureRandom.stubs(:hex).returns('token')
+    user.generate_private_token!
+
+    assert user.private_token, 'token'
+  end
+
+  should 'deliver e-mail with activation code when resend was requested and user was not activated' do
+    user = new_user :email => 'pending@activation.com'
+    activation_code = user.activation_code
+    Delayed::Job.destroy_all
+    assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+      user.resend_activation_code
+      process_delayed_job_queue
+    end
+    assert_not_equal activation_code, user.reload.activation_code
+    assert_equal 'pending@activation.com', ActionMailer::Base.deliveries.last['to'].to_s
+  end
+
+  should 'not deliver e-mail with activation code when resend was requested and user was activated' do
+    user = new_user :email => 'pending@activation.com'
+    user.activate
+    Delayed::Job.destroy_all
+    assert_no_difference 'ActionMailer::Base.deliveries.size' do
+      user.resend_activation_code
+      process_delayed_job_queue
+    end
   end
 
   protected

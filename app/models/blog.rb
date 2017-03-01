@@ -2,7 +2,9 @@ class Blog < Folder
 
   attr_accessible :visualization_format
 
+  extend ActsAsHavingPosts::ClassMethods
   acts_as_having_posts
+
   include PostsLimit
 
   #FIXME This should be used until there is a migration to fix all blogs that
@@ -76,9 +78,12 @@ class Blog < Folder
   end
 
   settings_items :visualization_format, :type => :string, :default => 'full'
-  validates_inclusion_of :visualization_format, :in => [ 'full', 'short' ], :if => :visualization_format
+  validates_inclusion_of :visualization_format,
+                         :in => [ 'full', 'short', 'short+pic', 'compact'],
+                         :if => :visualization_format
 
-  settings_items :display_posts_in_current_language, :type => :boolean, :default => false
+  settings_items :display_posts_in_current_language,
+                 :type => :boolean, :default => false
 
   alias :display_posts_in_current_language? :display_posts_in_current_language
 
@@ -90,4 +95,21 @@ class Blog < Folder
     posts.no_feeds.latest.limit(limit)
   end
 
+  def total_number_of_posts(group_by, year = nil)
+    case group_by
+      when :by_year
+        posts.published.native_translations
+          .except(:order)
+          .group('EXTRACT(YEAR FROM published_at)')
+          .count
+          .sort_by{ |year, count| -year.to_i }
+      when :by_month
+        posts.published.native_translations
+          .except(:order)
+          .where('EXTRACT(YEAR FROM published_at)=?', year.to_i)
+          .group('EXTRACT(MONTH FROM published_at)')
+          .count
+          .sort_by {|month, count| -month.to_i}
+    end
+  end
 end

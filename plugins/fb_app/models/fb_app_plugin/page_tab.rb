@@ -1,4 +1,4 @@
-class FbAppPlugin::PageTab < ActiveRecord::Base
+class FbAppPlugin::PageTab < ApplicationRecord
 
   # FIXME: rename table to match model
   self.table_name = :fb_app_plugin_page_tab_configs
@@ -9,6 +9,7 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
 
   belongs_to :owner_profile, foreign_key: :profile_id, class_name: 'Profile'
 
+  extend ActsAsHavingSettings::ClassMethods
   acts_as_having_settings field: :config
 
   ConfigTypes = [:profile, :profiles, :query]
@@ -27,7 +28,7 @@ class FbAppPlugin::PageTab < ActiveRecord::Base
     page_ids.map do |page_id|
       page_tab = FbAppPlugin::PageTab.where(page_id: page_id).first
       page_tab ||= FbAppPlugin::PageTab.new page_id: page_id
-      page_tab.update_attributes! attrs
+      page_tab.update! attrs
       page_tab
     end
   end

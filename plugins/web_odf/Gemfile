@@ -1,0 +1,11 @@
+gem 'odf-report'
+
+def require_bin name
+  unless system "which #{name} > /dev/null"
+    STDERR.puts "E: program #{name} is needed, but was not found in your PATH"
+    exit
+  end
+end
+
+require_bin 'loffice'
+

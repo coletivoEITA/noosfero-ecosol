@@ -1,4 +1,5 @@
-class SubOrganizationsPlugin::ApprovePaternityRelation < Noosfero::Plugin::ActiveRecord
+class SubOrganizationsPlugin::ApprovePaternityRelation < ApplicationRecord
+
   belongs_to :task
   belongs_to :parent, :polymorphic => true
   belongs_to :child, :polymorphic => true

@@ -2,8 +2,6 @@ class SuppliersPluginMyprofileController < MyProfileController
 
   include SuppliersPlugin::TranslationHelper
 
-  no_design_blocks
-
   protect 'edit_profile', :profile
 
   before_filter :load_new, only: [:index, :new]
@@ -21,7 +19,7 @@ class SuppliersPluginMyprofileController < MyProfileController
   end
 
   def new
-    @new_supplier.update_attributes! params[:supplier]
+    @new_supplier.update! params[:supplier]
     @supplier = @new_supplier
     session[:notice] = t('controllers.myprofile.supplier_created')
   end
@@ -33,7 +31,7 @@ class SuppliersPluginMyprofileController < MyProfileController
 
   def edit
     @supplier = profile.suppliers.find params[:id]
-    @supplier.update_attributes params[:supplier]
+    @supplier.update params[:supplier]
   end
 
   def margin_change
@@ -58,8 +56,8 @@ class SuppliersPluginMyprofileController < MyProfileController
 
   def search
     @query = params[:query].downcase
-    @enterprises = environment.enterprises.enabled.public.all limit: 12, order: 'name ASC',
-      conditions: ['LOWER(name) LIKE ? OR LOWER(name) LIKE ? OR identifier LIKE ?', "#{@query}%", "% #{@query}%", "#{@query}%"]
+    @enterprises = environment.enterprises.enabled.is_public.limit(12).order('name ASC').
+      where('name ILIKE ? OR name ILIKE ? OR identifier LIKE ?', "#{@query}%", "% #{@query}%", "#{@query}%")
     @enterprises -= profile.suppliers.collect(&:profile)
   end
 
@@ -77,6 +75,6 @@ class SuppliersPluginMyprofileController < MyProfileController
   end
 
   extend HMVC::ClassMethods
-  hmvc OrdersPlugin
+  hmvc SuppliersPlugin
 
 end

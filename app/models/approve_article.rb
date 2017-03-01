@@ -1,12 +1,23 @@
 class ApproveArticle < Task
   validates_presence_of :requestor_id, :target_id
 
+  validates :requestor, kind_of: {kind: Person}
+  validate :allowed_requestor
+
+  def allowed_requestor
+    if target
+      if target.person? && requestor != target
+        self.errors.add(:requestor, _('You can not post articles to other users.'))
+      end
+    end
+  end
+
   def article_title
     article ? article.title : _('(The original text was removed)')
   end
-  
+
   def article
-    Article.find_by_id data[:article_id]
+    Article.find_by id: data[:article_id]
   end
 
   def article= value
@@ -25,7 +36,7 @@ class ApproveArticle < Task
   settings_items :create_link, :type => :boolean, :default => false
 
   def article_parent
-    Article.find_by_id article_parent_id.to_i
+    Article.find_by id: article_parent_id.to_i
   end
 
   def article_parent= value
@@ -72,7 +83,7 @@ class ApproveArticle < Task
 
   def information
     if article
-      {:message => _('%{requestor} wants to publish the article: %{linked_subject}.')}
+      {:message => _('%{requestor} wants to publish the article: %{linked_subject}.').html_safe}
     else
       {:message => _("The article was removed.")}
     end

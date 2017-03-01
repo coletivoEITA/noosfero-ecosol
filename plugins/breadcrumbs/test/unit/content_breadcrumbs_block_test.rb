@@ -1,18 +1,16 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative '../test_helper'
 
 class ContentBreadcrumbsBlockTest < ActiveSupport::TestCase
 
   include NoosferoTestHelper
 
   def setup
-    @block = BreadcrumbsPlugin::ContentBreadcrumbsBlock.new
-    @profile = fast_create(Community)
-    @folder = fast_create(Folder, :profile_id => @profile.id)
-    @article = fast_create(Folder, :profile_id => @profile.id, :parent_id => @folder.id)
-    @params = {}
+    @profile = fast_create(Profile)
+    box = Box.create!(owner: profile)
+    @block = fast_create(BreadcrumbsPlugin::ContentBreadcrumbsBlock, box_id: box.id)
   end
 
-  attr_reader :params
+  attr_accessor :block, :profile
 
   should 'has a description' do
     assert_not_equal Block.description, BreadcrumbsPlugin::ContentBreadcrumbsBlock.description
@@ -22,42 +20,35 @@ class ContentBreadcrumbsBlockTest < ActiveSupport::TestCase
     assert @block.help
   end
 
-  should 'return path of links to reach a page' do
-    links = [{:name => @folder.name, :url => @folder.url}, {:name => @article.name, :url => @article.url}]
-    assert_equal links, @block.page_trail(@article)
+  should 'not be cacheable' do
+    refute @block.cacheable?
   end
 
-  should 'return path of links when current page is at cms controller' do
-    params = {:controller => 'cms', :action => 'edit', :id => @article.id}
-    links = [{:name => @folder.name, :url => @folder.url}, {:name => @article.name, :url => @article.url}, {:url=>{:controller=>"cms", :action=>"edit", :id=>@article.id}, :name=>"Edit"}]
-    assert_equal links, @block.page_trail(nil, params)
+  should 'return page links in api_content' do
+    folder = fast_create(Folder, profile_id: profile.id, name: 'folder')
+    article = Article.create!(profile: profile, parent: folder, name: 'child')
+    block.api_content_params = { page: article.path, profile: profile.identifier }
+    links = block.api_content[:links]
+    assert_equal [profile.name, 'folder', 'child'], links.map {|l| l[:name]}
+    assert_equal article.full_path, links.last[:url]
   end
+end
 
-  should 'not return cms action link when show_cms_action is false' do
-    params = {:controller => 'cms', :action => 'edit', :id => @article.id}
-    links = [{:name => @folder.name, :url => @folder.url}, {:name => @article.name, :url => @article.url}]
-    @block.show_cms_action = false
-    assert_equal links, @block.page_trail(nil, params)
-  end
+require 'boxes_helper'
 
-  should 'include profile link on path of links to reach a page' do
-    links = [{:name => @profile.name, :url => @profile.url}, {:name => @folder.name, :url => @folder.url}, {:name => @article.name, :url => @article.url}]
-    assert_equal links, @block.trail(@article, @profile)
-  end
+class ContentBreadcrumbsBlockViewTest < ActionView::TestCase
+  include BoxesHelper
 
-  should 'not include profile link on path of links when show_profile is false' do
-    links = [{:name => @folder.name, :url => @folder.url}, {:name => @article.name, :url => @article.url}]
-    @block.show_profile = false
-    assert_equal links, @block.trail(@article, @profile)
-  end
-
-  should 'not include profile link on path of links when trail is empty' do
-    assert_equal [], @block.trail(nil, @profile)
+  def setup
+    @block = BreadcrumbsPlugin::ContentBreadcrumbsBlock.new
+    @profile = fast_create(Community)
+    @folder = fast_create(Folder, :profile_id => @profile.id)
+    @article = fast_create(Folder, :profile_id => @profile.id, :parent_id => @folder.id)
   end
 
   should 'render trail if there is links to show' do
     @page = @article
-    trail = instance_eval(&@block.content)
+    trail = render_block_content(@block)
     assert_match /#{@profile.name}/, trail
     assert_match /#{@folder.name}/, trail
     assert_match /#{@page.name}/, trail
@@ -65,11 +56,6 @@ class ContentBreadcrumbsBlockTest < ActiveSupport::TestCase
 
   should 'render nothing if there is no links to show' do
     @page = nil
-    assert_equal '', instance_eval(&@block.content)
+    assert_equal '', render_block_content(@block)
   end
-
-  should 'not be cacheable' do
-    assert !@block.cacheable?
-  end
-
 end

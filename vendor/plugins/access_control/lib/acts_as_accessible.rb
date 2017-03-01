@@ -1,5 +1,5 @@
 module ActsAsAccessible
-  # This is the global hash of permissions and each item is of the form 
+  # This is the global hash of permissions and each item is of the form
   # 'class_name' => permission_hash for each target have its own set of permissions
   # but its not a namespace so each permission name should be unique
   PERMISSIONS = {}
@@ -19,18 +19,20 @@ module ActsAsAccessible
     nil
   end
 
-  def affiliate(accessor, roles)
-    roles = [roles] unless roles.kind_of?(Array)
-    roles.map {|role| accessor.add_role(role, self)}.any? 
+  def affiliate(accessor, roles, attributes = {})
+    roles = Array(roles)
+    roles.map {|role| accessor.add_role(role, self, attributes)}.any?
   end
 
   def disaffiliate(accessor, roles)
-    roles = [roles] unless roles.kind_of?(Array)
-    role_assignments.map{|ra|ra.destroy if roles.include?(ra.role) && ra.accessor == accessor} 
+    roles = Array(roles)
+    role_assignments.map do |ra|
+      ra.destroy if roles.include?(ra.role) && ra.accessor == accessor
+    end
   end
 
   def roles
-    Role.find_all_by_environment_id(environment.id).select do |r| 
+    Role.where(environment_id: environment.id).select do |r|
       r.permissions.any?{ |p| PERMISSIONS[self.class.base_class.name].include?(p) }
     end
   end

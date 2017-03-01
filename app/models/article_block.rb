@@ -3,23 +3,19 @@ class ArticleBlock < Block
   attr_accessible :article_id
 
   def self.description
-    _('Display one of your contents')
+    _('Display one of your contents.')
+  end
+
+  def self.short_description
+    _('Show one article')
+  end
+
+  def self.pretty_name
+    _('Article')
   end
 
   def help
     _('This block displays one of your articles. You can edit the block to select which one of your articles is going to be displayed in the block.')
-  end
-
-  def content(args={})
-    block = self
-    proc do
-      block_title(block.title) +
-      (block.article ? article_to_html(FilePresenter.for(block.article),
-          :gallery_view => false,
-          :inside_block => block,               # For Blogs and folders
-          :format => block.visualization_format # For Articles and contents
-        ).html_safe : _('Article not selected yet.'))
-    end
   end
 
   def article_id

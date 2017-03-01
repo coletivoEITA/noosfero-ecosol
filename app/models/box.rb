@@ -1,20 +1,22 @@
-class Box < ActiveRecord::Base
+class Box < ApplicationRecord
+
+  acts_as_list scope: -> box { where owner_id: box.owner_id, owner_type: box.owner_type }
+
   belongs_to :owner, :polymorphic => true
-  acts_as_list :scope => 'owner_id = #{owner_id} and owner_type = \'#{owner_type}\''
-  has_many :blocks, :dependent => :destroy, :order => 'position'
+  has_many :blocks, -> { order 'position' }, dependent: :destroy
 
   attr_accessible :owner
 
   include Noosfero::Plugin::HotSpot
 
-  scope :with_position, :conditions => ['boxes.position > 0']
+  scope :with_position, -> { where 'boxes.position > 0' }
 
   def environment
     owner ? (owner.kind_of?(Environment) ? owner : owner.environment) : nil
   end
 
   def acceptable_blocks
-    blocks_classes = if central? then Box.acceptable_center_blocks + plugins_extra_blocks(:type => owner.class, :position => 1) else Box.acceptable_side_blocks + plugins_extra_blocks(:type => owner.class, :position => [2, 3]) end
+    blocks_classes = if central? then Box.acceptable_center_blocks + plugins.dispatch(:extra_blocks, :type => owner.class, :position => 1) else Box.acceptable_side_blocks + plugins.dispatch(:extra_blocks, :type => owner.class, :position => [2, 3]) end
     to_css_selector blocks_classes
   end
 
@@ -39,7 +41,6 @@ class Box < ActiveRecord::Base
       ProfileImageBlock,
       RawHTMLBlock,
       RecentDocumentsBlock,
-      SellersSearchBlock,
       TagsBlock ]
   end
 
@@ -52,21 +53,17 @@ class Box < ActiveRecord::Base
       EnterprisesBlock,
       FansBlock,
       FavoriteEnterprisesBlock,
-      FeaturedProductsBlock,
       FeedReaderBlock,
       HighlightsBlock,
       LinkListBlock,
       LocationBlock,
       LoginBlock,
       MyNetworkBlock,
-      ProductsBlock,
-      ProductCategoriesBlock,
       ProfileImageBlock,
       ProfileInfoBlock,
       ProfileSearchBlock,
       RawHTMLBlock,
       RecentDocumentsBlock,
-      SellersSearchBlock,
       SlideshowBlock,
       TagsBlock
     ]

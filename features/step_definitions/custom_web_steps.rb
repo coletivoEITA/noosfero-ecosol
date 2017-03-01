@@ -1,13 +1,9 @@
 Then /^"([^"]*)" should not be visible within "([^"]*)"$/ do |text, selector|
-  if page.has_content?(text)
-    page.should have_no_css(selector, :text => text, :visible => false)
-  end
+  page.should have_no_css selector, text: text, visible: false
 end
 
 Then /^"([^"]*)" should be visible within "([^"]*)"$/ do |text, selector|
-  if page.has_content?(text)
-    page.should have_css(selector, :text => text, :visible => false)
-  end
+  page.should have_css selector, text: text, visible: false
 end
 
 Then /^I should see "([^"]*)" link$/ do |text|
@@ -22,14 +18,14 @@ When /^I should see "([^\"]+)" linking to "([^\"]+)"$/ do |text, href|
   page.should have_xpath("//a[@href='#{href}']")
 end
 
-Then /^the "([^"]*)" button should be disabled$/ do |selector|
-  field = find(selector)
-  field['disabled'].should be_true
-end
+Then /^the field "([^"]*)" should be (enabled|disabled)$/ do |selector, status|
+  field = page.find(:css, selector)
 
-Then /^the "([^"]*)" button should be enabled$/ do |selector|
-  field = find(selector)
-  field['disabled'].should_not be_true
+  if status == 'enabled'
+    field.disabled?.should_not be_truthy
+  else
+    field.disabled?.should be_truthy
+  end
 end
 
 When /^I reload and wait for the page$/ do
@@ -43,6 +39,7 @@ end
 
 When /^I confirm the browser dialog$/ do
   page.driver.browser.switch_to.alert.accept
+  sleep 1 # FIXME Don't know why, but this is necessary...  :/
 end
 
 When /^I type in "([^\"]*)" into autocomplete list "([^\"]*)" and I choose "([^\"]*)"$/ do |term, input, result|

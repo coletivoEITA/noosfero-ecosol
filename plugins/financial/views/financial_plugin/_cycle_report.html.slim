@@ -1,0 +1,141 @@
+.cycle_report
+  .header
+    .name
+      |#{t("orders_plugin.views.admin.financial.financial_report", name: cycle.name)}
+    .inputs
+      - input = cycle.financial_transactions.inputs.sum(:value).round(2)
+      strong
+        |#{t("orders_plugin.views.admin.financial.inputs")}
+      |#{input}
+    .outputs
+      strong
+        - output = cycle.financial_transactions.outputs.sum(:value).round(2)
+        |#{t("orders_plugin.views.admin.financial.outputs")}
+      |#{output}
+    .cash
+      strong
+        |#{t("orders_plugin.views.admin.financial.cash")}
+      |#{input - output}
+    button class='action-button toggle'
+      span.open
+        |#{t("orders_plugin.views.admin.financial.open")}
+  .body
+    button class='action-button toggle'
+      span.closed
+        |#{t("orders_plugin.views.admin.financial.close")}
+    h4
+      |#{t("orders_plugin.views.admin.financial.financial_report", name: cycle.name)}
+
+    h3
+      |#{t("orders_plugin.views.admin.financial.revenue_totalization")}
+
+    table
+      tr
+        th
+          |#{t("orders_plugin.views.admin.financial.type")}
+        th
+          |#{t("orders_plugin.views.admin.financial.value")}
+        th
+          |#{t("orders_plugin.views.admin.financial.date")}
+        th
+          |#{t("orders_plugin.views.admin.financial.description")}
+
+      - total = 0
+      - [:income, :payment].each do |c|
+        - cycle.transactions_for_report[c].each do |transaction|
+          - total += transaction.value
+          tr
+            td
+              |#{t("orders_plugin.views.admin.financial."+c.to_s)}
+            td
+              = "R$ "+transaction.value.to_s
+            td
+              = transaction.created_at.strftime(I18n.t('orders_plugin.lib.date_helper.m_d_y_hh_m'))
+            td
+              = transaction.description if transaction.payment.nil?
+              = transaction.payment.description unless transaction.payment.nil?
+    .total
+      span.title
+        |#{t("orders_plugin.views.admin.financial.total")}
+      span.value
+        |#{total}
+
+    h3
+      |#{t("orders_plugin.views.admin.financial.cash_totalization")}
+
+    h5
+      |#{t("orders_plugin.views.admin.financial.expense")}
+    table
+      tr
+        th
+          |#{t("orders_plugin.views.admin.financial.value")}
+        th
+          |#{t("orders_plugin.views.admin.financial.date")}
+        th
+          |#{t("orders_plugin.views.admin.financial.responsible")}
+        th
+          |#{t("orders_plugin.views.admin.financial.description")}
+
+      - total = 0
+      - cycle.transactions_for_report[:expense].each do |transaction|
+        - total += transaction.value
+        tr
+          td
+            = "R$ "+transaction.value.to_s
+          td
+            = transaction.created_at.strftime(I18n.t('orders_plugin.lib.date_helper.m_d_y_hh_m'))
+          td
+            = transaction.operator.name
+          td
+            = transaction.description
+    .total
+      span.title
+        |#{t("orders_plugin.views.admin.financial.total")}
+      span.value
+        |#{total}
+
+    h5
+      |#{t("orders_plugin.views.admin.financial.payment")}
+    table
+      tr
+        th
+          |#{t("orders_plugin.views.admin.financial.value")}
+        th
+          |#{t("orders_plugin.views.admin.financial.date")}
+        th
+          |#{t("orders_plugin.views.admin.financial.responsible")}
+        th
+          |#{t("orders_plugin.views.admin.financial.payment_method")}
+
+      - total = 0
+      - cycle.transactions_for_report[:payment].each do |transaction|
+        - total += transaction.value
+        tr
+          td
+            = "R$ "+transaction.value.to_s
+          td
+            = transaction.date.strftime(I18n.t('orders_plugin.lib.date_helper.m_d_y_hh_m'))
+          td
+            = transaction.operator.name
+          td
+            = I18n.t("payments_plugin.models.payment_methods."+transaction.payment_method.slug)
+    .total
+      span.title
+        |#{t("orders_plugin.views.admin.financial.total")}
+      span.value
+        |#{total}
+
+  .footer
+    button class='action-button add_input' data-toggle="modal" data-target=".add-transaction-modal"
+      |#{t("orders_plugin.views.admin.financial.add_input")}
+    button class='action-button add_output' data-toggle="modal" data-target=".add-transaction-modal"
+      |#{t("orders_plugin.views.admin.financial.add_output")}
+    a href="#{url_for controller: :financial_plugin_cycle, action: :report_cycle, id: cycle.id}" class='action-button'
+      |#{t("orders_plugin.views.admin.financial.export_spreadsheet")}
+  = render "financial_plugin_cycle/add_transaction_modal"
+
+javascript:
+  $(".cycle_report button.toggle").click(financial.cycle_report.toggle)
+  $(".cycle_report button.add_input").click(financial.cycle_report.add_input)
+  $(".cycle_report button.add_output").click(financial.cycle_report.add_output)
+  $(".add-transaction-modal.modal button").click(function() { $(".add-transaction-modal.modal").modal("hide"); })

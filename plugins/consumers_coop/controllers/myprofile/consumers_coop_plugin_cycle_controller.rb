@@ -1,6 +1,5 @@
 class ConsumersCoopPluginCycleController < OrdersCyclePluginCycleController
 
-  no_design_blocks
   include ConsumersCoopPlugin::TranslationHelper
 
   helper ConsumersCoopPlugin::TranslationHelper

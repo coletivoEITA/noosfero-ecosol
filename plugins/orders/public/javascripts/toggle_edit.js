@@ -33,7 +33,7 @@ toggle_edit = {
         target.hasAttribute('toggle-edit') || jQuery(target).parents().attr('toggle-edit') != undefined;
     },
     isToggleIgnore: function (target) {
-      return target.hasAttribute('toggle-ignore') || jQuery(target).parents().attr('toggle-ignore') != undefined;
+      return target.hasAttribute('toggle-ignore') || jQuery(target).parents('[toggle-ignore]').length > 0
     },
   },
 

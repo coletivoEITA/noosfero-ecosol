@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+
+    <p>
+      <%= _('You have a new %{exchange} waiting for you! %{origin} wants to exchange.') % {
+        :origin => @origin.name,
+        :exchange => link_to(_('exchange'), :controller => 'exchange_plugin_myprofile', :profile => @target.identifier, :action => 'index'),
+      } %>
+    </p>
+
+    <br /><br />
+
+  </body>
+</html>

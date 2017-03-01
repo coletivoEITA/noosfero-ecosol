@@ -27,11 +27,15 @@ module XssTerminate
           before_save filter_with
       end
       class_attribute "xss_terminate_#{options[:with]}_options".to_sym
+
+      
       self.send("xss_terminate_#{options[:with]}_options=".to_sym, {
         :except => (options[:except] || []),
+        :if => (options[:if] || true),
         :only => (options[:only] || options[:sanitize] || [])
-      })
+      }) if 
       include XssTerminate::InstanceMethods
+
     end
 
   end
@@ -44,15 +48,25 @@ module XssTerminate
         puts field
         self[field].each_key { |key|
           key = key.to_sym
-          self[field][key] = sanitizer.sanitize(self[field][key])
+          self[field][key] = sanitizer.sanitize(self[field][key], encode_special_chars: false, scrubber: permit_scrubber )
         }
       else
         if self[field]
-          self[field] = sanitizer.sanitize(self[field])
+          self[field] = sanitizer.sanitize(self[field], encode_special_chars: false, scrubber: permit_scrubber )
         else
-          self.send("#{field}=", sanitizer.sanitize(self.send("#{field}")))
+          value = self.send("#{field}")
+          return unless value
+          value = sanitizer.sanitize(value, encode_special_chars: false, scrubber: permit_scrubber)
+          self.send("#{field}=", value)
         end
       end
+    end
+
+    def  permit_scrubber
+        scrubber = Rails::Html::PermitScrubber.new
+        scrubber.tags = Rails.application.config.action_view.sanitized_allowed_tags
+        scrubber.attributes = Rails.application.config.action_view.sanitized_allowed_attributes
+        scrubber
     end
 
     def sanitize_columns(with = :full)
@@ -62,31 +76,27 @@ module XssTerminate
       unless except.empty?
         only.delete_if{ |i| except.include?( i.to_sym ) }
       end
+      if_condition = eval "xss_terminate_#{with}_options[:if]"
+      only = [] if !if_condition.nil? && if_condition.respond_to?(:call) && !if_condition.call(self)
+
       return only, columns_serialized
     end
 
     def sanitize_fields_with_full
-      sanitizer = ActionView::Base.full_sanitizer
-      columns, columns_serialized = sanitize_columns(:full)
-      columns.each do |column|
-        sanitize_field(sanitizer, column.to_sym, columns_serialized.include?(column))
-      end
+      sanitize_fields_with(Rails::Html::FullSanitizer.new,:full)
     end
 
     def sanitize_fields_with_white_list
-      sanitizer = ActionView::Base.white_list_sanitizer
-      columns, columns_serialized = sanitize_columns(:white_list)
-      columns.each do |column|
-        sanitize_field(sanitizer, column.to_sym, columns_serialized.include?(column))
-      end
+      sanitize_fields_with(Rails::Html::WhiteListSanitizer.new,:white_list)
     end
 
     def sanitize_fields_with_html5lib
-      sanitizer = HTML5libSanitize.new
-      columns = sanitize_columns(:html5lib)
-      columns.each do |column|
-        sanitize_field(sanitizer, column.to_sym, columns_serialized.include?(column))
-      end
+      sanitize_fields_with(HTML5libSanitize.new,:html5lib)
+    end
+
+    def sanitize_fields_with sanitizer, type
+      columns, columns_serialized = sanitize_columns(type)
+      columns.each {|column| sanitize_field(sanitizer, column.to_sym, columns_serialized.include?(column))}
     end
 
   end

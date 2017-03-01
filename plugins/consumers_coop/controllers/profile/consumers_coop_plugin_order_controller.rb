@@ -1,6 +1,5 @@
 class ConsumersCoopPluginOrderController < OrdersCyclePluginOrderController
 
-  no_design_blocks
   include ConsumersCoopPlugin::TranslationHelper
 
   helper ConsumersCoopPlugin::TranslationHelper
@@ -8,6 +7,6 @@ class ConsumersCoopPluginOrderController < OrdersCyclePluginOrderController
   protected
 
   extend HMVC::ClassMethods
-  hmvc ConsumersCoopPlugin
+  hmvc OrdersCyclePlugin
 
 end

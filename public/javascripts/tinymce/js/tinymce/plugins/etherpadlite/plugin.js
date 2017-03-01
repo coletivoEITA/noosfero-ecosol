@@ -9,7 +9,7 @@
  */
 
 (function() {
-  var supportedLanguages = ['en', 'pt']
+  var supportedLanguages = ['en', 'pt_BR']
   if (supportedLanguages.indexOf(tinymce.settings.language) >= 0)
     tinymce.PluginManager.requireLangPack('etherpadlite');
 

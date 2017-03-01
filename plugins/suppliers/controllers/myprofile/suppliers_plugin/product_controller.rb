@@ -6,60 +6,66 @@ class SuppliersPlugin::ProductController < MyProfileController
 
   protect 'edit_profile', :profile
 
+  serialization_scope :view_context
+
   helper SuppliersPlugin::TranslationHelper
   helper SuppliersPlugin::DisplayHelper
 
   def index
-    filter
-    respond_to do |format|
-      format.html{ render template: 'suppliers_plugin/product/index' }
-      format.js{ render partial: 'suppliers_plugin/product/search' }
-    end
   end
 
-  def search
-    filter
-    if params[:page].present?
-      render partial: 'suppliers_plugin/product/results'
-    else
-      render partial: 'suppliers_plugin/product/search'
-    end
-  end
-
-  def add
-
+  def create
+    supplier = SuppliersPlugin::Supplier.find params[:product][:supplier_id]
+    base_product = supplier.products.build base_product_params params
+    base_product.save!
+    @product = base_product.distribute_to_consumer profile, distributed_product_params(params)
+    render json: @product.reload, serializer: SuppliersPlugin::ProductSerializer
   end
 
   def edit
     @product = profile.products.supplied.find params[:id]
-    @product.update_attributes params["product_#{@product.id}"]
+    @product.update params.require(:product).permit(:name, :product_category_id, :margin_percentage, :available, :unit_id, :supplier_price)
+
+    render nothing: true
+  end
+
+  def set_image
+    params[:image_builder] = {uploaded_data: params[:image_builder]} if params[:image_builder].present?
+    @product = profile.products.supplied.find params[:id]
+    @product.update params.permit(image_builder: [:uploaded_data])
+
+    render json: @product, serializer: SuppliersPlugin::ProductSerializer
+  end
+
+  def unavailable
+    params[:available] = 'false'
+    respond_to do |format|
+      format.js{ render partial: 'suppliers_plugin/product/search' }
+    end
   end
 
   def import
     if params[:csv].present?
       if params[:remove_all_suppliers] == 'true'
-        profile.suppliers.except_self.find_each(batch_size: 20){ |s| s.delay.destroy }
+        profile.suppliers.except_self.find_each(batch_size: 40){ |s| s.delay.destroy }
       end
       SuppliersPlugin::Import.delay.products profile, params[:csv].read
 
-      @notice = t'controllers.product.import_in_progress'
-      respond_to{ |format| format.js{ render layout: false } }
-    else
-      respond_to{ |format| format.html{ render layout: false } }
+      respond_to{ |format| format.js{ render nothing: true } }
     end
   end
 
   def destroy
     @product = SuppliersPlugin::DistributedProduct.find params[:id]
     @product.destroy
-    flash[:notice] = t('controllers.myprofile.product_controller.product_removed_succe')
+    render text: t('controllers.myprofile.product_controller.product_removed_succe')
   end
 
   def distribute_to_consumers
     params[:consumers] ||= {}
 
     @product = profile.products.find params[:id]
-    @consumers = profile.consumers.find(params[:consumers].keys.to_a).collect &:profile
+    @consumers = profile.consumers.find(params[:consumers].keys.to_a).collect(&:profile)
     to_add = @consumers - @product.consumers
     to_remove = @product.consumers - @consumers
 
@@ -71,33 +77,59 @@ class SuppliersPlugin::ProductController < MyProfileController
     @product.reload
   end
 
-  protected
-
-  def filter
-    page = params[:page]
-    page = 1 if page.blank?
-
-    @supplier = SuppliersPlugin::Supplier.where(id: params[:supplier_id]).first if params[:supplier_id].present?
-
-    @scope = profile.products.unarchived.joins :from_products, :suppliers
-    @scope = SuppliersPlugin::BaseProduct.search_scope @scope, params
-    @products_count = @scope.supplied_for_count.count
-    @scope = @scope.supplied.select('products.*, MIN(from_products_products.name) as from_products_name').order('from_products_name ASC')
-    @products = @scope.paginate per_page: 20, page: page
-
-    @product_categories = Product.product_categories_of @products
-    @new_product = SuppliersPlugin::DistributedProduct.new
-    @new_product.profile = profile
-    @new_product.supplier = @supplier
-    @units = Unit.all
+  def activate
+    ret = Product.where(id: params[:ids]).update_all(available: true)
+    render text: ret > 0 ? "success" : "fail"
   end
 
+  def deactivate
+    ret = Product.where(id: params[:ids]).update_all(available: false)
+    render text: ret > 0 ? "success" : "fail"
+  end
+
+  def categories
+    @categories = environment.product_categories.where("LOWER(name) like ?", "%#{params[:query].downcase}%")
+    render json: @categories, each_serializer: SuppliersPlugin::ProductCategorySerializer
+  end
+
+  def createAllocation
+    @product = profile.products.find params[:product_id]
+    @product.update_attribute(:use_stock, params[:use_stock] == 'true') if params[:use_stock].present?
+
+    if params[:place_id].nil? && @product.stock_places.count > 0
+      params[:place_id] = @product.stock_places.first.id
+    end
+
+    m = params[:stock_action] == "adition" ? 1 : -1
+    if params[:use_stock] == 'true'
+      a = @product.stock_allocations.create!(
+        quantity: m * params[:quantity].to_f.abs,
+        description: params[:description],
+        place_id: params[:place_id]
+      )
+      render text: "fail" if !a
+    end
+
+    render json: @product
+  end
+
+  protected
+
+  def base_product_params params
+    params[:price] = params[:supplier_price]
+    params.require(:product).permit(:product_category_id, :description, :name, :available, :price, :image_id, :unit_id)
+  end
+  def distributed_product_params params
+    params.require(:product).permit(:product_category_id, :description, :name, :available, :price, :image_id, :margin_percentage, :use_stock, :initial_stock, :unit_id)
+  end
   extend HMVC::ClassMethods
   hmvc SuppliersPlugin
 
-  def default_url_options
-    # avoid rails' use_relative_controller!
-    {use_route: '/'}
+  # inherit routes from core skipping use_relative_controller!
+  def url_for options
+    options[:controller] = "/#{options[:controller]}" if options.is_a? Hash and options[:controller] and not options[:controller].to_s.starts_with? '/'
+    super options
   end
+  helper_method :url_for
 
 end

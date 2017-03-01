@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "POT-Creation-Date: 2015-02-02 21:44-0300\n"
-"PO-Revision-Date: 2015-07-14 12:25-0300\n"
+"PO-Revision-Date: 2015-10-23 08:13-0300\n"
 "Last-Translator: Daniel Tygel <dtygel@eita.org.br>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero/"
 "noosfero/pt/>\n"
@@ -271,3 +271,10 @@ msgstr "carregando..."
 #: app/views/cms/_upload_file_form.html.erb:20
 msgid "Upload"
 msgstr "Enviar"
+
+msgid "Send to all members"
+msgstr "Enviar para todos os membros"
+
+msgid "To:"
+msgstr "Para:"
+

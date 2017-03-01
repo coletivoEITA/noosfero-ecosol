@@ -37,6 +37,7 @@ en-US: &en-US
       mailer:
         order_was_confirmed: "[%{name}] Your order was confirmmed"
         order_was_cancelled: "[%{name}] Your order was cancelled"
+        order_was_received: "[%{name}] Your order was declared as received"
       date_helper:
         a: "%A"
         b_d_at_hh_m: "%B %d, at %Hh%M"
@@ -63,6 +64,7 @@ en-US: &en-US
         modified: modified
         payment_method: payment method
         delivery_option: delivery or pickup option
+        hub: Hub
 
         member_name: "Consumer name"
         min_stock: "min. stock"
@@ -73,12 +75,12 @@ en-US: &en-US
         product_cod: "product cod."
         product_name: "product name"
         products_report: "products report"
-        projected_stock: "projected stock"
+        projected_stock: "stock after"
         qtt_to_be_parcelled: "qtt to be using stock"
         qty_ordered: "qty ordered"
         selled_total: "selled total"
         selled_value: "selled value"
-        stock_qtt: "stock qtt"
+        stock_qtt: "stock before"
         supplier: "%{terms.supplier.singular.capitalize}"
         total_parcel_value: "Total value using stock"
         total_selled_value: "Total selled value"
@@ -97,13 +99,17 @@ en-US: &en-US
           login_first: "Login first"
           order_cancelled: "Order cancelled"
           order_confirmed: "Order confirmed"
+          order_confirmed_with_stock_changes: "Order confirmed, but some items had its quantities changed by missing stock availability."
           order_removed: "Order removed"
           please_login_first: "Please login first"
           you_are_not_the_owner: "You are not the owner of this order"
+          delivery_method: "Delivery or pickup method"
       myprofile:
         admin:
           orders_report: "Orders' Report - %{date} - %{profile_identifier} - %{name}.xlsx"
+          orders_report_by_hub: "Orders' Report in hub {hub} - %{date} - %{profile_identifier} - %{name}.xlsx"
           products_report: "Products' Report - %{date} - %{profile_identifier} - %{name}.xlsx"
+          products_report_by_hub: "Products' Report in hub {hub} - %{date} - %{profile_identifier} - %{name}.xlsx"
     models:
       order:
         statuses:
@@ -141,6 +147,7 @@ en-US: &en-US
         payment_data:
           method: "Method"
           change: "Change"
+          other_method: "Chosen method"
     helpers:
       help:
         hide: "hide help"
@@ -176,13 +183,18 @@ en-US: &en-US
       consumer:
         _total:
           total: Total
+          order_total: Order Total
+          total_yet_to_pay: Total yet to pay
 
       item:
+        no_stock: "This product is not stock anymore"
         _edit:
           remove_from_order: "remove from order"
           removed: 'removed'
           submit: 'OK'
           this_product_requires: "This product requires a minimum of %{value}. The minimum was kept."
+          ordered_more_than_in_stock: "The quantity of the product %{name} in stock is less than what was asked. The quantity in your order was changed to the maximum of amount available at the moment."
+          saved: "Saved.."
 
         _add:
           label: 'Add product'
@@ -194,8 +206,21 @@ en-US: &en-US
           supplier: "%{terms.supplier.singular}"
           product: "product"
           quantity: "qty"
-          price_total: "value (%{currency})"
+          price_total: "value (U$)"
           status: "status"
+          info_about_delivery: "Informations about the chosen delivery/pickup method"
+          address_completion: "Address Completion"
+          payment_number: "Payment %{number}"
+          product_added: "Product added"
+          products: "Products"
+          payments: "Payments"
+          payment: "Payment"
+          value: "Value"
+          payment_method: "Payment method"
+          date: Date
+          total_bought: "Total buyed"
+          total_payed: "Total payed"
+          remaining_total: "Remaining"
 
       message:
         _fields:
@@ -233,18 +258,27 @@ en-US: &en-US
         _actor_data:
           consumer_heading: "Data %{terms.consumer.from_article.singular}"
           supplier_heading: "Data %{terms.supplier.from_article.singular}"
+        _payment_edition:
+          choose_payment_method: "Escolha um método de pagamento"
+          other_method: "Define the method"
+          
       admin:
         reports:
-          generate_spreadsheets: "Generate spreadsheets"
-          products_spreadsheet: "Products"
-          orders_spreadsheet: "Orders"
+          generate_spreadsheets: "Export spreadsheets"
+          products_spreadsheet: "By suppliers"
+          orders_spreadsheet: "By consumers"
+          suppliers_spreadsheet: "By suppliers"
+          consumers_spreadsheet: "By consumers"
+          choose_hub: "Choose a hub" 
+          all_hubs: "all the hubs" 
+          close: "Close"
         index:
           no_orders_to_show: "No orders to show."
           code: "code"
           consumer: "consumer"
           last_update: "last update"
           order_date: "orders' date"
-          total: "total (%{currency})"
+          total: "total (U$)"
           situation: "situation"
           none_selected: "Any order selected"
         _edit:
@@ -260,6 +294,49 @@ en-US: &en-US
           see_redistribution: "see redistribution"
           the_collective_member: "The consumer %{terms.profile.from_article.singular} will receive an email that discriminates all changes made in his/her order"
           warn_member_of_the_ch: "Warn consumer of the changes in his/her order"
+          add_payment: "Add payment"
+        add_payment:
+          adding_payment: "Adding payment"
+          payment_method: "Payment method"
+          value: "Payment value"
+          description: "Description"
+          cancel: Cancel
+          submit: Submit
+          saved: Saved..
+        new_order:
+          add: "Add order"
+          adding_order: "Adding an order"
+          choose_the_consumer: "Choose the consumer below" 
+          is_consumer_registered: "Is the consumer of this order registered?"
+          consumer_registered: "He/She is registered - define who is the consumer"
+          consumer_not_registered: "He/She is not registered - insert data about the buyer"
+          consumer_name: "Consumer's name"
+          consumer_email: "Consumer's e-mail"
+        financial:
+          financial_report: "Financial Report - %{name}"
+          open: Open
+          close: Close
+          inputs: "Inputs:"
+          outputs: "Outputs:"
+          cash: "Final Cash:"
+          type: "Type"
+          value: "Value"
+          date: "Date/time"
+          description: "Description"
+          add_input: "+ input"
+          add_output: "+ output"
+          export_spreadsheet: "Export Spreadsheet"
+          payment: "Payment"
+          order: "Order"
+          expense: "Outputs"
+          income: "Inputs"
+          cash_totalization: "Cash totalization"
+          revenue_totalization: "Revenue totalization"
+          responsible: "Responsible"
+          payment_method: "Payment method"
+          cancel: "Cancel"
+          submit: "Submit"
+          total: "Total: "
 
       mailer:
         message_to_admins:
@@ -287,9 +364,18 @@ en-US: &en-US
           greetings: Greetings
           order_code_of_profile: "Order %{code} of %{name}"
           order_data_confirmed: "Order data confirmed:"
-          the_delivery_period_w: "The delivery period will occur %{date}."
+          the_delivery_period_w: "The delivery period to consumers will occur %{date}."
           your_order_can_be_che: "Your order can be checked or changed in the following link:"
           your_order_made_on_co: "Your order made %{terms.profile.at_article.singular} %{name} in %{date} is confirmed."
+          collective_made_a_purchase: "%{name} placed a collective order to you in %{date}."
+          see_below_the_items: "See below the items of the order:"
+        order_received:
+          dear_name: "Hi %{name},"
+          greetings: Greetings
+          order_data_received: "See below the items of the order:"
+          your_order_made_on_co: "Your order made %{terms.profile.at_article.singular} %{name} in %{date} was declared received."
+        purchase_received:
+          the_order_made_on_co: "The order made by the group %{name} in %{date} was declared received."
         order_cancellation:
           dear_name: "Dear %{name},"
           greetings: Greetings

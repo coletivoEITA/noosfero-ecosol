@@ -15,14 +15,17 @@ class ConsumersCoopPluginMyprofileController < MyProfileController
   end
 
   def settings
+    if defined? PaymentsPlugin
+      @payment_methods = PaymentsPlugin::PaymentMethod.all.map{|p| [t("payments_plugin.models.payment_methods."+p.slug), p.id]}
+    end
     if params[:commit]
       params[:profile_data][:consumers_coop_settings][:enabled] = params[:profile_data][:consumers_coop_settings][:enabled] == 'true' rescue false
       params[:profile_data][:volunteers_settings][:cycle_volunteers_enabled] = params[:profile_data][:volunteers_settings][:cycle_volunteers_enabled] == '1' rescue false
+      params[:profile_data][:consumers_coop_settings][:payments_enabled] = params[:profile_data][:consumers_coop_settings][:payments_enabled] == 'true' rescue false
 
       was_enabled = profile.consumers_coop_settings.enabled
 
-      profile.update_attributes! params[:profile_data]
-      profile.consumers_coop_header_image_save
+      profile.update! params[:profile_data]
 
       if !was_enabled and profile.consumers_coop_settings.enabled
         profile.consumers_coop_enable

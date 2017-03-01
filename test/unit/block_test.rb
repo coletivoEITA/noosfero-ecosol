@@ -23,16 +23,34 @@ class BlockTest < ActiveSupport::TestCase
     assert_nil Block.new.owner
   end
 
-  should 'provide no footer by default' do
-    assert_nil Block.new.footer
-  end
-
   should 'provide an empty default title' do
     assert_equal '', Block.new.default_title
   end
 
+  should 'provide an empty default subtitle' do
+    assert_equal '', Block.new.subtitle
+  end
+
   should 'be editable by default' do
     assert Block.new.editable?
+  end
+
+  should 'be editable if edit modes is all' do
+    block = Block.new
+    block.edit_modes = 'all'
+
+    assert block.editable?
+  end
+
+  should 'be movable by default' do
+    assert Block.new.movable?
+  end
+
+  should 'be movable if move modes is all' do
+    block = Block.new
+    block.move_modes = 'all'
+
+    assert block.movable?
   end
 
   should 'have default titles' do
@@ -118,7 +136,7 @@ class BlockTest < ActiveSupport::TestCase
     user = create_user('testinguser').person
     box = fast_create(Box, :owner_id => user.id, :owner_type => 'Profile')
     block = create(Block, :display => 'never', :box_id => box.id)
-    assert block.update_attributes!(:display => 'always')
+    assert block.update!(:display => 'always')
     block.reload
     assert_equal 'always', block.display
   end
@@ -220,17 +238,18 @@ class BlockTest < ActiveSupport::TestCase
     block = MyBlock.new
 
     assert block.visible?({:value => 2})
-    assert !block.visible?({:value => 3})
+    refute block.visible?({:value => 3})
   end
 
   should 'not be embedable by default' do
-    assert !Block.new.embedable?
+    refute Block.new.embedable?
   end
 
   should 'generate embed code' do
     b = Block.new
     b.stubs(:url_for).returns('http://myblogtest.com/embed/block/1')
-    assert_equal "<iframe class=\"embed block block\" frameborder=\"0\" height=\"768\" src=\"http://myblogtest.com/embed/block/1\" width=\"1024\"></iframe>", b.embed_code.call
+    assert_equal "<iframe src=\"http://myblogtest.com/embed/block/1\" frameborder=\"0\" width=\"1024\" height=\"768\" class=\"embed block block\"></iframe>",
+      b.embed_code.call
   end
 
   should 'default value for display_user is all' do
@@ -257,13 +276,13 @@ class BlockTest < ActiveSupport::TestCase
   should 'do not display block to logged users for display_user = not_logged' do
     block = Block.new
     block.display_user = 'not_logged'
-    assert !block.display_to_user?(User.new)
+    refute block.display_to_user?(User.new)
   end
 
   should 'do not display block to not logged users for display_user = logged' do
     block = Block.new
     block.display_user = 'logged'
-    assert !block.display_to_user?(nil)
+    refute block.display_to_user?(nil)
   end
 
   should 'display block to not logged users for display_user = not_logged' do
@@ -275,13 +294,18 @@ class BlockTest < ActiveSupport::TestCase
   should 'not be visible if display_to_user? is false' do
     block = Block.new
     block.expects(:display_to_user?).once.returns(false)
-    assert !block.visible?({})
+    refute block.visible?({})
   end
 
   should 'accept user as parameter on cache_key without change its value' do
     person = fast_create(Person)
     block = Block.new
     assert_equal block.cache_key('en'), block.cache_key('en', person)
+  end
+
+  should 'use language in cache key' do
+    block = Block.new
+    assert_not_equal block.cache_key('en'), block.cache_key('pt')
   end
 
   should 'display block to members of community for display_user = members' do
@@ -304,7 +328,7 @@ class BlockTest < ActiveSupport::TestCase
     block = create(Block, :box_id => box.id)
     block.display_user = 'followers'
     block.save!
-    assert !block.display_to_user?(user.person)
+    refute block.display_to_user?(user.person)
   end
 
   should 'display block to friends of person for display_user = friends' do
@@ -328,6 +352,129 @@ class BlockTest < ActiveSupport::TestCase
     block = create(Block, :box_id => box.id)
     block.display_user = 'followers'
     block.save!
-    assert !block.display_to_user?(person_friend)
+    refute block.display_to_user?(person_friend)
+  end
+
+  should 'get limit as a number when limit is string' do
+    block = RecentDocumentsBlock.new
+    block.settings[:limit] = '5'
+    assert block.get_limit.is_a?(Fixnum)
+  end
+
+  should 'return true at visible_to_user? when block is visible' do
+    block = Block.new
+    person = create_user('person_one').person
+    assert block.visible_to_user?(person)
+  end
+
+  should 'return false at visible_to_user? when block is not visible and user is nil' do
+    block = Block.new
+    person = create_user('person_one').person
+    block.stubs(:owner).returns(person)
+    block.expects(:visible?).returns(false)
+    assert !block.visible_to_user?(nil)
+  end
+
+  should 'return false at visible_to_user? when block is not visible and user does not has permission' do
+    block = Block.new
+    person = create_user('person_one').person
+    community = fast_create(Community)
+    block.stubs(:owner).returns(community)
+    block.expects(:visible?).returns(false)
+    assert !block.visible_to_user?(person)
+  end
+
+  should 'return true at visible_to_user? when block is not visible and user has permission' do
+    block = Block.new
+    person = create_user('person_one').person
+    community = fast_create(Community)
+    give_permission(person, 'edit_profile_design', community)
+    block.stubs(:owner).returns(community)
+    block.expects(:visible?).returns(false)
+    assert block.visible_to_user?(person)
+  end
+
+  should 'return false at visible_to_user? when block is not visible and user does not has permission in environment' do
+    block = Block.new
+    environment = Environment.default
+    person = create_user('person_one').person
+    block.stubs(:owner).returns(environment)
+    block.expects(:visible?).returns(false)
+    assert !block.visible_to_user?(person)
+  end
+
+  should 'return true at visible_to_user? when block is not visible and user has permission in environment' do
+    block = Block.new
+    environment = Environment.default
+    person = create_user('person_one').person
+    give_permission(person, 'edit_environment_design', environment)
+    block.stubs(:owner).returns(environment)
+    block.expects(:visible?).returns(false)
+    assert block.visible_to_user?(person)
+  end
+
+  should 'return false at visible_to_user? when block is not visible to user' do
+    block = Block.new
+    person = create_user('person_one').person
+    block.stubs(:owner).returns(person)
+    block.expects(:visible?).returns(true)
+    block.expects(:display_to_user?).returns(false)
+    assert !block.visible_to_user?(nil)
+  end
+
+  should 'not allow block edition when user has not the permission for profile design' do
+    block = Block.new
+    profile = fast_create(Profile)
+    block.stubs(:owner).returns(profile)
+    person = create_user('person_one').person
+    assert !block.allow_edit?(person)
+  end
+
+  should 'allow block edition when user has permission to edit profile design' do
+    block = Block.new
+    profile = fast_create(Profile)
+    block.stubs(:owner).returns(profile)
+    person = create_user('person_one').person
+    give_permission(person, 'edit_profile_design', profile)
+    assert block.allow_edit?(person)
+  end
+
+  should 'not allow block edition when user is nil' do
+    block = Block.new
+    assert !block.allow_edit?(nil)
+  end
+
+  should 'not allow block edition when block is not editable' do
+    block = Block.new
+    person = create_user('person_one').person
+    block.expects(:editable?).returns(false)
+    assert !block.allow_edit?(person)
+  end
+
+  should 'allow block edition when block is not editable but user is admin' do
+    block = Block.new
+    profile = fast_create(Profile)
+    block.stubs(:owner).returns(profile)
+    person = create_user('person_one').person
+    Environment.default.add_admin(person)
+    block.stubs(:editable?).returns(false)
+    assert block.allow_edit?(person)
+  end
+
+  should 'not allow block edition when user has not the permission for environment design' do
+    block = Block.new
+    environment = Environment.default
+    block.stubs(:owner).returns(environment)
+    person = create_user('person_one').person
+    assert !block.allow_edit?(person)
+  end
+
+  should 'allow block edition when user has the permission for environment design' do
+    block = Block.new
+    environment = Environment.default
+    block.stubs(:owner).returns(environment)
+    person = create_user('person_one').person
+    give_permission(person, 'edit_environment_design', environment)
+    assert block.allow_edit?(person)
   end
 end

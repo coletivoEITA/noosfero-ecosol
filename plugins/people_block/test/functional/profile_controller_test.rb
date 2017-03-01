@@ -1,14 +1,10 @@
-require File.dirname(__FILE__) + '/../test_helper'
-
-# Re-raise errors caught by the controller.
-class ProfileController; def rescue_action(e) raise e end; end
+require_relative '../test_helper'
 
 class ProfileControllerTest < ActionController::TestCase
 
   def setup
     @controller = ProfileController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+
     Noosfero::Plugin::Manager.any_instance.stubs(:enabled_plugins).returns([PeopleBlockPlugin.new])
   end
 
@@ -17,8 +13,8 @@ class ProfileControllerTest < ActionController::TestCase
     login_as(user.login)
     owner = user.person
 
-    suggestion1 = owner.profile_suggestions.create(:suggestion => fast_create(Person))
-    suggestion2 = owner.profile_suggestions.create(:suggestion => fast_create(Person))
+    suggestion1 = ProfileSuggestion.create!(:suggestion => fast_create(Person), :person => owner)
+    suggestion2 = ProfileSuggestion.create!(:suggestion => fast_create(Person), :person => owner)
 
     FriendsBlock.delete_all
     block = FriendsBlock.new

@@ -1,6 +1,6 @@
-require File.dirname(__FILE__) + '/../../../../test/test_helper'
+require 'test_helper'
 
-class SocialSharePrivacyPluginTest < ActiveSupport::TestCase
+class SocialSharePrivacyPluginTest < ActionView::TestCase
 
   include NoosferoTestHelper
 

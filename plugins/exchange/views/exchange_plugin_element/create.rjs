@@ -1,0 +1,6 @@
+page.insert_html :bottom, "exchange-elements-list-#{params[:actor]}", :partial => 'view',
+  :locals => {:element => @element, :actor => params[:actor]}
+
+if (!params[:object_type].blank?)
+  page.remove "#{params[:object_type]}-#{params[:object_id]}"
+end

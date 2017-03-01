@@ -3,7 +3,8 @@ require_relative "../test_helper"
 class CommunityTest < ActiveSupport::TestCase
 
   def setup
-    @person = fast_create(Person)
+    @user = User.current = create_user
+    @person = @user.person
   end
 
   attr_reader :person
@@ -28,9 +29,9 @@ class CommunityTest < ActiveSupport::TestCase
   should 'create default set of blocks' do
     c = create(Community, :environment => Environment.default, :name => 'my new community')
 
-    assert !c.boxes[0].blocks.empty?, 'person must have blocks in area 1'
-    assert !c.boxes[1].blocks.empty?, 'person must have blocks in area 2'
-    assert !c.boxes[2].blocks.empty?, 'person must have blocks in area 3'
+    refute c.boxes[0].blocks.empty?, 'person must have blocks in area 1'
+    refute c.boxes[1].blocks.empty?, 'person must have blocks in area 2'
+    refute c.boxes[2].blocks.empty?, 'person must have blocks in area 3'
   end
 
   should 'create a default set of articles' do
@@ -38,8 +39,10 @@ class CommunityTest < ActiveSupport::TestCase
     Community.any_instance.stubs(:default_set_of_articles).returns([blog])
     community = create(Community, :environment => Environment.default, :name => 'my new community')
 
-    assert_kind_of Blog, community.articles.find_by_path(blog.path)
-    assert_kind_of RssFeed, community.articles.find_by_path(blog.feed.path)
+    assert_kind_of Blog, community.articles.find_by(path: blog.path)
+    assert community.articles.find_by(path: blog.path).published?
+    assert_kind_of RssFeed, community.articles.find_by(path: blog.feed.path)
+    assert community.articles.find_by(path: blog.feed.path).published?
   end
 
   should 'have contact_person' do
@@ -82,7 +85,7 @@ class CommunityTest < ActiveSupport::TestCase
 
     c.destroy
     relationships.each do |i|
-      assert !RoleAssignment.exists?(i.id)
+      refute RoleAssignment.exists?(i.id)
     end
   end
 
@@ -118,49 +121,49 @@ class CommunityTest < ActiveSupport::TestCase
     e = Environment.default
     e.expects(:required_community_fields).returns(['contact_phone']).at_least_once
     community = build(Community, :name => 'My community', :environment => e)
-    assert ! community.valid?
+    refute  community.valid?
     assert community.errors[:contact_phone.to_s].present?
 
     community.contact_phone = '99999'
     community.valid?
-    assert ! community.errors[:contact_phone.to_s].present?
+    refute  community.errors[:contact_phone.to_s].present?
   end
 
   should 'not require fields if community is a template' do
     e = Environment.default
     e.expects(:required_community_fields).returns(['contact_phone']).at_least_once
     community = build(Community, :name => 'My community', :environment => e)
-    assert ! community.valid?
+    refute  community.valid?
     assert community.errors[:contact_phone.to_s].present?
 
     community.is_template = true
     community.valid?
-    assert ! community.errors[:contact_phone.to_s].present?
+    refute  community.errors[:contact_phone.to_s].present?
   end
 
   should 'return newest text articles as news' do
     c = fast_create(Community, :name => 'test_com')
     f = fast_create(Folder, :name => 'folder', :profile_id => c.id)
     u = create(UploadedFile, :profile => c, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
-    older_t = fast_create(TinyMceArticle, :name => 'old news', :profile_id => c.id)
-    t = fast_create(TinyMceArticle, :name => 'news', :profile_id => c.id)
-    t_in_f = fast_create(TinyMceArticle, :name => 'news', :profile_id => c.id, :parent_id => f.id)
+    older_t = fast_create(TextArticle, :name => 'old news', :profile_id => c.id)
+    t = fast_create(TextArticle, :name => 'news', :profile_id => c.id)
+    t_in_f = fast_create(TextArticle, :name => 'news', :profile_id => c.id, :parent_id => f.id)
 
     assert_equal [t_in_f, t], c.news(2)
   end
 
   should 'not return highlighted news when not asked' do
     c = fast_create(Community, :name => 'test_com')
-    highlighted_t = fast_create(TinyMceArticle, :name => 'high news', :profile_id => c.id, :highlighted => true)
-    t = fast_create(TinyMceArticle, :name => 'news', :profile_id => c.id)
+    highlighted_t = fast_create(TextArticle, :name => 'high news', :profile_id => c.id, :highlighted => true)
+    t = fast_create(TextArticle, :name => 'news', :profile_id => c.id)
 
     assert_equal [t].map(&:slug), c.news(2).map(&:slug)
   end
 
   should 'return highlighted news when asked' do
     c = fast_create(Community, :name => 'test_com')
-    highlighted_t = fast_create(TinyMceArticle, :name => 'high news', :profile_id => c.id, :highlighted => true)
-    t = fast_create(TinyMceArticle, :name => 'news', :profile_id => c.id)
+    highlighted_t = fast_create(TextArticle, :name => 'high news', :profile_id => c.id, :highlighted => true)
+    t = fast_create(TextArticle, :name => 'news', :profile_id => c.id)
 
     assert_equal [highlighted_t].map(&:slug), c.news(2, true).map(&:slug)
   end
@@ -242,31 +245,17 @@ class CommunityTest < ActiveSupport::TestCase
     end
   end
 
-  should 'escape malformed html tags' do
-    community = Community.new
-    community.name = "<h1 Malformed >> html >< tag"
-    community.address = "<h1 Malformed >,<<<asfdf> html >< tag"
-    community.contact_phone = "<h1 Malformed<<> >> html >><>< tag"
-    community.description = "<h1 Malformed /h1>>><<> html ><>h1< tag"
-    community.valid?
-
-    assert_no_match /[<>]/, community.name
-    assert_no_match /[<>]/, community.address
-    assert_no_match /[<>]/, community.contact_phone
-    assert_no_match /[<>]/, community.description
-  end
-
   should "the followed_by method be protected and true to the community members by default" do
     c = fast_create(Community)
     p1 = fast_create(Person)
     p2 = fast_create(Person)
     p3 = fast_create(Person)
 
-    assert !p1.is_member_of?(c)
+    refute p1.is_member_of?(c)
     c.add_member(p1)
     assert p1.is_member_of?(c)
 
-    assert !p3.is_member_of?(c)
+    refute p3.is_member_of?(c)
     c.add_member(p3)
     assert p3.is_member_of?(c)
 
@@ -288,7 +277,7 @@ class CommunityTest < ActiveSupport::TestCase
       process_delayed_job_queue
       community.add_member(p3)
       assert p1.is_member_of?(community)
-      assert !p2.is_member_of?(community)
+      refute p2.is_member_of?(community)
       assert p3.is_member_of?(community)
       process_delayed_job_queue
     end
@@ -299,12 +288,12 @@ class CommunityTest < ActiveSupport::TestCase
 
   should "update the action of article creation when an community's article is commented" do
     ActionTrackerNotification.delete_all
-    p1 = Person.first
     community = fast_create(Community)
+    p1 = person
     p2 = create_user.person
     p3 = create_user.person
     community.add_member(p3)
-    article = create(TextileArticle, :profile_id => community.id)
+    article = create(TextArticle, :profile_id => community.id)
     time = article.activity.updated_at + 1.day
     Time.stubs(:now).returns(time)
     create(Comment, :source_id => article.id, :title => 'some', :body => 'some', :author_id => p2.id)
@@ -368,7 +357,7 @@ class CommunityTest < ActiveSupport::TestCase
     scrap = create(Scrap, defaults_for_scrap(:sender => person, :receiver => community, :content => 'A scrap'))
     activity = ActionTracker::Record.last
 
-    assert_equal [scrap], community.activities.map { |a| a.klass.constantize.find(a.id) }
+    assert_equal [scrap], community.activities.map(&:activity)
   end
 
   should 'return tracked_actions of community as activities' do
@@ -377,8 +366,8 @@ class CommunityTest < ActiveSupport::TestCase
 
     User.current = person.user
     assert_difference 'ActionTracker::Record.count', 1 do
-      article = create(TinyMceArticle, :profile => community, :name => 'An article about free software')
-      assert_equal [article.activity], community.activities.map { |a| a.klass.constantize.find(a.id) }
+      article = create(TextArticle, :profile => community, :name => 'An article about free software')
+      assert_equal [article.activity], community.activities.map(&:activity)
     end
   end
 
@@ -388,9 +377,35 @@ class CommunityTest < ActiveSupport::TestCase
     community2 = fast_create(Community)
 
     User.current = person.user
-    article = create(TinyMceArticle, :profile => community2, :name => 'Another article about free software')
+    article = create(TextArticle, :profile => community2, :name => 'Another article about free software')
 
     assert_not_includes community.activities.map { |a| a.klass.constantize.find(a.id) }, article.activity
+  end
+
+
+  should 'check if a community admin user is really a community admin' do
+    c = fast_create(Community, :name => 'my test profile', :identifier => 'mytestprofile')
+    admin = create_user('adminuser').person
+    c.add_admin(admin)
+
+    assert c.is_admin?(admin)
+  end
+
+  should 'a member user not be a community admin' do
+    c = fast_create(Community, :name => 'my test profile', :identifier => 'mytestprofile')
+    admin = create_user('adminuser').person
+    c.add_admin(admin)
+
+    member = create_user('memberuser').person
+    c.add_member(member)
+    refute c.is_admin?(member)
+  end
+
+  should 'a moderator user not be a community admin' do
+    c = fast_create(Community, :name => 'my test profile', :identifier => 'mytestprofile')
+    moderator = create_user('moderatoruser').person
+    c.add_moderator(moderator)
+    refute c.is_admin?(moderator)
   end
 
 end

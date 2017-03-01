@@ -1,0 +1,22 @@
+<% knowledges = profile.knowledges - proposal.knowledges %>
+
+<h4><%= _('Knowledges') %></h4>
+
+<% if knowledges.blank? %>
+  <%= _("%s has no knowledges registered.") % profile.name %>
+<% else %>
+  <ul class="proposal-offers <%=actor%>" id="exchange-Article-list-<%=actor%>">
+    <% knowledges.each do |k| %>
+      <li id="CmsLearningPlugin::Learning-<%= k.id %>">
+        <h6 class="element-title">
+          <%= k.name %>
+        </h6>
+
+        <%= link_to_remote "<button class='action-button exchange-add'>+</button>",
+          :url => {:controller => :exchange_plugin_element, :action => :create, :actor => actor, :object_id => k.id, :object_type => "CmsLearningPlugin::Learning",
+                   :element => {:proposal_id => proposal.id, :object_id => k.id,
+                                :object_type => "CmsLearningPlugin::Learning", :profile_id => profile.id}} %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

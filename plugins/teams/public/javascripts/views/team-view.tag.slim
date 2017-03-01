@@ -1,0 +1,43 @@
+team-view.col-md-6
+  .panel.panel-default
+    .panel-body
+      h3
+        a href='#' onclick='{edit}'
+          |{team.name}
+
+    .panel-footer
+      span.team-member each='{member in team.members}' data='{member}'
+        img src='{member.image_url}' data-original-title='{member.name}' data-toggle='tooltip'
+
+  javascript:
+    this.team = opts.team
+
+    edit () {
+      this.parent.edit(this.team)
+      return false
+    }
+
+    this.on('mount update', function () {
+      $(this.root).find('[data-toggle=tooltip]').tooltip()
+    })
+
+  scss:
+    team-view {
+      padding-left: 5px;
+      padding-right: 5px;
+      padding-bottom: 10px;
+
+      .panel-body {
+        padding: 0;
+        padding-left: 15px;
+      }
+      .panel-footer {
+        min-height: 71px;
+      }
+
+      .team-member {
+        padding: 3px;
+        border-radius: 5px;
+      }
+    }
+

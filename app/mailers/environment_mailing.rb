@@ -1,7 +1,21 @@
 class EnvironmentMailing < Mailing
 
+  settings_items :recipients_roles, :type => :array
+  attr_accessible :recipients_roles
+
   def recipients(offset=0, limit=100)
-   source.people.all(:order => :id, :offset => offset, :limit => limit, :joins => "LEFT OUTER JOIN mailing_sents m ON (m.mailing_id = #{id} AND m.person_id = profiles.id)", :conditions => { "m.person_id" => nil })
+    recipients_by_role.order(:id).offset(offset).limit(limit)
+      .joins("LEFT OUTER JOIN mailing_sents m ON (m.mailing_id = #{id} AND m.person_id = profiles.id)")
+      .where("m.person_id" => nil)
+  end
+
+  def recipients_by_role
+    if recipients_roles.blank?
+      source.people
+    else
+      roles = Environment::Role.where("key in (?)", self.recipients_roles)
+      Person.by_role(roles).where(environment_id: self.source_id)
+    end
   end
 
   def each_recipient
@@ -16,7 +30,7 @@ class EnvironmentMailing < Mailing
   end
 
   def signature_message
-    _('Sent by %s.') % source.name
+    _('Sent by %s.').html_safe % source.name
   end
 
   def url

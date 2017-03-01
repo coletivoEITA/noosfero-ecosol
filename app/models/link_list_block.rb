@@ -1,5 +1,7 @@
 class LinkListBlock < Block
 
+  include SanitizeHelper
+
   attr_accessible :links
 
   ICONS = [
@@ -41,7 +43,7 @@ class LinkListBlock < Block
     [N_('New window'), '_new'],
   ]
 
-  settings_items :links, Array, :default => []
+  settings_items :links, type: Array, :default => []
 
   before_save do |block|
     block.links = block.links.delete_if {|i| i[:name].blank? and i[:address].blank?}
@@ -55,15 +57,8 @@ class LinkListBlock < Block
     _('This block can be used to create a menu of links. You can add, remove and update the links as you wish.')
   end
 
-  def content(args={})
-    block = self
-    list = links.select{ |i| i[:name].present? and i[:address].present? }
-    lambda do |context|
-      render file: 'blocks/link_list_block', locals: {block: block, links: list}
-    end
-  end
-
-  def link_html(link)
+  def self.pretty_name
+    _('Link list')
   end
 
   def expand_address(address)
@@ -86,17 +81,8 @@ class LinkListBlock < Block
     end
   end
 
-  def icons_options
-    ICONS.map do |i|
-      "<span title=\"#{i[1]}\" class=\"icon-#{i[0]}\" onclick=\"changeIcon(this, '#{i[0]}')\"></span>".html_safe
-    end
+  def icons
+    ICONS
   end
-
-  def sanitize_link html
-    sanitizer = HTML::WhiteListSanitizer.new
-    sanitizer.sanitize html
-  end
-
-  private
 
 end

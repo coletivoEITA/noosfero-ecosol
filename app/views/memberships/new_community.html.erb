@@ -13,7 +13,6 @@
 <%= labelled_form_for :community, :html => { :multipart => true } do |f| %>
 
   <%= required_fields_message %>
-
   <%= required f.text_field(:name) %>
 
   <% @plugins.dispatch(:new_community_hidden_fields).each do |field| %>
@@ -23,6 +22,7 @@
   <% end %>
 
   <%= render :partial => 'shared/organization_custom_fields', :locals => { :f => f, :object_name => 'community', :profile => @community } %>
+  <%= render :partial => 'shared/custom_fields', :locals => { :f => f, :profile => @community, :signup => true } %>
 
   <%= f.fields_for :image_builder, @community.image do |i| %>
     <%= file_field_or_thumbnail(_('Image:'), @community.image, i) %>
@@ -34,21 +34,21 @@
   <div style='margin-bottom: 0.5em' id='community-join-before'>
     <%= radio_button 'community', 'closed', 'true', :style => 'float: left' %>
     <div style='margin-left: 30px'>
-      <%= _('<strong>Before</strong> joining this group (a moderator has to accept the member in pending request before member can access the intranet and/or the website).') %>
+      <%= _('<strong>Before</strong> joining this group (a moderator has to accept the member in pending request before member can access the intranet and/or the website).').html_safe %>
     </div>
   </div>
   <div id='community-join-after'>
     <%= radio_button 'community', 'closed', 'false', :style => 'float: left' %>
     <div style='margin-left: 30px'>
-      <%= _('<strong>After</strong> joining this group (a moderator can always desactivate access for users later).') %>
+      <%= _('<strong>After</strong> joining this group (a moderator can always desactivate access for users later).').html_safe %>
     </div>
   </div>
 
-  <%= template_options(:communities, 'community')%>
+  <%= template_options(:communities, 'community') if @user_is_admin %>
 
   <%= hidden_field_tag('back_to', @back_to) %>
 
-  <% button_bar do %>
+  <%= button_bar do %>
     <%= submit_button(:save, _('Create')) %>
     <%= button(:cancel, _('Cancel'), @back_to ) %>
   <% end %>
@@ -56,7 +56,3 @@
 <% end %>
 
 </div>
-
-
-
-

@@ -11,8 +11,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.0-690-gcb6e853\n"
-"POT-Creation-Date: 2015-03-05 12:09-0300\n"
+"Project-Id-Version: 1.3~rc2-1-ga15645d\n"
 "PO-Revision-Date: 2014-12-18 18:40-0200\n"
 "Last-Translator: Luciano Prestes Cavalcanti <lucianopcbr@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/noosfero/"
@@ -24,18 +23,14 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2.0\n"
 
-#: plugins/container_block/lib/container_block_plugin.rb:8
+msgid "Block successfully saved."
+msgstr "Bloco salvo com sucesso."
+
 msgid "A plugin that add a container block."
 msgstr "Um plugin que adiciona um bloco container."
 
-#: plugins/container_block/lib/container_block_plugin/container_block.rb:21
 msgid "Container"
 msgstr "Container"
 
-#: plugins/container_block/lib/container_block_plugin/container_block.rb:25
 msgid "This block acts as a container for another blocks"
 msgstr "Este bloco age como um container para outros blocos"
-
-#: plugins/container_block/controllers/container_block_plugin_controller.rb:14
-msgid "Block successfully saved."
-msgstr "Bloco salvo com sucesso."

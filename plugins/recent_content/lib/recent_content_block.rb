@@ -7,7 +7,7 @@ class RecentContentBlock < Block
 
   attr_accessible :presentation_mode, :total_items, :show_blog_picture, :selected_folder
 
-  VALID_CONTENT = ['RawHTMLArticle', 'TextArticle', 'TextileArticle', 'TinyMceArticle']
+  VALID_CONTENT = ['TextArticle']
 
   def self.description
     c_('Recent content')
@@ -18,9 +18,8 @@ class RecentContentBlock < Block
   end
 
   def articles_of_folder(folder, limit)
-   holder.articles.all(:conditions => {:type => VALID_CONTENT, :parent_id => folder.id},
-                :order => 'created_at DESC',
-                :limit => limit )
+   holder.articles.where(type: VALID_CONTENT, parent_id: folder.id).
+     order('created_at DESC').limit(limit)
   end
 
   def holder
@@ -34,26 +33,27 @@ class RecentContentBlock < Block
   end
 
   def parents
-    selected = self.holder.articles.all(:conditions => {:type => 'Blog'})
+    self.holder.nil? ? [] : self.holder.articles.where(type: 'Blog')
   end
 
   def root
     unless self.selected_folder.nil?
-      holder.articles.where(:id => self.selected_folder).first
+      holder.articles.where(id: self.selected_folder).first
     end
   end
 
   include DatesHelper
 
-  def content(args={})
-    block = self
-    proc do
-      render :file => 'blocks/recent_content_block', :locals => {:root => block.root, :block => block}
-    end
-  end
-
   def mode?(attr)
     attr == self.presentation_mode
   end
 
+  def api_content
+    children = self.articles_of_folder(self.root, self.total_items)
+    Api::Entities::ArticleBase.represent(children).as_json
+  end
+
+  def display_api_content_by_default?
+    false
+  end
 end

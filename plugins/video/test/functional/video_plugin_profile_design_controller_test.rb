@@ -1,14 +1,9 @@
-require File.dirname(__FILE__) + '/../test_helper'
-
-# Re-raise errors caught by the controller.
-class ProfileDesignController; def rescue_action(e) raise e end; end
+require_relative '../test_helper'
 
 class ProfileDesignControllerTest < ActionController::TestCase
 
   def setup
     @controller = ProfileDesignController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
 
     user = create_user('testinguser')
     login_as(user.login)
@@ -18,11 +13,11 @@ class ProfileDesignControllerTest < ActionController::TestCase
     @environment.enabled_plugins = ['VideoPlugin']
     @environment.save!
 
-    VideoBlock.delete_all
+    VideoPlugin::VideoBlock.delete_all
     @box1 = Box.create!(:owner => @profile)
     @profile.boxes = [@box1]
 
-    @block = VideoBlock.new
+    @block = VideoPlugin::VideoBlock.new
     @block.box = @box1
     @block.save!
 

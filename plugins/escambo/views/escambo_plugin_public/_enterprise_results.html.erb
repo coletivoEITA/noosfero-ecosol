@@ -1,0 +1,13 @@
+<% if @query.present? %>
+  <% if @enterprises.empty? %>
+    <%= _('No enterprise found') %>
+  <% else %>
+    <% @enterprises.each do |enterprise| %>
+      <div class="result">
+        <%= radio_button_tag "enterprise_id", enterprise.id %>
+        <%= profile_image enterprise %>
+        <%= link_to enterprise.name, enterprise.url, :target => '_blank' %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

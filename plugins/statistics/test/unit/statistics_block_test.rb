@@ -1,4 +1,5 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative '../test_helper'
+
 class StatisticsBlockTest < ActiveSupport::TestCase
 
   ['user_counter', 'tag_counter', 'comment_counter'].map do |counter|
@@ -11,7 +12,7 @@ class StatisticsBlockTest < ActiveSupport::TestCase
   ['community_counter', 'enterprise_counter', 'product_counter', 'category_counter', 'hit_counter'].map do |counter|
     should "#{counter} be false by default" do
       b = StatisticsBlock.new
-      assert !b.is_visible?(counter)
+      refute b.is_visible?(counter)
     end
   end
 
@@ -41,7 +42,7 @@ class StatisticsBlockTest < ActiveSupport::TestCase
   should 'is_visible? return false if setting is false' do
     b = StatisticsBlock.new
     b.community_counter = false
-    assert !b.is_visible?('community_counter')
+    refute b.is_visible?('community_counter')
   end
 
   should 'templates return the Community templates of the Environment' do
@@ -140,8 +141,11 @@ class StatisticsBlockTest < ActiveSupport::TestCase
   end
 
   should 'return the amount of visible environment products' do
+    return unless defined? ProductsPlugin
+
     b = StatisticsBlock.new
     e = fast_create(Environment)
+    e.enable_plugin('ProductsPlugin')
 
     e1 = fast_create(Enterprise, :visible => true, :enabled => true, :environment_id => e.id)
     e2 = fast_create(Enterprise, :visible => true, :enabled => false, :environment_id => e.id)
@@ -160,9 +164,13 @@ class StatisticsBlockTest < ActiveSupport::TestCase
   end
 
   should 'return the amount of visible enterprise products' do
+    return unless defined? ProductsPlugin
+
     b = StatisticsBlock.new
 
     e = fast_create(Enterprise)
+    environment = e.environment
+    environment.enable_plugin('ProductsPlugin')
 
     fast_create(Product, :profile_id => e.id)
     fast_create(Product, :profile_id => e.id)
@@ -349,7 +357,7 @@ class StatisticsBlockTest < ActiveSupport::TestCase
   should 'is_template_counter_active? return false if setting is false' do
     b = StatisticsBlock.new
     b.templates_ids_counter = {'1' => 'false'}
-    assert !b.is_template_counter_active?(1)
+    refute b.is_template_counter_active?(1)
   end
 
   should 'template_counter_count return the amount of communities of the Environment using a template' do

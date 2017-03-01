@@ -8,7 +8,7 @@
       - if @page_tab.config_type == :profile
         - if profile and user.present? and (user.is_admin?(environment) or user.is_admin?(profile))
           .product-catalog-ctrl
-            = button :add, _('Add product or service'), controller: :manage_products, action: :new, profile: profile.identifier
+            = button :add, _('Add product or service'), controller: "manage_products_plugin/page", action: :new, profile: profile.identifier
       = render 'configure_button'
     = content_for :product_page do
       = render 'catalog/results'

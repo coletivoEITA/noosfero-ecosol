@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative '../test_helper'
 require "#{File.dirname(__FILE__)}/../../lib/acts_as_searchable"
 
 class ActsAsSearchableTest < ActiveSupport::TestCase
@@ -23,7 +23,7 @@ class ActsAsSearchableTest < ActiveSupport::TestCase
   should 'not be searchable when disabled' do
 		# suppress warning about already initialized constant
 		silent { ActsAsSearchable::ClassMethods::ACTS_AS_SEARCHABLE_ENABLED = false }
-		
+
     @test_model.expects(:acts_as_solr).never
 		@test_model.acts_as_searchable
   end

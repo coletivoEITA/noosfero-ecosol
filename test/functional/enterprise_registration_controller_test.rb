@@ -1,9 +1,6 @@
 require_relative "../test_helper"
 require 'enterprise_registration_controller'
 
-# Re-raise errors caught by the controller.
-class EnterpriseRegistrationController; def rescue_action(e) raise e end; end
-
 class EnterpriseRegistrationControllerTest < ActionController::TestCase
 
   # all_fixtures:users
@@ -12,8 +9,7 @@ class EnterpriseRegistrationControllerTest < ActionController::TestCase
   def setup
     super
     @controller = EnterpriseRegistrationController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+
     login_as 'ze'
   end
 
@@ -62,7 +58,7 @@ class EnterpriseRegistrationControllerTest < ActionController::TestCase
     region = fast_create(Region, {})
 
     template = Enterprise.create!(:name => 'Enterprise Template', :identifier => 'enterprise-template', :is_template => true)
-    welcome_page = TinyMceArticle.create!(:name => 'Welcome Page', :profile => template, :body => 'This is the welcome page of enterprise template.', :published => true)
+    welcome_page = TextArticle.create!(:name => 'Welcome Page', :profile => template, :body => 'This is the welcome page of enterprise template.', :published => true)
     template.welcome_page = welcome_page
     template.save!
 
@@ -159,7 +155,7 @@ class EnterpriseRegistrationControllerTest < ActionController::TestCase
     post :index, :create_enterprise => { 'name' => 'name', 'identifier' => 'mynew', :economic_activity => '<b>economic_activity</b>' }
     assert_sanitized assigns(:create_enterprise).economic_activity
   end
-  
+
   should 'filter html from management_information' do
     post :index, :create_enterprise => { 'name' => 'name', 'identifier' => 'mynew', :management_information => '<b>management_information</b>' }
     assert_sanitized assigns(:create_enterprise).management_information
@@ -194,13 +190,13 @@ class EnterpriseRegistrationControllerTest < ActionController::TestCase
   should 'include hidden fields supplied by plugins on enterprise registration' do
     class Plugin1 < Noosfero::Plugin
       def enterprise_registration_hidden_fields
-        {'plugin1' => 'Plugin 1'}
+        {'plugin1' => 'Plugin 1'.html_safe}
       end
     end
 
     class Plugin2 < Noosfero::Plugin
       def enterprise_registration_hidden_fields
-        {'plugin2' => 'Plugin 2'}
+        {'plugin2' => 'Plugin 2'.html_safe}
       end
     end
     Noosfero::Plugin.stubs(:all).returns([Plugin1.name, Plugin2.name])

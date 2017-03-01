@@ -1,0 +1,221 @@
+.controller-consumers_coop_plugin_consumer, .controller-consumer {
+  .left { float: left; }
+
+  #content {
+    .box-container-1 {
+      background-color: #EFEFEF;
+      .main-block { background-color: #EFEFEF; }
+    }
+
+    .main-block .consumers-page {
+      min-height: 100vh;
+
+      h1.title {
+        color: #c4bf63;
+        font-weight: bold;
+        font-size: 25px;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+        padding-left: 30px;
+        background-image: url(/plugins/consumers_coop/images/consumidores_.png);
+        background-repeat: no-repeat;
+        background-size: 27px auto;
+      }
+
+      .search {
+        margin-top: 30px;
+
+        ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+          color:    $cirandas-header-bg;
+          font-weight: bold;
+        }
+        :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+          color:    $cirandas-header-bg;
+          font-weight: bold;
+          opacity:  1;
+        }
+        ::-moz-placeholder { /* Mozilla Firefox 19+ */
+          color:    $cirandas-header-bg;
+          font-weight: bold;
+          opacity:  1;
+        }
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+          color:    $cirandas-header-bg;
+          font-weight: bold;
+        }
+        input {
+          border: none;
+          border-bottom: 2px solid $cirandas-header-bg;
+          background-color: transparent;
+          color: $cirandas-header-bg;
+          outline: none;
+          margin-bottom: 10px;
+          font-size: 16px;
+          width: 100%;
+          margin-bottom: 15px;
+        }
+        .search-icon {
+          width: 25px;
+          height: 25px;
+          background-image: url(/plugins/consumers_coop/images/pesquisa.png);
+          background-repeat: no-repeat;
+          background-size: 24px auto;
+          position: absolute;
+          top: -2px;
+          right: 16px;
+        }
+      }
+      .picture-block {
+        float: left;
+        width: 75px;
+        height: 65px;
+        .picture {
+          width: 65px;
+          height: 65px;
+          border-radius: 50%;
+          -moz-border-radius: 50%;
+          -webkit-border-radius: 50%;
+          border: 2px solid #ECECEC;
+          background-repeat: no-repeat;
+          background-position: center center;
+          background-size: cover;
+          display: inline-block;
+        }
+      }
+      .tasks {
+        border: 2px solid $cirandas-header-bg;
+        font-size: 15px;
+        width: 100%;
+        padding: 20px;
+        margin-top: 20px;
+        margin-bottom: 40px;
+
+        strong {
+          color: $cirandas-header-bg;
+          font-weight: bold;
+          display: block;
+        }
+
+        .pending-consumers {
+          margin-top: 15px;
+        }
+      }
+      a.add_consumer {
+        display: block;
+
+        border: 2px solid $cirandas-header-bg;
+        background-color: transparent;
+        color: #777; 
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+
+        padding: 8px;
+        padding-left: 30px;
+        background-image: url(/plugins/consumers_coop/images/cross.png);
+        background-repeat: no-repeat;
+        background-size: 16px auto;
+        background-position: 10px 9px;
+
+        &:hover {
+          background-color: grey;
+          color: white;
+          text-decoration: none;
+        }
+      }
+      .right { float: right; }
+
+      .consumer-box {
+        background-color: white;
+        &:hover {
+          background-color: #DBE2E1;
+        }
+        padding: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+
+        .name-block {
+          float: left;
+          width: auto;
+          .name, .email {
+            color: black;
+          }
+          .name {
+            font-size: 15px;
+            font-weight: bold;
+          }
+          .email { font-size: 13px; }
+        }
+        button {
+          background-color: white;
+          color: #7C7C7C;
+          border: 2px solid #9C9C9C;
+          margin-top: 20px;
+          outline: none;
+        }
+      }
+      a.cs-button {
+        padding: 8px;
+        text-transform: uppercase;
+        font-size: 14px;
+        font-weight: bold;
+        background-color: $cirandas-header-bg;
+        color: white;
+        margin-top: 5px;
+        display: inline-block;
+        cursor: pointer;
+        border: 2px solid $cirandas-header-bg;
+
+        &:focus,&:hover {
+          background-color: white;
+          color: $cirandas-header-bg;
+          text-decoration: none;
+        }
+      }
+      consumer-add {
+        li.token-input-token {
+          background-color: $cirandas-header-bg;
+          color: white;
+        }
+      }
+      consumer-view, consumer-add, pending-consumer-view {
+        z-index: 1041; // fix modal-backdrop over it https://github.com/twbs/bootstrap/issues/16148
+
+        @include modal-default;
+
+        .picture-block {
+          width: 122px;
+          height: 112px;
+          .picture {
+            width: 112px;
+            height: 112px;
+          }
+        }
+        .title-box {
+          height: 58px;
+        }
+      }
+      pending-consumer-view {
+        span.key {
+          margin-right: 10px;
+          font-weight: bold;
+        }
+        .rejection-area {
+          display: none;
+          textarea {
+            width: 100%;
+            min-height: 70px;
+          }
+        }
+      }
+    }
+  }
+}
+div.token-input-dropdown {
+  z-index:1041 !important;
+  ul li.token-input-selected-dropdown-item {
+    background-color: $cirandas-header-bg;
+    color: white;
+  }
+}
+

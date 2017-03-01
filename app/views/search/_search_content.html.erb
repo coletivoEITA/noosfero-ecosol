@@ -1,5 +1,9 @@
 <div id='search-content'>
-  <%= plugins_search_pre_contents %>
+  <div class='total'>
+    <%= n_('Total of 1 result', 'Total of %s results'.html_safe, @searches[@asset][:results].total_entries) % @searches[@asset][:results].total_entries.inspect %>
+  </div>
+
+  <%# plugins_search_pre_contents %>
 
   <% if @asset == :products %>
     <% @show_supplier = true %>
@@ -11,5 +15,5 @@
     <% end %>
   <% end %>
 
-  <%= plugins_search_post_contents %>
+  <%# plugins_search_post_contents %>
 </div>

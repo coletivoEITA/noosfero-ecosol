@@ -18,6 +18,8 @@ class ChangePassword < Task
 
   validates_presence_of :requestor
 
+  validates :requestor, kind_of: {kind: Person}
+
   ###################################################
   # validations for updating a ChangePassword task
 
@@ -25,6 +27,13 @@ class ChangePassword < Task
   validates_presence_of :password, :on => :update, :if => lambda { |change| change.status != Task::Status::CANCELLED }
   validates_presence_of :password_confirmation, :on => :update, :if => lambda { |change| change.status != Task::Status::CANCELLED }
   validates_confirmation_of :password, :if => lambda { |change| change.status != Task::Status::CANCELLED }
+
+  before_save :set_email_template
+
+  def set_email_template
+    template = environment.email_templates.find_by_template_type(:user_change_password)
+    data[:email_template_id] = template.id unless template.nil?
+  end
 
   def environment
     requestor.environment unless requestor.nil?

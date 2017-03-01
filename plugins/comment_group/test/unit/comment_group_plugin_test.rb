@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative '../test_helper'
 
 class CommentGroupPluginTest < ActiveSupport::TestCase
 
@@ -18,7 +18,7 @@ class CommentGroupPluginTest < ActiveSupport::TestCase
   end
 
   should 'have a js file' do
-    assert !plugin.js_files.blank?
+    refute plugin.js_files.blank?
   end
 
   should 'have stylesheet' do

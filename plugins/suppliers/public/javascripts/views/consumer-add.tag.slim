@@ -1,0 +1,42 @@
+consumer-add.modal.fade tabindex="-1" role="dialog"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        .row
+          .col-xs-10
+            .name_actions.left
+              .title-box
+                h1
+                  |{cs.t("views.consumer.index.adding_consumer")}
+
+          .col-xs-2
+            button type="button" class="close left" data-dismiss="modal" aria-label="Close"
+              span.left.close-text
+                |{cs.t("views.consumer.index.close")}
+              span aria-hidden="true"
+                |&times;
+
+      .modal-body
+        p
+          |{cs.t("views.consumer.index.search_members")}
+        input name="{role.key}" id="search_input"
+
+      .modal-footer
+        a.cs-button href="" onclick='{save}'
+          |{cs.t('views.consumer.index.save')}
+
+  
+  javascript:
+    this.cs = window.consumers
+
+    save(e) {
+      var updateUrl = Routes.suppliers_plugin_consumer_path({profile: noosfero.profile, action: 'add_consumers'})
+      var self = this
+      var $input = $('#search_input')
+      $.post(updateUrl, {consumers: $input.val()}, function (data) {
+        display_notice(self.cs.t('views.consumer.index.saved'))
+        self.parent.add_consumers(data)
+      })
+      $input.tokenInput("clear");
+      $(this.root).modal('hide')
+    }

@@ -1,0 +1,111 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-09-14 13:36+0000\n"
+"PO-Revision-Date: 2016-09-14 13:36+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ../lib/display_content_block.rb:35
+msgid "Display your contents"
+msgstr ""
+
+#: ../lib/display_content_block.rb:39
+msgid ""
+"This block displays articles chosen by you. You can edit the block to select w"
+"hich of your articles is going to be displayed in the block."
+msgstr ""
+
+#: ../lib/display_content_block.rb:44
+msgid "Publish date"
+msgstr ""
+
+#: ../lib/display_content_block.rb:46
+msgid "Abstract"
+msgstr ""
+
+#: ../lib/display_content_block.rb:163
+msgid "%{month}/%{day}/%{year}"
+msgstr ""
+
+#: ../lib/display_content_block.rb:163
+msgid "%{month}/%{day}"
+msgstr ""
+
+#: ../lib/display_content_block.rb:166
+msgid "%{month_name} %{day}, %{year}"
+msgstr ""
+
+#: ../lib/display_content_block.rb:166
+msgid "%{month_name} %{day}"
+msgstr ""
+
+#: ../lib/display_content_plugin.rb:10
+msgid ""
+"A plugin that adds a block where you could choose any of your content and disp"
+"lay it."
+msgstr ""
+
+#: ../views/box_organizer/_choose_by_content_type.html.erb:1
+msgid "Display content types:"
+msgstr ""
+
+#: ../views/box_organizer/_choose_by_content_type.html.erb:7
+msgid "more"
+msgstr ""
+
+#: ../views/box_organizer/_choose_directly.html.erb:5
+msgid "Dinamically load children of selected folders"
+msgstr ""
+
+#: ../views/box_organizer/_choose_directly.html.erb:9
+msgid "Limit:"
+msgstr ""
+
+#: ../views/box_organizer/_display_content_block.html.erb:5
+msgid "Choose which attributes should be displayed and drag to reorder them:"
+msgstr ""
+
+#: ../views/box_organizer/_display_content_block.html.erb:21
+msgid "Choose which content should be displayed:"
+msgstr ""
+
+#: ../views/box_organizer/_display_content_block.html.erb:23
+msgid "Choose directly"
+msgstr ""
+
+#: ../views/box_organizer/_display_content_block.html.erb:24
+msgid "Choose by Content Type"
+msgstr ""
+
+#: ../views/box_organizer/_display_content_block.html.erb:28
+msgid "Order by:"
+msgstr ""
+
+#: ../views/box_organizer/_display_content_block.html.erb:29
+msgid "Most recent"
+msgstr ""
+
+#: ../views/box_organizer/_display_content_block.html.erb:30
+msgid "Most oldest"
+msgstr ""
+
+#: ../views/box_organizer/_display_content_block.html.erb:32
+msgid "Translations:"
+msgstr ""
+
+#: ../views/box_organizer/_display_content_block.html.erb:33
+msgid "List only translated content"
+msgstr ""

@@ -1,19 +1,18 @@
 <%= error_messages_for 'article' %>
 
-<% show_media_panel = environment.enabled?('media_panel') && [TinyMceArticle, TextileArticle, Event, EnterpriseHomepage].any?{|klass| @article.kind_of?(klass)} %>
-
-<div class='<%= (show_media_panel ? 'col-lg-8 col-md-6 col-sm-6 with_media_panel' : 'col-lg-12 col-md-12 col-sm-12 no_media_panel') %>'>
-<%= labelled_form_for 'article', :html => { :multipart => true, :class => @type } do |f| %>
+<% if @article.archived? %>
+  <%= render :partial => 'archived_warning', :locals => {:article => @article} %>
+<% end %>
+<div class='<%= if @article.display_media_panel? then 'col-lg-8 col-md-6 col-sm-6 with_media_panel' else 'col-lg-12 col-md-12 col-sm-12 no_media_panel' end %>'>
+<%= labelled_form_for 'article', :html => { :multipart => true, :class => "#{@type} #{@type.to_css_class}" } do |f| %>
 
   <%= hidden_field_tag("type", @type) if @type %>
-
-  <%= hidden_field_tag('parent_id', @parent_id) if @parent_id %>
 
   <%= hidden_field_tag('back_to', @back_to) %>
 
   <%= hidden_field_tag('success_back_to', @success_back_to) %>
 
-  <%= render :partial => partial_for_class(@article.class), :locals => { :f => f } %>
+  <%= render_partial_for_class @article.class, f: f %>
 
   <% if environment.is_portal_community?(profile) %>
     <div>
@@ -22,7 +21,7 @@
     </div>
   <% end %>
 
-  <% button_bar do %>
+  <%= button_bar do %>
     <%= submit_button :save, _('Save') %>
     <%= submit_button :save, _('Save and continue'), :name => "continue" %>
   <% end %>
@@ -35,12 +34,12 @@
 
   <br />
 
-  <%= f.text_field('tag_list', :size => 64) %>
+  <%= f.text_field 'tag_list', size: 64, value: @article.tag_list.join(',') %>
   <%= content_tag( 'small', _('Separate tags with commas') ) %>
 
   <script>
     jQuery('#article_tag_list').inputosaurus({
-      autoCompleteSource: <%= "'/myprofile/#{profile.identifier}/cms/search_tags'," %>
+      autoCompleteSource: <%= "'/myprofile/#{profile.identifier}/cms/search_tags',".html_safe %>
       activateFinalResult : true
     })
   </script>
@@ -49,7 +48,7 @@
     <%= options_for_article(@article, @tokenized_children) %>
   </div>
 
-  <% button_bar do %>
+  <%= button_bar do %>
     <%= submit_button :save, _('Save') %>
 
     <% if @back_to %>
@@ -62,13 +61,13 @@
 
     <% unless @article.new_record? %>
       <%= button :delete, _('Delete'), {:controller => :cms, :action => :destroy, :id => @article},
-        :method => :post, :confirm => delete_article_message(@article) %>
+        :method => :post, data: {confirm: delete_article_message(@article)} %>
     <% end %>
   <% end %>
 <% end %>
 </div>
 
-<% if show_media_panel %>
+<% if @article.display_media_panel? %>
   <%= render :partial => 'text_editor_sidebar' %>
 <% end %>
 

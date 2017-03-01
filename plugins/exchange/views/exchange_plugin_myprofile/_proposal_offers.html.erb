@@ -1,0 +1,22 @@
+<% products = profile.products - proposal.products %>
+
+<h4><%= _('Products and Services') %></h4>
+
+<% if products.blank? %>
+  <%= _("%s has no offers registered.") % profile.name %>
+<% else %>
+  <ul class="proposal-offers <%=actor%>" id="exchange-Product-list-<%=actor%>">
+    <% products.each do |p| %>
+      <li id="Product-<%= p.id %>">
+        <h6 class="element-title">
+          <%= p.name %>
+        </h6>
+
+        <%= link_to_remote "<button class='action-button exchange-add'>+</button>",
+          :url => {:controller => :exchange_plugin_element, :action => :create, :actor => actor, :object_id => p.id, :object_type => "Product",
+                   :element => {:proposal_id => proposal.id,
+                   :object_id => p.id, :object_type => "Product", :profile_id => profile.id}} %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

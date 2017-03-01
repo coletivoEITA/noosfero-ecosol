@@ -1,7 +1,4 @@
 require_relative "../test_helper"
-# require 'profile_themes_controller'
-
-class ProfileThemesController; def rescue_action(e) raise e end; end
 
 class ProfileThemesControllerTest < ActionController::TestCase
 
@@ -10,8 +7,6 @@ class ProfileThemesControllerTest < ActionController::TestCase
 
   def setup
     @controller = ProfileThemesController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
 
     Theme.stubs(:user_themes_dir).returns(TMP_THEMES_DIR)
 
@@ -20,6 +15,7 @@ class ProfileThemesControllerTest < ActionController::TestCase
 
     @env = Environment.default
     @env.enable('user_themes')
+    @env.enable_default_features
     @env.save!
   end
   attr_reader :profile, :env
@@ -235,7 +231,7 @@ class ProfileThemesControllerTest < ActionController::TestCase
     theme = Theme.create('theme-under-test', :owner => profile)
     post :start_test, :profile => 'testinguser', :id => 'theme-under-test'
 
-    assert_equal 'theme-under-test', session[:theme]
+    assert_equal 'theme-under-test', session[:user_theme]
     assert_redirected_to :controller => 'content_viewer', :profile => 'testinguser', :action => 'view_page'
   end
 
@@ -243,7 +239,7 @@ class ProfileThemesControllerTest < ActionController::TestCase
     theme = Theme.create('theme-under-test', :owner => profile)
     post :stop_test, :profile => 'testinguser', :id => 'theme-under-test'
 
-    assert_nil session[:theme]
+    assert_nil session[:user_theme]
     assert_redirected_to :action => 'index'
   end
 
@@ -331,4 +327,29 @@ class ProfileThemesControllerTest < ActionController::TestCase
     assert_equal [t2, t1], assigns(:themes)
   end
 
+  should 'user cant edit appearance if environment dont permit' do
+    environment = Environment.default
+    environment.disable('enable_appearance')
+    environment.save!
+
+    user = create_user('user').person
+    login_as('user')
+
+    post :index, :profile => user.identifier
+    assert_response :redirect
+  end
+
+  should 'admin can edit appearance if environment dont permit' do
+    user = create_user('user').person
+
+    environment = Environment.default
+    environment.add_admin(user)
+    environment.disable('enable_appearance')
+    environment.save!
+
+    login_as('user')
+
+    post :index, :profile => user.identifier
+    assert_response :success
+  end
 end

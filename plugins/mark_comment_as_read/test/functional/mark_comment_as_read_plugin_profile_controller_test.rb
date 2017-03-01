@@ -1,16 +1,12 @@
-require File.dirname(__FILE__) + '/../../../../test/test_helper'
-require File.dirname(__FILE__) + '/../../controllers/mark_comment_as_read_plugin_profile_controller'
-
-# Re-raise errors caught by the controller.
-class MarkCommentAsReadPluginProfileController; def rescue_action(e) raise e end; end
+require 'test_helper'
+require_relative '../../controllers/mark_comment_as_read_plugin_profile_controller'
 
 class MarkCommentAsReadPluginProfileControllerTest < ActionController::TestCase
   def setup
     @controller = MarkCommentAsReadPluginProfileController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+
     @profile = create_user('profile').person
-    @article = TinyMceArticle.create!(:profile => @profile, :name => 'An article')
+    @article = TextArticle.create!(:profile => @profile, :name => 'An article')
     @comment = Comment.new(:source => @article, :author => @profile, :body => 'test')
     @comment.save!
     login_as(@profile.identifier)

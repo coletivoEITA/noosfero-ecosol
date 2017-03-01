@@ -17,9 +17,6 @@ module HMVC
       self.hmvc_context = context
       self.hmvc_paths = (HMVC.paths_by_context[self.hmvc_context] ||= {})
 
-      class_attribute :hmvc_orders_context
-      self.hmvc_orders_context = options[:orders_context] || self.superclass.hmvc_orders_context rescue nil
-
       # initialize other context's controllers paths
       controllers = [self] + context.controllers.map{ |controller| controller.constantize }
 
@@ -27,6 +24,8 @@ module HMVC
         context_klass = klass
         while ((klass = klass.superclass).hmvc_inheritable rescue false)
           self.hmvc_paths[klass.controller_path] ||= context_klass.controller_path
+          # inherit super controller paths
+          self.hmvc_paths.merge! klass.hmvc_paths if klass.respond_to? :hmvc_paths
         end
       end
 

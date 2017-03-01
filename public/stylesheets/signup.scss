@@ -1,0 +1,164 @@
+
+#url-check {
+  margin: 0 0 -5px 0;
+  width: 100%;
+  text-align: right;
+}
+
+#url-check .suggested_usernames,
+#url-check .suggested_usernames a {
+  color: #005000;
+}
+
+#email-check,
+#fake-check,
+#password-rate,
+#password-check {
+  margin: -2px 16px -5px 13px;
+  text-align: right;
+  clear: both;
+}
+
+#email-check p,
+#fake-check p,
+#password-rate p,
+#password-check p {
+  margin: 0;
+}
+
+#password-rate {
+  font-weight:bold;
+}
+
+.hidden {
+  visibility: hidden;
+  display: none;
+}
+
+.available {
+  color: #88BD00;
+}
+
+.unavailable {
+  color: #7f0000;
+}
+
+.checking {
+  color: #4A4A4A;
+}
+
+#email-check p,
+#password-rate p,
+#password-check p,
+#url-check p {
+  margin: 0;
+  text-transform: lowercase;
+  font-size: 11px;
+  clear: both;
+}
+
+.action-account-signup #content {
+  text-align: center;
+}
+
+.action-account-signup #wrap-1 div.fieldWithErrors {
+  background: transparent;
+}
+
+.person_image_maxsize {
+  margin: 0 18px;
+  font: 13px sans-serif;
+  color: #BABABA;
+}
+
+#terms-of-use-box {
+  margin: 20px 0 30px 40px;
+  color: #4A4A4A;
+}
+
+#terms-of-use-box input[type=checkbox] {
+  border: 1px solid #FFA514;
+  background: #FFF;
+  width: auto;
+}
+
+#signup-form #terms-of-use-box label {
+  display: inline;
+  font-size: 16px;
+}
+
+#signup-form #terms-of-use-box label a {
+  color: #FF7F2A;
+}
+
+#content #signup-form .submit {
+  border: 0;
+  padding: 8px 36px 12px;
+  background: transparent url(../images/gray-bg.png) left center repeat-x;
+  font-size: 17px;
+  color: #FFF;
+  text-align: center;
+  text-shadow: #424242 0 -1px 0;
+  border-radius: 7px;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  max-height: none;
+  height: 39px;
+  margin-top: 20px;
+}
+
+.action-account-signup .no-boxes {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.select-birth-date {
+  margin-left: 14px;
+}
+
+#thanks-for-signing {
+  font-size: 15px;
+  text-align: center;
+}
+
+#signup-form .formfieldline {
+  padding: 0;
+}
+
+#thanks-for-signing {
+  text-align: left;
+}
+
+#thanks-for-signing h3 {
+  color: #FF7F2A;
+  font-family: 'Liberation Sans', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  text-align: center;
+}
+
+#thanks-for-signing a {
+  color: #333;
+}
+
+#thanks-for-signing h4 {
+  color: #6D786E;
+  font-size: 20px;
+}
+
+#signup-form #result-short {
+  color: red;
+}
+
+#signup-form #result-bad {
+  color: #825A2C;
+}
+
+#signup-form #result-good {
+  color: #32CD32;
+}
+
+#signup-form #result-strong {
+  color: green;
+}
+

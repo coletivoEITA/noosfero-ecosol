@@ -1,11 +1,15 @@
-class OrdersCyclePlugin::CycleOrder < ActiveRecord::Base
+class OrdersCyclePlugin::CycleOrder < ApplicationRecord
 
   belongs_to :cycle, class_name: 'OrdersCyclePlugin::Cycle'
-  belongs_to :sale, class_name: 'OrdersCyclePlugin::Sale', foreign_key: :sale_id, dependent: :destroy
-  belongs_to :purchase, class_name: 'OrdersCyclePlugin::Purchase', foreign_key: :purchase_id, dependent: :destroy
+  belongs_to :sale, class_name: 'OrdersCyclePlugin::Sale', foreign_key: :sale_id, dependent: :destroy, inverse_of: :cycle_sale
+  belongs_to :purchase, class_name: 'OrdersCyclePlugin::Purchase', foreign_key: :purchase_id, dependent: :destroy, inverse_of: :cycle_sale
 
   validates_presence_of :cycle
-  validate :sale_or_purchase
+  ##
+  # This validation although necessary breaks the creation
+  # through associated #cycle_sales at Sale
+  #
+  #validate :sale_or_purchase
 
   protected
 

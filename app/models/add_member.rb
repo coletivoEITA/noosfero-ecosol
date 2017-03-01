@@ -2,13 +2,16 @@ class AddMember < Task
 
   validates_presence_of :requestor_id, :target_id
 
+  validates :requestor, kind_of: {kind: Person}
+  validates :target, kind_of: {kind: Organization}
+
   alias :person :requestor
   alias :person= :requestor=
 
   alias :organization :target
   alias :organization= :target=
 
-  settings_items :roles
+  settings_items :roles, type: Array
 
   after_create do |task|
     remove_from_suggestion_list(task)
@@ -19,6 +22,7 @@ class AddMember < Task
       self.roles = [Profile::Roles.member(organization.environment.id).id]
     end
     target.affiliate(requestor, self.roles.select{|r| !r.to_i.zero? }.map{|i| Role.find(i)})
+    person.follow(organization, Circle.find_or_create_by(:person => person, :name =>_('memberships'), :profile_type => 'Community'))
   end
 
   def title
@@ -26,11 +30,19 @@ class AddMember < Task
   end
 
   def information
-    {:message => _("%{requestor} wants to be a member of '%{organization}'."),
-     variables: {requestor: requestor.name, organization: organization.name}}
+    {:message => _("%{requestor} wants to be a member of '%{target}'."),
+     variables: {requestor: requestor.name, target: target.name}}
   end
 
   def accept_details
+    true
+  end
+
+  def reject_details
+    true
+  end
+
+  def footer
     true
   end
 
@@ -43,7 +55,9 @@ class AddMember < Task
   end
 
   def target_notification_description
-    _("%{requestor} wants to be a member of '%{organization}'.") % {:requestor => requestor.name, :organization => organization.name}
+    requestor_email = " (#{requestor.email})" if requestor.may_display_field_to?("email")
+
+    _("%{requestor}%{requestor_email} wants to be a member of '%{organization}'.").html_safe % {:requestor => requestor.name, :requestor_email => requestor_email, :organization => organization.name}
   end
 
   def target_notification_message
@@ -52,8 +66,20 @@ class AddMember < Task
   end
 
   def remove_from_suggestion_list(task)
-    suggestion = task.requestor.profile_suggestions.find_by_suggestion_id task.target.id
+    suggestion = task.requestor.profile_suggestions.find_by suggestion_id: task.target.id
     suggestion.disable if suggestion
   end
 
+  def task_finished_message
+    _("You have been accepted at \"%{target}\" with the profile \"%{requestor}\"") %
+      {:target => self.target.name,
+       :requestor => self.requestor.name}
+  end
+
+  def task_cancelled_message
+    _("Your request to enter community \"%{target}\" with the profile \"%{requestor}\" was not accepted. Please contact any profile admin from %{target} for more information. The following explanation was given: \n\n\"%{explanation}\"") %
+    {:target => self.target.name,
+     :requestor => self.requestor.name,
+     :explanation => self.reject_explanation}
+  end
 end

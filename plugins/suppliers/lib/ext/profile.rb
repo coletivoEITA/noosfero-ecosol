@@ -1,31 +1,29 @@
 require_dependency 'profile'
+require_dependency 'community'
 
-# FIXME: The lines bellow should be on the core
 class Profile
-
-  has_many :products
 
   def create_product?
     true
   end
 
-end
-
-class Profile
-
   # use profile.products.supplied to include own products
-  has_many :distributed_products, class_name: 'SuppliersPlugin::DistributedProduct'
+  has_many :distributed_products, class_name: 'SuppliersPlugin::DistributedProduct', foreign_key: :profile_id
 
   has_many :from_products, through: :products
   has_many :to_products, through: :products
 
-  has_many :suppliers, class_name: 'SuppliersPlugin::Supplier', foreign_key: :consumer_id, dependent: :destroy,
-    include: [{profile: [:domains], consumer: [:domains]}], order: 'suppliers_plugin_suppliers.name ASC'
-  has_many :consumers, class_name: 'SuppliersPlugin::Consumer', foreign_key: :profile_id, dependent: :destroy,
-    include: [{profile: [:domains], consumer: [:domains]}], order: 'name ASC'
+  has_many :suppliers, -> {
+    order('name ASC')
+  }, class_name: 'SuppliersPlugin::Supplier', foreign_key: :consumer_id, dependent: :destroy
+  has_many :consumers, -> {
+    order('name ASC')
+  }, class_name: 'SuppliersPlugin::Consumer', foreign_key: :profile_id, dependent: :destroy
+
+  has_many :hubs, class_name: 'SuppliersPlugin::Hub', dependent: :destroy
 
   def supplier_settings
-    @supplier_settings ||= Noosfero::Plugin::Settings.new self, SuppliersPlugin
+    @supplier_settings ||= SuppliersPlugin::Settings.new self
   end
 
   def dummy?
@@ -85,5 +83,4 @@ class Profile
       end
     end
   end
-
 end

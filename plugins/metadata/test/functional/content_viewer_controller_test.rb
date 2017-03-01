@@ -1,15 +1,11 @@
+# encoding: UTF-8
 require 'test_helper'
 require 'content_viewer_controller'
-
-# Re-raise errors caught by the controller.
-class ContentViewerController; def rescue_action(e) raise e end; end
 
 class ContentViewerControllerTest < ActionController::TestCase
 
   def setup
     @controller = ContentViewerController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
 
     @profile = create_user('testinguser').person
     @environment = @profile.environment
@@ -25,23 +21,23 @@ class ContentViewerControllerTest < ActionController::TestCase
   end
 
   should 'add meta tags with article info' do
-    a = TinyMceArticle.create(name: 'Article to be shared', body: 'This article should be shared with all social networks', profile: profile)
+    a = TextArticle.create(name: 'Article to be shared', body: '<p>This article should be shared with all social networks</p>', profile: profile)
 
     get :view_page, profile: profile.identifier, page: [ a.name.to_slug ]
 
     assert_tag tag: 'meta', attributes: { name: 'twitter:title', content: /#{a.name} - #{a.profile.name}/ }
-    assert_tag tag: 'meta', attributes: { name: 'twitter:description', content: a.body }
+    assert_tag tag: 'meta', attributes: { name: 'twitter:description', content: a.lead.gsub(/<\/?p>/,'') }
     assert_no_tag tag: 'meta', attributes: { name: 'twitter:image' }
     assert_tag tag: 'meta', attributes: { property: 'og:type', content: 'article' }
     assert_tag tag: 'meta', attributes: { property: 'og:url', content: /\/#{profile.identifier}\/#{a.name.to_slug}/ }
     assert_tag tag: 'meta', attributes: { property: 'og:title', content: /#{a.name} - #{a.profile.name}/ }
     assert_tag tag: 'meta', attributes: { property: 'og:site_name', content: a.profile.name }
-    assert_tag tag: 'meta', attributes: { property: 'og:description', content: a.body }
+    assert_tag tag: 'meta', attributes: { property: 'og:description', content: a.lead.gsub(/<\/?p>/,'') }
     assert_no_tag tag: 'meta', attributes: { property: 'og:image' }
   end
 
   should 'add meta tags with article images' do
-    a = TinyMceArticle.create(name: 'Article to be shared with images', body: 'This article should be shared with all social networks <img src="/images/x.png" />', profile: profile)
+    a = TextArticle.create(name: 'Article to be shared with images', body: 'This article should be shared with all social networks <img src="/images/x.png" />', profile: profile)
 
     get :view_page, profile: profile.identifier, page: [ a.name.to_slug ]
     assert_tag tag: 'meta', attributes: { name: 'twitter:image', content: /\/images\/x.png/ }
@@ -49,7 +45,7 @@ class ContentViewerControllerTest < ActionController::TestCase
   end
 
   should 'escape utf8 characters correctly' do
-    a = TinyMceArticle.create(name: 'Article to be shared with images', body: 'This article should be shared with all social networks <img src="/images/ç.png" />', profile: profile)
+    a = TextArticle.create(name: 'Article to be shared with images', body: 'This article should be shared with all social networks <img src="/images/ç.png" />', profile: profile)
 
     get :view_page, profile: profile.identifier, page: [ a.name.to_slug ]
     assert_tag tag: 'meta', attributes: { property: 'og:image', content: /\/images\/%C3%A7.png/  }
@@ -67,7 +63,7 @@ class ContentViewerControllerTest < ActionController::TestCase
 
   should 'not expose metadata on private pages' do
     profile.update_column :public_profile, false
-    a = TinyMceArticle.create(name: 'Article to be shared with images', body: 'This article should be shared with all social networks <img src="/images/x.png" />', profile: profile)
+    a = TextArticle.create(name: 'Article to be shared with images', body: 'This article should be shared with all social networks <img src="/images/x.png" />', profile: profile)
 
     get :view_page, profile: profile.identifier, page: [ a.name.to_slug ]
     assert_no_tag tag: 'meta', attributes: { property: 'og:image', content: /\/images\/x.png/  }

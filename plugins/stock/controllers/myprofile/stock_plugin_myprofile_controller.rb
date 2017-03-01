@@ -13,13 +13,13 @@ class StockPluginMyprofileController < MyProfileController
 
   def edit
     @place = profile.stock_places.find params[:id]
-    @place.update_attributes! params[:place]
+    @place.update! params[:place]
     redirect_to :action => :index
   end
 
   def create
     @place = profile.stock_places.build
-    @place.update_attributes! params[:place]
+    @place.update! params[:place]
     redirect_to :action => :index
   end
 

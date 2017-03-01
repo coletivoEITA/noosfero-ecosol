@@ -1,19 +1,50 @@
-<%= block_title(block.title) %>
+<% extend EventPlugin::EventBlockHelper %>
+
+<%= block_title(block.title, block.subtitle) %>
+
+<% if block.display_as_calendar %>
+
+<%= javascript_include_tag 'plugins/event/jquery.e-calendar' %>
+<div class="events-block" id="events-block-<%= block.id %>"></div>
+<script>
+  $(document).ready(function () {
+    $('#events-block-<%= block.id %>').eCalendar({
+      weekDays: <%= %w(S M T W T F S).collect{|day| c_(day)}.to_json %>,
+      months: <%= %w(January February March April May June July August September October November December).collect{|m| c_(m)}.to_json %>,
+      textArrows: { previous: '<', next: '>' },
+      eventTitle: '<%= c_('Events') %>',
+      url: '',
+      events: [
+      <% block.events.each do |event| %>
+        {
+          title: '<%= link_to(event.title, event.view_url) %>',
+          description: '',
+          datetime: new Date(<%= event.start_date.to_i %>000)
+        },
+      <% end %>
+      ]
+    });
+  });
+</script>
+
+<% else %>
 
 <ul class="events">
   <% block.events(user).map do |event| %>
-    <% days_left = ( event.start_date - Date.today ).round %>
+    <% days_left = ( (event.start_date - DateTime.now)/60/60/24 ).round %>
       <li itemscope="itemscope" itemtype="http://data-vocabulary.org/Event" class="event">
         <%= render(
               :file => 'event_plugin/event_block_item',
               :locals => {
                 :event => event,
                 :block => block,
-                :time_class => days_left < 0 ? 'future' : 'past',
-                :time_left_str => block.human_time_left(days_left)
+                :time_class => days_left < 0 ? 'past' : 'future',
+                :time_left_str => human_time_left(days_left)
               }
             )
         %>
       </li>
   <% end %>
 </ul>
+
+<% end %>

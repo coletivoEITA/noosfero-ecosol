@@ -1,11 +1,11 @@
 class ToleranceTimePluginMyprofileController < MyProfileController
   def index
-    @tolerance = ToleranceTimePlugin::Tolerance.find_by_profile_id(profile.id) || ToleranceTimePlugin::Tolerance.create!(:profile => profile)
+    @tolerance = ToleranceTimePlugin::Tolerance.find_by(profile_id: profile.id) || ToleranceTimePlugin::Tolerance.create!(:profile => profile)
     convert_values
     if request.post?
       begin
         convert_params
-        @tolerance.update_attributes!(params[:tolerance])
+        @tolerance.update!(params[:tolerance])
         convert_values
         session[:notice] = _('Tolerance updated')
       rescue

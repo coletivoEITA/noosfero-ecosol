@@ -3,7 +3,8 @@ require_relative "../test_helper"
 class AddMemberTest < ActiveSupport::TestCase
 
   def setup
-    @person = fast_create(Person)
+    @user = fast_create(User)
+    @person = fast_create(Person,:user_id => @user.id)
     @community = fast_create(Community)
   end
   attr_reader :person, :community
@@ -63,6 +64,16 @@ class AddMemberTest < ActiveSupport::TestCase
     task = AddMember.create!(:person => person, :organization => community)
   end
 
+  should 'send e-mails to requestor' do
+    community.update_attribute(:closed, true)
+    community.stubs(:notification_emails).returns(["adm@example.com"])
+
+    task = AddMember.create!(:person => person, :organization => community)
+    assert_difference "ActionMailer::Base.deliveries.size" do
+      task.finish
+    end
+  end
+
   should 'has permission to manage members' do
     t = AddMember.new
     assert_equal :manage_memberships, t.permission
@@ -105,20 +116,44 @@ class AddMemberTest < ActiveSupport::TestCase
   should 'have target notification message' do
     task = AddMember.new(:person => person, :organization => community)
 
-    assert_match(/#{person.name} wants to be a member of this community.*[\n]*.*to accept or reject/, task.target_notification_message)
+    assert_match(/#{person.name} wants to be a member of '#{community.name}'.*[\n]*.*to accept or reject/, task.target_notification_message)
   end
 
   should 'have target notification description' do
     task = AddMember.new(:person => person, :organization => community)
 
-    assert_match(/#{task.requestor.name} wants to be a member of this community/, task.target_notification_description)
+    assert_match(/#{task.requestor.name} wants to be a member of '#{community.name}'/, task.target_notification_description)
   end
 
   should 'deliver target notification message' do
     task = AddMember.new(:person => person, :organization => community)
 
     email = TaskMailer.target_notification(task, task.target_notification_message).deliver
-    assert_match(/#{task.requestor.name} wants to be a member of this community/, email.subject)
+    assert_match(/#{task.requestor.name} wants to be a member of '#{community.name}'/, email.subject)
   end
 
+  should 'notification description with requestor email if requestor email is public' do
+    new_person = create_user('testuser').person
+    new_person.update_attributes!({:fields_privacy => {:email => 'public'}})
+
+    task = AddMember.new(:person => new_person, :organization => community)
+
+    assert_match(/\(#{task.requestor.email}\)/, task.target_notification_description)
+  end
+
+  should 'notification description without requestor email if requestor email is not public' do
+    new_person = create_user('testuser').person
+    new_person.update_attributes!({:fields_privacy => {:email => '0'}})
+
+    task = AddMember.new(:person => new_person, :organization => community)
+
+    assert_no_match(/\(#{task.requestor.email}\)/, task.target_notification_description)
+  end
+
+  should 'have cancel notification message with explanation' do
+    explanation_message = 'some explanation'
+    task = AddMember.new(:person => person, :organization => community,
+                         :reject_explanation => explanation_message)
+    assert_match(/#{explanation_message}/, task.task_cancelled_message)
+  end
 end

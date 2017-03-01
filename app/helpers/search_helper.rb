@@ -5,24 +5,21 @@ module SearchHelper
   BLOCKS_SEARCH_LIMIT = 24
   MULTIPLE_SEARCH_LIMIT = 8
 
-  FILTERS_TRANSLATIONS = {
-    :order => _('Order'),
-    :display => _('Display')
-  }
-
-  FILTERS_OPTIONS_TRANSLATION = {
-    :order => {
-      #'more_popular' => _('More popular'),
-      #'more_active' => _('More active'),
-      'more_recent' => _('More recent'),
-      'more_comments' => _('More comments')
-    },
-    :display => {
-      'map' => _('Map'),
-      'full' => _('Full'),
-      'compact' => _('Compact')
+  def filters_options_translation
+    @filters_options_translation ||= {
+      :order => {
+        #'more_popular' => _('More popular'),
+        #'more_active' => _('More active'),
+        'more_recent' => _('More recent'),
+        'more_comments' => _('More comments')
+      },
+      :display => {
+        'map' => _('Map'),
+        'full' => _('Full'),
+        'compact' => _('Compact')
+      }
     }
-  }
+  end
 
   COMMON_PROFILE_LIST_BLOCK = [
     :enterprises,
@@ -48,7 +45,8 @@ module SearchHelper
   def search_page_title(title, category = nil)
     title = "<h1>" + title
     title += ' - <small>' + category.name + '</small>' if category
-    title + "</h1>"
+    title += "</h1>"
+    title.html_safe
   end
 
   def category_context(category, url)
@@ -100,7 +98,7 @@ module SearchHelper
     if options.size <= 1
       return
     else
-      options = options.map {|option| [FILTERS_OPTIONS_TRANSLATION[name][option], option]}
+      options = options.map {|option| [filters_options_translation[name][option], option]}
       options = options_for_select(options, :selected => (params[name] || default))
       select_tag(name, options)
     end
@@ -128,10 +126,10 @@ module SearchHelper
   def filters(asset)
     return if !asset
     klass = asset_class(asset)
-    content_tag('div', klass::SEARCH_FILTERS.map do |name, options|
+    content_tag('div', safe_join(klass::SEARCH_FILTERS.map do |name, options|
       default = klass.respond_to?("default_search_#{name}") ? klass.send("default_search_#{name}".to_s) : nil
       select_filter(name, options, default)
-    end.join("\n"), :id => 'search-filters')
+    end, "\n"), :id => 'search-filters')
   end
 
   def assets_menu(selected)
@@ -141,16 +139,23 @@ module SearchHelper
     #     menu.
     assets.delete(:events)
     content_tag('ul',
-      assets.map do |asset|
+      safe_join(assets.map do |asset|
         options = {}
         options.merge!(:class => 'selected') if selected.to_s == asset.to_s
         content_tag('li', asset_link(asset), options)
-      end.join("\n"),
+      end, "\n"),
     :id => 'assets-menu')
   end
 
   def asset_link(asset)
     link_to(@enabled_searches[asset], "/search/#{asset}")
+  end
+
+  def assets_submenu(asset)
+    return '' if @templates[asset].blank? || @templates[asset].length == 1
+    options = @templates[asset].map {|template| [template.name, template.id]}
+    options = options_for_select([[_('Choose a template'), nil]] + options, selected: (params[:template_id]))
+    select_tag('template_id', options, :id => 'submenu')
   end
 
 end

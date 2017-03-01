@@ -1,17 +1,30 @@
 
-class Article < ActiveRecord::Base
+class Article < ApplicationRecord
+
+  module Editor
+    TEXTILE = 'textile'
+    TINY_MCE = 'tiny_mce'
+    RAW_HTML = 'raw_html'
+  end
+
+  include SanitizeHelper
 
   attr_accessible :name, :body, :abstract, :profile, :tag_list, :parent,
                   :allow_members_to_edit, :translation_of_id, :language,
                   :license_id, :parent_id, :display_posts_in_current_language,
                   :category_ids, :posts_per_page, :moderate_comments,
-                  :accept_comments, :feed, :published, :source,
+                  :accept_comments, :feed, :published, :source, :source_name,
                   :highlighted, :notify_comments, :display_hits, :slug,
                   :external_feed_builder, :display_versions, :external_link,
-                  :image_builder, :show_to_followers, :published_at,
-                  :author, :created_by, :last_changed_by
+                  :image_builder, :show_to_followers, :archived,
+                  :author, :display_preview, :published_at, :person_followers,
+                  :editor,
+                  :created_by, :last_changed_by
 
+  extend ActsAsHavingImage::ClassMethods
   acts_as_having_image
+
+  include Noosfero::Plugin::HotSpot
 
   SEARCHABLE_FIELDS = {
     :name => {:label => _('Name'), :weight => 10},
@@ -27,6 +40,19 @@ class Article < ActiveRecord::Base
     :display => %w[full]
   }
 
+  N_('article')
+
+  def initialize(*params)
+    super
+    if params.present? && params.first.present?
+      if params.first.symbolize_keys.has_key?(:published)
+        self.published = params.first.symbolize_keys[:published]
+      elsif params.first[:profile].present? && !params.first[:profile].public_profile
+        self.published = false
+      end
+    end
+  end
+
   def self.default_search_display
     'full'
   end
@@ -40,9 +66,10 @@ class Article < ActiveRecord::Base
     _('Content')
   end
 
-  track_actions :create_article, :after_create, :keep_params => [:name, :url, :lead, :first_image], :if => Proc.new { |a| a.is_trackable? && !a.image? }
+  track_actions :create_article, :after_create, :keep_params => [:name, :url, :lead, :first_image], :if => Proc.new { |a| a.notifiable? }
 
   # xss_terminate plugin can't sanitize array fields
+  # sanitize_tag_list is used with SanitizeHelper
   before_save :sanitize_tag_list
 
   before_create do |article|
@@ -63,21 +90,25 @@ class Article < ActiveRecord::Base
   belongs_to :last_changed_by, :class_name => 'Person', :foreign_key => 'last_changed_by_id'
   belongs_to :created_by, :class_name => 'Person', :foreign_key => 'created_by_id'
 
-  has_many :comments, :class_name => 'Comment', :foreign_key => 'source_id', :dependent => :destroy, :order => 'created_at desc'
+  has_many :comments, -> { order 'created_at asc' }, class_name: 'Comment', as: 'source', dependent: :destroy
 
-  has_many :article_categorizations, :conditions => [ 'articles_categories.virtual = ?', false ]
-  has_many :categories, :through => :article_categorizations, :conditions => ['categories.visible_for_articles = ?', true]
+  has_many :article_followers, :dependent => :destroy
+  has_many :person_followers, :class_name => 'Person', :through => :article_followers, :source => :person
+  has_many :person_followers_emails, -> { select :email }, class_name: 'User', through: :person_followers, source: :user
+
+  has_many :article_categorizations, -> { where 'articles_categories.virtual = ?', false }
+  has_many :categories, -> { where 'categories.visible_for_articles = ?', true }, through: :article_categorizations
 
   has_many :article_categorizations_including_virtual, :class_name => 'ArticleCategorization'
   has_many :categories_including_virtual, :through => :article_categorizations_including_virtual, :source => :category
 
-  acts_as_having_settings :field => :setting
+  extend ActsAsHavingSettings::ClassMethods
+  acts_as_having_settings field: :setting
 
   settings_items :display_hits, :type => :boolean, :default => true
   settings_items :author_name, :type => :string, :default => ""
   settings_items :allow_members_to_edit, :type => :boolean, :default => false
   settings_items :moderate_comments, :type => :boolean, :default => false
-  settings_items :followers, :type => Array, :default => []
   has_and_belongs_to_many :article_privacy_exceptions, :class_name => 'Person', :join_table => 'article_privacy_exceptions'
 
   belongs_to :reference_article, :class_name => "Article", :foreign_key => 'reference_article_id'
@@ -87,6 +118,10 @@ class Article < ActiveRecord::Base
   has_many :translations, :class_name => 'Article', :foreign_key => :translation_of_id
   belongs_to :translation_of, :class_name => 'Article', :foreign_key => :translation_of_id
   before_destroy :rotate_translations
+
+  acts_as_voteable
+
+  after_save :invalidate_parent_cache
 
   before_create do |article|
     article.published_at ||= Time.now
@@ -115,15 +150,15 @@ class Article < ActiveRecord::Base
 
   xss_terminate :only => [ :name ], :on => 'validation', :with => 'white_list'
 
-  scope :in_category, lambda { |category|
-    {:include => 'categories_including_virtual', :conditions => { 'categories.id' => category.id }}
+  scope :in_category, -> category {
+    includes('categories_including_virtual').where('categories.id' => category.id)
   }
 
-  scope :by_range, lambda { |range| {
-    :conditions => [
-      'articles.published_at BETWEEN :start_date AND :end_date', { :start_date => range.first, :end_date => range.last }
-    ]
-  }}
+  include TimeScopes
+
+  scope :by_range, -> range {
+    where 'articles.published_at BETWEEN :start_date AND :end_date', { start_date: range.first, end_date: range.last }
+  }
 
   URL_FORMAT = /\A(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?\Z/ix
 
@@ -135,6 +170,8 @@ class Article < ActiveRecord::Base
 
   validate :no_self_reference
   validate :no_cyclical_reference, :if => 'parent_id.present?'
+
+  validate :parent_archived?
 
   def no_self_reference
     errors.add(:parent_id, _('self-reference is not allowed.')) if id && parent_id == id
@@ -149,11 +186,6 @@ class Article < ActiveRecord::Base
       end
       current_parent = current_parent.parent
     end
-  end
-
-
-  def is_trackable?
-    self.published? && self.notifiable? && self.advertise? && self.profile.public_profile
   end
 
   def external_link=(link)
@@ -220,6 +252,7 @@ class Article < ActiveRecord::Base
   acts_as_taggable
   N_('Tag list')
 
+  extend ActsAsFilesystem::ActsMethods
   acts_as_filesystem
 
   acts_as_versioned
@@ -245,32 +278,36 @@ class Article < ActiveRecord::Base
 
   # retrieves all articles belonging to the given +profile+ that are not
   # sub-articles of any other article.
-  scope :top_level_for, lambda { |profile|
-    {:conditions => [ 'parent_id is null and profile_id = ?', profile.id ]}
+  scope :top_level_for, -> profile {
+    where 'parent_id is null and profile_id = ?', profile.id
   }
 
-  scope :public,
-    :conditions => [ "advertise = ? AND published = ? AND profiles.visible = ? AND profiles.public_profile = ?", true, true, true, true ], :joins => [:profile]
+  scope :is_public, -> {
+    joins(:profile).
+    where("articles.advertise = ? AND articles.published = ? AND profiles.visible = ? AND profiles.public_profile = ?", true, true, true, true)
+  }
 
-  scope :more_recent,
-    :conditions => [ "advertise = ? AND published = ? AND profiles.visible = ? AND profiles.public_profile = ? AND
-      ((articles.type != ?) OR articles.type is NULL)",
-      true, true, true, true, 'RssFeed'
-    ],
-    :order => 'articles.published_at desc, articles.id desc'
+  scope :more_recent, -> {
+    order('articles.published_at desc, articles.id desc')
+    .where("articles.advertise = ? AND articles.published = ? AND profiles.visible = ? AND profiles.public_profile = ? AND
+    ((articles.type != ?) OR articles.type is NULL)",
+    true, true, true, true, 'RssFeed')
+  }
 
   # retrives the most commented articles, sorted by the comment count (largest
   # first)
   def self.most_commented(limit)
-    paginate(:order => 'comments_count DESC', :page => 1, :per_page => limit)
+    order('comments_count DESC').paginate(page: 1, per_page: limit)
   end
 
-  scope :more_popular, :order => 'hits DESC'
-  scope :relevant_as_recent, :conditions => ["(articles.type != 'UploadedFile' and articles.type != 'RssFeed' and articles.type != 'Blog') OR articles.type is NULL"]
+  scope :more_popular, -> { order 'hits DESC' }
+  scope :relevant_as_recent, -> {
+   where "(articles.type != 'UploadedFile' and articles.type != 'RssFeed' and articles.type != 'Blog') OR articles.type is NULL"
+  }
 
   def self.recent(limit = nil, extra_conditions = {}, pagination = true)
-    result = scoped({:conditions => extra_conditions}).
-      public.
+    result = where(extra_conditions).
+      is_public.
       relevant_as_recent.
       limit(limit).
       order(['articles.published_at desc', 'articles.id desc'])
@@ -348,6 +385,10 @@ class Article < ActiveRecord::Base
     self.parent and self.parent.forum?
   end
 
+  def person_followers_email_list
+    person_followers_emails.map{|p|p.email}
+  end
+
   def info_from_last_update
     last_comment = comments.last
     if last_comment
@@ -355,6 +396,10 @@ class Article < ActiveRecord::Base
     else
       {:date => updated_at, :author_name => author_name, :author_url => author_url}
     end
+  end
+
+  def full_path
+    profile.hostname.blank? ? "/#{profile.identifier}/#{path}" : "/#{path}"
   end
 
   def url
@@ -382,21 +427,26 @@ class Article < ActiveRecord::Base
   end
 
   def download? view = nil
-    return false if view
-    (self.uploaded_file? and not self.image?) or
-      self.image? or
-      (not self.uploaded_file? and self.mime_type != 'text/html')
+    false
+  end
+
+  def is_followed_by?(user)
+    self.person_followers.include? user
+  end
+
+  def download_disposition
+    'inline'
   end
 
   def download_headers
-    {}
+    { :filename => filename, :type => mime_type, :disposition => download_disposition}
   end
 
   def alternate_languages
     self.translations.map(&:language)
   end
 
-  scope :native_translations, :conditions => { :translation_of_id => nil }
+  scope :native_translations, -> { where :translation_of_id => nil }
 
   def translatable?
     false
@@ -438,7 +488,7 @@ class Article < ActiveRecord::Base
 
   def rotate_translations
     unless self.translations.empty?
-      rotate = self.translations
+      rotate = self.translations.to_a
       root = rotate.shift
       root.update_attribute(:translation_of_id, nil)
       root.translations = rotate
@@ -451,7 +501,7 @@ class Article < ActiveRecord::Base
     elsif self.native_translation.language == locale
       self.native_translation
     else
-      self.native_translation.translations.first(:conditions => { :language => locale })
+      self.native_translation.translations.where(:language => locale).first
     end
   end
 
@@ -467,39 +517,39 @@ class Article < ActiveRecord::Base
     end
   end
 
+  def archived?
+    (self.parent && self.parent.archived) || self.archived
+  end
+
   def self.folder_types
     ['Folder', 'Blog', 'Forum', 'Gallery']
   end
 
-  def self.text_article_types
-    ['TextArticle', 'TextileArticle', 'TinyMceArticle']
-  end
+  scope :published, -> { where 'articles.published = ?', true }
+  scope :folders, -> profile { where 'articles.type IN (?)', profile.folder_types }
+  scope :no_folders, -> profile { where 'articles.type NOT IN (?)', profile.folder_types }
+  scope :galleries, -> { where "articles.type IN ('Gallery')" }
+  scope :images, -> { where :is_image => true }
+  scope :no_images, -> { where :is_image => false }
+  scope :files, -> { where :type => 'UploadedFile' }
+  scope :with_types, -> types { where 'articles.type IN (?)', types }
 
-  scope :published, :conditions => ['articles.published = ?', true]
-  scope :folders, lambda {|profile|{:conditions => ['articles.type IN (?)', profile.folder_types] }}
-  scope :no_folders, lambda {|profile|{:conditions => ['articles.type NOT IN (?)', profile.folder_types]}}
-  scope :galleries, :conditions => [ "articles.type IN ('Gallery')" ]
-  scope :images, :conditions => { :is_image => true }
-  scope :no_images, :conditions => { :is_image => false }
-  scope :text_articles, :conditions => [ 'articles.type IN (?)', text_article_types ]
-  scope :files, :conditions => { :type => 'UploadedFile' }
-  scope :with_types, lambda { |types| { :conditions => [ 'articles.type IN (?)', types ] } }
-  scope :no_feeds, :conditions => ["type != 'RssFeed'"]
-  scope :latest, :order => "updated_at DESC"
+  scope :no_feeds, -> { where "type != 'RssFeed'" }
+  scope :latest, -> { order "updated_at DESC" }
 
-  scope :more_popular, :order => 'hits DESC'
-  scope :more_comments, :order => "comments_count DESC"
-  scope :more_recent, :order => "created_at DESC"
+  scope :more_popular, -> { order 'hits DESC' }
+  scope :more_comments, -> { order "comments_count DESC" }
+  scope :more_recent, -> { order "created_at DESC" }
 
   scope :display_filter, lambda {|user, profile|
     return published if (user.nil? && profile && profile.public?)
-    return [] if user.nil? || (profile && !profile.public? && !user.follows?(profile))
+    return [] if user.nil? || (profile && !profile.public? && !profile.in_social_circle?(user))
     where(
       [
        "published = ? OR last_changed_by_id = ? OR profile_id = ? OR ?
-        OR  (show_to_followers = ? AND ?)", true, user.id, user.id,
+        OR  (show_to_followers = ? AND ? AND profile_id IN (?))", true, user.id, user.id,
         profile.nil? ?  false : user.has_permission?(:view_private_content, profile),
-        true, user.follows?(profile)
+        true, (profile.nil? ? true : profile.in_social_circle?(user)),  ( profile.nil? ? (user.friends.select('profiles.id')) : [profile.id])
       ]
     )
   }
@@ -514,7 +564,7 @@ class Article < ActiveRecord::Base
 
   def display_to?(user = nil)
     if published?
-      profile.display_info_to?(user)
+      (profile.secret? || !profile.visible?) ? profile.display_info_to?(user) : true
     else
       if !user
         false
@@ -526,7 +576,7 @@ class Article < ActiveRecord::Base
 
   def allow_post_content?(user = nil)
     return true if allow_edit_topic?(user)
-    user && (user.has_permission?('post_content', profile) || allow_publish_content?(user) && (user == author))
+    user && (profile.allow_post_content?(user) || allow_publish_content?(user) && (user == author))
   end
 
   def allow_publish_content?(user = nil)
@@ -572,25 +622,24 @@ class Article < ActiveRecord::Base
     profile.visible? && profile.public? && published?
   end
 
-
-  def copy(options = {})
+  def copy_without_save(options = {})
     attrs = attributes.reject! { |key, value| ATTRIBUTES_NOT_COPIED.include?(key.to_sym) }
     attrs.merge!(options)
     object = self.class.new
     attrs.each do |key, value|
       object.send(key.to_s+'=', value)
     end
+    object
+  end
+
+  def copy(options = {})
+    object = copy_without_save(options)
     object.save
     object
   end
 
   def copy!(options = {})
-    attrs = attributes.reject! { |key, value| ATTRIBUTES_NOT_COPIED.include?(key.to_sym) }
-    attrs.merge!(options)
-    object = self.class.new
-    attrs.each do |key, value|
-      object.send(key.to_s+'=', value)
-    end
+    object = copy_without_save(options)
     object.save!
     object
   end
@@ -612,12 +661,25 @@ class Article < ActiveRecord::Base
   ]
 
   def self.find_by_old_path(old_path)
-    find(:first, :include => :versions, :conditions => ['article_versions.path = ?', old_path], :order => 'article_versions.id desc')
+    self.includes(:versions).where('article_versions.path = ?', old_path).order('article_versions.id DESC').first
   end
 
   def hit
-    self.class.connection.execute('update articles set hits = hits + 1 where id = %d' % self.id.to_i)
-    self.hits += 1
+    if !archived?
+      self.class.connection.execute('update articles set hits = hits + 1 where id = %d' % self.id.to_i)
+      self.hits += 1
+    end
+  end
+
+  def self.hit(articles)
+    ids = []
+    articles.each do |article|
+      if !article.archived?
+        ids << article.id
+        article.hits += 1
+      end
+    end
+    Article.where(:id => ids).update_all('hits = hits + 1') if !ids.empty?
   end
 
   def can_display_hits?
@@ -626,6 +688,20 @@ class Article < ActiveRecord::Base
 
   def display_hits?
     can_display_hits? && display_hits
+  end
+
+  def display_media_panel?
+    can_display_media_panel? && environment.enabled?('media_panel')
+  end
+
+  def can_display_media_panel?
+    false
+  end
+
+  settings_items :display_preview, :type => :boolean, :default => false
+
+  def display_preview?
+    false
   end
 
   def image?
@@ -637,10 +713,6 @@ class Article < ActiveRecord::Base
   end
 
   def gallery?
-    false
-  end
-
-  def tiny_mce?
     false
   end
 
@@ -671,11 +743,11 @@ class Article < ActiveRecord::Base
   end
 
   def get_version(version_number = nil)
-    version_number ? versions.find(:first, :order => 'version', :offset => version_number - 1) : versions.earliest
+    if version_number then self.versions.order('version').offset(version_number - 1).first else self.versions.earliest end
   end
 
   def author_by_version(version_number = nil)
-    version_number ? profile.environment.people.find_by_id(get_version(version_number).author_id) : author
+    if version_number then profile.environment.people.where(id: get_version(version_number).author_id).first else author end
   end
 
   def author_name(version_number = nil)
@@ -697,9 +769,18 @@ class Article < ActiveRecord::Base
     person ? person.id : nil
   end
 
+  #FIXME make this test
+  def author_custom_image(size = :icon)
+    author ? author.profile_custom_image(size) : nil
+  end
+
   def version_license(version_number = nil)
     return license if version_number.nil?
-    profile.environment.licenses.find_by_id(get_version(version_number).license_id)
+    profile.environment.licenses.find_by(id: get_version(version_number).license_id)
+  end
+
+  def cacheable?
+    true
   end
 
   alias :active_record_cache_key :cache_key
@@ -710,7 +791,11 @@ class Article < ActiveRecord::Base
       (params[:year] ? "-year-#{params[:year]}" : '') +
       (params[:month] ? "-month-#{params[:month]}" : '') +
       (params[:version] ? "-version-#{params[:version]}" : '')
+  end
 
+  def invalidate_parent_cache
+    self.parent.touch if self.parent
+    self.environment.touch if self.profile == self.environment.portal_community
   end
 
   def automatic_abstract
@@ -729,8 +814,9 @@ class Article < ActiveRecord::Base
     paragraphs.empty? ? '' : paragraphs.first.to_html
   end
 
-  def lead
-    abstract.blank? ? automatic_abstract : abstract.html_safe
+  def lead(length = nil)
+    content = abstract.blank? ? automatic_abstract.html_safe : abstract.html_safe
+    length.present? ? content.truncate(length) : content
   end
 
   def short_lead
@@ -746,11 +832,13 @@ class Article < ActiveRecord::Base
   end
 
   def body_images_paths
-    Nokogiri::HTML.fragment(self.body.to_s).css('img[src]').collect do |i|
+    paths = Nokogiri::HTML.fragment(self.body.to_s).css('img[src]').collect do |i|
       src = i['src']
       src = URI.escape src if self.new_record? # xss_terminate runs on save
       (self.profile && self.profile.environment) ? URI.join(self.profile.environment.top_url, src).to_s : src
     end
+    paths.unshift(URI.join(self.profile.environment.top_url, self.image.public_filename).to_s) if self.image.present?
+    paths
   end
 
   def more_comments_label
@@ -776,17 +864,20 @@ class Article < ActiveRecord::Base
   end
 
   def activity
-    ActionTracker::Record.find_by_target_type_and_target_id 'Article', self.id
+    ActionTracker::Record.where(target_type: 'Article', target_id: self.id).first
   end
 
   def create_activity
-    if is_trackable? && !image?
+    if notifiable? && !image?
       save_action_for_verb 'create_article', [:name, :url, :lead, :first_image], Proc.new{}, :author
     end
   end
 
   def first_image
-    img = Nokogiri::HTML.fragment(self.abstract.to_s).css('img[src]').first || Nokogiri::HTML.fragment(self.body.to_s).search('img').first
+    img = ( image.present? && { 'src' => File.join([Noosfero.root, image.public_filename].join) } ) ||
+          # automatic_abstract conflict, this leads to infinite loop
+          #Nokogiri::HTML.fragment(self.lead.to_s).css('img[src]').first ||
+          Nokogiri::HTML.fragment(self.body.to_s).search('img').first
     img.nil? ? '' : img['src']
   end
 
@@ -794,6 +885,18 @@ class Article < ActiveRecord::Base
 
   def has_macro?
     true
+  end
+
+  def to_liquid
+    HashWithIndifferentAccess.new :name => name, :abstract => abstract, :body => body, :id => id, :parent_id => parent_id, :author => author
+  end
+
+  def self.can_display_blocks?
+    false
+  end
+
+  def editor?(editor)
+    self.editor == editor
   end
 
   private
@@ -807,10 +910,10 @@ class Article < ActiveRecord::Base
     tag_name.gsub(/[<>]/, '')
   end
 
-  def sanitize_html(text)
-    return unless text.is_a? String
-    sanitizer = HTML::FullSanitizer.new
-    sanitizer.sanitize(text)
+  def parent_archived?
+     if self.parent_id_changed? && self.parent && self.parent.archived?
+       errors.add(:parent_folder, N_('is archived!!'))
+     end
   end
 
   def strip_tags(html)

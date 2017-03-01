@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative '../test_helper'
 
 class CommunityTrackPluginTest < ActiveSupport::TestCase
 
@@ -7,6 +7,7 @@ class CommunityTrackPluginTest < ActiveSupport::TestCase
     @profile = fast_create(Community)
     @params = {}
     @context = mock
+    @context.stubs(:kind_of?).returns(CmsController)
     @context.stubs(:profile).returns(@profile)
     @context.stubs(:params).returns(@params)
     @plugin.stubs(:context).returns(@context)
@@ -74,8 +75,8 @@ class CommunityTrackPluginTest < ActiveSupport::TestCase
   end
 
   should 'return false at content_remove_new if page is not a track' do
-    assert !@plugin.content_remove_new(CommunityTrackPlugin::Step.new)
-    assert !@plugin.content_remove_new(Article.new)
+    refute @plugin.content_remove_new(CommunityTrackPlugin::Step.new)
+    refute @plugin.content_remove_new(Article.new)
   end
 
 end

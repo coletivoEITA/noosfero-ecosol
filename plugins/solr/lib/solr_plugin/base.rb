@@ -56,6 +56,8 @@ class SolrPlugin::Base < Noosfero::Plugin
   	solr_options = build_solr_options asset, klass, scope, category
     solr_options.merge! sort_options asset, klass, filter
     solr_options.merge! options
+    # We don't yet use the option to filter by template
+    solr_options.delete :template_id
 
     scope.find_by_contents query, paginate_options, solr_options
   rescue Exception => e

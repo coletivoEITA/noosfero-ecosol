@@ -30,14 +30,16 @@ class Contact
     Contact::Sender.notification(self).deliver
   end
 
-  class Sender < ActionMailer::Base
+  class Sender < ApplicationMailer
+
     def notification(contact)
+      self.environment = contact.dest.environment
+
       @name = contact.name
       @email = contact.email
       @city = contact.city
       @state = contact.state
       @message = contact.message
-      @environment = contact.dest.environment.name
       @url = url_for(:host => contact.dest.environment.default_hostname, :controller => 'home')
       @target = contact.dest.name
 
@@ -45,8 +47,8 @@ class Contact
         content_type: 'text/html',
         to: contact.dest.notification_emails,
         reply_to: contact.email,
-        subject: "[#{contact.dest.short_name(30)}] " + contact.subject,
-        from: "#{contact.name} <#{contact.dest.environment.noreply_email}>"
+        subject: "[#{contact.dest.short_name(30)}] #{contact.subject}".html_safe,
+        from: "#{contact.name} <#{contact.dest.environment.noreply_email}>".html_safe
       }
 
       if contact.sender

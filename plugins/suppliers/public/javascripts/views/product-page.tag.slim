@@ -1,0 +1,300 @@
+product-page
+  .head
+    h1.title.left
+      |{t("views.product.products")}
+
+    .actions.right
+      button onclick="{add}" data-toggle="modal" data-target="product-modal" class="default"
+        |{t('views.product.add_product')}
+      button onclick="{import}" data-toggle="modal" data-target="import-modal" class="default white"
+        |{t('views.product.import_products')}
+
+    .clear
+    .filter
+      input type='hidden' value="{page}"
+
+      h4
+        |{t("views.product.filter")}
+      form.form-inline onsubmit="return false"
+        .form-group
+          .name
+            input type="text" placeholder="{t('views.product.product_name')}" onkeyup="{search}" name="product_name"
+
+        .form-group.category
+          select name="category_id" onchange="{search}"
+            option each="{id,name in categories}" value="{id}" selected="{name == filter_category}"
+              |{name}
+
+        .form-group.supplier
+          select name="supplier_id" onchange="{search}"
+            option each="{id,name in suppliers}" value="{id}" selected="{id == filter_supplier}"
+              |{name}
+
+        .form-group.state
+          select name='available' onchange="{search}"
+            option value="" selected="{filter_state == ''}"
+              |{t('views.product.situation')}
+            option value="true" selected="{filter_state == 'true'}"
+              |{t('views.product.active')}
+            option value="false" selected="{filter_state == 'false'}"
+              |{t('views.product.inactive')}
+    filter-counter.filter_stats
+      |{t('views.product.showing', {count: this.count})}
+
+  .mass_actions
+    strong
+      |{t('views.product.mass_action')}
+    select name='action' id='mass_action_select'
+      option value="activate"
+        |{t('views.product.activate')}
+      option value="deactivate"
+        |{t('views.product.deactivate')}
+    button name='ok' onclick="{massAction}" class="default"
+      |{t('views.product.ok')}
+
+
+  .clear
+  .products-listing.table-responsive
+    .table
+      .header
+        .image
+          |{t('views.product.image')}
+        .state
+          |{t('views.product.state')}
+        .name
+          |{t('views.product.name')}
+        .supplier
+          |{t('views.product.supplier')}
+        .category
+          |{t('views.product.category')}
+        .margin
+          |{t('views.product.margin')}
+        .stock
+          |{t('views.product.stock')}
+        .total_price
+          |{t('views.product.total_price_currency')}
+        .supplier_price
+          |{t('views.product.supplier_price_currency')}
+        .unit
+          |{t('views.product.unit')}
+
+      product-item each="{product in products}" product="{product}" class="{product.available ? 'available':'disabled'}"
+
+      stock-modal
+      product-modal
+      import-modal
+
+  javascript:
+    this.t = window.products.t
+    this.hasLoadedUnavailableProducts = false
+    this.filter_state = 'true'
+
+
+    loadOpts(opts) {
+      this.default_margin_percentage = opts.default_margin_percentage
+
+      if (this.products == undefined)
+        this.products = opts.products
+      else
+        for (var i in opts.products)
+          this.products.push(opts.products[i])
+      this.count = this.products.length
+
+      this.filter_category = opts.filter.category
+      if (this.categories == undefined)
+        this.categories = opts.categories
+      else
+        _.merge(this.categories,opts.categories)
+
+      this.filter_supplier = opts.filter.supplier
+      if (this.suppliers == undefined) {
+        this.suppliers = opts.suppliers
+        // at this moment, only active suppliers are listed
+        this.active_suppliers = opts.suppliers
+      }
+      else
+        _.merge(this.suppliers,opts.suppliers)
+
+      if (this.units == undefined)
+        this.units = opts.units
+      else
+        _.merge(this.units,opts.units)
+
+    }
+    this.loadOpts(opts)
+
+
+    massAction(e) {
+     if (this.mass_action_select.value == 'activate') {
+      this.changeState('activate')
+     }
+     else if (this.mass_action_select.value == 'deactivate') {
+      this.changeState('deactivate')
+     }
+    }
+
+    changeState(state) {
+      var checked = $('.product-select:checked')
+      if (checked) {
+        var productItems = checked.parents('product-item')
+        var products = []
+        productItems.each(function(i, product) {
+          products.push(product._tag.product.id)
+        })
+
+        if (products) {
+          self = this
+          updateUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: state})
+          $.post(updateUrl,{ids: products}, function(response) {
+            if (response == 'success') {
+              productItems.each(function(i, product) {
+                var func = product._tag[state]
+                if (!func) return
+                func();
+              })
+              self.update()
+            }
+          })
+        }
+      }
+    }
+
+    search(e) {
+      e.preventUpdate = true
+      var available = $('select[name="available"]')[0].value
+      if (e.target.name == 'name')
+        this.run_at = new Date()
+
+      if (available != 'true' && !this.hasLoadedUnavailableProducts)
+        this.loadUnavailableProducts()
+      else
+        setTimeout(function(run_at) {
+          if (this.run_at == run_at)
+            this.theRealSearch()
+          }.bind(this), 500, this.run_at)
+    }
+
+    theRealSearch() {
+      var count = 0
+
+      var name = $('input[name="product_name"]')[0].value
+      if (name)
+        name = name.toLowerCase()
+      var category = $('select[name="category_id"]')[0].value
+      var supplier = $('select[name="supplier_id"]')[0].value
+      var available = $('select[name="available"]')[0].value
+
+
+      for (var i in this.products) {
+        if (name != "" && (this.products[i].name == "" || this.products[i].name == null)) {
+          this.products[i].selected = false
+          continue;
+        }
+        if (name && this.products[i].name) {
+          if (this.products[i].name.toLowerCase().indexOf(name) < 0) {
+            this.products[i].selected = false
+            continue
+          }
+        }
+        if (category != "0") {
+          if (this.products[i].product_category_id.toString() != category) {
+            this.products[i].selected = false
+            continue
+          }
+        }
+        if (supplier != "0") {
+          if (this.products[i].supplier_id != supplier) {
+            this.products[i].selected = false
+            continue
+          }
+        }
+        if (available) {
+          if (this.products[i].available == null)
+            this.products[i].available = false
+          if (this.products[i].available.toString() != available) {
+            this.products[i].selected = false
+            continue
+          }
+        }
+        this.products[i].selected = true
+        count += 1
+      }
+      this.count = count
+
+      this.update()
+    }
+
+    loadUnavailableProducts() {
+      var self = this
+      var loadUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'unavailable'});
+      $.get(loadUrl,function(response) {
+          if (response && response.products) {
+            self.loadOpts(response)
+            self.hasLoadedUnavailableProducts = true
+            self.theRealSearch()
+          }
+      }, 'json');
+    }
+
+    stopEdition() {
+      this.products.forEach(function(p) {
+        p.edition = false;
+      })
+    }
+
+    setStockModal(product) {
+      this.tags['stock-modal'].product = product
+      this.tags['stock-modal'].update()
+    }
+
+    completeEdition(product, productItem) {
+      this.tags['product-modal'].product = product
+      this.tags['product-modal'].productItem = productItem
+      this.tags['product-modal'].update()
+    }
+
+    typeaheadCategoryInit (input, selected) {
+      var categoryUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'categories'})+'?query=%QUERY'
+      source = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: categoryUrl,
+      })
+      source.initialize()
+
+      input.typeahead(
+        { minLength: 3, highlight: true, },
+        { displayKey: 'name', source: source.ttAdapter(), }
+      )
+
+      input.on('typeahead:selected', selected)
+    }
+
+    typeaheadUnitInit (input, selected) {
+      source = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        local: this.units,
+      })
+      source.initialize()
+
+      input.typeahead(
+        { minLength: 1, highlight: true, },
+        { displayKey: 'name', source: source.ttAdapter() }
+      )
+
+      input.on('typeahead:selected', selected)
+    }
+
+    add() {
+      var product = {
+        available: true,
+        margin_percentage: 0,
+        supplier_price: 0
+      }
+      this.completeEdition(product, {update: function(){}, product: {}})
+    }
+
+    this.on('mount', function() {
+      this.theRealSearch()
+    })

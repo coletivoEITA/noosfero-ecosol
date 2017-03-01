@@ -1,4 +1,4 @@
-class OauthClientPlugin::Auth < ActiveRecord::Base
+class OauthClientPlugin::Auth < ApplicationRecord
 
   attr_accessible :profile, :provider, :enabled,
     :access_token, :expires_in
@@ -10,6 +10,7 @@ class OauthClientPlugin::Auth < ActiveRecord::Base
   validates_presence_of :provider
   validates_uniqueness_of :profile_id, scope: :provider_id
 
+  extend ActsAsHavingSettings::ClassMethods
   acts_as_having_settings field: :data
 
   def expires_in

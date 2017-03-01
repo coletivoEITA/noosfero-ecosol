@@ -3,15 +3,26 @@ class CreateCommunity < Task
   validates_presence_of :requestor_id, :target_id
   validates_presence_of :name
 
+  validates :requestor, kind_of: {kind: Person}
+  validates :target, kind_of: {kind: Environment}
+
   alias :environment :target
   alias :environment= :target=
 
+  attr_accessible :environment, :requestor, :target
+  attr_accessible :reject_explanation, :template_id
+
+  extend ActsAsHavingImage::ClassMethods
   acts_as_having_image
 
-  DATA_FIELDS = Community.fields + ['name', 'closed']
+  DATA_FIELDS = Community.fields + ['name', 'closed', 'description']
   DATA_FIELDS.each do |field|
     settings_items field.to_sym
+    attr_accessible field.to_sym
   end
+
+  settings_items :custom_values
+  attr_accessible :custom_values
 
   def validate
     self.environment.required_community_fields.each do |field|
@@ -27,8 +38,9 @@ class CreateCommunity < Task
       ! DATA_FIELDS.include?(key.to_s)
     end
 
-    community.update_attributes(community_data)
+    community.update(community_data)
     community.image = image if image
+    community.custom_values = custom_values
     community.environment = self.environment
     community.save!
     community.add_admin(self.requestor)
@@ -49,14 +61,18 @@ class CreateCommunity < Task
 
   def information
     if description.blank?
-      { :message => _('%{requestor} wants to create community %{subject} with no description.') }
+      { :message => _('%{requestor} wants to create community %{subject} with no description.').html_safe }
     else
-      { :message => _('%{requestor} wants to create community %{subject} with this description:<p><em>%{description}</em></p>'),
+      { :message => _('%{requestor} wants to create community %{subject} with this description:<p><em>%{description}</em></p>').html_safe,
         :variables => {:description => description} }
     end
   end
 
   def reject_details
+    true
+  end
+
+  def custom_fields_moderate
     true
   end
 

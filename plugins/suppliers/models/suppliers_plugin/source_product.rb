@@ -1,11 +1,9 @@
-class SuppliersPlugin::SourceProduct < ActiveRecord::Base
+class SuppliersPlugin::SourceProduct < ApplicationRecord
 
   attr_accessible :from_product, :to_product, :quantity
 
-  default_scope include: [:from_product, :to_product]
-
-  belongs_to :from_product, class_name: 'Product'
-  belongs_to :to_product, class_name: 'Product'
+  belongs_to :from_product, class_name: 'ProductsPlugin::Product'
+  belongs_to :to_product, class_name: 'ProductsPlugin::Product'
   belongs_to :supplier, class_name: 'SuppliersPlugin::Supplier'
 
   has_many :sources_from_products, through: :from_product
@@ -24,6 +22,7 @@ class SuppliersPlugin::SourceProduct < ActiveRecord::Base
 
   def find_supplier
     self.supplier = SuppliersPlugin::Supplier.where(profile_id: self.from_product.profile_id, consumer_id: self.to_product.profile_id).first
+    debugger unless self.supplier
     raise "Can't find supplier" unless self.supplier
     self.supplier
   end

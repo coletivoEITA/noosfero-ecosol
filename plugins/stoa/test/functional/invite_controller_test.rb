@@ -1,15 +1,11 @@
-require File.dirname(__FILE__) + '/../../../../test/test_helper'
-require File.dirname(__FILE__) + '/../../../../app/controllers/public/invite_controller'
-
-# Re-raise errors caught by the controller.
-class InviteController; def rescue_action(e) raise e end; end
+require 'test_helper'
+require_relative '../../../../app/controllers/public/invite_controller'
 
 class InviteControllerTest < ActionController::TestCase
 
   def setup
     @controller = InviteController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+
     environment = Environment.default
     environment.enabled_plugins = ['StoaPlugin']
     environment.save!

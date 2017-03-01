@@ -1,0 +1,6710 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.3~rc2-8-g01ea9f7\n"
+"PO-Revision-Date: 2016-08-27 19:49+0000\n"
+"Last-Translator: Izharul Haq <atoz.chevara.2013@gmail.com>\n"
+"Language-Team: Indonesian <https://hosted.weblate.org/projects/noosfero/"
+"noosfero/id/>\n"
+"Language: id\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 2.8-dev\n"
+
+msgid "(Invalid request) %s can't be saved"
+msgstr ""
+
+msgid "(Invalid request) %s not given"
+msgstr ""
+
+msgid "Something wrong happened"
+msgstr ""
+
+msgid "Unauthorized"
+msgstr ""
+
+msgid "Method Not Allowed"
+msgstr ""
+
+msgid ""
+"The article couldn't be removed due to some problem. Please contact the "
+"administrator."
+msgstr ""
+
+msgid ""
+"Your abuse report was registered. The administrators are reviewing your "
+"report."
+msgstr ""
+
+msgid ""
+"Your report couldn't be saved due to some problem. Please contact the "
+"administrator."
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Login"
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Activation token"
+msgstr ""
+
+msgid "Token is invalid"
+msgstr ""
+
+msgid "Forgot password code"
+msgstr ""
+
+msgid "Environment settings updated"
+msgstr ""
+
+msgid ""
+"Community not found. You must insert the identifier of a community from this "
+"environment"
+msgstr ""
+
+msgid "Saved the portal folders"
+msgstr ""
+
+msgid "Saved the number of news on folders"
+msgstr ""
+
+msgid "Category %s saved."
+msgstr ""
+
+msgid "Could not save category."
+msgstr ""
+
+msgid "Roles successfuly updated"
+msgstr ""
+
+msgid "Couldn't change the roles"
+msgstr ""
+
+msgid "Member succefully unassociated"
+msgstr ""
+
+msgid "Failed to unassociate member"
+msgstr ""
+
+msgid "Features updated successfully."
+msgstr ""
+
+msgid "Person fields updated successfully."
+msgstr ""
+
+msgid "Person fields not updated successfully."
+msgstr ""
+
+msgid "Enterprise fields updated successfully."
+msgstr ""
+
+msgid "Enterprise fields not updated successfully."
+msgstr ""
+
+msgid "Community fields updated successfully."
+msgstr ""
+
+msgid "Community fields not updated successfully."
+msgstr ""
+
+msgid "License created"
+msgstr ""
+
+msgid "License could not be created"
+msgstr ""
+
+msgid "License updated"
+msgstr ""
+
+msgid "License could not be updated"
+msgstr ""
+
+msgid "License removed"
+msgstr ""
+
+msgid "License could not be removed"
+msgstr ""
+
+msgid "Organization profiles"
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "Community"
+msgstr ""
+
+msgid "Enterprise"
+msgstr ""
+
+msgid "%s enabled"
+msgstr ""
+
+msgid "%s could not be enabled"
+msgstr ""
+
+msgid "%s disabled"
+msgstr ""
+
+msgid "%s could not be disable"
+msgstr ""
+
+msgid "%s removed"
+msgstr ""
+
+msgid "%s could not be removed"
+msgstr ""
+
+msgid "Plugins updated successfully."
+msgstr ""
+
+msgid "Plugins were not updated successfully."
+msgstr ""
+
+msgid "Failed to create role"
+msgstr ""
+
+msgid "Failed to edit role"
+msgstr ""
+
+msgid "New template created"
+msgstr ""
+
+msgid "Name has already been taken"
+msgstr ""
+
+msgid "Community not found. The template could no be changed."
+msgstr ""
+
+msgid "%s defined as default"
+msgstr ""
+
+msgid "Person not found. The template could no be changed."
+msgstr ""
+
+msgid "Enterprise not found. The template could no be changed."
+msgstr ""
+
+msgid "New trusted site added."
+msgstr ""
+
+msgid "Failed to add trusted site."
+msgstr ""
+
+msgid "Trusted site was not found"
+msgstr ""
+
+msgid "Failed to edit trusted site."
+msgstr ""
+
+msgid "Trusted site removed"
+msgstr ""
+
+msgid "Trusted site could not be removed"
+msgstr ""
+
+msgid "The profile was deleted."
+msgstr ""
+
+msgid "Could not remove profile"
+msgstr ""
+
+msgid "The e-mails are being sent"
+msgstr ""
+
+msgid "Could not create the e-mail"
+msgstr ""
+
+msgid "Origin not in allowed."
+msgstr ""
+
+msgid "Failed to remove block"
+msgstr ""
+
+msgid "Access denied"
+msgstr ""
+
+msgid "The circle could not be saved"
+msgstr ""
+
+msgid "Homepage reseted."
+msgstr ""
+
+msgid "\"%s\" configured as homepage."
+msgstr ""
+
+msgid "File(s) successfully uploaded"
+msgstr ""
+
+msgid "\"%s\" was removed."
+msgstr ""
+
+msgid "You published this content successfully"
+msgstr ""
+
+msgid "Select some group to publish your article"
+msgstr ""
+
+msgid "Your publish request was sent successfully"
+msgstr ""
+
+msgid "Some of your publish requests couldn't be sent."
+msgstr ""
+
+msgid "Your publish request couldn't be sent."
+msgstr ""
+
+msgid "There is no portal community to publish your article."
+msgstr ""
+
+msgid "Please type the words correctly"
+msgstr ""
+
+msgid "Thanks for your suggestion. The community administrators were notified."
+msgstr ""
+
+msgid "%s could not be uploaded"
+msgstr ""
+
+msgid "Images"
+msgstr ""
+
+msgid "Files"
+msgstr ""
+
+msgid "Email template was successfully created."
+msgstr ""
+
+msgid "Email template was successfully updated."
+msgstr ""
+
+msgid "All profiles"
+msgstr ""
+
+msgid "Circles of %s updated successfully"
+msgstr ""
+
+msgid "Error: No profile to follow."
+msgstr ""
+
+msgid ""
+"Please fill your personal information below in order to get your mailbox "
+"approved by one of the administrators"
+msgstr ""
+
+msgid "e-Mail was not enabled successfully."
+msgstr ""
+
+msgid "e-Mail disabled successfully."
+msgstr ""
+
+msgid "e-Mail was not disabled successfully."
+msgstr ""
+
+msgid "Address was updated successfully!"
+msgstr ""
+
+msgid ""
+"Your new community creation request will be evaluated by an administrator. "
+"You will be notified."
+msgstr ""
+
+msgid "%s was not enabled."
+msgstr ""
+
+msgid "%s was not disabled."
+msgstr ""
+
+msgid "Could not delete profile"
+msgstr ""
+
+msgid "Welcome page saved successfully."
+msgstr ""
+
+msgid "Welcome page could not be saved."
+msgstr ""
+
+msgid "The profile '%s' was deactivated."
+msgstr ""
+
+msgid "Could not deactivate profile."
+msgstr ""
+
+msgid "The profile '%s' was activated."
+msgstr ""
+
+msgid "Could not activate the profile."
+msgstr ""
+
+msgid "You can not destroy the profile."
+msgstr ""
+
+msgid "Select at least one member."
+msgstr ""
+
+msgid "Member succesfully unassociated"
+msgstr ""
+
+msgid "Current admins"
+msgstr ""
+
+msgid "The members list couldn't be updated. Please contact the administrator."
+msgstr ""
+
+msgid "The members list was updated."
+msgstr ""
+
+msgid "Role successfuly removed!"
+msgstr ""
+
+msgid "Failed to remove role!"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Task already assigned!"
+msgstr ""
+
+msgid "Task responsible successfully updated!"
+msgstr ""
+
+msgid "All decisions were applied successfully."
+msgstr ""
+
+msgid "Some decisions couldn't be applied."
+msgstr ""
+
+msgid "This action is not available for \"%s\"."
+msgstr ""
+
+msgid "Your account has been activated, now you can log in!"
+msgstr ""
+
+msgid "Thanks for registering. The administrators were notified."
+msgstr ""
+
+msgid ""
+"It looks like you're trying to activate an account. Perhaps have already "
+"activated this account?"
+msgstr ""
+
+msgid "Logged in successfully"
+msgstr ""
+
+msgid "Incorrect username or password"
+msgstr ""
+
+msgid "This environment doesn't allow user registration."
+msgstr ""
+
+msgid "Captcha (the human test)"
+msgstr ""
+
+msgid "Thanks for registering!"
+msgstr ""
+
+msgid "You have been logged out."
+msgstr ""
+
+msgid "Your password has been changed successfully!"
+msgstr ""
+
+msgid "This environment doesn't allow password recovery."
+msgstr ""
+
+msgid "Please type the captcha text correctly"
+msgstr ""
+
+msgid "Can not recover user password with blank value."
+msgstr ""
+
+msgid "Could not find any user with %s equal to \"%s\"."
+msgstr ""
+
+msgid "Could not perform password recovery for the user."
+msgstr ""
+
+msgid "This login name is available"
+msgstr ""
+
+msgid "This login name is unavailable"
+msgstr ""
+
+msgid "This field can't be blank"
+msgstr ""
+
+msgid "This e-mail address is available"
+msgstr ""
+
+msgid "This e-mail address is taken"
+msgstr ""
+
+msgid "Page not found."
+msgstr ""
+
+msgid "Comment not allowed in this article"
+msgstr ""
+
+msgid "Comment was rejected"
+msgstr ""
+
+msgid "Your comment is waiting for approval."
+msgstr ""
+
+msgid "Comment successfully created."
+msgstr ""
+
+msgid "The comment was not removed."
+msgstr ""
+
+msgid "You couldn't mark this comment as spam."
+msgstr ""
+
+msgid "Contact successfully sent"
+msgstr ""
+
+msgid "Contact not sent"
+msgstr ""
+
+msgid "Notification of new comments to '%s' was successfully canceled"
+msgstr ""
+
+msgid "Your invitations are being sent."
+msgstr ""
+
+msgid "Please enter a valid email address."
+msgstr ""
+
+msgid "Please enter a valid profile."
+msgstr ""
+
+msgid "%s's contents tagged with \"%s\""
+msgstr ""
+
+msgid "%s administrator still needs to accept you as member."
+msgstr ""
+
+msgid "You just became a member of %s."
+msgstr ""
+
+msgid "You are already a member of %s."
+msgstr ""
+
+msgid "You are not a member of %s."
+msgstr ""
+
+msgid "%s still needs to accept being your friend."
+msgstr ""
+
+msgid "You are already a friend of %s."
+msgstr ""
+
+msgid "You are already following %s."
+msgstr ""
+
+msgid "You are now following %s"
+msgstr ""
+
+msgid "Select at least one circle to follow %s."
+msgstr ""
+
+msgid "You have unblocked %s successfully. "
+msgstr ""
+
+msgid "You are not allowed to unblock enterprises in this environment."
+msgstr ""
+
+msgid "Message successfully sent."
+msgstr ""
+
+msgid "You can't leave an empty message."
+msgstr ""
+
+msgid "Comment successfully added."
+msgstr ""
+
+msgid "You can't leave an empty comment."
+msgstr ""
+
+msgid "Notification successfully removed."
+msgstr ""
+
+msgid "You could not remove this notification."
+msgstr ""
+
+msgid "You could not answer the captcha."
+msgstr ""
+
+msgid "People"
+msgstr ""
+
+msgid "Enterprises"
+msgstr ""
+
+msgid "Upcoming events"
+msgstr ""
+
+msgid "Communities"
+msgstr ""
+
+msgid "Contents"
+msgstr ""
+
+msgid "Events"
+msgstr ""
+
+msgid ""
+"This profile is inaccessible. You don't have the permission to view the "
+"content here."
+msgstr ""
+
+msgid "Oops ... you cannot go ahead here"
+msgstr ""
+
+msgid "Checking availability of login name..."
+msgstr ""
+
+msgid "Checking if e-mail address is already taken..."
+msgstr ""
+
+msgid "published an article: %{title}"
+msgstr ""
+
+msgid "has made 1 new friend:<br />%{name}"
+msgid_plural "has made %{num} new friends:<br />%{name}"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "has 1 new follower:<br />%{name}"
+msgid_plural "has %{num} new followers:<br />%{name}"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "has joined 1 community:<br />%{name}"
+msgid_plural "has joined %{num} communities:<br />%{name}"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "has joined the community."
+msgstr ""
+
+msgid "uploaded 1 image"
+msgid_plural "uploaded %d images"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "sent a message to %{receiver}: <br /> \"%{message}\""
+msgstr ""
+
+msgid "wrote: <br /> \"%{text}\""
+msgstr ""
+
+msgid "favorited enterprise %{title}"
+msgstr ""
+
+msgid "Help"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "This is %s, version %s"
+msgstr ""
+
+msgid "Categories"
+msgstr ""
+
+msgid "Search..."
+msgstr ""
+
+msgid "This is a search box. Click, write your query, and press enter to find"
+msgstr ""
+
+msgid "Click, write and press enter to find"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Public"
+msgstr ""
+
+msgid "Folder"
+msgstr ""
+
+msgid "Blog"
+msgstr ""
+
+msgid "Event"
+msgstr ""
+
+msgid "Forum"
+msgstr ""
+
+msgid "Article"
+msgstr ""
+
+msgid "Clone %s"
+msgstr ""
+
+msgid "Online Manual"
+msgstr ""
+
+msgid "Chat"
+msgstr ""
+
+msgid "Read more"
+msgstr ""
+
+msgid "contents|More recent"
+msgstr ""
+
+msgid "contents|More viewed"
+msgstr ""
+
+msgid "contents|Most commented"
+msgstr ""
+
+msgid "New content"
+msgstr ""
+
+msgid "Contents menu"
+msgstr ""
+
+msgid "people|More recent"
+msgstr ""
+
+msgid "people|More active"
+msgstr ""
+
+msgid "people|More popular"
+msgstr ""
+
+msgid "My friends"
+msgstr ""
+
+msgid "Invite friends"
+msgstr ""
+
+msgid "People menu"
+msgstr ""
+
+msgid "communities|More recent"
+msgstr ""
+
+msgid "communities|More active"
+msgstr ""
+
+msgid "communities|More popular"
+msgstr ""
+
+msgid "My communities"
+msgstr ""
+
+msgid "New community"
+msgstr ""
+
+msgid "Communities menu"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "See all"
+msgstr ""
+
+msgid "<span>Manage</span> %s"
+msgstr ""
+
+msgid "Manage %s"
+msgstr ""
+
+msgid "My enterprises"
+msgstr ""
+
+msgid "Administration"
+msgstr ""
+
+msgid "Configure the environment"
+msgstr ""
+
+msgid "Manage your pending tasks"
+msgstr ""
+
+msgid "Go to your homepage"
+msgstr ""
+
+msgid "<span class='welcome'>Welcome,</span> %s"
+msgstr ""
+
+msgid "Control panel"
+msgstr ""
+
+msgid "Configure your personal account and content"
+msgstr ""
+
+msgid "Logout"
+msgstr ""
+
+msgid "Leave the system"
+msgstr ""
+
+msgid "<span class='login'>%s</span>"
+msgstr "<span class='login'>%s</span>"
+
+msgid "Sign up"
+msgstr ""
+
+msgid "<span class='or'>or</span> <span class='signup'>%s</span>"
+msgstr ""
+
+msgid " characters left"
+msgstr ""
+
+msgid "Limit of characters reached"
+msgstr ""
+
+msgid "Source: %s"
+msgstr ""
+
+msgid "in %s"
+msgstr ""
+
+msgid "Report abuse"
+msgstr ""
+
+msgid "You already reported this profile."
+msgstr ""
+
+msgid "Report this profile for abusive behaviour"
+msgstr ""
+
+msgid ""
+"Are you sure that you want to remove the folder \"%s\"? Note that all the "
+"items inside it will also be removed!"
+msgstr ""
+
+msgid "Are you sure that you want to remove the item \"%s\"?"
+msgstr ""
+
+msgid "Profile organization"
+msgstr ""
+
+msgid ""
+"Your profile will be created according to the selected template. Click on "
+"the options to view them."
+msgstr ""
+
+msgid "Errors while saving"
+msgstr ""
+
+msgid "The content here is available to %s's friends only."
+msgstr ""
+
+msgid "The contents in this profile is available to members only."
+msgstr ""
+
+msgid "See all connections"
+msgstr ""
+
+msgid "Full screen"
+msgstr ""
+
+msgid "Go to full screen mode"
+msgstr ""
+
+msgid "Exit full screen"
+msgstr ""
+
+msgid "Exit full screen mode"
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
+msgid "Do not allow new content on this article and its children"
+msgstr ""
+
+msgid "Allow all members to edit this article"
+msgstr ""
+
+msgid "This topic is opened for replies"
+msgstr ""
+
+msgid "I want to receive comments about this article"
+msgstr ""
+
+msgid "I want to receive a notification of each comment written by e-mail"
+msgstr ""
+
+msgid "I want to approve comments on this article"
+msgstr ""
+
+msgid "I want this article to display the number of hits it received"
+msgstr ""
+
+msgid "I want this article to display a link to older versions"
+msgstr ""
+
+msgid "Visibility"
+msgstr ""
+
+msgid "Visible to other people"
+msgstr ""
+
+msgid "Private"
+msgstr ""
+
+msgid "Limit visibility of this article"
+msgstr ""
+
+msgid "Topic creation"
+msgstr ""
+
+msgid "Who will be able to create new topics on this forum?"
+msgstr ""
+
+msgid "Allow all community members to view this content"
+msgstr ""
+
+msgid "Allow all your friends to view this content"
+msgstr ""
+
+msgid "Allow only community members entered below to view this content"
+msgstr ""
+
+msgid "Type in a name of a community member"
+msgstr ""
+
+msgid "New article"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Attend"
+msgstr ""
+
+msgid "Follow"
+msgstr ""
+
+msgid "Unattend"
+msgstr ""
+
+msgid "Unfollow"
+msgstr ""
+
+msgid "Articles"
+msgstr ""
+
+msgid "Products"
+msgstr ""
+
+msgid "Visualization of posts"
+msgstr ""
+
+msgid "I want to display the preview of posts before the text"
+msgstr ""
+
+msgid "New post"
+msgstr ""
+
+msgid "Configure blog"
+msgstr ""
+
+msgid "Main content"
+msgstr ""
+
+msgid "This block is invisible. Your visitors will not see it."
+msgstr ""
+
+msgid "Drop Here"
+msgstr ""
+
+msgid "Can't move up anymore."
+msgstr ""
+
+msgid "Move block up"
+msgstr ""
+
+msgid "Can't move down anymore."
+msgstr ""
+
+msgid "Move block down"
+msgstr ""
+
+msgid "Move to the opposite side"
+msgstr ""
+
+msgid "Remove block"
+msgstr ""
+
+msgid "Are you sure you want to remove this block?"
+msgstr ""
+
+msgid "Clone"
+msgstr ""
+
+msgid "Help on this block"
+msgstr ""
+
+msgid "Embed block code"
+msgstr ""
+
+msgid ""
+"Below, youll see a field containing embed code for the block. Just copy the "
+"code and paste it into your website or blogging software."
+msgstr ""
+
+msgid "Embed code"
+msgstr ""
+
+msgid "General Category"
+msgstr ""
+
+msgid "Region"
+msgstr "Wilayah"
+
+msgid "Type of category"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Online"
+msgstr ""
+
+msgid "Busy"
+msgstr ""
+
+msgid "Sign out of chat"
+msgstr ""
+
+msgid "New %s"
+msgstr ""
+
+msgid "Spread this"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid ", by %s"
+msgstr ""
+
+msgid "Mark as NOT SPAM"
+msgstr ""
+
+msgid "Mark as SPAM"
+msgstr ""
+
+msgid "Are you sure you want to mark this comment as SPAM?"
+msgstr ""
+
+msgid "Are you sure you want to remove this comment and all its replies?"
+msgstr ""
+
+msgid "no comments yet"
+msgstr ""
+
+msgid "One comment"
+msgstr ""
+
+msgid "%s comments"
+msgstr ""
+
+msgid "Translations"
+msgstr ""
+
+msgid "String"
+msgstr ""
+
+msgid "Text"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "Numeric"
+msgstr ""
+
+msgid "Link"
+msgstr ""
+
+msgid "List"
+msgstr ""
+
+msgid "Checkbox"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "%{month}/%{day}/%{year}"
+msgstr ""
+
+msgid "%{month}/%{day}"
+msgstr ""
+
+msgid "%{month_name} %{day}, %{year}"
+msgstr ""
+
+msgid "%{month_name} %{day}"
+msgstr ""
+
+msgid "%{month}/%{year}"
+msgstr ""
+
+msgid "%{month_name}, %{year}"
+msgstr ""
+
+msgid "%{month_name}"
+msgstr ""
+
+msgid "%{month}/%{day}/%{year}, %{hour}:%{minutes}"
+msgstr ""
+
+msgid "%{month_name} %{day}, %{year} %{hour}:%{minutes}"
+msgstr ""
+
+msgid "%{month_name} %{day} %{hour}:%{minutes}"
+msgstr ""
+
+msgid "from %{month} %{day1} to %{day2}, %{year}"
+msgstr ""
+
+msgid "from %{date1} to %{date2}, %{year}"
+msgstr ""
+
+msgid "from %{date1} to %{date2}"
+msgstr ""
+
+msgid "Sun"
+msgstr ""
+
+msgid "Mon"
+msgstr ""
+
+msgid "Tue"
+msgstr ""
+
+msgid "Wed"
+msgstr ""
+
+msgid "Thu"
+msgstr ""
+
+msgid "Fri"
+msgstr ""
+
+msgid "Sat"
+msgstr ""
+
+msgid "%{month}"
+msgstr ""
+
+msgid "%{month} %{year}"
+msgstr ""
+
+msgid "Are you sure you want to visit this web site?"
+msgstr ""
+
+msgid "Approved"
+msgstr ""
+
+msgid "Rejected"
+msgstr ""
+
+msgid "Events for %s"
+msgstr ""
+
+msgid "No events for this month"
+msgstr ""
+
+msgid " to "
+msgstr ""
+
+msgid "Place: "
+msgstr ""
+
+msgid "Administrator must approve all new organizations"
+msgstr ""
+
+msgid "Administrator assigns validator organizations per region."
+msgstr ""
+
+msgid "All new organizations are approve by default"
+msgstr ""
+
+msgid "(empty folder)"
+msgstr ""
+
+msgid "Edit folder"
+msgstr ""
+
+msgid "Username"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Select the State"
+msgstr ""
+
+msgid "Select the City"
+msgstr ""
+
+msgid "State:"
+msgstr ""
+
+msgid "City:"
+msgstr ""
+
+msgid ""
+"The <label class='pseudoformlabel'>highlighted</label> fields are mandatory."
+msgstr ""
+
+msgid "Done"
+msgstr ""
+
+msgid "Today"
+msgstr ""
+
+msgid "Sunday"
+msgstr ""
+
+msgid "Monday"
+msgstr ""
+
+msgid "Tuesday"
+msgstr ""
+
+msgid "Wednesday"
+msgstr ""
+
+msgid "Thursday"
+msgstr ""
+
+msgid "Friday"
+msgstr ""
+
+msgid "Saturday"
+msgstr ""
+
+msgid "Su"
+msgstr ""
+
+msgid "Mo"
+msgstr ""
+
+msgid "Tu"
+msgstr ""
+
+msgid "We"
+msgstr ""
+
+msgid "Th"
+msgstr ""
+
+msgid "Fr"
+msgstr ""
+
+msgid "Sa"
+msgstr ""
+
+msgid "January"
+msgstr ""
+
+msgid "February"
+msgstr ""
+
+msgid "March"
+msgstr ""
+
+msgid "April"
+msgstr ""
+
+msgid "May"
+msgstr ""
+
+msgid "June"
+msgstr ""
+
+msgid "July"
+msgstr ""
+
+msgid "August"
+msgstr ""
+
+msgid "September"
+msgstr ""
+
+msgid "October"
+msgstr ""
+
+msgid "November"
+msgstr ""
+
+msgid "December"
+msgstr ""
+
+msgid "Jan"
+msgstr ""
+
+msgid "Feb"
+msgstr ""
+
+msgid "Mar"
+msgstr ""
+
+msgid "Apr"
+msgstr ""
+
+msgid "Jun"
+msgstr ""
+
+msgid "Jul"
+msgstr ""
+
+msgid "Aug"
+msgstr ""
+
+msgid "Sep"
+msgstr ""
+
+msgid "Oct"
+msgstr ""
+
+msgid "Nov"
+msgstr ""
+
+msgid "Dec"
+msgstr ""
+
+msgid "Prev"
+msgstr ""
+
+msgid "Wk"
+msgstr ""
+
+msgid "From"
+msgstr ""
+
+msgid "until"
+msgstr ""
+
+msgid "root"
+msgstr ""
+
+msgid "New discussion topic"
+msgstr ""
+
+msgid "Configure forum"
+msgstr ""
+
+msgid "Discussion topic"
+msgstr ""
+
+msgid "Posts"
+msgstr ""
+
+msgid "Last post"
+msgstr ""
+
+msgid "by"
+msgstr ""
+
+msgid "Allow images from this gallery to be downloaded"
+msgstr ""
+
+msgid ""
+"The language you choose here is the language used for options, buttons, etc. "
+"It does not affect the language of the content created by other users."
+msgstr ""
+
+msgid "Join this community"
+msgstr ""
+
+msgid "Agrometeorology"
+msgstr ""
+
+msgid "Agronomy"
+msgstr ""
+
+msgid "Foods"
+msgstr ""
+
+msgid "Anthropology"
+msgstr ""
+
+msgid "Architecture"
+msgstr ""
+
+msgid "Arts"
+msgstr ""
+
+msgid "Astronomy"
+msgstr ""
+
+msgid "Librarianship"
+msgstr ""
+
+msgid "Biosciences"
+msgstr ""
+
+msgid "Biophysics"
+msgstr ""
+
+msgid "Biology"
+msgstr ""
+
+msgid "Biotechnology"
+msgstr ""
+
+msgid "Botany"
+msgstr ""
+
+msgid "Science Politics"
+msgstr ""
+
+msgid "Accounting and Actuarial Science"
+msgstr ""
+
+msgid "Morphologic Sciences"
+msgstr ""
+
+msgid "Computer Science"
+msgstr ""
+
+msgid "Rural Development"
+msgstr ""
+
+msgid "Law"
+msgstr ""
+
+msgid "Ecology"
+msgstr ""
+
+msgid "Economy"
+msgstr ""
+
+msgid "Education"
+msgstr ""
+
+msgid "Long-distance Education"
+msgstr ""
+
+msgid "Physical Education"
+msgstr ""
+
+msgid "Professional Education"
+msgstr ""
+
+msgid "Nursing"
+msgstr ""
+
+msgid "Engineerings"
+msgstr ""
+
+msgid "Basic and Average education"
+msgstr ""
+
+msgid "Statistics"
+msgstr ""
+
+msgid "Stratigraphy"
+msgstr ""
+
+msgid "Pharmacy"
+msgstr ""
+
+msgid "Pharmacology"
+msgstr ""
+
+msgid "Philosophy"
+msgstr ""
+
+msgid "Physics"
+msgstr ""
+
+msgid "Plant Protection"
+msgstr ""
+
+msgid "Genetics"
+msgstr ""
+
+msgid "Geosciences"
+msgstr ""
+
+msgid "Geography"
+msgstr ""
+
+msgid "Geology"
+msgstr ""
+
+msgid "Hydrology"
+msgstr ""
+
+msgid "Hydromechanics"
+msgstr ""
+
+msgid "History"
+msgstr ""
+
+msgid "Horticulture"
+msgstr ""
+
+msgid "Informatics"
+msgstr ""
+
+msgid "Interdisciplinary"
+msgstr ""
+
+msgid "Journalism"
+msgstr ""
+
+msgid "Letters"
+msgstr ""
+
+msgid "Languages"
+msgstr ""
+
+msgid "Mathematics"
+msgstr ""
+
+msgid "Medicines"
+msgstr ""
+
+msgid "Medicine"
+msgstr ""
+
+msgid "Metallurgy"
+msgstr ""
+
+msgid "Microbiology"
+msgstr ""
+
+msgid "Mineralogy"
+msgstr ""
+
+msgid "Music"
+msgstr ""
+
+msgid "Nutrition"
+msgstr ""
+
+msgid "Odontology"
+msgstr ""
+
+msgid "Paleontology"
+msgstr ""
+
+msgid "Petrology"
+msgstr ""
+
+msgid "Production"
+msgstr ""
+
+msgid "Psychology"
+msgstr ""
+
+msgid "Psychiatry"
+msgstr ""
+
+msgid "Quality"
+msgstr ""
+
+msgid "Chemistry"
+msgstr ""
+
+msgid "Health"
+msgstr ""
+
+msgid "Remote Sensing"
+msgstr ""
+
+msgid "Forestry"
+msgstr ""
+
+msgid "Sociology"
+msgstr ""
+
+msgid "Ground"
+msgstr ""
+
+msgid "Theater"
+msgstr ""
+
+msgid "Transport"
+msgstr ""
+
+msgid "Urbanism"
+msgstr ""
+
+msgid "Veterinary Medicine"
+msgstr ""
+
+msgid "Zoology"
+msgstr ""
+
+msgid "Zootecnia"
+msgstr ""
+
+msgid "Others"
+msgstr ""
+
+msgid "Post-Doctoral"
+msgstr ""
+
+msgid "Ph.D."
+msgstr ""
+
+msgid "Masters"
+msgstr ""
+
+msgid "Undergraduate"
+msgstr ""
+
+msgid "Graduate"
+msgstr ""
+
+msgid "High School"
+msgstr ""
+
+msgid "Elementary School"
+msgstr ""
+
+msgid "Concluded"
+msgstr ""
+
+msgid "Incomplete"
+msgstr ""
+
+msgid "Ongoing"
+msgstr ""
+
+msgid "[Select ...]"
+msgstr ""
+
+msgid "Select domain"
+msgstr ""
+
+msgid "Preferred domain name:"
+msgstr ""
+
+msgid "This field must be public"
+msgstr ""
+
+msgid "ZIP code"
+msgstr ""
+
+msgid "e-Mail"
+msgstr ""
+
+msgid "Jabber"
+msgstr ""
+
+msgid "Date of birth"
+msgstr ""
+
+msgid "Profile created at"
+msgstr ""
+
+msgid "Members"
+msgstr ""
+
+msgid "Privacy setting"
+msgstr ""
+
+msgid "Tags"
+msgstr ""
+
+msgid "Following"
+msgstr ""
+
+msgid "Male"
+msgstr ""
+
+msgid "Female"
+msgstr ""
+
+msgid "Products/Services"
+msgstr ""
+
+msgid "One post"
+msgid_plural "%{num} posts"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "One picture"
+msgid_plural "%{num} pictures"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "non registered gender"
+msgstr ""
+
+msgid "Wall"
+msgstr ""
+
+msgid "Friends"
+msgstr ""
+
+msgid "Send an e-mail"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Agenda"
+msgstr ""
+
+msgid "Join"
+msgstr ""
+
+msgid "Leave community"
+msgstr ""
+
+msgid "Profile links"
+msgstr ""
+
+msgid "Click on this icon to go to the <b>%s</b>'s home page"
+msgstr ""
+
+msgid "More popular"
+msgstr ""
+
+msgid "More active"
+msgstr ""
+
+msgid "More recent"
+msgstr ""
+
+msgid "More comments"
+msgstr ""
+
+msgid "Map"
+msgstr ""
+
+msgid "Full"
+msgstr ""
+
+msgid "Compact"
+msgstr ""
+
+msgid ", "
+msgstr ""
+
+msgid "search in all categories"
+msgstr ""
+
+msgid "Display"
+msgstr ""
+
+msgid "Choose a template"
+msgstr ""
+
+msgid "No tags yet."
+msgstr ""
+
+msgid "What are tags?"
+msgstr ""
+
+msgid "http://en.wikipedia.org/wiki/Tag_%28metadata%29"
+msgstr ""
+
+msgid "one item"
+msgid_plural "%d items"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Type in an keyword"
+msgstr ""
+
+msgid "No results"
+msgstr ""
+
+msgid "Searching..."
+msgstr ""
+
+msgid "Type in a search term"
+msgstr ""
+
+msgid "All users"
+msgstr ""
+
+msgid "Admin users"
+msgstr ""
+
+msgid "Activated users"
+msgstr ""
+
+msgid "Deativated users"
+msgstr ""
+
+msgid "Filter"
+msgstr ""
+
+msgid "[%s] you got a new comment!"
+msgstr ""
+
+msgid "[%s] %s commented on a content of %s"
+msgstr ""
+
+msgid "Subject"
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "City and state"
+msgstr ""
+
+msgid "Name"
+msgstr "Nama"
+
+msgid "Sent by %s."
+msgstr ""
+
+msgid "Sent by Noosfero."
+msgstr ""
+
+msgid "Sent by community %s."
+msgstr ""
+
+msgid "[%s] Pending tasks"
+msgstr ""
+
+msgid "[%s] You received a scrap!"
+msgstr ""
+
+msgid "[%{environment}] Welcome to %{environment} mail!"
+msgstr ""
+
+msgid "[%s] Activate your account"
+msgstr ""
+
+msgid "Welcome to environment %s"
+msgstr ""
+
+msgid "[%s] What about grow up your network?"
+msgstr ""
+
+msgid "Abuse complaint (%s)"
+msgstr ""
+
+msgid "Abuse complaint"
+msgstr ""
+
+msgid "%{linked_subject} was reported due to inappropriate behavior."
+msgstr ""
+
+msgid ""
+"Your profile was reported by the users of %s due to inappropriate behavior. "
+"The administrators of the environment are now reviewing the report. To solve "
+"this misunderstanding, please contact the administrators."
+msgstr ""
+
+msgid ""
+"Your profile was disabled by the administrators of %s due to inappropriate "
+"behavior. To solve this misunderstanding please contact them."
+msgstr ""
+
+msgid "%s was reported due to inappropriate behavior."
+msgstr ""
+
+msgid ""
+"The users of %{environment} reported %{reported} due to inappropriate "
+"behavior. A task was created with all the reports including the reasons and "
+"contents reported by these users. Please verify the reports and decide "
+"whether this profile must be disabled or not."
+msgstr ""
+
+msgid "%{requestor} wants to be your friend."
+msgstr "%{requestor} ingin menjadi teman anda."
+
+msgid ""
+"You need to login to %{system} in order to accept %{requestor} as your "
+"friend."
+msgstr ""
+
+msgid "New friend"
+msgstr ""
+
+msgid "memberships"
+msgstr ""
+
+msgid "New member"
+msgstr ""
+
+msgid "%{requestor} wants to be a member of '%{target}'."
+msgstr ""
+
+msgid ""
+"%{requestor}%{requestor_email} wants to be a member of '%{organization}'."
+msgstr ""
+
+msgid ""
+"You will need login to %{system} in order to accept or reject %{requestor} "
+"as a member of %{organization}."
+msgstr ""
+
+msgid ""
+"You have been accepted at \"%{target}\" with the profile \"%{requestor}\""
+msgstr ""
+
+msgid ""
+"Your request to enter community \"%{target}\" with the profile "
+"\"%{requestor}\" was not accepted. Please contact any profile admin from "
+"%{target} for more information. The following explanation was given: \n"
+"\n"
+"\"%{explanation}\""
+msgstr ""
+
+msgid "You can not post articles to other users."
+msgstr ""
+
+msgid "(The original text was removed)"
+msgstr ""
+
+msgid "Article removed."
+msgstr "Artikel telah dihapus."
+
+msgid "%{requestor} wants to publish the article: %{linked_subject}."
+msgstr ""
+
+msgid "The article was removed."
+msgstr "Artikel telah dihapus."
+
+msgid "%{requestor} wants to publish the article: %{article}."
+msgstr ""
+
+msgid "%{requestor} wanted to publish an article but it was removed."
+msgstr ""
+
+msgid ""
+"You need to login on %{system} in order to approve or reject this article."
+msgstr ""
+
+msgid ""
+"Your request for publishing the article \"%{article}\" was approved. Here is "
+"the comment left by the admin who approved your article:\n"
+"\n"
+"%{comment} "
+msgstr ""
+
+msgid "Your request for publishing the article \"%{article}\" was approved."
+msgstr ""
+
+msgid "Your request for publishing the article \"%{article}\" was rejected."
+msgstr ""
+
+msgid ""
+"Here is the reject explanation left by the administrator who rejected your "
+"article: \n"
+"\n"
+"%{reject_explanation}"
+msgstr ""
+
+msgid "Anonymous"
+msgstr "Anonim"
+
+msgid "New comment to article"
+msgstr "Komentar baru ke artikel"
+
+msgid "%{requestor} commented on the article: %{linked_subject}."
+msgstr "%{requestor} berkomentar pada artikel: %{linked_subject}."
+
+msgid "%{requestor} wants to comment the article: %{article}."
+msgstr "%{requestor} ingin berkomentar pada artikel: %{article}."
+
+msgid "%{requestor} wanted to comment the article but it was removed."
+msgstr "%{requestor} ingin berkomentar di artikel namun artikel telah dihapus."
+
+msgid ""
+"You need to login on %{system} in order to approve or reject this comment."
+msgstr ""
+"Anda perlu masuk ke %{system} untuk mengizinkan atau menolak komentar ini."
+
+msgid ""
+"Your comment to the article \"%{article}\" was approved. Here is the comment "
+"left by the admin who approved your comment:\n"
+"\n"
+"%{comment} "
+msgstr ""
+
+msgid "Your request for comment the article \"%{article}\" was approved."
+msgstr ""
+"Permintaan anda untuk berkomentar pada artikel \"%{article}\" telah "
+"diizinkan."
+
+msgid "Your request for commenting the article \"%{article}\" was rejected."
+msgstr ""
+"Permintaan anda untuk berkomentar pada artikel \"%{article}\" telah ditolak."
+
+msgid ""
+"Here is the reject explanation left by the administrator who rejected your "
+"comment: \n"
+"\n"
+"%{reject_explanation}"
+msgstr ""
+
+msgid "Abstract"
+msgstr ""
+
+msgid "Content"
+msgstr "Konten"
+
+msgid "Slug"
+msgstr ""
+
+msgid "Filename"
+msgstr ""
+
+msgid "article"
+msgstr ""
+
+msgid ""
+"The title (article name) is already being used by another article, please "
+"use another title."
+msgstr ""
+
+msgid "self-reference is not allowed."
+msgstr ""
+
+msgid "cyclical reference is not allowed."
+msgstr ""
+
+msgid "Title"
+msgstr "Judul"
+
+msgid "Tag list"
+msgstr ""
+
+msgid "HTML Text document"
+msgstr ""
+
+msgid "Language not supported by the environment."
+msgstr ""
+
+msgid "Language is already used"
+msgstr ""
+
+msgid "Language must be choosen"
+msgstr ""
+
+msgid "A language must be choosen for the native article"
+msgstr ""
+
+msgid "Unknown"
+msgstr ""
+
+msgid "no comments"
+msgstr ""
+
+msgid "one comment"
+msgstr ""
+
+msgid "no views"
+msgstr ""
+
+msgid "one view"
+msgstr ""
+
+msgid "%s views"
+msgstr ""
+
+msgid "Created at: "
+msgstr ""
+
+msgid "is archived!!"
+msgstr ""
+
+msgid "Display one of your contents."
+msgstr ""
+
+msgid "Show one article"
+msgstr ""
+
+msgid ""
+"This block displays one of your articles. You can edit the block to select "
+"which one of your articles is going to be displayed in the block."
+msgstr ""
+
+msgid "In all pages"
+msgstr ""
+
+msgid "Only in the homepage"
+msgstr ""
+
+msgid "In all pages, except in the homepage"
+msgstr ""
+
+msgid "Don't display"
+msgstr ""
+
+msgid "Logged"
+msgstr ""
+
+msgid "Not logged"
+msgstr ""
+
+msgid "Can be modified"
+msgstr ""
+
+msgid "Cannot be modified"
+msgstr ""
+
+msgid "Can be moved"
+msgstr ""
+
+msgid "Cannot be moved"
+msgstr ""
+
+msgid "A blog, inside which you can put other articles."
+msgstr ""
+
+msgid "Blog posts"
+msgstr ""
+
+msgid "Generic category"
+msgstr "Kategori umum"
+
+msgid "Product"
+msgstr "Produk"
+
+msgid "Categories Menu"
+msgstr "Menu Kategori"
+
+msgid "This block presents the categories like a web site menu."
+msgstr ""
+
+msgid "Acronym"
+msgstr "Akronim"
+
+msgid "Abbreviation"
+msgstr ""
+
+msgid "{fn} cannot be like that."
+msgstr ""
+
+msgid "{fn} is already being used by another category."
+msgstr "{fn} telah digunakan oleh ketegori lain."
+
+msgid "Password Confirmation"
+msgstr ""
+
+msgid "Change password"
+msgstr ""
+
+msgid "%{requestor} wants to change its password."
+msgstr ""
+
+msgid "Your password change request was cancelled at %s."
+msgstr ""
+
+msgid "Your password was changed successfully."
+msgstr ""
+
+msgid ""
+"In order to change your password, please visit the following address:\n"
+"\n"
+"%s\n"
+"\n"
+"If you did not required any change to your password just desconsider this "
+"email."
+msgstr ""
+
+msgid "Circle"
+msgstr ""
+
+msgid "Person"
+msgstr ""
+
+msgid "{fn} can only be informed for unauthenticated authors"
+msgstr ""
+
+msgid "(removed user)"
+msgstr "(pengguna dihapus)"
+
+msgid "(unauthenticated user)"
+msgstr ""
+
+msgid "associated with this comment is archived!"
+msgstr ""
+
+msgid ""
+"<p>Display all of your communities.</p><p>You could choose the amount of "
+"communities will be displayed and you could priorize that profiles with "
+"images.</p> <p>The view all button is always present in the block.</p>"
+msgstr ""
+
+msgid "Communities Block"
+msgstr ""
+
+msgid "{#} community"
+msgid_plural "{#} communities"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "This block displays the communities in which the user is a member."
+msgstr ""
+
+msgid "community"
+msgstr ""
+
+msgid "Language"
+msgstr ""
+
+msgid "Community Info and settings"
+msgstr ""
+
+msgid ""
+"There was an error while authenticating. Did you enter correct login and "
+"password?"
+msgstr ""
+
+msgid ""
+"There was an error while looking for your contact list. Please, try again"
+msgstr ""
+
+msgid "%{requestor} wants to create community %{subject} with no description."
+msgstr ""
+
+msgid ""
+"%{requestor} wants to create community %{subject} with this description:"
+"<p><em>%{description}</em></p>"
+msgstr ""
+
+msgid "%{requestor} wants to create community %{subject}"
+msgstr ""
+
+msgid ""
+"User \"%{user}\" just requested to create community %{community}. You have "
+"to approve or reject it through the \"Pending Validations\" section in your "
+"control panel.\n"
+msgstr ""
+
+msgid ""
+"Your request for registering community %{community} at %{environment} was "
+"just sent. Environment administrator will receive it and will approve or "
+"reject your request according to his methods and creteria.\n"
+"\n"
+"      You will be notified as soon as environment administrator has a "
+"position about your request."
+msgstr ""
+
+msgid ""
+"Your request for registering community %{community} at %{environment} was "
+"not approved by the environment administrator. The following explanation was "
+"given: \n"
+"\n"
+"%{explanation}"
+msgstr ""
+
+msgid ""
+"Your request for registering the community \"%{community}\" was approved. "
+"You can access %{environment} now and start using your new community."
+msgstr ""
+
+msgid "Identifier"
+msgstr ""
+
+msgid "Address"
+msgstr ""
+
+msgid "Contact phone"
+msgstr ""
+
+msgid "Contact person"
+msgstr ""
+
+msgid "Foundation year"
+msgstr ""
+
+msgid "Legal form"
+msgstr ""
+
+msgid "Economic activity"
+msgstr ""
+
+msgid "Management information"
+msgstr ""
+
+msgid "{fn} is not a validator for the chosen region"
+msgstr ""
+
+msgid ""
+"{fn} is already being as identifier by another enterprise, organization or "
+"person."
+msgstr ""
+
+msgid "Enterprise registration"
+msgstr "Pendaftaran Perusahaan"
+
+msgid "%{requestor} wants to create enterprise %{subject}."
+msgstr ""
+
+msgid ""
+"Your request for registering enterprise \"%{enterprise}\" at %{environment} "
+"was just received. It will be reviewed by the validator organization of your "
+"choice, according to its methods and criteria.\n"
+"\n"
+"      You will be notified as soon as the validator organization has a "
+"position about your request."
+msgstr ""
+
+msgid ""
+"Your request for registering the enterprise \"%{enterprise}\" was approved. "
+"You can access %{environment} now and provide start providing all relevant "
+"information your new enterprise."
+msgstr ""
+
+msgid ""
+"Your request for registering the enterprise %{enterprise} at %{environment} "
+"was NOT approved by the validator organization. The following explanation "
+"was given: \n"
+"\n"
+"%{explanation}"
+msgstr ""
+
+msgid ""
+"Enterprise \"%{enterprise}\" just requested to enter %{environment}. You "
+"have to approve or reject it through the \"Pending Validations\" section in "
+"your control panel.\n"
+msgstr ""
+
+msgid "The data provided by the enterprise was the following:\n"
+msgstr ""
+
+msgid "Name: %s"
+msgstr ""
+
+msgid "Acronym: %s"
+msgstr ""
+
+msgid "Address: %s"
+msgstr ""
+
+msgid "Legal form: %s"
+msgstr ""
+
+msgid "Foundation Year: %d"
+msgstr ""
+
+msgid "Economic activity: %s"
+msgstr ""
+
+msgid "Information about enterprise's management:\n"
+msgstr ""
+
+msgid "Contact phone: %s"
+msgstr ""
+
+msgid "Contact person: %s"
+msgstr ""
+
+msgid "CreateEnterprise|Identifier"
+msgstr ""
+
+msgid "There is a field with the same name for this type in this environment"
+msgstr ""
+
+msgid "New field related to existent one with same name"
+msgstr ""
+
+msgid "can't be blank"
+msgstr ""
+
+msgid "\"Disabled enterprise\" message"
+msgstr ""
+
+msgid "Shows a message for disabled enterprises."
+msgstr ""
+
+msgid ""
+"{fn} must be composed of sequences of lowercase letters (a to z), numbers (0 "
+"to 9), \"_\" and \"-\", separated by dots."
+msgstr ""
+
+msgid "{fn} must not start with www."
+msgstr ""
+
+msgid "You have already requested activation of your mailbox."
+msgstr ""
+
+msgid "Email activation"
+msgstr ""
+
+msgid "%{requestor} wants to activate the following email: %{subject}."
+msgstr ""
+
+msgid "Task Rejection"
+msgstr ""
+
+msgid "Task Acceptance"
+msgstr ""
+
+#, fuzzy
+msgid "Organization Members"
+msgstr "Anggota"
+
+msgid "User Activation"
+msgstr ""
+
+msgid "Change User Password"
+msgstr ""
+
+msgid "enterprise"
+msgstr ""
+
+msgid "Organization website"
+msgstr ""
+
+msgid "City"
+msgstr ""
+
+msgid "State"
+msgstr ""
+
+msgid "Country"
+msgstr ""
+
+msgid "Historic and current context"
+msgstr ""
+
+msgid "Activities short description"
+msgstr ""
+
+msgid "Business name"
+msgstr ""
+
+msgid "Enterprises's profile"
+msgstr ""
+
+msgid "Enterprise Info and settings"
+msgstr ""
+
+msgid "Enterprise activation"
+msgstr ""
+
+msgid "%{requestor} wants to activate enterprise %{linked_subject}."
+msgstr ""
+
+msgid "Pending activation of enterprise %{linked_subject}."
+msgstr ""
+
+msgid "%{requestor} wants to activate enterprise %{enterprise}."
+msgstr ""
+
+msgid "Pending activation of enterprise %{enterprise}."
+msgstr ""
+
+msgid "{#} enterprise"
+msgid_plural "{#} enterprises"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "This block displays the enterprises where this user works."
+msgstr ""
+
+msgid "View environment admin panel"
+msgstr "Tampilkan antar muka panel admin"
+
+msgid "Edit environment features"
+msgstr "Sunting antar muka fitur"
+
+msgid "Edit environment design"
+msgstr "Sunting antar muka desain"
+
+msgid "Manage environment categories"
+msgstr "Kelola antar muka kategori"
+
+msgid "Manage environment roles"
+msgstr ""
+
+msgid "Manage environment validators"
+msgstr ""
+
+msgid "Manage environment users"
+msgstr "Kelola lingkungan pengguna"
+
+msgid "Manage environment organizations"
+msgstr "Kelola lingkungan organisasi"
+
+msgid "Manage environment templates"
+msgstr "Kelola lingkungan tema"
+
+msgid "Manage environment licenses"
+msgstr "Kelola lingkungan lisensi"
+
+msgid "Manage environment trusted sites"
+msgstr "Kelola lingkungan web yang diizinkan"
+
+msgid "Edit appearance"
+msgstr "Sunting tampilan"
+
+msgid "Edit Raw HTML block"
+msgstr ""
+
+msgid "Manage Email Templates"
+msgstr ""
+
+msgid "Environment Administrator"
+msgstr "Lingkungan Administrator"
+
+msgid "Profile Administrator"
+msgstr "Profil Administrator"
+
+msgid "Member"
+msgstr "Anggota"
+
+msgid "Moderator"
+msgstr "Moderator"
+
+msgid "Disable search for articles "
+msgstr "Nonaktifkan pencarian untuk artikel "
+
+msgid "Disable search for enterprises"
+msgstr "Nonaktifkan pencarian untuk perusahaan"
+
+msgid "Disable search for people"
+msgstr "Nonaktifkan pencarian untuk orang"
+
+msgid "Disable search for communities"
+msgstr "Nonaktifkan pencarian untuk komunitas"
+
+msgid "Disable search for events"
+msgstr "Nonaktifkan pencarian untuk acara"
+
+msgid "Disable categories"
+msgstr "Nonaktifkan kategori"
+
+msgid "Disable header/footer editing by users"
+msgstr "Nonaktifkan penyuntingan header/footer oleh pengguna"
+
+msgid "Disable gender icon"
+msgstr "Nonaktifkan ikon jenis kelamin"
+
+msgid "Disable the categories menu"
+msgstr "Nonaktifkan menu kategori"
+
+msgid "Disable state/city select for contact form"
+msgstr "Nonaktifkan pilihan provinsi/kota untuk form kontak"
+
+msgid "Disable contact for people"
+msgstr "Nonaktifkan kontak untuk orang"
+
+msgid "Disable contact for groups/communities"
+msgstr "Nonaktifkan kontak untuk kelompok/komunitas"
+
+msgid "Forbid users of removing profiles"
+msgstr ""
+
+msgid "Enable activation of enterprises"
+msgstr "Aktifkan aktifasi perusahaan"
+
+msgid "Enterprises are disabled when created"
+msgstr ""
+
+msgid "Enterprises are validated when created"
+msgstr ""
+
+msgid "Media panel in WYSIWYG editor"
+msgstr "Panel media di editor WYSIWYG"
+
+msgid "Select preferred domains per profile"
+msgstr ""
+
+msgid "Use the portal as news source for front page"
+msgstr ""
+
+msgid "Allow users to create their own themes"
+msgstr ""
+
+msgid "Display search form in home page"
+msgstr ""
+
+msgid "Don't allow users to change which article to use as homepage"
+msgstr ""
+
+msgid "Display explanation about header and footer"
+msgstr ""
+
+msgid "Articles don't accept comments by default"
+msgstr ""
+
+msgid "Organizations have moderated publication by default"
+msgstr ""
+
+msgid "Allow organizations to change their URL"
+msgstr ""
+
+msgid "Admin must approve creation of communities"
+msgstr ""
+
+msgid "Admin must approve registration of new users"
+msgstr ""
+
+msgid "Show a balloon with profile links when a profile image is clicked"
+msgstr ""
+
+msgid "XMPP/Jabber based chat"
+msgstr ""
+
+msgid "Show a zoom link on all article images"
+msgstr ""
+
+msgid "Ask captcha when a logged user comments too"
+msgstr ""
+
+msgid "Skip e-mail confirmation for new users"
+msgstr ""
+
+msgid "Send welcome e-mail to new users"
+msgstr ""
+
+msgid "Allow users to set the page to redirect after login"
+msgstr ""
+
+msgid "Display on menu the list of communities the user can manage"
+msgstr ""
+
+msgid "Display on menu the list of enterprises the user can manage"
+msgstr ""
+
+msgid "Show content only to members"
+msgstr ""
+
+msgid "Enable appearance editing by users"
+msgstr ""
+
+msgid "Stays on the same page the user was before login."
+msgstr ""
+
+msgid "Redirects the user to the environment homepage."
+msgstr ""
+
+msgid "Redirects the user to his profile page."
+msgstr ""
+
+msgid "Redirects the user to his homepage."
+msgstr ""
+
+msgid "Redirects the user to his control panel."
+msgstr ""
+
+msgid "Specify the URL to redirect to:"
+msgstr ""
+
+msgid "Stays on the same page the user was before signup."
+msgstr ""
+
+msgid "Redirects the user to the environment welcome page."
+msgstr ""
+
+msgid "This enterprise needs to be enabled."
+msgstr ""
+
+msgid "Only one Virtual Community can be the default one"
+msgstr ""
+
+msgid "is not available."
+msgstr ""
+
+msgid "have unsupported languages."
+msgstr ""
+
+msgid "{fn} cannot come before end date."
+msgstr ""
+
+msgid "A calendar event."
+msgstr ""
+
+msgid "Displays the people who like the enterprise"
+msgstr ""
+
+msgid "{#} fan"
+msgid_plural "{#} fans"
+msgstr[0] "{#} penggemar"
+
+msgid "This block presents the fans of an enterprise."
+msgstr ""
+
+msgid "favorites"
+msgstr ""
+
+msgid "Favorite Enterprises"
+msgstr ""
+
+msgid "This block lists your favorite enterprises."
+msgstr ""
+
+msgid "Feed reader"
+msgstr ""
+
+msgid "Feed Reader"
+msgstr ""
+
+msgid ""
+"This block can be used to list the latest new from any site you want. You "
+"just need to inform the address of a RSS feed."
+msgstr ""
+
+msgid "A folder, inside which you can put other articles."
+msgstr ""
+
+msgid ""
+"An internet forum, also called message board, where discussions can be held."
+msgstr ""
+
+msgid "Logged users"
+msgstr ""
+
+msgid "Me"
+msgstr ""
+
+msgid "Administrators"
+msgstr ""
+
+msgid "Gallery"
+msgstr ""
+
+msgid "A gallery, inside which you can put images."
+msgstr ""
+
+msgid "Creates image slideshow"
+msgstr ""
+
+msgid "{fn} of uploaded file was larger than the maximum size of 5.0 MB"
+msgstr ""
+
+msgid "Invitation"
+msgstr ""
+
+msgid "You can't invite youself"
+msgstr ""
+
+msgid "Firstname Lastname <friend@email.com>"
+msgstr ""
+
+msgid "To accept invitation, please follow this link: <url>"
+msgstr ""
+
+msgid "Friend invitation"
+msgstr "Undangan pertemanan"
+
+msgid "Hello <friend>,"
+msgstr "Hallo <friend>,"
+
+msgid "<user> is inviting you to participate on <environment>."
+msgstr "<user> mengundang anda untuk berpartisipasi dalam <environment>."
+
+msgid "To accept the invitation, please follow this link:"
+msgstr "Untuk menerima undangan ini, silahkan menuju ke tautan berikut:"
+
+msgid "Community invitation"
+msgstr "Undangan Komunitas"
+
+msgid "%{requestor} invited you to join %{linked_subject}."
+msgstr "%{requestor} mengundang anda untuk bergabung di %{linked_subject}."
+
+msgid "%{requestor} invited you to join %{community}."
+msgstr "%{requestor} mengundang anda untuk bergabung di %{community}."
+
+msgid "%{requestor} is inviting you to join \"%{community}\" on %{system}."
+msgstr ""
+"%{requestor} mengundang anda untuk bergabung di \"%{community}\" dalam "
+"%{system}."
+
+msgid "<user> is inviting you to join \"<community>\" on <environment>."
+msgstr ""
+"<user> mengundang anda untuk bergabung di \"<community>\" dalam "
+"<environment>."
+
+msgid "name"
+msgstr ""
+
+msgid "title"
+msgstr ""
+
+msgid "description"
+msgstr ""
+
+msgid "URL"
+msgstr ""
+
+msgid "(No icon)"
+msgstr ""
+
+msgid "New"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Send"
+msgstr ""
+
+msgid "Up"
+msgstr ""
+
+msgid "Down"
+msgstr ""
+
+msgid "Left"
+msgstr ""
+
+msgid "Right"
+msgstr ""
+
+msgid "Gray Up"
+msgstr ""
+
+msgid "Gray Down"
+msgstr ""
+
+msgid "Gray Left"
+msgstr ""
+
+msgid "Gray Right"
+msgstr ""
+
+msgid "Red Up"
+msgstr ""
+
+msgid "Ok"
+msgstr ""
+
+msgid "Spread"
+msgstr ""
+
+msgid "Eyes"
+msgstr ""
+
+msgid "Photos"
+msgstr ""
+
+msgid "Home"
+msgstr ""
+
+msgid "Package"
+msgstr ""
+
+msgid "To do list"
+msgstr ""
+
+msgid "Same page"
+msgstr ""
+
+msgid "New tab"
+msgstr ""
+
+msgid "New window"
+msgstr ""
+
+msgid "Links (static menu)"
+msgstr ""
+
+msgid ""
+"This block can be used to create a menu of links. You can add, remove and "
+"update the links as you wish."
+msgstr ""
+
+msgid "Link list"
+msgstr ""
+
+msgid "Location map"
+msgstr ""
+
+msgid "Shows where the profile is on the material world."
+msgstr ""
+
+msgid "Login/logout"
+msgstr ""
+
+msgid "This block presents a login/logout block."
+msgstr ""
+
+msgid "This block presents the main content of your pages."
+msgstr ""
+
+msgid "New user"
+msgstr ""
+
+msgid "%{sender} wants to register."
+msgstr ""
+
+msgid "%{sender} tried to register."
+msgstr ""
+
+msgid "You need to login on %{system} in order to approve or reject this user."
+msgstr ""
+
+msgid ""
+"User \"%{user}\" just requested to register. You have to approve or reject "
+"it through the \"Pending Validations\" section in your control panel.\n"
+msgstr ""
+
+msgid "My network"
+msgstr "Jaringan saya"
+
+msgid "This block displays some info about your networking."
+msgstr "Tampilan pembelokiran ini merupakan informasi tentang jaringan anda."
+
+msgid "Region Code"
+msgstr ""
+
+msgid "Invalid city or state name."
+msgstr ""
+
+msgid "District"
+msgstr ""
+
+msgid "Address reference"
+msgstr ""
+
+msgid "Display name"
+msgstr ""
+
+msgid "Description"
+msgstr "Deskripsi"
+
+msgid "Contact email"
+msgstr ""
+
+msgid "Community's profile"
+msgstr ""
+
+msgid "Invite Friends"
+msgstr ""
+
+msgid "Image gallery"
+msgstr ""
+
+msgid "person"
+msgstr ""
+
+msgid "An existing person cannot be renamed."
+msgstr ""
+
+msgid "friends"
+msgstr ""
+
+msgid "work"
+msgstr ""
+
+msgid "school"
+msgstr ""
+
+msgid "family"
+msgstr ""
+
+msgid "Cell phone"
+msgstr ""
+
+msgid "Comercial phone"
+msgstr ""
+
+msgid "Nationality"
+msgstr ""
+
+msgid "Schooling"
+msgstr ""
+
+msgid "Area of study"
+msgstr ""
+
+msgid "Professional activity"
+msgstr ""
+
+msgid "Organization"
+msgstr ""
+
+msgid "Schooling status"
+msgstr ""
+
+msgid "Custom education"
+msgstr ""
+
+msgid "Custom area of study"
+msgstr ""
+
+msgid "Contact information"
+msgstr ""
+
+msgid "Sex"
+msgstr ""
+
+msgid "Zip code"
+msgstr ""
+
+msgid "{fn} is already used by other user"
+msgstr ""
+
+msgid "Profile"
+msgstr ""
+
+msgid "none"
+msgstr ""
+
+msgid "one friend"
+msgstr ""
+
+msgid "%s friends"
+msgstr ""
+
+msgid "You just left %s."
+msgstr ""
+
+msgid "Edit Profile"
+msgstr ""
+
+msgid "TinyMCE"
+msgstr ""
+
+#, fuzzy
+msgid "Textile"
+msgstr "Judul"
+
+msgid "Raw HTML"
+msgstr ""
+
+msgid "[%s] Notifications"
+msgstr ""
+
+msgid "Nickname"
+msgstr ""
+
+msgid "Edit profile"
+msgstr ""
+
+msgid "Destroy profile"
+msgstr ""
+
+msgid "Manage memberships"
+msgstr ""
+
+msgid "Manage content"
+msgstr ""
+
+msgid "Edit profile design"
+msgstr ""
+
+msgid "Manage products"
+msgstr ""
+
+msgid "Manage friends"
+msgstr ""
+
+msgid "Validate enterprise"
+msgstr ""
+
+msgid "Perform task"
+msgstr ""
+
+msgid "View tasks"
+msgstr ""
+
+msgid "Moderate comments"
+msgstr ""
+
+msgid "View private content"
+msgstr ""
+
+msgid "Publish content"
+msgstr ""
+
+msgid "Invite members"
+msgstr ""
+
+msgid "Send e-Mail to members"
+msgstr ""
+
+msgid "Manage custom roles"
+msgstr ""
+
+msgid ""
+"You must to provide `lat` and `lng`, or `city` and `country` to define the "
+"center of the search circle, defined by `distance`."
+msgstr ""
+
+msgid "is not a template."
+msgstr ""
+
+msgid "%s can't have members"
+msgstr ""
+
+msgid "%s can't has moderators"
+msgstr ""
+
+msgid "Public profile"
+msgstr ""
+
+msgid "Private profile"
+msgstr ""
+
+msgid "Since: "
+msgstr ""
+
+msgid "no activity"
+msgstr ""
+
+msgid "one activity"
+msgstr ""
+
+msgid "%s activities"
+msgstr ""
+
+msgid "no members"
+msgstr ""
+
+msgid "one member"
+msgstr ""
+
+msgid "%s members"
+msgstr ""
+
+msgid "Profile Info and settings"
+msgstr ""
+
+msgid "Profile Image"
+msgstr ""
+
+msgid "This block presents the profile image"
+msgstr ""
+
+msgid ""
+"Display profile image and links to access initial homepage, control panel "
+"and profile activities."
+msgstr ""
+
+msgid "Show profile information"
+msgstr ""
+
+msgid "Profile Information"
+msgstr ""
+
+msgid ""
+"Basic information about <i>%{user}</i>: how long <i>%{user}</i> is part of "
+"<i>%{env}</i> and useful links."
+msgstr ""
+
+msgid "Random profiles"
+msgstr ""
+
+msgid "{#} People or Groups"
+msgstr ""
+
+msgid "Clicking on the people or groups will take you to their home page."
+msgstr ""
+
+msgid "Display a form to search the profile"
+msgstr ""
+
+msgid "Friends in common"
+msgstr ""
+
+msgid "Communities in common"
+msgstr ""
+
+msgid "Tags in common"
+msgstr ""
+
+msgid ""
+"Display the last content produced in the context where the block is "
+"available."
+msgstr ""
+
+msgid "Show last updates"
+msgstr ""
+
+#, fuzzy
+msgid "Recent Content"
+msgstr "Konten"
+
+msgid "Recent content"
+msgstr ""
+
+msgid "This block lists your content most recently updated."
+msgstr ""
+
+msgid "RssFeed"
+msgstr ""
+
+msgid "%s's RSS feed"
+msgstr ""
+
+msgid "%s's content published at %s"
+msgstr ""
+
+msgid "RSS Feed"
+msgstr ""
+
+msgid "Provides a news feed of your more recent articles."
+msgstr ""
+
+msgid "Slideshow"
+msgstr "Slideshow"
+
+msgid "Article suggestion"
+msgstr ""
+
+msgid ""
+"%{requestor} suggested the publication %{target_detail} of the article: "
+"%{subject}."
+msgstr ""
+
+msgid "%{requestor} suggested the publication of the article: %{article}."
+msgstr ""
+
+msgid ""
+"<p>Display a tag cloud with the content produced where the block is applied."
+"</p> <p>The user could limit the number of tags will be displayed.</p>"
+msgstr ""
+
+msgid "Display a tag cloud about current content"
+msgstr ""
+
+msgid "Tag Cloud"
+msgstr ""
+
+msgid "tags"
+msgstr ""
+
+msgid ""
+"Tags are created when you add some of them one to your contents. <p/>\n"
+"       Try to add some tags to some articles and you'l see your tag cloud "
+"growing."
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Cancelled"
+msgstr ""
+
+msgid "Finished"
+msgstr ""
+
+msgid "Hidden"
+msgstr ""
+
+msgid "Task"
+msgstr ""
+
+msgid "%{requestor} sent you a task."
+msgstr ""
+
+msgid "Text article"
+msgstr ""
+
+msgid "Text article to create user content."
+msgstr ""
+
+msgid "Ticket"
+msgstr ""
+
+msgid "File"
+msgstr "Berkas"
+
+msgid "{fn} of uploaded file was larger than the maximum size of %{size}"
+msgstr "{fn} berkas yang diunggah melebihi ukuran maksimum dari %{size}"
+
+msgid "Uploaded file"
+msgstr "Mengunggah berkas"
+
+msgid "Upload any kind of file you want."
+msgstr "Unggah berkas apa saja yang anda inginkan."
+
+msgid "Password confirmation"
+msgstr ""
+
+msgid "Terms accepted"
+msgstr ""
+
+msgid "{fn} must be checked in order to signup."
+msgstr ""
+
+msgid ""
+"The user \"%{login}\" is not activated! Please check your email to activate "
+"your user"
+msgstr ""
+
+msgid "does not match."
+msgstr ""
+
+msgid "Image (%s)"
+msgstr ""
+
+msgid "File (%s)"
+msgstr ""
+
+msgid "Available: "
+msgstr ""
+
+msgid "Log in"
+msgstr ""
+
+msgid "Are you a robot?"
+msgstr ""
+
+msgid "Please, prove that you are human by filling the captcha."
+msgstr ""
+
+msgid "The account could not be created"
+msgstr ""
+
+msgid ""
+"Choose your login name carefully! It will be your network access and you "
+"will not be able to change it later."
+msgstr ""
+
+msgid ""
+"Choose a password that you can remember easily. It must have at least 4 "
+"characters."
+msgstr ""
+
+msgid "Short"
+msgstr ""
+
+msgid "Bad"
+msgstr ""
+
+msgid "Good"
+msgstr ""
+
+msgid "Strong"
+msgstr ""
+
+msgid ""
+"We need to be sure that you filled in your password correctly. Confirm you "
+"password."
+msgstr ""
+
+msgid "This e-mail address will be used to contact you."
+msgstr ""
+
+msgid "Full name"
+msgstr ""
+
+msgid "Tell us your name, it will be used to identify yourself."
+msgstr ""
+
+msgid "I accept the %s"
+msgstr ""
+
+msgid "terms of use"
+msgstr ""
+
+msgid "Create my account"
+msgstr ""
+
+msgid "Passwords don't match"
+msgstr ""
+
+msgid "part 2 of 2"
+msgstr ""
+
+msgid " part 2 of 3"
+msgstr ""
+
+msgid "I read the terms of use and accepted them"
+msgstr ""
+
+msgid "Continue"
+msgstr ""
+
+msgid "Enterprise activation - part 3 of 3"
+msgstr ""
+
+msgid ""
+"Now for you manage your enterprise you have to associate an individual "
+"account to the enterprise."
+msgstr ""
+
+msgid "Do you have a personal user account in the system?"
+msgstr ""
+
+msgid "Personal signup form"
+msgstr ""
+
+msgid ""
+"<b>Warning</b>: this form is for your personal information, not of your "
+"enterprise. So you will have a personal account that can manage your "
+"enterprise."
+msgstr ""
+
+msgid "Enter you user name and password"
+msgstr ""
+
+msgid "The year must be between %d and %d"
+msgstr ""
+
+msgid "A CNPJ have 14 digits"
+msgstr ""
+
+msgid "part 1 of 2"
+msgstr ""
+
+msgid "part 1 of 3"
+msgstr ""
+
+msgid "Pay atention! You have only one chance!"
+msgstr ""
+
+msgid ""
+"This is a question to know if you really are part of this enterprise. Pay "
+"atention because you have only one chance to answer right and activate your "
+"enterprise. If you answer wrong you will not be able to activate the "
+"enterprise automaticaly and must get in touch with the admins of %s by email "
+"or phone."
+msgstr ""
+
+msgid ""
+"What year your enterprise was founded? It must have 4 digits, eg 1990. %s"
+msgstr ""
+
+msgid "What is the CNPJ of your enterprise?"
+msgstr ""
+
+msgid "This enterprise is already active"
+msgstr ""
+
+msgid "This enterprise can't be activated by the system"
+msgstr ""
+
+msgid "Unfortunately this enterprise can't be activated via the system."
+msgstr ""
+
+msgid ""
+"There was a failed atempt of activation and the automated activation was "
+"disabled for your security."
+msgstr ""
+
+msgid "We don't have enough information about your enterprise to identify you."
+msgstr ""
+
+msgid "Your enterprise has been blocked"
+msgstr ""
+
+msgid "Current password"
+msgstr ""
+
+msgid "New password"
+msgstr ""
+
+msgid "Confirm your new Password"
+msgstr ""
+
+msgid "Forgot your password?"
+msgstr ""
+
+msgid "Instructions to password recovery could not be sent"
+msgstr ""
+
+msgid "Please type the captcha text below"
+msgstr ""
+
+msgid "Send instructions"
+msgstr ""
+
+msgid ""
+"After clicking the button above, you will receive an email with a link to a "
+"page where you will be able to create a new password."
+msgstr ""
+
+msgid "Account options"
+msgstr ""
+
+msgid "Change password."
+msgstr ""
+
+msgid "It is a good idea to change your password from times to times."
+msgstr ""
+
+msgid "Edit Personal details."
+msgstr ""
+
+msgid "You can change your personal details."
+msgstr ""
+
+msgid "My home page."
+msgstr ""
+
+msgid "See your homepage."
+msgstr ""
+
+msgid "Manage content."
+msgstr ""
+
+msgid "Manage your content."
+msgstr ""
+
+msgid "Logout."
+msgstr ""
+
+msgid ""
+"It is always a good idea to make a logout when you finish using the "
+"environment."
+msgstr ""
+
+msgid "Identify yourself"
+msgstr ""
+
+msgid "Login."
+msgstr ""
+
+msgid ""
+"You need to login to be able to use all the features in this environment."
+msgstr ""
+
+msgid "Sign up."
+msgstr ""
+
+msgid ""
+"If you are not an user already, you can register now to become a member of "
+"this environment."
+msgstr ""
+
+msgid "Invalid change password code"
+msgstr ""
+
+msgid ""
+"The code you are using for password change is not valid. Please try to "
+"request password change using the <a href=\"%s\">\"I forgot my password\"</"
+"a> functionality."
+msgstr ""
+
+msgid "Invalid enterprise code"
+msgstr ""
+
+msgid ""
+"The code you are using for validate your enterprise is not valid. Please "
+"check if you are typing it correctly."
+msgstr ""
+
+msgid "Keep me logged in"
+msgstr ""
+
+msgid "I forgot my password!"
+msgstr ""
+
+msgid "Are you sure you want to get out?"
+msgstr ""
+
+msgid "No, I want to stay."
+msgstr ""
+
+msgid "Enter new password"
+msgstr ""
+
+msgid "Hello, %s! Please enter your new password in the form below."
+msgstr ""
+
+msgid "Confirm the new password"
+msgstr ""
+
+msgid "Password changed sucessfully"
+msgstr ""
+
+msgid "%s, your new password was successfully installed."
+msgstr ""
+
+msgid "You can <a href='%s'>login</a> now."
+msgstr ""
+
+msgid "Password recovery"
+msgstr ""
+
+msgid ""
+"An e-mail was just sent to your e-mail address, with instructions for "
+"changing your password. You should receive it in a few minutes."
+msgstr ""
+
+msgid "Sign up for %s!"
+msgstr ""
+
+msgid "Welcome to %s"
+msgstr ""
+
+msgid ""
+"%s was successfuly activated. Now you may go to your control panel or to the "
+"control panel of your enterprise"
+msgstr ""
+
+msgid "Go to my control panel"
+msgstr ""
+
+msgid "Go to my enterprise control panel"
+msgstr ""
+
+msgid "This text will be shown to the user on the top of the sign up form."
+msgstr ""
+
+msgid "Body"
+msgstr ""
+
+msgid ""
+"If you enable this feature on the \"Features\" section of the Administration "
+"Panel, this text will be shown as a welcome message to users after signup."
+msgstr ""
+
+msgid ""
+"If this content is left blank, the following page will be displayed to the "
+"user:"
+msgstr ""
+
+msgid ""
+"This text will be sent to new users if the feature \"Send welcome e-mail to "
+"new users\" is enabled on environment."
+msgstr ""
+
+msgid ""
+"Including %s on body, it will be replaced by the real name of the e-mail "
+"recipient."
+msgstr ""
+
+msgid "Site name"
+msgstr ""
+
+msgid "No reply email"
+msgstr ""
+
+msgid "Theme"
+msgstr ""
+
+msgid "Article's date format"
+msgstr ""
+
+msgid "mm/dd/yyyy"
+msgstr ""
+
+msgid "mm/dd"
+msgstr ""
+
+msgid "Month dd, yyyy"
+msgstr ""
+
+msgid "Month dd"
+msgstr ""
+
+msgid "X minutes/hours/days/months/years ago"
+msgstr ""
+
+msgid "Default language"
+msgstr ""
+
+msgid "Available languages"
+msgstr ""
+
+msgid "Homepage content"
+msgstr ""
+
+msgid "Administrator Panel"
+msgstr ""
+
+msgid "System settings"
+msgstr ""
+
+msgid "Environment settings"
+msgstr ""
+
+msgid "Features"
+msgstr ""
+
+msgid "Plugins"
+msgstr ""
+
+msgid "Appearance"
+msgstr ""
+
+msgid "Sideboxes"
+msgstr ""
+
+msgid "Homepage"
+msgstr ""
+
+msgid "Licenses"
+msgstr ""
+
+msgid "Trusted sites"
+msgstr ""
+
+msgid "Email templates"
+msgstr ""
+
+msgid "Profiles"
+msgstr ""
+
+msgid "User roles"
+msgstr ""
+
+msgid "Users"
+msgstr ""
+
+msgid "Organizations"
+msgstr ""
+
+msgid "Profile templates"
+msgstr ""
+
+msgid "Fields"
+msgstr ""
+
+msgid "Enterprise-related settings"
+msgstr ""
+
+msgid "Message for disabled enterprises"
+msgstr ""
+
+msgid "Validators by region"
+msgstr ""
+
+msgid "Site info"
+msgstr ""
+
+msgid "Set Environment Portal"
+msgstr ""
+
+msgid "Portal identifier"
+msgstr ""
+
+msgid "Portal identifier: %s"
+msgstr ""
+
+msgid "Disable"
+msgstr ""
+
+msgid "Enable"
+msgstr ""
+
+msgid "Select Portal Folders"
+msgstr ""
+
+msgid "Define news amount on portal"
+msgstr ""
+
+msgid "Select folders"
+msgstr ""
+
+msgid ""
+"Select the folders that will hold the news of the initial page of the "
+"environment"
+msgstr ""
+
+msgid "Available folders"
+msgstr ""
+
+msgid "Portal folders"
+msgstr ""
+
+msgid ""
+"The same order in which you arrange the folders here will be used for "
+"arranging the boxes in the environment initial page."
+msgstr ""
+
+msgid "News amount on portal"
+msgstr ""
+
+msgid "Number of highlighted news"
+msgstr ""
+
+msgid "Number of portal news"
+msgstr ""
+
+msgid "Number of news by folder"
+msgstr ""
+
+msgid "Terms of use"
+msgstr ""
+
+msgid "Signup welcome email"
+msgstr ""
+
+msgid "Signup welcome page"
+msgstr ""
+
+msgid "Signup introduction text"
+msgstr ""
+
+msgid "api-playground|Try the %s"
+msgstr ""
+
+msgid "Use the login endpoint"
+msgstr ""
+
+msgid "Add parameter"
+msgstr ""
+
+msgid "Run"
+msgstr ""
+
+msgid "Article not selected yet."
+msgstr ""
+
+msgid "Subscribe RSS Feed"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Unblock"
+msgstr ""
+
+msgid "See More"
+msgstr ""
+
+msgid "Please, edit this block and choose some products"
+msgstr ""
+
+msgid "communities|View all"
+msgstr ""
+
+msgid "Some suggestions for you"
+msgstr ""
+
+msgid "See all suggestions"
+msgstr ""
+
+msgid "enterprises|View all"
+msgstr ""
+
+msgid "View all"
+msgstr "Tampilkan semua"
+
+msgid "Feed content was not loaded yet"
+msgstr ""
+
+msgid "Updated: %s"
+msgstr ""
+
+msgid "All content"
+msgstr ""
+
+msgid "tags|View all"
+msgstr ""
+
+msgid "Please, edit this block and choose some images"
+msgstr ""
+
+msgid "Please, edit this block to add links"
+msgstr ""
+
+msgid "This profile has no geographical position registered."
+msgstr ""
+
+msgid "Logged in as %s"
+msgstr ""
+
+msgid "User since %s/%s"
+msgstr ""
+
+msgid "View profile"
+msgstr ""
+
+msgid "One article published"
+msgid_plural "%s articles published"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "One member"
+msgid_plural "%s members"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "One tag"
+msgid_plural "%s tags"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "One friend"
+msgid_plural "%s friends"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "One community"
+msgid_plural "%{num} communities"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Since %{year}/%{month}"
+msgstr ""
+
+msgid "Send an e-mail to the administrators"
+msgstr ""
+
+msgid "Add as favorite"
+msgstr ""
+
+msgid "Add enterprise as favorite"
+msgstr ""
+
+msgid "Your membership is waiting for approval"
+msgstr ""
+
+msgid "Please confirm to leave the community '%{name}'"
+msgstr ""
+
+msgid "Add friend"
+msgstr ""
+
+msgid "Select the circles for %s"
+msgstr ""
+
+msgid "New Circle"
+msgstr ""
+
+msgid "Circle name"
+msgstr ""
+
+msgid "Create"
+msgstr ""
+
+msgid "Please, edit this block and select an image gallery."
+msgstr ""
+
+msgid ""
+"You don't have an community defined as the portal community. Define it "
+"before use this block properly."
+msgstr ""
+
+msgid "Number of posts:"
+msgstr ""
+
+msgid "How to display this content:"
+msgstr ""
+
+msgid "Lead"
+msgstr ""
+
+msgid "Full post"
+msgstr ""
+
+msgid "Choose a blog:"
+msgstr ""
+
+msgid "Category types"
+msgstr ""
+
+msgid "Limit of posts to display"
+msgstr ""
+
+msgid "Highlights"
+msgstr ""
+
+msgid "Image"
+msgstr ""
+
+msgid "Position"
+msgstr ""
+
+msgid "New Window"
+msgstr ""
+
+msgid "New highlight"
+msgstr ""
+
+msgid "Image transition:"
+msgstr ""
+
+msgid "No automatic transition"
+msgstr ""
+
+msgid "Every 1 second"
+msgid_plural "Every %d seconds"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Show images in random order"
+msgstr ""
+
+msgid "Display navigation buttons"
+msgstr ""
+
+msgid "Links"
+msgstr ""
+
+msgid "Icon"
+msgstr ""
+
+msgid "Target"
+msgstr ""
+
+msgid "New link"
+msgstr ""
+
+msgid "Zoom Level:"
+msgstr ""
+
+msgid "World"
+msgstr ""
+
+msgid "Street"
+msgstr ""
+
+msgid "Map Type:"
+msgstr ""
+
+msgid "Road Map"
+msgstr ""
+
+msgid "Mobile"
+msgstr ""
+
+msgid "Satellite"
+msgstr ""
+
+msgid "Terrain"
+msgstr ""
+
+msgid "Hybrid"
+msgstr ""
+
+msgid "Show name on block"
+msgstr ""
+
+msgid "Limit of items"
+msgstr ""
+
+msgid "Prioritize profiles with image"
+msgstr ""
+
+msgid "HTML code"
+msgstr ""
+
+msgid "Choose a gallery"
+msgstr ""
+
+msgid "%{gallery} (%{count} images)"
+msgstr ""
+
+msgid "Image size"
+msgstr ""
+
+msgid "Thumbnail"
+msgstr ""
+
+msgid "Slideshow size"
+msgstr ""
+
+msgid "Limit of tags to display:"
+msgstr ""
+
+msgid "Custom title for this block: "
+msgstr ""
+
+msgid "Custom subtitle for this block: "
+msgstr ""
+
+msgid "Display this block:"
+msgstr ""
+
+msgid "Display to users:"
+msgstr ""
+
+msgid "Show for:"
+msgstr ""
+
+msgid "all languages"
+msgstr ""
+
+msgid "Edit options:"
+msgstr ""
+
+msgid "Move options:"
+msgstr ""
+
+msgid "Mirror"
+msgstr ""
+
+msgid "Editing sideboxes"
+msgstr ""
+
+msgid "Back to control panel"
+msgstr ""
+
+msgid "Filter blocks"
+msgstr ""
+
+msgid "Show"
+msgstr ""
+
+msgid "Hide"
+msgstr ""
+
+msgid "Add subcategory"
+msgstr ""
+
+msgid "Are you sure you want to remove \"%s\"?"
+msgstr ""
+
+msgid "Are you sure you want to remove \"%s\" and all its subcategories?"
+msgstr ""
+
+msgid "Display in the menu"
+msgstr ""
+
+msgid "Pick a color"
+msgstr ""
+
+msgid "Image:"
+msgstr ""
+
+msgid "Editing %s"
+msgstr ""
+
+msgid "New category"
+msgstr ""
+
+msgid "Regions"
+msgstr ""
+
+msgid "Could not connect to chat"
+msgstr ""
+
+msgid "try again"
+msgstr ""
+
+msgid "Profile type"
+msgstr ""
+
+msgid "Save changes"
+msgstr ""
+
+msgid "Create circle"
+msgstr ""
+
+msgid "Edit circle"
+msgstr ""
+
+msgid "Manage circles"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Create a new circle"
+msgstr ""
+
+msgid "New circle"
+msgstr ""
+
+msgid "Archived article! It's read-only"
+msgstr ""
+
+msgid "My Blog"
+msgstr ""
+
+msgid "WARNING!"
+msgstr ""
+
+msgid ""
+"You are about to change the address, and this will break external links to "
+"this blog or to posts inside it. Do you really want to change?"
+msgstr ""
+
+msgid "Description:"
+msgstr ""
+
+msgid "Cover image:"
+msgstr ""
+
+msgid "Max size: %s (.jpg, .gif, .png)"
+msgstr ""
+
+msgid "How to display posts:"
+msgstr ""
+
+msgid "First paragraph"
+msgstr ""
+
+msgid "First paragraph, with post picture"
+msgstr ""
+
+msgid "Title, Image, Lead"
+msgstr ""
+
+msgid "Posts per page:"
+msgstr ""
+
+msgid "List only translated posts"
+msgstr ""
+
+msgid "Limit of posts in RSS Feed"
+msgstr ""
+
+msgid "Include in RSS Feed only posts from language:"
+msgstr ""
+
+msgid "Fetch posts from an external feed"
+msgstr ""
+
+msgid "Feed address"
+msgstr ""
+
+msgid "Fetch posts only once"
+msgstr ""
+
+msgid "Fetch posts periodically"
+msgstr ""
+
+msgid ""
+"Feeds are updated in batches periodically. Please note that your posts will "
+"not be fetched immediately."
+msgstr ""
+
+msgid ""
+"Drag images to add them to the text or click on file names to add links to "
+"the text."
+msgstr ""
+
+msgid "Event website:"
+msgstr ""
+
+msgid "Address:"
+msgstr ""
+
+msgid "My Forum"
+msgstr ""
+
+msgid "Has terms of use:"
+msgstr ""
+
+msgid "Terms of use:"
+msgstr ""
+
+msgid "Parent folder:"
+msgstr ""
+
+msgid "License"
+msgstr ""
+
+msgid "Reference"
+msgstr ""
+
+msgid "Create new folder"
+msgstr ""
+
+msgid "Choose parent folder:"
+msgstr ""
+
+msgid "Name:"
+msgstr ""
+
+msgid "This is a republication of \"%s\", by %s."
+msgstr ""
+
+msgid "Limit of articles"
+msgstr ""
+
+msgid "Use as item description:"
+msgstr ""
+
+msgid "Article abstract"
+msgstr ""
+
+msgid "Article body"
+msgstr ""
+
+msgid "Include in the feed:"
+msgstr ""
+
+msgid "All articles"
+msgstr ""
+
+msgid "Only articles child of the same article as the feed"
+msgstr ""
+
+msgid "Add to the text"
+msgstr ""
+
+msgid "Zoom in"
+msgstr ""
+
+msgid "Insert media"
+msgstr ""
+
+msgid "Show/Hide"
+msgstr ""
+
+msgid "Choose folder to upload files:"
+msgstr ""
+
+msgid "New folder"
+msgstr ""
+
+msgid "Hide all uploads"
+msgstr ""
+
+msgid "Show all uploads"
+msgstr ""
+
+msgid "Recent media"
+msgstr ""
+
+msgid "Search among your uploaded files"
+msgstr ""
+
+msgid "Write words about the file you are looking for"
+msgstr ""
+
+msgid "Publish date"
+msgstr ""
+
+msgid "Textile markup quick reference"
+msgstr ""
+
+msgid "(show)"
+msgstr ""
+
+msgid "(hide)"
+msgstr ""
+
+msgid "Simple formatting:"
+msgstr ""
+
+msgid "italics"
+msgstr ""
+
+msgid "bold"
+msgstr ""
+
+msgid "striked"
+msgstr ""
+
+msgid "Links:"
+msgstr ""
+
+msgid "Images:"
+msgstr ""
+
+msgid "Bullet lists:"
+msgstr ""
+
+msgid "first item"
+msgstr ""
+
+msgid "second item"
+msgstr ""
+
+msgid "Numbered lists:"
+msgstr ""
+
+msgid ""
+"For code, use HTML tags <pre> and <code>, and indent the code inside them:"
+msgstr ""
+
+msgid "See also a more complete <a href=\"%s\">Textile Reference</a>."
+msgstr ""
+
+msgid "More files"
+msgstr ""
+
+msgid "Upload"
+msgstr ""
+
+msgid "Public view"
+msgstr ""
+
+msgid "Use as homepage"
+msgstr ""
+
+msgid "Reset homepage"
+msgstr ""
+
+msgid "Delete: %s"
+msgstr ""
+
+msgid ""
+"Are you sure that you want to remove this folder? Note that all the items "
+"inside it will also be removed!"
+msgstr ""
+
+msgid "Are you sure that you want to remove this item?"
+msgstr ""
+
+msgid "Yes, I want."
+msgstr ""
+
+msgid "No, I don't want."
+msgstr ""
+
+msgid "Highlight this article"
+msgstr ""
+
+msgid "Save and continue"
+msgstr ""
+
+msgid "Why categorize?"
+msgstr ""
+
+msgid "Categorize your article"
+msgstr ""
+
+msgid "Separate tags with commas"
+msgstr ""
+
+msgid "Where do you want to publish this article?"
+msgstr ""
+
+msgid "There were errors with the following communities: "
+msgstr ""
+
+msgid "Publish this article on your profile"
+msgstr ""
+
+msgid ""
+"You can publish this article on your profile where your friends and "
+"followers will see."
+msgstr ""
+
+msgid "Publish this article on communities you are part of"
+msgstr ""
+
+msgid ""
+"You can submit this article to one or more communities you are a member of, "
+"just search for the community below."
+msgstr ""
+
+msgid "Type in a search for your community"
+msgstr ""
+
+msgid "Publish your article on portal community"
+msgstr ""
+
+msgid ""
+"You can suggest this article to the portal community, where it can show up "
+"on the homepage."
+msgstr ""
+
+msgid "There is no portal community in this environment."
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "Choose the type of content:"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "Source URL"
+msgstr ""
+
+msgid "Your name"
+msgstr ""
+
+msgid "This file couldn't be saved"
+msgid_plural "These %{num} files couldn't be saved"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "There were problems with the following files:"
+msgstr ""
+
+msgid "Publish media"
+msgstr ""
+
+msgid "Select the files you want to upload (max size %s):"
+msgstr ""
+
+msgid "Documents, Images, Videos, Audio"
+msgstr ""
+
+msgid "Uploading files to %s"
+msgstr ""
+
+msgid "Content management"
+msgstr ""
+
+msgid "Profile homepage:"
+msgstr ""
+
+msgid "Current folder: "
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Last update"
+msgstr ""
+
+msgid "parent folder"
+msgstr ""
+
+msgid ""
+"By categorizing your content, you increase the possibility that other people "
+"access it. When they are looking for, say, articles about Bahia and you "
+"categorize your article in \"Regions/Bahia\", then there is a good change "
+"that your article is going to be found."
+msgstr ""
+
+msgid "Reply"
+msgstr ""
+
+msgid "Please type the two words below"
+msgstr ""
+
+msgid "Confirm"
+msgstr ""
+
+msgid "Post a comment"
+msgstr ""
+
+msgid "e-mail"
+msgstr ""
+
+msgid ""
+"If you are a registered user, you can login and be automatically recognized."
+msgstr ""
+
+msgid "Enter your comment"
+msgstr ""
+
+msgid "Follow this article"
+msgstr ""
+
+msgid "Post comment"
+msgstr ""
+
+msgid "Hi!"
+msgstr ""
+
+msgid ""
+"%{sender} (%{sender_link}) commented on the content \"%{article_title}\"."
+msgstr ""
+
+msgid "Title: %s"
+msgstr ""
+
+msgid "Comment:"
+msgstr ""
+
+msgid "Click on the address below to view this comment:"
+msgstr ""
+
+msgid "Click on the address below to cancel the notification of new comments:"
+msgstr ""
+
+msgid "Greetings,"
+msgstr ""
+
+msgid "%s team."
+msgstr ""
+
+msgid "Hi, %{recipient}!"
+msgstr ""
+
+msgid ""
+"%{sender} (%{sender_link}) created a new comment on your article "
+"\"%{article_title}\"."
+msgstr ""
+
+msgid "Access the address below to view this comment:"
+msgstr ""
+
+msgid "Send an e-mail to %s"
+msgstr ""
+
+msgid "Send an e-mail to administrators"
+msgstr ""
+
+msgid "The e-mail will be sent to the administrators of '%s'"
+msgstr ""
+
+msgid "I want to receive a copy of the message in my e-mail."
+msgstr ""
+
+msgid "This message was sent by %{sender} to %{target} on %{environment}."
+msgstr ""
+
+msgid "Information about the user who sent this message:"
+msgstr ""
+
+msgid "Message:"
+msgstr ""
+
+msgid "Add translation"
+msgstr ""
+
+msgid "Upload files"
+msgstr ""
+
+msgid "Suggest an article"
+msgstr ""
+
+msgid "All versions"
+msgstr ""
+
+msgid "RSS feed"
+msgstr ""
+
+msgid "Cancel notification of new comments"
+msgstr ""
+
+msgid ""
+"Fill in the following field with your e-mail if you don't want to be "
+"notified when this content receives new comments anymore."
+msgstr ""
+
+msgid "Enter your e-Mail"
+msgstr ""
+
+msgid "Cancel notifications for e-mail above"
+msgstr ""
+
+msgid "%s will attend this event."
+msgstr ""
+
+msgid "No one attending this event yet."
+msgstr ""
+
+msgid "%s following this article."
+msgstr ""
+
+msgid "No one following this article yet."
+msgstr ""
+
+msgid "Viewed one time %{desc}"
+msgid_plural "Viewed %{num} times %{desc}"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "(Not countable anymore)"
+msgstr ""
+
+msgid "Licensed under %s"
+msgstr ""
+
+msgid "Go back to latest version"
+msgstr ""
+
+msgid ""
+"This is the list of all versions of this content. Select a version to see it "
+"and then revert to it."
+msgstr ""
+
+msgid "Version %s"
+msgstr ""
+
+msgid "(current)"
+msgstr ""
+
+msgid "by %{author}"
+msgstr ""
+
+msgid "Show differences between selected versions"
+msgstr ""
+
+msgid "(external feed was not loaded yet)"
+msgstr ""
+
+msgid "(no posts)"
+msgstr ""
+
+msgid "Accept"
+msgstr ""
+
+msgid "This gallery contains no images yet"
+msgstr ""
+
+msgid "View slideshow"
+msgstr ""
+
+msgid "Back to gallery"
+msgstr ""
+
+msgid "Back to the versions"
+msgstr ""
+
+msgid "Revert to this version"
+msgstr ""
+
+msgid "Go to latest version"
+msgstr ""
+
+msgid "Version %{version} - %{author} on %{date}"
+msgstr ""
+
+msgid "This is not the latest version of this content."
+msgstr ""
+
+msgid "Changes on \"%s\""
+msgstr ""
+
+msgid "Changes from %s &rarr; %s"
+msgstr ""
+
+msgid "These versions range have no differences."
+msgstr ""
+
+msgid "comments"
+msgstr ""
+
+msgid "No comments yet"
+msgstr ""
+
+msgid "Go back to %s"
+msgstr ""
+
+msgid "This article's tags:"
+msgstr ""
+
+msgid "Oldest first"
+msgstr ""
+
+msgid "Newest first"
+msgstr ""
+
+msgid "You are here:"
+msgstr ""
+
+msgid "Manual"
+msgstr ""
+
+msgid "Manual sections"
+msgstr ""
+
+#, fuzzy
+msgid "Template Name:"
+msgstr "Nama"
+
+msgid "Template Type:"
+msgstr ""
+
+msgid "Subject:"
+msgstr ""
+
+msgid "Template language reference"
+msgstr ""
+
+msgid "The following parameters may be used in subject and body:"
+msgstr ""
+
+msgid "Body:"
+msgstr ""
+
+msgid "Email Templates"
+msgstr ""
+
+msgid "New template"
+msgstr ""
+
+msgid "You may have clicked an expired link or mistyped the address."
+msgstr ""
+
+msgid ""
+"If you clicked a link that was in another site, or was given to you by "
+"someone else, it would be nice if you tell them that their link is not valid "
+"anymore."
+msgstr ""
+
+msgid "Embed unavailable."
+msgstr ""
+
+msgid ""
+"There are no validators to validate the registration of this new enterprise. "
+"Contact your administrator for instructions."
+msgstr ""
+
+msgid "Go back"
+msgstr ""
+
+msgid ""
+"To register a new enterprise, fill in the form and hit the Register button. "
+"Then the enterprise will be submitted for evaluation at the validation "
+"entitiy of your choice (within your state) and when the enterprise is "
+"aproved you will be able to activate its profile."
+msgstr ""
+
+msgid "Enterprise registration completed"
+msgstr ""
+
+msgid ""
+"Your enterprise registration request was successfully registered. The "
+"validator organization you choose (%s) should get in touch with to start the "
+"validation process. As soon as the validators approve (or reject) your "
+"request, you will be notified by e-mail."
+msgstr ""
+
+msgid "You can continue to browse this environment."
+msgstr ""
+
+msgid "Your enterprise (%s) was successfully registered."
+msgstr ""
+
+msgid "You can manage your enterprise now."
+msgstr ""
+
+msgid "What can I do with a %s?"
+msgstr ""
+
+msgid "Enterprise registration: validator organization"
+msgstr ""
+
+msgid ""
+"Select one organization to validate your enterprise registration request. "
+"Check the provided information about their validation methodoly and criteria."
+msgstr ""
+
+msgid "Validation Methodology:"
+msgstr ""
+
+msgid "Restrictions (if any):"
+msgstr ""
+
+msgid "(not informed)"
+msgstr ""
+
+msgid "Contact Phone"
+msgstr ""
+
+msgid "Contact Person"
+msgstr ""
+
+msgid "Foundation Year"
+msgstr ""
+
+msgid "Legal Form"
+msgstr ""
+
+msgid "Economic Activity"
+msgstr ""
+
+msgid "Management Information"
+msgstr ""
+
+msgid "%s's validation"
+msgstr ""
+
+msgid "Provided information"
+msgstr ""
+
+msgid "Final decision:"
+msgstr ""
+
+msgid "Approve"
+msgstr ""
+
+msgid ""
+"If this enterprise passes the criteria to be considered an solidarity "
+"enconomy enterprise, you can approve it by click the button below."
+msgstr ""
+
+msgid "Reject"
+msgstr ""
+
+msgid ""
+"If this enterprise does not pass the criteria do be considered, use this "
+"form."
+msgstr ""
+
+msgid ""
+"Please provide an explanation for the rejection. This explanation will be "
+"sent to the requestor (required)."
+msgstr ""
+
+msgid "Editing the validation info"
+msgstr ""
+
+msgid "Enterprise validations"
+msgstr ""
+
+msgid "Edit validation info"
+msgstr ""
+
+msgid "Go Back"
+msgstr ""
+
+msgid "Pending enterprise validations"
+msgstr ""
+
+msgid "See details/approve/reject"
+msgstr ""
+
+msgid "Processed enterprise validations"
+msgstr ""
+
+msgid "See the list of processed enterprise validations"
+msgstr ""
+
+msgid "See details"
+msgstr ""
+
+msgid "Processed validation request for %s "
+msgstr ""
+
+msgid "Affiliate"
+msgstr ""
+
+msgid "Changing role of %s"
+msgstr ""
+
+msgid "Roles:"
+msgstr ""
+
+msgid "Listing Administrators"
+msgstr ""
+
+msgid "Make new admin"
+msgstr ""
+
+msgid "Edit member role"
+msgstr ""
+
+msgid "Remove member"
+msgstr ""
+
+msgid "Admin"
+msgstr ""
+
+msgid "Make"
+msgstr ""
+
+msgid "%s's events"
+msgstr ""
+
+msgid "Back to %s"
+msgstr ""
+
+msgid "New event"
+msgstr ""
+
+msgid "Adding %s as a favorite enterprise"
+msgstr ""
+
+msgid "Are you sure you want to add %s as your favorite enterprise?"
+msgstr ""
+
+msgid "Yes, I am sure"
+msgstr ""
+
+msgid "I want to add %s as a favorite enterprise"
+msgstr ""
+
+msgid "No, I don't want"
+msgstr ""
+
+msgid "%s's favorite enterprises"
+msgstr ""
+
+msgid "remove"
+msgstr ""
+
+msgid "You have no favorite enterprises yet."
+msgstr ""
+
+msgid "Removing favorite enterprise: %s"
+msgstr ""
+
+msgid "Are you sure you want to remove %s from your favorite enterprise list?"
+msgstr ""
+
+msgid "Yes, I want to remove %s from my favorite enterprise list"
+msgstr ""
+
+msgid "Field"
+msgstr ""
+
+msgid "Required"
+msgstr ""
+
+msgid "Display on creation?"
+msgstr ""
+
+msgid "Check/Uncheck All"
+msgstr ""
+
+msgid "Back to admin panel"
+msgstr ""
+
+msgid "Custom Fields"
+msgstr ""
+
+msgid "New field"
+msgstr ""
+
+msgid "Type: "
+msgstr ""
+
+msgid "Display on registration?"
+msgstr ""
+
+msgid "Display on signup?"
+msgstr ""
+
+msgid "Remove field"
+msgstr ""
+
+msgid "Default value"
+msgstr ""
+
+msgid "Display on moderation?"
+msgstr ""
+
+msgid "Alternative"
+msgstr ""
+
+msgid "Default"
+msgstr ""
+
+msgid "Add option"
+msgstr ""
+
+msgid "System features"
+msgstr ""
+
+msgid "Enable/Disable features"
+msgstr ""
+
+msgid ""
+"Here you can enable or disable several features of your environment. Each "
+"feature represents some funcionality that your environment can use if you "
+"enable it.\n"
+"\n"
+"Check all the features you want to enable for your environment, uncheck all "
+"the ones you don't want, and use the <em>\"Save changes\" button</em> to "
+"confirm your changes."
+msgstr ""
+
+msgid "Feature"
+msgstr ""
+
+msgid "Enabled?"
+msgstr ""
+
+msgid "Configure features"
+msgstr ""
+
+msgid "Page to redirect after signup"
+msgstr ""
+
+msgid "Page to redirect after login"
+msgstr ""
+
+msgid "Organization Approval Method"
+msgstr ""
+
+msgid "Members Whitelist"
+msgstr ""
+
+msgid "Enable whitelist"
+msgstr ""
+
+msgid "Allow these people to access this environment:"
+msgstr ""
+
+msgid "Type in a search term for a user"
+msgstr ""
+
+msgid "Feed"
+msgstr ""
+
+msgid "Enable feed proxy"
+msgstr ""
+
+msgid "HTTP feed proxy address:"
+msgstr ""
+
+msgid "HTTPS feed proxy address:"
+msgstr ""
+
+msgid "Disable feed SSL"
+msgstr ""
+
+msgid "Manage fields displayed for profiles"
+msgstr ""
+
+msgid "Person's fields"
+msgstr ""
+
+msgid "Community's fields"
+msgstr ""
+
+msgid "Enterprise's fields"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "&laquo; Previous"
+msgstr ""
+
+msgid "Next &raquo;"
+msgstr ""
+
+msgid "image %d of %d"
+msgstr ""
+
+msgid "Download image"
+msgstr ""
+
+msgid "unfollow"
+msgstr ""
+
+msgid "change category"
+msgstr ""
+
+msgid "%s is following"
+msgstr ""
+
+msgid "You don't follow anybody yet."
+msgstr ""
+
+msgid "Find people"
+msgstr ""
+
+msgid "contact"
+msgstr ""
+
+msgid "Connections with %s"
+msgstr ""
+
+msgid "Go to friends list"
+msgstr ""
+
+msgid "%s's friends"
+msgstr ""
+
+msgid "You have no friends yet."
+msgstr ""
+
+msgid "Do you want to see other people in this environment?"
+msgstr ""
+
+msgid "Invite people"
+msgstr ""
+
+msgid "Friends suggestions"
+msgstr ""
+
+msgid "Removing friend: %s"
+msgstr ""
+
+msgid "Are you sure you want to remove %s from your friends list?"
+msgstr ""
+
+msgid ""
+"Note that %s will still have you as a friend, unless he/she also wants to "
+"remove you from his/her friend list."
+msgstr ""
+
+msgid "Removing suggestion for friend: %s"
+msgstr ""
+
+msgid "Friends suggestions for %s"
+msgstr ""
+
+msgid "News"
+msgstr ""
+
+msgid "View more"
+msgstr ""
+
+msgid "Terms of use - %s"
+msgstr ""
+
+msgid "Welcome to %s!"
+msgstr ""
+
+msgid ""
+"Thanks for signing up, we're thrilled to have you on our social network!"
+msgstr ""
+
+msgid "Firstly, some tips for getting started:"
+msgstr ""
+
+msgid "Confirm your account!"
+msgstr ""
+
+msgid ""
+"You should receive a welcome email from us shortly. Please take a second to "
+"follow the link within to confirm your account."
+msgstr ""
+
+msgid "You won't appear as %s until your account is confirmed."
+msgstr ""
+
+msgid "user"
+msgstr ""
+
+msgid "Wait for admin approvement!"
+msgstr ""
+
+msgid "The administrators will evaluate your signup request for approvement."
+msgstr ""
+
+msgid "You won't appear as %s until your account is approved."
+msgstr ""
+
+msgid "What to do next?"
+msgstr ""
+
+msgid "Access your %s and see your face on the network!"
+msgstr ""
+
+msgid ""
+"You can also explore your %s to customize your profile. Here are some %s on "
+"what you can do there."
+msgstr ""
+
+msgid "Control Panel"
+msgstr ""
+
+msgid "tips"
+msgstr ""
+
+msgid "%s your Gmail, Yahoo and Hotmail contacts!"
+msgstr ""
+
+msgid "Invite and find"
+msgstr ""
+
+msgid ""
+"Learn the guidelines. Read the %s for more details on how to use this social "
+"network!"
+msgstr ""
+
+msgid "Documentation"
+msgstr ""
+
+msgid "Start exploring and have fun!"
+msgstr ""
+
+msgid "What can I do as a %s?"
+msgstr ""
+
+msgid "Please, wait..."
+msgstr ""
+
+msgid "Your e-mails contacts are being fetched"
+msgstr ""
+
+msgid ""
+"If it takes too long, you will be redirected to the previous page to try "
+"again. Be sure to fill in the fields with your correct login and password."
+msgstr ""
+
+msgid "Verify contact list"
+msgstr ""
+
+msgid "Add contact list"
+msgstr ""
+
+msgid "Cancel fetching e-mails"
+msgstr ""
+
+msgid ""
+"Now enter an invitation message. You must keep the <url> code in your "
+"invitation text. When your friends receive the invitation e-mail, <url> will "
+"be replaced by a link that they need to click to activate their account. "
+"<user> and <friend> codes will be replaced by your name and friend name, but "
+"they are optional."
+msgstr ""
+
+msgid "Invitation text:"
+msgstr ""
+
+msgid "Step 1 of 2: Select address book"
+msgstr ""
+
+msgid "Manually (empty field)"
+msgstr ""
+
+msgid "Please type your username in the format yourname@example.com"
+msgstr ""
+
+msgid "We won't store your password or contact anyone without your permission."
+msgstr ""
+
+msgid "Ask for friendship"
+msgstr ""
+
+msgid "You can search for user profiles and ask them to become your friends."
+msgstr ""
+
+msgid "Invite people to join"
+msgstr ""
+
+msgid "You can search for user profiles and invite them to join this group."
+msgstr ""
+
+msgid "Choose person by:"
+msgstr ""
+
+msgid "Type in the person's %{search_fields}"
+msgstr ""
+
+msgid "Invite"
+msgstr ""
+
+msgid "Invite people from my e-mail contacts"
+msgstr ""
+
+msgid "Step 2 of 2: Selecting People"
+msgstr ""
+
+msgid "Indicate which people you want to invite."
+msgstr ""
+
+msgid "Enter one e-mail address per line:"
+msgstr ""
+
+msgid "Check all"
+msgstr ""
+
+msgid "Uncheck all"
+msgstr ""
+
+msgid "Invite!"
+msgstr ""
+
+msgid "Press <strong>Enter</strong> to send the search query."
+msgstr ""
+
+msgid "Go to the content"
+msgstr ""
+
+msgid "Go to content"
+msgstr ""
+
+msgid "Play"
+msgstr ""
+
+msgid "Stop"
+msgstr ""
+
+msgid "License url"
+msgstr ""
+
+msgid "New license"
+msgstr ""
+
+msgid "Edit license"
+msgstr ""
+
+msgid "Manage licenses"
+msgstr ""
+
+msgid "Url reference"
+msgstr ""
+
+msgid "Are you sure you want to remove this license?"
+msgstr ""
+
+msgid "Add a new license"
+msgstr ""
+
+msgid "e-Mail configuration"
+msgstr ""
+
+msgid ""
+"You already request activation of your mailbox. Please wait until an "
+"administrator approves your request."
+msgstr ""
+
+msgid "Configuration"
+msgstr ""
+
+msgid "Mail configuration for POP and IMAP"
+msgstr ""
+
+msgid "Enable e-Mail account below:"
+msgstr ""
+
+msgid "You'll be able to access a webmail from your user menu."
+msgstr ""
+
+msgid "Enable e-Mail"
+msgstr ""
+
+msgid "E-Mail: "
+msgstr ""
+
+msgid "Phone(s): "
+msgstr ""
+
+msgid "Location: "
+msgstr ""
+
+msgid "Address: "
+msgstr ""
+
+msgid "Products/Services: "
+msgstr ""
+
+msgid "Distance: "
+msgstr ""
+
+msgid "Address not found, reason:"
+msgstr ""
+
+msgid "Invalid address"
+msgstr ""
+
+msgid "Request denied"
+msgstr ""
+
+msgid "Over query limit"
+msgstr ""
+
+msgid "Address do not exist"
+msgstr ""
+
+msgid "Localize before save"
+msgstr ""
+
+msgid "Location"
+msgstr ""
+
+msgid "Address (street and number)"
+msgstr ""
+
+msgid "Locate in the map"
+msgstr ""
+
+msgid ""
+"Locate the address informed above in the map below (note that you'll "
+"probably need to adjust the marker to get a precise position)"
+msgstr ""
+
+msgid "Drag the balloon to find the exact location."
+msgstr ""
+
+msgid "Go to groups list"
+msgstr ""
+
+msgid "Manage my groups"
+msgstr ""
+
+msgid "Create a new community"
+msgstr ""
+
+msgid "Register a new enterprise"
+msgstr ""
+
+msgid "See some suggestions of communities..."
+msgstr ""
+
+msgid "No groups to list"
+msgstr ""
+
+msgid "Creating new community"
+msgstr ""
+
+msgid ""
+"Note that the creation of communities in this environment is restricted. "
+"Your request to create this new community will be sent to %{environment} "
+"administrators and will be approved or rejected according to their methods "
+"and criteria."
+msgstr ""
+
+msgid "New members must be approved:"
+msgstr ""
+
+msgid ""
+"<strong>Before</strong> joining this group (a moderator has to accept the "
+"member in pending request before member can access the intranet and/or the "
+"website)."
+msgstr ""
+
+msgid ""
+"<strong>After</strong> joining this group (a moderator can always "
+"desactivate access for users later)."
+msgstr ""
+
+msgid "Removing suggestion for community: %s"
+msgstr ""
+
+msgid "Communities suggestions for %s"
+msgstr ""
+
+msgid "Community created"
+msgstr ""
+
+msgid "Your community (%s) was successfully created."
+msgstr ""
+
+msgid "You can manage your community now."
+msgstr ""
+
+msgid "Deactivate"
+msgstr ""
+
+msgid "Do you want to deactivate this organization?"
+msgstr ""
+
+msgid "Activate"
+msgstr ""
+
+msgid "Do you want to activate this organization?"
+msgstr ""
+
+msgid "Do you want to destroy this organization?"
+msgstr ""
+
+msgid "Find organizations"
+msgstr ""
+
+msgid "Filter by: "
+msgstr ""
+
+msgid "Disabled"
+msgstr ""
+
+msgid "Any"
+msgstr ""
+
+msgid "Enabled"
+msgstr ""
+
+msgid "Dear %s"
+msgstr ""
+
+msgid "You have %d pending task(s)."
+msgstr ""
+
+msgid "Click in address below to process task(s):"
+msgstr ""
+
+msgid "%s has %d pending task(s)."
+msgstr ""
+
+msgid "has published on community %s"
+msgstr ""
+
+msgid "See complete forum"
+msgstr ""
+
+msgid "Are you sure you want to remove this activity and all its replies?"
+msgstr ""
+
+msgid "View all %s comments"
+msgstr ""
+
+msgid "%s's Notifications"
+msgstr ""
+
+msgid "Tasks"
+msgstr ""
+
+msgid "Network Activity"
+msgstr ""
+
+msgid "Manage plugins"
+msgstr ""
+
+msgid "Select which plugins you want to enable in your environment"
+msgstr ""
+
+msgid "See more"
+msgstr ""
+
+msgid "profile|Comment"
+msgstr ""
+
+msgid "Manage followed people"
+msgstr ""
+
+msgid "More"
+msgstr ""
+
+msgid "Go to %s home page"
+msgstr ""
+
+msgid "Leave your comment"
+msgstr ""
+
+msgid "View comment"
+msgid_plural "View all %s comments"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Sort by:"
+msgstr ""
+
+msgid "Name A-Z"
+msgstr ""
+
+msgid "Name Z-A"
+msgstr ""
+
+msgid "%s's network activity"
+msgstr ""
+
+msgid "Are you sure you want to remove this scrap and all its replies?"
+msgstr ""
+
+msgid "%s's wall"
+msgstr ""
+
+msgid ""
+"Filter followed, friends or group of friends to send them a private scrap..."
+msgstr ""
+
+msgid "Share"
+msgstr ""
+
+msgid "%s's communities"
+msgstr ""
+
+msgid "Content tagged with \"%s\""
+msgstr ""
+
+msgid "Feed for this tag"
+msgstr ""
+
+msgid "See content tagged with \"%s\" in the entire site"
+msgstr ""
+
+msgid "%s's enterprises"
+msgstr ""
+
+msgid "%s's fans"
+msgstr ""
+
+msgid "%s is followed by"
+msgstr ""
+
+msgid "Manage my friends"
+msgstr ""
+
+msgid "Network"
+msgstr ""
+
+msgid "To join %s, you must:"
+msgstr ""
+
+msgid ""
+"Authorize the visibility of your email address to the community "
+"administrator."
+msgstr ""
+
+msgid "Authorize"
+msgstr ""
+
+msgid "Leaving %s"
+msgstr ""
+
+msgid "Are you sure you want to leave %s?"
+msgstr ""
+
+msgid "Yes, I want to leave."
+msgstr ""
+
+msgid "Members (%d)"
+msgstr ""
+
+msgid "%d Members"
+msgstr ""
+
+msgid "%d Administrators"
+msgstr ""
+
+msgid "Send e-mail to members"
+msgstr ""
+
+msgid "Report reasons"
+msgstr ""
+
+msgid "Report profile"
+msgstr ""
+
+msgid "All members"
+msgstr ""
+
+msgid "To:"
+msgstr ""
+
+msgid "Select a template:"
+msgstr ""
+
+msgid "Cancel e-mail"
+msgstr ""
+
+msgid "%s: site map"
+msgstr ""
+
+msgid "%s's tags"
+msgstr ""
+
+msgid "Moderation options"
+msgstr ""
+
+msgid "Email Configuration:"
+msgstr ""
+
+msgid "Send administrator Email for every task"
+msgstr ""
+
+msgid "Invitation moderation:"
+msgstr ""
+
+msgid "Allow all members to send invitation (Default: only administrator)"
+msgstr ""
+
+msgid "Allow members to invite only friends (Default: all users)"
+msgstr ""
+
+msgid "New members must allow email visibility to the profile admin"
+msgstr ""
+
+msgid "New articles posted by members of this group must be approved:"
+msgstr ""
+
+msgid ""
+"<strong>Before</strong> being published in this group (a moderator has to "
+"accept the article in pending request before the article be listed as a "
+"article of this group)."
+msgstr ""
+
+msgid ""
+"<strong>After</strong> being published in this group (a moderator can always "
+"remove publicated articles later)."
+msgstr ""
+
+msgid "General information"
+msgstr ""
+
+msgid ""
+"You are about to change the address, and this will break external links to "
+"the homepage or to content inside it. Do you really want to change?"
+msgstr ""
+
+msgid "Enable \"contact us\""
+msgstr ""
+
+msgid "You have %s pending requests"
+msgstr ""
+
+msgid "Process requests"
+msgstr ""
+
+msgid "Personal information"
+msgstr ""
+
+msgid "Editor"
+msgstr ""
+
+msgid "Private Token"
+msgstr ""
+
+msgid "Notification options"
+msgstr ""
+
+msgid "Hourly"
+msgstr ""
+
+msgid "Half Day"
+msgstr ""
+
+msgid "Daily"
+msgstr ""
+
+msgid ""
+"A short name by which you like to be known. Will be used in friends "
+"listings, community member listings etc."
+msgstr ""
+
+msgid "Home phone"
+msgstr ""
+
+msgid "Personal website"
+msgstr ""
+
+msgid "Birth date"
+msgstr ""
+
+msgid "Custom formation"
+msgstr ""
+
+msgid "Deleting profile %s"
+msgstr ""
+
+msgid "Are you sure you want to delete this profile?"
+msgstr ""
+
+msgid ""
+"You must be aware that all content of this profile (articles, events, files "
+"and pictures) will also be deleted."
+msgstr ""
+
+msgid "No, I gave up"
+msgstr ""
+
+msgid "Disabling '%s' enterprise"
+msgstr ""
+
+msgid "Are you sure you want to disable %s?"
+msgstr ""
+
+msgid "Yes, I want to disable."
+msgstr ""
+
+msgid "Profile settings for %s"
+msgstr ""
+
+msgid "This profile is a template"
+msgstr ""
+
+msgid "Change picture"
+msgstr ""
+
+msgid "Privacy options"
+msgstr ""
+
+msgid "Allow other users to follow me"
+msgstr ""
+
+msgid "Public &mdash; show my contents to all internet users"
+msgstr ""
+
+msgid "Private &mdash; show my contents only to friends"
+msgstr ""
+
+msgid ""
+"Secret &mdash; hide the community and all its contents for non members and "
+"other people can't join this community unless they are invited to."
+msgstr ""
+
+msgid "Public &mdash; show content of this group to all internet users"
+msgstr ""
+
+msgid "Private &mdash; show content of this group only to members"
+msgstr ""
+
+msgid ""
+"Automaticaly redirect the visitor to the article translated to his/her "
+"language"
+msgstr ""
+
+msgid "Suggestions"
+msgstr ""
+
+msgid "Send me relationship suggestions by email"
+msgstr ""
+
+msgid "Select the categories of your interest"
+msgstr ""
+
+msgid "Delete profile"
+msgstr ""
+
+msgid "Deactivate profile"
+msgstr ""
+
+msgid "Are you sure you want to deactivate this profile?"
+msgstr ""
+
+msgid "Activate profile"
+msgstr ""
+
+msgid "Are you sure you want to activate this profile?"
+msgstr ""
+
+msgid "Enabling '%s' enterprise"
+msgstr ""
+
+msgid "Are you sure you want to enable %s?"
+msgstr ""
+
+msgid "Yes, I want to enable."
+msgstr ""
+
+msgid "Editing header and footer"
+msgstr ""
+
+msgid ""
+"Using the fields below you can customize the header and footer for your "
+"website:"
+msgstr ""
+
+msgid ""
+"On header, you can include a personalized banner by first adding in \"Manage "
+"content\", and then referencing it here. A good format is 468 X 60 pixels, "
+"PNG format."
+msgstr ""
+
+msgid "On footer, you can include a slogan and your contact information etc."
+msgstr ""
+
+msgid "See existing examples:"
+msgstr ""
+
+msgid "Content for header "
+msgstr ""
+
+msgid "Content for footer"
+msgstr ""
+
+msgid "Mail settings"
+msgstr ""
+
+msgid "Edit sideboxes"
+msgstr ""
+
+msgid "Edit Appearance"
+msgstr ""
+
+msgid "Edit Header and Footer"
+msgstr ""
+
+msgid "Manage Content"
+msgstr ""
+
+msgid "Manage Roles"
+msgstr ""
+
+msgid "Create blog"
+msgstr ""
+
+msgid "Change Password"
+msgstr ""
+
+msgid "Manage Members"
+msgstr ""
+
+msgid "Enterprise Validation"
+msgstr ""
+
+msgid "Manage SPAM"
+msgstr ""
+
+msgid "Edit welcome page"
+msgstr ""
+
+msgid "Manage followed profiles"
+msgstr ""
+
+msgid "Activate your enterprise"
+msgstr ""
+
+msgid ""
+"If you received a letter with information about your enterprise activation, "
+"add here the activation code that was sent."
+msgstr ""
+
+msgid "Enterprise activation code"
+msgstr ""
+
+msgid "Your welcome page will only be displayed if this options is selected."
+msgstr ""
+
+msgid ""
+"This page will be displayed to the user after his signup with this template."
+msgstr ""
+
+msgid "Add admins to %s"
+msgstr ""
+
+msgid "Add members"
+msgstr ""
+
+msgid "Type in a search term for users"
+msgstr ""
+
+#, fuzzy
+msgid "Name or Email"
+msgstr "Nama"
+
+msgid "Current members"
+msgstr ""
+
+msgid "No members found to: %s"
+msgstr ""
+
+msgid "Add members to %s"
+msgstr ""
+
+msgid "Custom Roles:"
+msgstr ""
+
+msgid "Last administrator leaving %s"
+msgstr ""
+
+msgid ""
+"Since you are the last administrator, you must choose at least one member to "
+"administer this community."
+msgstr ""
+
+msgid "%s Permissions:"
+msgstr ""
+
+msgid "Create role"
+msgstr ""
+
+msgid "Assign %s"
+msgstr ""
+
+msgid "Assign role by:"
+msgstr ""
+
+msgid "Roles"
+msgstr ""
+
+msgid "Select members to assign the role"
+msgstr ""
+
+msgid "Replace role: "
+msgstr ""
+
+msgid "Deleting %s"
+msgstr ""
+
+msgid "This role is not being currently used."
+msgstr ""
+
+msgid "Are you sure you want to delete this role?"
+msgstr ""
+
+msgid "There are members currently using this role."
+msgstr ""
+
+msgid "To which role do you want to change them?"
+msgstr ""
+
+msgid "Delete role"
+msgstr ""
+
+msgid "Manage user roles"
+msgstr ""
+
+msgid "Role"
+msgstr ""
+
+msgid "Assign"
+msgstr ""
+
+msgid "Create a new role"
+msgstr ""
+
+msgid "Permissions"
+msgstr ""
+
+msgid "Back to roles management"
+msgstr ""
+
+msgid "%s result found"
+msgid_plural "%s results found"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Search on %s's profile"
+msgstr ""
+
+msgid "Add a CSS file"
+msgstr ""
+
+msgid "File name"
+msgstr ""
+
+msgid "Choose the image file"
+msgstr ""
+
+msgid "Add image"
+msgstr ""
+
+msgid "CSS code: \"%s\""
+msgstr ""
+
+msgid "Editing theme \"%s\""
+msgstr ""
+
+msgid "Preview this theme"
+msgstr ""
+
+msgid "CSS files"
+msgstr ""
+
+msgid "New CSS"
+msgstr ""
+
+msgid "Select a CSS file to edit"
+msgstr ""
+
+msgid "My themes"
+msgstr ""
+
+msgid "Use this theme"
+msgstr ""
+
+msgid "The \"%s\" theme."
+msgstr ""
+
+msgid "Edit this theme"
+msgstr ""
+
+msgid "Test this theme"
+msgstr ""
+
+msgid "New theme ..."
+msgstr ""
+
+msgid "Create new theme"
+msgstr ""
+
+msgid "Name of the new theme:"
+msgstr ""
+
+msgid "1 validator"
+msgid_plural "%{num} validators."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Validators by Region"
+msgstr ""
+
+msgid "Validators for region %s"
+msgstr ""
+
+msgid "Current validators"
+msgstr ""
+
+msgid "Remove validation rights"
+msgstr ""
+
+msgid "Add new validators"
+msgstr ""
+
+msgid ""
+"First search organizations by their name, then use the buttons in the search "
+"result to add them as validators for this region. "
+msgstr ""
+
+msgid "%{sender} (%{sender_link}) has left the following scrap for you:"
+msgstr ""
+
+msgid "View this scrap on the wall"
+msgstr ""
+
+msgid "Author"
+msgstr ""
+
+msgid "Updated by %{name} at %{date}"
+msgstr ""
+
+msgid "Last update: %s."
+msgstr ""
+
+msgid "by %{author} on \"%{article}\""
+msgstr ""
+
+msgid "see all (%d)"
+msgstr ""
+
+msgid "Last posts"
+msgstr ""
+
+msgid "Start date"
+msgstr ""
+
+msgid "End date"
+msgstr ""
+
+msgid "Last items"
+msgstr ""
+
+msgid "Last topics"
+msgstr ""
+
+msgid "No image"
+msgstr ""
+
+msgid "Total of 1 result"
+msgid_plural "Total of %s results"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Type words about the %s you're looking for"
+msgstr ""
+
+msgid "Category Index"
+msgstr ""
+
+msgid "Sub-categories"
+msgstr ""
+
+msgid "No sub-categories"
+msgstr ""
+
+msgid "Search Results"
+msgstr ""
+
+msgid "Tagged with \"%s\""
+msgstr ""
+
+msgid "Back to tag cloud"
+msgstr ""
+
+msgid "Tag cloud"
+msgstr ""
+
+msgid "Image Label:"
+msgstr ""
+
+msgid "Published at: %s"
+msgstr ""
+
+msgid "Used when a short version of your text is needed."
+msgstr ""
+
+msgid "Role: %s"
+msgstr ""
+
+msgid "Type: %s"
+msgstr ""
+
+msgid "Description: %s"
+msgstr ""
+
+msgid "Members: %s"
+msgstr ""
+
+msgid "Created at: %s"
+msgstr ""
+
+msgid "Control panel of this group"
+msgstr ""
+
+msgid "Profiles in common:"
+msgstr ""
+
+msgid "Tags in common:"
+msgstr ""
+
+msgid "Find in %s's content"
+msgstr ""
+
+msgid "General"
+msgstr ""
+
+msgid "Search all content"
+msgstr ""
+
+msgid "You have no more suggestions :("
+msgstr ""
+
+msgid "Add suggestion"
+msgstr ""
+
+msgid "Remove suggestion"
+msgstr ""
+
+msgid "Are you sure you want to remove this suggestion?"
+msgstr ""
+
+msgid "redirecting..."
+msgstr ""
+
+msgid "Are you sure you want to remove %s from your suggestions list?"
+msgstr ""
+
+msgid "Yes, I want to remove %s"
+msgstr ""
+
+msgid "Selected categories:"
+msgstr ""
+
+msgid "Click to select a category"
+msgstr ""
+
+msgid "Change image"
+msgstr ""
+
+msgid "Remove image"
+msgstr ""
+
+msgid "You are not allowed to view this page."
+msgstr ""
+
+msgid ""
+"If you are supposed to have access to this area, you'll probably want to "
+"talk to the people responsible and ask them to give you access."
+msgstr ""
+
+msgid "Go to the site home page"
+msgstr ""
+
+msgid ""
+"The user is not online now. He/She will receive these messages as soon as he/"
+"she gets online."
+msgstr ""
+
+msgid "Offline"
+msgstr ""
+
+msgid "Join room"
+msgstr ""
+
+msgid "Leave room"
+msgstr ""
+
+msgid "There is no such page: %s"
+msgstr ""
+
+msgid "Go to the home page"
+msgstr ""
+
+msgid ";"
+msgstr ""
+
+msgid "cert. "
+msgstr ""
+
+msgid "Open chat"
+msgstr ""
+
+msgid "Join chat room"
+msgstr ""
+
+msgid "Original content"
+msgstr ""
+
+msgid "This link might be unavailable if the content is removed"
+msgstr ""
+
+msgid "Comment"
+msgstr ""
+
+msgid "Reported folder"
+msgstr ""
+
+msgid "Testing theme \"%s\""
+msgstr ""
+
+msgid ""
+"You can move this window away to have a better visualization of specific "
+"parts of screen."
+msgstr ""
+
+msgid "Finished testing"
+msgstr ""
+
+msgid "Edit theme"
+msgstr ""
+
+msgid "%s's Menu"
+msgstr ""
+
+msgid "My Home Page"
+msgstr ""
+
+msgid "My groups"
+msgstr ""
+
+msgid "Webmail"
+msgstr ""
+
+msgid "Show details"
+msgstr ""
+
+msgid "Sent by"
+msgstr ""
+
+msgid "Folder|none"
+msgstr ""
+
+msgid "Abstract|empty"
+msgstr ""
+
+msgid "Are you sure you want to remove this article suggestion?"
+msgstr ""
+
+msgid "There are no spams to review."
+msgstr ""
+
+msgid "Comment Spam"
+msgstr ""
+
+msgid "Task Spam"
+msgstr ""
+
+msgid "Dear %s,"
+msgstr ""
+
+msgid "Hello %s,"
+msgstr ""
+
+msgid ""
+"Access your list of tasks or your control panel to see this and other "
+"pending actions that need your attention."
+msgstr ""
+
+msgid "Reported by %{reporter} %{time}."
+msgstr ""
+
+msgid "View details"
+msgstr ""
+
+msgid "Classify your new friend:"
+msgstr ""
+
+msgid "Suggestions: %s"
+msgstr ""
+
+msgid "Select an acceptance email template:"
+msgstr ""
+
+msgid "Create a link"
+msgstr ""
+
+msgid "Name for publishing"
+msgstr ""
+
+msgid "Select the folder where the article must be published"
+msgstr ""
+
+msgid "Comment for author"
+msgstr ""
+
+msgid "Title: "
+msgstr ""
+
+msgid "Rejection explanation"
+msgstr ""
+
+msgid "Sent by: "
+msgstr ""
+
+msgid "Email: %s"
+msgstr ""
+
+msgid "Assign to:"
+msgstr ""
+
+msgid "Assigned to:"
+msgstr ""
+
+msgid "Skip"
+msgstr ""
+
+msgid "Created:"
+msgstr ""
+
+msgid "Processed:"
+msgstr ""
+
+msgid "Closed by:"
+msgstr ""
+
+msgid "Select a rejection email template:"
+msgstr ""
+
+msgid "%s's pending tasks"
+msgstr ""
+
+msgid "This error happened with the following tasks: "
+msgstr ""
+
+msgid "Type of task"
+msgstr ""
+
+msgid "Text filter"
+msgstr ""
+
+msgid "No pending tasks for %s"
+msgstr ""
+
+msgid "Apply!"
+msgstr ""
+
+msgid "View processed tasks"
+msgstr ""
+
+msgid "Set all to: "
+msgstr ""
+
+msgid "Tasks that I requested"
+msgstr ""
+
+msgid "Status:"
+msgstr ""
+
+msgid "New request for %s"
+msgstr ""
+
+msgid "New request"
+msgstr ""
+
+msgid "To: "
+msgstr ""
+
+msgid "%s's processed tasks"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Text Filter:"
+msgstr ""
+
+msgid "Requestor:"
+msgstr ""
+
+msgid "Creation date"
+msgstr ""
+
+msgid "Processed date"
+msgstr ""
+
+msgid "No processed tasks."
+msgstr ""
+
+msgid "Ticket: %s"
+msgstr ""
+
+msgid "Created at %s by %s"
+msgstr ""
+
+msgid "Owner: %s"
+msgstr ""
+
+msgid "Status: %s"
+msgstr ""
+
+msgid "Closing statement: %s"
+msgstr ""
+
+msgid "The template could not be saved"
+msgstr ""
+
+msgid "There were problems with the following fields:"
+msgstr ""
+
+msgid "Create enterprise template"
+msgstr ""
+
+msgid "Create community template"
+msgstr ""
+
+msgid "Create person template"
+msgstr ""
+
+msgid "Edit Templates"
+msgstr ""
+
+msgid "Manage the templates used on creation of profiles"
+msgstr ""
+
+msgid "New..."
+msgstr ""
+
+msgid "Create a new template for %s"
+msgstr ""
+
+msgid "Template"
+msgstr ""
+
+msgid "Edit template \"%s\""
+msgstr ""
+
+msgid "is the default template"
+msgstr ""
+
+msgid "Set as default"
+msgstr ""
+
+msgid "Set %s template as default"
+msgstr ""
+
+msgid "Edit settings"
+msgstr ""
+
+msgid "Edit sideblocks"
+msgstr ""
+
+msgid "Edit header/footer"
+msgstr ""
+
+msgid "Editing Appearance"
+msgstr ""
+
+msgid "Select template"
+msgstr ""
+
+msgid "The \"%s\" template"
+msgstr ""
+
+msgid "Select theme"
+msgstr ""
+
+msgid "Use the default theme"
+msgstr ""
+
+msgid "Are you sure you want to use the environment default theme?"
+msgstr ""
+
+msgid "Editing trusted site"
+msgstr ""
+
+msgid "Manage trusted sites"
+msgstr ""
+
+msgid ""
+"Here you can manage the list of trusted sites of your environment. A trusted "
+"site is a site that you consider safe enough to incorporate their content "
+"through <em>iframes</em>."
+msgstr ""
+
+msgid "Site"
+msgstr ""
+
+msgid ""
+"Are you sure you want to remove this site from the list of trusted sites?"
+msgstr ""
+
+msgid "Add a trusted site"
+msgstr ""
+
+msgid "Add a new trusted site"
+msgstr ""
+
+msgid "Add trusted site"
+msgstr ""
+
+msgid ""
+"Welcome to %{environment}! To activate your account, follow the link: "
+"%{activation_url}"
+msgstr ""
+
+msgid "Your email %s was just activated."
+msgstr ""
+
+msgid "You can access your e-mail from anywhere, using the following address:"
+msgstr ""
+
+msgid "We want to give you some suggestions to grow up your network."
+msgstr ""
+
+msgid "Check it out!"
+msgstr ""
+
+msgid "Friends suggestions:"
+msgstr ""
+
+msgid "To see the full list of friends suggestions, follow the link: %s"
+msgstr ""
+
+msgid "Communities suggestions:"
+msgstr ""
+
+msgid "To see the full list of communities suggestions, follow the link: %s"
+msgstr ""
+
+msgid "User list as [CSV]"
+msgstr ""
+
+msgid "User list as [XML]"
+msgstr ""
+
+msgid "Send e-mail to users"
+msgstr ""
+
+msgid "Reset admin role"
+msgstr ""
+
+msgid "Do you want to reset this user as administrator?"
+msgstr ""
+
+msgid "Set admin role"
+msgstr ""
+
+msgid "Do you want to set this user as administrator?"
+msgstr ""
+
+msgid "Activate user"
+msgstr ""
+
+msgid "Do you want to activate this user?"
+msgstr ""
+
+msgid "Deactivate user"
+msgstr ""
+
+msgid "Do you want to deactivate this user?"
+msgstr ""
+
+msgid "Do you want to remove this user?"
+msgstr ""
+
+msgid "Find users"
+msgstr ""
+
+msgid "Manage users"
+msgstr ""
+
+msgid "email"
+msgstr ""
+
+msgid "Recipients: "
+msgstr ""
+
+msgid "All Users"
+msgstr ""
+
+msgid "Only Admins"
+msgstr ""
+
+#, fuzzy
+msgid "Environment Admins"
+msgstr "Lingkungan Administrator"
+
+#, fuzzy
+msgid "Profile Admins"
+msgstr "Profil Administrator"
+
+msgid "Unsupported macro %s!"
+msgstr ""
+
+msgid "No description informed."
+msgstr ""
+
+msgid "The target is achived and can't accept votes"
+msgstr ""
+
+msgid "Temporary system problem"
+msgstr ""
+
+msgid ""
+"Our technical team is working on it, please try again later. Sorry for the "
+"inconvenience."
+msgstr ""
+
+msgid "System maintainance"
+msgstr ""
+
+msgid "This system is under maintainance. It should be back in a few moments."
+msgstr ""
+
+msgid ""
+"This social network uses <a href=\"http://noosfero.org/\">Noosfero</a>, "
+"developed by %s and licensed under the <a href=\"http://www.gnu.org/licenses/"
+"agpl.html\">GNU Affero General Public License</a> version 3 or any later "
+"version."
+msgstr ""
+
+msgid ""
+"This site uses <a href=\"http://noosfero.org/\">Noosfero</a>, developed by "
+"%s and licensed under the <a href=\"http://www.gnu.org/licenses/agpl.html"
+"\">GNU Affero General Public License</a> version 3 or any later version."
+msgstr ""

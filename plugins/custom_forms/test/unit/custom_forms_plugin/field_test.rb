@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../../../../test/test_helper'
+require 'test_helper'
 
 class CustomFormsPlugin::FieldTest < ActiveSupport::TestCase
   should 'set slug before validation based on name' do
@@ -9,7 +9,7 @@ class CustomFormsPlugin::FieldTest < ActiveSupport::TestCase
 
   should 'set mandatory field as false by default' do
     field = CustomFormsPlugin::Field.new
-    assert !field.mandatory
+    refute field.mandatory
   end
 
   should 'have answers' do
@@ -47,7 +47,7 @@ class CustomFormsPlugin::FieldTest < ActiveSupport::TestCase
 
   should 'have alternative if type is SelectField' do
     select = CustomFormsPlugin::Field.new(:name => 'select_field001', :type => 'CustomFormsPlugin::SelectField')
-    assert !select.save
+    refute select.save
 
     select.alternatives << CustomFormsPlugin::Alternative.new(:label => 'option')
     assert select.save

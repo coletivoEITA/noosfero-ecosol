@@ -1,4 +1,4 @@
-<h1><%= t('views.node.edit.title') % {:node => link_to(@node.name, @node.url, :target => '_blank')} %></h1>
+<h1><%= t('views.node.edit.title', :node => link_to(@node.name, @node.url, :target => '_blank')) %></h1>
 
 <%= button :back, t('views.node.edit.back'), :controller => :networks_plugin_network, :action => :structure, :node_id => @node.parent.id %>
 
@@ -14,9 +14,9 @@
   </div>
 
   <div>
-    <%= fields_for :home_page, @node.home_page do |f| %>
-      <%= f.label :body, t('views.node.edit.presentation_text') %>
-      <%= f.text_area :body, :class => 'mceEditor' %>
+    <%= fields_for :home_page, @node.home_page do |ff| %>
+      <%= ff.label :body, t('views.node.edit.presentation_text') %>
+      <%= ff.text_area :body, :class => 'mceEditor' %>
     <% end %>
   </div>
 

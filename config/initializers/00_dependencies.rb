@@ -1,0 +1,24 @@
+require 'pp'
+
+# third-party libraries
+require 'will_paginate'
+require 'will_paginate/array'
+require 'nokogiri'
+
+# dependencies at vendor, firstly loaded on Gemfile
+vendor = Dir.glob('vendor/{,plugins/}*') - ['vendor/plugins']
+vendor.each do |dir|
+  init_rb = "#{Rails.root}/#{dir}/init.rb"
+  require init_rb if File.file? init_rb
+end
+
+# extensions
+require 'extensions'
+
+# locally-developed modules
+require 'route_if'
+require 'maybe_add_http'
+
+# ruby exts
+require 'super_proxy'
+

@@ -14,5 +14,18 @@ class ConsumersCoopPlugin::Base < Noosfero::Plugin
     { title: I18n.t('consumers_coop_plugin.lib.plugin.name'), icon: 'consumers-coop', url: {controller: :consumers_coop_plugin_myprofile, profile: profile.identifier, action: :settings} }
   end
 
+  def self.plugin_name
+    I18n.t('consumers_coop_plugin.lib.plugin.name')
+  end
+
+  def self.plugin_description
+    I18n.t('consumers_coop_plugin.lib.plugin.description')
+  end
+
+  def self.extra_blocks
+    {
+      ConsumersCoopPlugin::ConsumersCoopMenuBlock => {type: [Community]}
+    }
+  end
 end
 

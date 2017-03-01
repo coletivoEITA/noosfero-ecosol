@@ -4,7 +4,6 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   include ConsumersCoopPlugin::ControllerHelper
   include OrdersCyclePlugin::TranslationHelper
 
-  no_design_blocks
   before_filter :login_required, except: [:index]
 
   helper OrdersCyclePlugin::TranslationHelper
@@ -14,7 +13,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
     @current_year = DateTime.now.year.to_s
     @year = (params[:year] || @current_year).to_s
 
-    @years_with_cycles = profile.orders_cycles_without_order.years.collect &:year
+    @years_with_cycles = profile.orders_cycles_without_order.years.collect(&:year)
     @years_with_cycles.unshift @current_year unless @years_with_cycles.include? @current_year
 
     @cycles = profile.orders_cycles.by_year @year
@@ -38,7 +37,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
       @order.consumer = @consumer
       @order.cycle = @cycle
       @order.save!
-      redirect_to params.merge(action: :edit, id: @order.id)
+      redirect_to url_for(params.merge action: :edit, id: @order.id)
     end
   end
 
@@ -55,7 +54,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
       end
       @repeat_order.supplier_delivery = @order.supplier_delivery
       @repeat_order.save!
-      redirect_to params.merge(action: :edit, id: @repeat_order.id)
+      redirect_to url_for(params.merge action: :edit, id: @repeat_order.id)
     else
       @orders = @cycle.consumer_previous_orders(@consumer).last(5).reverse
       @orders.each{ |o| o.enable_product_diff }
@@ -71,8 +70,13 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
       status = params[:order][:status]
       if status == 'ordered'
         if @order.items.size > 0
-          @order.update_attributes! params[:order]
-          session[:notice] = t('orders_plugin.controllers.profile.consumer.order_confirmed')
+          out_of_stock = @order.check_stock
+          @order.update! params[:order]
+          if out_of_stock
+            session[:notice] = t('orders_plugin.controllers.profile.consumer.order_confirmed_with_stock_changes')
+          else
+            session[:notice] = t('orders_plugin.controllers.profile.consumer.order_confirmed')
+          end
         else
           session[:notice] = t('orders_plugin.controllers.profile.consumer.can_not_confirm_your_')
         end
@@ -116,12 +120,12 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   end
 
   def reopen
-    @order.update_attributes! status: 'draft'
+    @order.update! status: 'draft'
     render 'edit'
   end
 
   def cancel
-    @order.update_attributes! status: 'cancelled'
+    @order.update! status: 'cancelled'
     session[:notice] = t('orders_plugin.controllers.profile.consumer.order_cancelled')
     render 'edit'
   end
@@ -161,7 +165,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   end
 
   def supplier_balloon
-    @supplier = SuppliersPlugin::Supplier.find params[:id]
+    @supplier = profile.suppliers.find params[:id]
   end
   def product_balloon
     @product = OrdersCyclePlugin::OfferedProduct.find params[:id]
@@ -171,12 +175,13 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
 
   def load_products_for_order
     scope = @cycle.products_for_order
+    scope = scope.joins(:from_product).from_products_in_stock if defined? StockPlugin
     page, per_page = params[:page].to_i, 20
     page = 1 if page < 1
     @products = OrdersCyclePlugin::OfferedProduct.search_scope(scope, params).paginate page: page, per_page: per_page
   end
 
   extend HMVC::ClassMethods
-  hmvc OrdersCyclePlugin, orders_context: OrdersCyclePlugin
+  hmvc OrdersCyclePlugin
 
 end

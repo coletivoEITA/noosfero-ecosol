@@ -1,0 +1,87 @@
+order-item-quantity-price
+
+  .quantity-price-row class="{status_id} {flagClasses}"
+
+    .box-field.quantity title='{statusWithUnit()}'
+      span.value if='{status.flags.removed}'
+        '{t('views.item._edit.removed')}
+      span.value if='{!status.flags.removed}'
+        '{quantityNumber}
+
+      span if='{!parent.parent.order.view_only && status.flags.editable}'
+        input.form-control.inline-input name='quantity_{status.field}' type='number' value='{status.quantity}' min='0' step='any' onkeyup='{quantityChange}' oninput='{quantityChange}' onchange='{quantityChange}'
+      span.unit if='{!status.flags.editable}'
+        '&nbsp;{item.unit_name}
+
+    .box-field.price-total
+      span class='{outdated: status.new_price}'
+        '{status.price}
+      span.new-price if='{status.new_price}'
+        '{status.new_price}
+
+    .box-field.status if='{parent.parent.order.admin}'
+      '{t('models.order.statuses.'+status_id)}
+
+  javascript:
+    this.item      = opts.item
+    this.status    = opts.status
+    this.status_id = opts.status_id
+
+    statusWithUnit() {
+      if (!status.flags.removed)
+        return quantityNumber+' '+item.unit_name
+    }
+
+    quantityChange(event) {
+      var input = event.target
+      // avoid recalling save when there's no change
+      if (!input.value && parseInt(this.status.quantity).toFixed(2) == parseInt(input.value).toFixed(2)) {
+        return
+      }
+      this.run_at = new Date()
+      this.event_type = event.type
+      var self = this
+
+      setTimeout(function(run_at, type) {
+        if (self.run_at == run_at && type == self.event_type)
+          self.quantityUpdate(input)
+      }, 500, this.run_at, event.type);
+    }
+
+    quantityUpdate(input) {
+      var value = input.value
+      var data = {item: {}}
+      data.item['quantity_'+this.status.field] = value
+
+      $.post(this.item.update_url, data, function (order) {
+        if (value == 0 || order['notfound'] != undefined) {
+          var index = this.parent.order.items.indexOf(this.item)
+          this.order.items.splice(index,1)
+          var products = $(".order-cycle-product input:checked")
+          if (index >= 0 && index < products.length) {
+            products[index].checked = ""
+            products.eq(index).parents('.order-cycle-product').removeClass("in-order")
+          }
+        }
+        // force input value updating as browsers seem to ignore it when input has focus
+        for (var i in order.items) {
+          p = order.items[i]
+          if (p.quantity_consumer_ordered_more_than_stored && p.quantity_consumer_ordered_more_than_stored == p.id) {
+            alert(this.t('views.item._edit.ordered_more_than_in_stock', {name: p.name}))
+            $('#item-'+p.id).find('input')[0].value = p.status_quantity
+          }
+        }
+        var orderTag = this.parent.parent
+        orderTag.updateOrder(order)
+        display_notice(this.t('views.item._edit.saved'))
+      }.bind(this))
+
+      // keep up/down of number input work
+      return true
+    }
+
+    this.on('update', function () {
+      this.flagClasses    = _.keys(_.pick(this.status.flags, function (v, k) { return v })).join(' ')
+      this.quantityNumber = I18n.toNumber(this.status.quantity, {precision: 1})
+    }.bind(this))
+

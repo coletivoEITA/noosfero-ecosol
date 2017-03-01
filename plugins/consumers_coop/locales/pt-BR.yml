@@ -3,22 +3,21 @@ pt-BR: &pt-BR
   consumers_coop_plugin:
     lib:
       plugin:
-        name: "Coletivo de consumo"
-        description: "Torne uma organização em uma coletivo de consumo"
+        name: "Grupo de consumo responsável"
+        description: "Torne uma organização em um grupo de consumo"
       layout_helper:
-        start: Início
         orders: Pedidos
+        orders_cycles: Feiras Virtuais
         products: Produtos
-        administration: Administração
         volunteering: Voluntariado
+        leave: Sair da comunidade
+        suppliers: Fornecedores
+        consumers: Consumidores
+        settings: Configurações
 
     controllers:
       myprofile:
         distribution_settings: "Configurações salvas"
-
-    models:
-      header_image:
-        fn_of_uploaded_file_w: "%{fn} do arquivo enviado é maior que o máximo permitido de 2.0 MB"
 
     views:
       layouts:
@@ -53,6 +52,15 @@ pt-BR: &pt-BR
           text_color: "Cor do texto"
           this_name_will_be_use: "Este nome será usado para evitar sempre o nome todo por extenso %{terms.profile.from_article.singular}. Como %{terms.profile.article.singular} é comumente chamado pelas pessoas?"
           white: branco
+          change: mudar
+          default_margin_of_com: "Margem padrão de comercialização"
+          default_margin_info: "Esta margem é automaticamente aplicada em todos os produtos, mas é possível estabelecer margens específicas para certos produtos."
+          margin: "%{margin} %"
+          no_margin_set: "Sem margem definida"
+          payments: "Pagamentos"
+          enable_payments: "Habilitar pagamentos nas feiras?"
+          set_payments: "Configure os métodos de pagamento do grupo"
+          add_payment_method: "Adicionar método de pagamento disponível"
 
 pt_BR:
   <<: *pt-BR

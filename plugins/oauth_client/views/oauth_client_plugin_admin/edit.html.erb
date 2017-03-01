@@ -1,7 +1,7 @@
 <h1><%= _('Oauth Client Settings') %></h1>
 <h3><%= _('Edit Provider') %></h3>
 
-<%= form_for @provider, :url => {:action => 'edit'}, :method => 'post' do |f| %>
+<%= form_for @provider, :url => {:action => 'edit', :id => @provider.id}, :method => 'post' do |f| %>
 
   <div class="enabled">
     <%= labelled_form_field f.check_box(:enabled) + _('Enabled'), '' %>
@@ -13,6 +13,10 @@
 
   <div class="strategy">
     <%= labelled_form_field _('Strategy'), f.select(:strategy, OauthClientPlugin::PROVIDERS) %>
+  </div>
+
+  <div class="remember-enable-email hidden">
+    <span class="error"><%=_('To use this provider you need to request the user email in your app')%></span>
   </div>
 
   <div class="client-id">
@@ -33,7 +37,7 @@
     <% end %>
   </div>
 
-  <% button_bar do %>
+  <%= button_bar do %>
     <%= submit_button(:save, _('Save'), :cancel => {:action => 'index'}) %>
   <% end %>
 <% end %>

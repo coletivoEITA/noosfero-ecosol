@@ -54,7 +54,19 @@ class HighlightsBlockTest < ActiveSupport::TestCase
   should 'remove images with blank fields' do
     h = HighlightsBlock.new(:images => [{:image_id => 1, :address => '/address', :position => 1, :title => 'address'}, {:image_id => '', :address => '', :position => '', :title => ''}])
     h.save!
-    assert_equal [{:image_id => 1, :address => '/address', :position => 1, :title => 'address', :image_src => nil}], h.images
+    assert_equal [{:image_id => 1, :address => '/address', :position => 1, :title => 'address', :new_window => false, :image_src => nil}], h.images
+  end
+
+  should 'replace 1 and 0 by true and false in new_window attribute' do
+    image1 = {:image_id => 1, :address => '/address-1', :position => 1, :title => 'address-1', :new_window => '0'}
+    image2 = {:image_id => 2, :address => '/address-2', :position => 2, :title => 'address-2', :new_window => '1'}
+    h = HighlightsBlock.new(:images => [image1, image2])
+    h.save!
+    image1[:new_window] = false
+    image1[:image_src] = nil
+    image2[:new_window] = true
+    image2[:image_src] = nil
+    assert_equivalent [image1, image2], h.images
   end
 
   should 'be able to update display setting' do
@@ -63,16 +75,18 @@ class HighlightsBlockTest < ActiveSupport::TestCase
     block = HighlightsBlock.create!(:display => 'never').tap do |b|
       b.box = box
     end
-    assert block.update_attributes!(:display => 'always')
+    assert block.update!(:display => 'always')
     block.reload
     assert_equal 'always', block.display
   end
 
+  include BoxesHelper
+
   should 'display highlights block' do
     block = HighlightsBlock.new
-    self.expects(:render).with(:file => 'blocks/highlights', :locals => { :block => block})
+    self.expects(:render).with(template: 'blocks/highlights', locals: {block: block})
 
-    instance_eval(& block.content)
+    render_block_content(block)
   end
 
   should 'not list non existent image' do
@@ -84,7 +98,7 @@ class HighlightsBlockTest < ActiveSupport::TestCase
     block.save!
     block.reload
     assert_equal 2, block.images.count
-    assert_equal [{:image_id => 1, :address => '/address', :position => 1, :title => 'address', :image_src => 'address'}], block.featured_images
+    assert_equal [{:image_id => 1, :address => '/address', :position => 1, :title => 'address', :new_window => false, :image_src => 'address'}], block.featured_images
   end
 
   should 'list images in order' do
@@ -109,33 +123,53 @@ class HighlightsBlockTest < ActiveSupport::TestCase
   end
 
   should 'list images randomically' do
+    block = HighlightsBlock.new
+    block.shuffle = true
+
+    images = []
+    block.expects(:get_images).returns(images)
+    images.expects(:shuffle).returns(images)
+
+    block.featured_images
+  end
+
+  should 'return correct sub-dir address' do
+    Noosfero.stubs(:root).returns("/social")
     f1 = mock()
     f1.expects(:public_filename).returns('address')
     UploadedFile.expects(:find).with(1).returns(f1)
-    f2 = mock()
-    f2.expects(:public_filename).returns('address')
-    UploadedFile.expects(:find).with(2).returns(f2)
-    f3 = mock()
-    f3.expects(:public_filename).returns('address')
-    UploadedFile.expects(:find).with(3).returns(f3)
-    f4 = mock()
-    f4.expects(:public_filename).returns('address')
-    UploadedFile.expects(:find).with(4).returns(f4)
-    f5 = mock()
-    f5.expects(:public_filename).returns('address')
-    UploadedFile.expects(:find).with(5).returns(f5)
     block = HighlightsBlock.new
     i1 = {:image_id => 1, :address => '/address', :position => 3, :title => 'address'}
-    i2 = {:image_id => 2, :address => '/address', :position => 1, :title => 'address'}
-    i3 = {:image_id => 3, :address => '/address', :position => 2, :title => 'address'}
-    i4 = {:image_id => 4, :address => '/address', :position => 5, :title => 'address'}
-    i5 = {:image_id => 5, :address => '/address', :position => 4, :title => 'address'}
-    block.images = [i1,i2,i3,i4,i5]
-    block.shuffle = true
+    block.images = [i1]
     block.save!
     block.reload
-    assert_equal [i1,i2,i3,i4,i5], block.images
-    assert_not_equal [i2,i3,i1,i4,i5], block.featured_images
+    assert_equal block.images.first[:address], "/social/address"
+  end
+
+  should 'not duplicate sub-dir address before save' do
+    Noosfero.stubs(:root).returns("/social")
+    f1 = mock()
+    f1.expects(:public_filename).returns('address')
+    UploadedFile.expects(:find).with(1).returns(f1)
+    block = HighlightsBlock.new
+    i1 = {:image_id => 1, :address => '/social/address', :position => 3, :title => 'address'}
+    block.images = [i1]
+    block.save!
+    block.reload
+    assert_equal block.images.first[:address], "/social/address"
+  end
+
+  should 'display images with subdir src' do
+    Noosfero.stubs(:root).returns("/social")
+    f1 = mock()
+    f1.expects(:public_filename).returns('/img_address')
+    UploadedFile.expects(:find).with(1).returns(f1)
+    block = HighlightsBlock.new
+    i1 = {:image_id => 1, :address => '/address'}
+    block.images = [i1]
+    block.save!
+
+    assert_tag_in_string render_block_content(block), :tag => 'img', :attributes => { :src => "/social/img_address" }
   end
 
   [Environment, Profile].each do |klass|

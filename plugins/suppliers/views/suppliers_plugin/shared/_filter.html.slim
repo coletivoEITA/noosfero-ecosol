@@ -7,8 +7,8 @@
         = render partial: 'suppliers_plugin_myprofile/filter_fields'
       - elsif type == :product
         = render 'suppliers_plugin/product/filter_fields'
-    .submit
-      = submit_tag t('views.filter.filter_it'), class: 'filter-submit'
+      .submit
+        = submit_tag t('views.filter.filter_it'), class: 'filter-submit'
 
 - if type == :product
   = javascript_include_tag '/assets/plugins/suppliers/javascripts/table_filter'

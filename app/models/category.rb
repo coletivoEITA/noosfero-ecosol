@@ -1,4 +1,4 @@
-class Category < ActiveRecord::Base
+class Category < ApplicationRecord
 
   attr_accessible :name, :parent_id, :display_color, :display_in_menu, :image_builder, :environment, :parent
 
@@ -14,15 +14,16 @@ class Category < ActiveRecord::Base
   validates_uniqueness_of :slug,:scope => [ :environment_id, :parent_id ], :message => N_('{fn} is already being used by another category.').fix_i18n
   belongs_to :environment
 
-  scope :alphabetical, :order => 'name ASC'
+  scope :alphabetical, -> { order 'name ASC' }
 
   # Finds all top level categories for a given environment.
-  scope :top_level_for, lambda { |environment|
-    {:conditions => ['parent_id is null and environment_id = ?', environment.id ]} if environment
+  scope :top_level_for, -> environment {
+    where 'parent_id is null and environment_id = ?', environment.id
   }
 
-  scope :on_level, lambda { |parent| {:conditions => {:parent_id => parent}} }
+  scope :on_level, -> parent { where :parent_id => parent }
 
+  extend ActsAsFilesystem::ActsMethods
   acts_as_filesystem
 
   has_many :article_categorizations
@@ -37,8 +38,7 @@ class Category < ActiveRecord::Base
   has_many :people, :through => :profile_categorizations, :source => :profile, :class_name => 'Person'
   has_many :communities, :through => :profile_categorizations, :source => :profile, :class_name => 'Community'
 
-  has_many :products, :through => :enterprises
-
+  extend ActsAsHavingImage::ClassMethods
   acts_as_having_image
 
   before_save :normalize_display_color
@@ -48,28 +48,24 @@ class Category < ActiveRecord::Base
     display_color = nil if display_color.blank?
   end
 
-  scope :from_types, lambda { |types|
-    types.select{ |t| t.blank? }.empty? ?
-      { :conditions => { :type => types } } :
-      { :conditions => [ "type IN (?) OR type IS NULL", types.reject{ |t| t.blank? } ] }
+  scope :from_types, -> types {
+    if types.select{ |t| t.blank? }.empty? then
+      where(type: types) else
+      where("type IN (?) OR type IS NULL", types.reject{ |t| t.blank? }) end
   }
 
   after_save :change_children_choosable
 
   def recent_people(limit = 10)
-    self.people.paginate(:order => 'created_at DESC, id DESC', :page => 1, :per_page => limit)
+    self.people.reorder('created_at DESC, id DESC').paginate(page: 1, per_page: limit)
   end
 
   def recent_enterprises(limit = 10)
-    self.enterprises.paginate(:order => 'created_at DESC, id DESC', :page => 1, :per_page => limit)
+    self.enterprises.reorder('created_at DESC, id DESC').paginate(page: 1, per_page: limit)
   end
 
   def recent_communities(limit = 10)
-    self.communities.paginate(:order => 'created_at DESC, id DESC', :page => 1, :per_page => limit)
-  end
-
-  def recent_products(limit = 10)
-    self.products.paginate(:order => 'created_at DESC, id DESC', :page => 1, :per_page => limit)
+    self.communities.reorder('created_at DESC, id DESC').paginate(page: 1, per_page: limit)
   end
 
   def recent_articles(limit = 10)
@@ -77,7 +73,7 @@ class Category < ActiveRecord::Base
   end
 
   def recent_comments(limit = 10)
-    comments.paginate(:order => 'created_at DESC, comments.id DESC', :page => 1, :per_page => limit)
+    self.comments.reorder('created_at DESC, comments.id DESC').paginate(page: 1, per_page: limit)
   end
 
   def most_commented_articles(limit = 10)
@@ -85,7 +81,7 @@ class Category < ActiveRecord::Base
   end
 
   def upcoming_events(limit = 10)
-    self.events.paginate(:conditions => [ 'start_date >= ?', Date.today ], :order => 'start_date', :page => 1, :per_page => limit)
+    self.events.where('start_date >= ?', DateTime.now.beginning_of_day).order('start_date').paginate(page: 1, per_page: limit)
   end
 
   def display_in_menu?
@@ -97,12 +93,18 @@ class Category < ActiveRecord::Base
   end
 
   def children_for_menu
-    self.descendents.all :conditions => {:display_in_menu => true}, :order => 'path asc'
+    results = []
+    pending = children.where(display_in_menu: true).order('path ASC').to_a
+    while pending.present?
+      cat = pending.shift
+      results << cat
+      pending += cat.children.where :display_in_menu => true
+    end
   end
 
   def is_leaf_displayable_in_menu?
     return false if self.display_in_menu == false
-    self.children.find(:all, :conditions => {:display_in_menu => true}).empty?
+    self.children.where(:display_in_menu => true).empty?
   end
 
   def change_children_choosable

@@ -2,6 +2,7 @@ require 'noosfero/i18n'
 
 module DatesHelper
 
+  include ActionView::Helpers::DateHelper
   def months
     I18n.t('date.month_names')
   end
@@ -15,10 +16,12 @@ module DatesHelper
   end
 
   # formats a date for displaying.
-  def show_date(date, use_numbers = false, year=true)
+  def show_date(date, use_numbers = false, year = true, left_time = false)
     if date && use_numbers
       date_format = year ? _('%{month}/%{day}/%{year}') : _('%{month}/%{day}')
       date_format % { :day => date.day, :month => date.month, :year => date.year }
+    elsif date && left_time
+      date_format = time_ago_in_words(date)
     elsif date
       date_format = year ? _('%{month_name} %{day}, %{year}') : _('%{month_name} %{day}')
       date_format % { :day => date.day, :month_name => month_name(date.month), :year => date.year }
@@ -44,9 +47,14 @@ module DatesHelper
   end
 
   # formats a datetime for displaying.
-  def show_time(time)
-    if time
-      _('%{day} %{month} %{year}, %{hour}:%{minutes}') % { :year => time.year, :month => month_name(time.month), :day => time.day, :hour => time.hour, :minutes => time.strftime("%M") }
+  def show_time(time, use_numbers = false, year = true, left_time = false)
+    if time && use_numbers
+      _('%{month}/%{day}/%{year}, %{hour}:%{minutes}') % { :year => (year ? time.year : ''), :month => time.month, :day => time.day, :hour => time.hour, :minutes => time.strftime("%M") }
+    elsif time && left_time
+      date_format = time_ago_in_words(time)
+    elsif time
+      date_format = year ? _('%{month_name} %{day}, %{year} %{hour}:%{minutes}') : _('%{month_name} %{day} %{hour}:%{minutes}')
+      date_format % { :day => time.day, :month_name => month_name(time.month), :year => time.year, :hour => time.hour, :minutes => time.strftime("%M") }
     else
       ''
     end
@@ -54,7 +62,7 @@ module DatesHelper
 
   def show_period(date1, date2 = nil, use_numbers = false)
     if (date1 == date2) || (date2.nil?)
-      show_date(date1, use_numbers)
+      show_time(date1, use_numbers)
     else
       if date1.year == date2.year
         if date1.month == date2.month
@@ -73,8 +81,8 @@ module DatesHelper
         end
       else
         _('from %{date1} to %{date2}') % {
-          :date1 => show_date(date1, use_numbers),
-          :date2 => show_date(date2, use_numbers)
+          :date1 => show_time(date1, use_numbers),
+          :date2 => show_time(date2, use_numbers)
         }
       end
     end
@@ -107,18 +115,18 @@ module DatesHelper
 
   def build_date(year, month, day = 1)
     if year.blank? and month.blank? and day.blank?
-      Date.today
+      DateTime.now
     else
       if year.blank?
-        year = Date.today.year
+        year = DateTime.now.year
       end
       if month.blank?
-        month = Date.today.month
+        month = DateTime.now.month
       end
       if day.blank?
         day = 1
       end
-      Date.new(year.to_i, month.to_i, day.to_i)
+      DateTime.new(year.to_i, month.to_i, day.to_i)
     end
   end
 

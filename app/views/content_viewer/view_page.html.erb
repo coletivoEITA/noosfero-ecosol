@@ -24,29 +24,19 @@
   <%= render :partial => 'article_toolbar' %>
 </div>
 
-<% if @page.display_hits? || @page.license.present? %>
-  <div id='article-sub-header'>
-    <% if @page.display_hits? %>
-      <div id="article-hits">
-        <%= n_('Viewed one time', 'Viewed %{num} times', @page.hits) % { :num => @page.hits } %>
-      </div>
-    <% end %>
-
-    <% if @page.license.present? %>
-      <div id="article-license">
-        <%= _('Licensed under %s') % (@page.license.url.present? ? link_to(@page.license.name, @page.license.url, :target => '_blank') : @page.license.name) %>
-      </div>
-    <% end %>
-  </div>
-<% end %>
-
 <% if NOOSFERO_CONF['addthis_enabled'] and @page.public? %>
   <%= render :partial => 'addthis' %>
 <% end %>
 
-<% cache(@page.cache_key(params, user, language)) do %>
+<% cache_if @page.cacheable?, @page.cache_key(params, user, language) do %>
   <div class="<%="article-body article-body-" + @page.css_class_name %>">
     <% options = @page.image? ? {:gallery_view => true} : {} %>
+    <% if @page.image.present? && !@page.event? && !@page.blog? %>
+      <div class="article-body-img">
+        <%= image_tag(@page.image.public_filename) %>
+        <p><%= @page.image.label%></p>
+      </div>
+    <% end %>
     <%= article_to_html(@page, options) %>
     <br style="clear:both" />
   </div> <!-- end class="article-body" -->
@@ -55,51 +45,22 @@
 <% if ! @page.categories.empty? %>
 <div id="article-cat">
   <h4><%= _('Categories') %></h4>
-    <%= @page.categories.map {|item| link_to_category(item, false) }.join(", ") %>
+    <%= safe_join(@page.categories.map {|item| link_to_category(item, false) }, ", ") %>
 </div>
 <% end %>
 
 <% if !@page.tags.empty? %>
   <div id="article-tags">
-    <%= _("This article's tags:") %>
-    <%= @page.tags.map { |t| link_to(t, :controller => 'profile', :profile => @profile.identifier, :action => 'tags', :id => t.name ) }.join("\n") %>
+    <%= _("This article's tags:").html_safe %>
+    <%= safe_join(@page.tags.map { |t| link_to(t, :controller => 'profile', :profile => @profile.identifier, :action => 'tags', :id => t.name ) }, "\n") %>
   </div>
 <% end %>
 
 <%= display_source_info(@page) %>
 
-<%= @plugins.dispatch(:article_extra_contents, @page).collect { |content| instance_exec(&content) }.join("") %>
+<%= safe_join(@plugins.dispatch(:article_extra_contents, @page).collect { |content| instance_exec(&content) }, "") %>
 
-<% if @page.accept_comments? || @comments_count > 0 %>
-  <div class="comments" id="comments_list">
-    <h3 <%= 'class="no-comments-yet"' if @comments_count == 0 %>>
-      <%= display_number_of_comments(@comments_count) %>
-    </h3>
-
-    <% if @comments.present? && @comments.count > 1 %>
-      <%= link_to(_('Post a comment'), '#', :class => 'display-comment-form', :id => 'top-post-comment-button', :onclick => "jQuery('#page-comment-form .display-comment-form').first().click();") if @page.accept_comments? %>
-
-      <%= hidden_field_tag("page_url", url_for(:controller=>'content_viewer', :action=>'view_page', :profile=>profile.identifier, :page => @page.explode_path)) %>
-      <%= javascript_include_tag "comment_order.js" %>
-      <div class="comment-order">
-        <%= form_tag({:controller=>'content_viewer' , :action=>'view_page'}, {:method=>'get', :id=>"form_order"}) do %>
-          <%= select_tag 'comment_order', options_for_select({_('Oldest first')=>'oldest', _('Newest first')=>'newest'}, @comment_order) %>
-        <% end %>
-      </div>
-    <% end %>
-
-    <ul class="article-comments-list">
-      <% if @comments.present? %>
-        <%= render :partial => 'comment/comment', :collection => @comments %>
-        <%= pagination_links @comments, :param_name => 'comment_page' %>
-      <% end %>
-    </ul>
-
-    <% if @page.accept_comments? %>
-      <div id='page-comment-form' class='page-comment-form'><%= render :partial => 'comment/comment_form', :locals =>{:url => {:controller => :comment, :action => :create}, :display_link => true, :cancel_triggers_hide => true}%></div>
-    <% end %>
-  </div><!-- end class="comments" -->
-<% end %>
+<%= render 'comments_list' if @page.accept_comments? or @comments_count > 0 %>
 
 </div><!-- end id="article" -->
 <%= add_zoom_to_article_images %>

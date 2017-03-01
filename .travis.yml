@@ -1,41 +1,86 @@
+# noosfero-ecosol: only test on specific branches
 branches:
   except:
     - master
+    - next
 
 notifications:
-  email:
-    - braulio@eita.org.br
+  irc:
+    channels:
+      - "chat.freenode.net#noosfero"
+      - "chat.freenode.net#noosfero-br"
+    template:
+      - "%{repository_slug} %{branch} %{commit} %{commit_subject} - %{result} %{build_url}"
+
+# Ensure Container-based environment, as others can have some random failures
+# specially with different Firefox versions and selenium tests.
+# E.g. https://travis-ci.org/noosfero/noosfero/jobs/122918772#L1308
+#
+# Also container-based environments have the fatest boot times and
+# are the only one with cache available for public projects.
+# See https://docs.travis-ci.com/user/ci-environment/#Virtualization-environments
+sudo: false
+cache: bundler
 
 language: ruby
 rvm:
-  - ree
+  - 2.3.1
 
-before_install:
-# dependencies
-  - gem update --system 1.4.1
-  - sudo apt-get update
-  - sudo apt-get -y install po4a iso-codes tango-icon-theme openjdk-6-jre curl wget
-  - sudo apt-get -y install libmagickwand-dev libpq-dev libreadline-dev libsqlite3-dev libxslt1-dev
-# postgres setup
-  - psql -c 'create database myapp_test;' -U postgres
-# selenium support
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+services:
+  - postgresql
+  - elasticsearch
+
+addons:
+  apt:
+    packages:
+      - tango-icon-theme
+      - pidgin-data
+  artifacts:
+    paths:
+      - $(ls tmp/artifact* | tr "\n" ":")
 
 before_script:
-  - mkdir -p tmp/pids log
+  - mkdir -p tmp/{pids,cache} log cache
+  - script/noosfero-plugins disableall
+  #- bundle exec rake makemo &>/dev/null
+# database
   - cp config/database.yml.travis config/database.yml
-  - bundle exec rake db:schema:load --trace
-  #- bundle exec script/noosfero-plugins enableall
-  #- bundle exec rake db:migrate --trace
+  - psql -c 'create database myapp_test;' -U postgres
+  - bundle exec rake db:schema:load
+  - bundle exec rake db:migrate &>/dev/null
 
 env:
-  - TASK=test:units
-  - TASK=test:functionals
-  - TASK=test:integration
-  - TASK=cucumber
-  - TASK=selenium
-  - TASK=test:noosfero_plugins
+  global:
+    - LANG=en
+  matrix:
+    - TASK=test:api
+    - TASK=test:units
+    - TASK=test:functionals
+    - TASK=test:integration
+    - SLICE=1/2 TASK=cucumber
+    - SLICE=2/2 TASK=cucumber
+    - SLICE=1/4 TASK=selenium
+    - SLICE=2/4 TASK=selenium
+    - SLICE=3/4 TASK=selenium
+    - SLICE=4/4 TASK=selenium
+    - SLICE=1/5 TASK=test:noosfero_plugins NOOSFERO_BUNDLE_OPTS=install
+    - SLICE=2/5 TASK=test:noosfero_plugins NOOSFERO_BUNDLE_OPTS=install
+    - SLICE=3/5 TASK=test:noosfero_plugins NOOSFERO_BUNDLE_OPTS=install
+    - SLICE=4/5 TASK=test:noosfero_plugins NOOSFERO_BUNDLE_OPTS=install
+    - SLICE=5/5 TASK=test:noosfero_plugins NOOSFERO_BUNDLE_OPTS=install
+    # chrome hanging on travis
+    #- SLICE=1/4 TASK=selenium SELENIUM_DRIVER=chrome
+    #- SLICE=2/4 TASK=selenium SELENIUM_DRIVER=chrome
+    #- SLICE=3/4 TASK=selenium SELENIUM_DRIVER=chrome
+    #- SLICE=4/4 TASK=selenium SELENIUM_DRIVER=chrome
+
+matrix:
+  allow_failures:
+    - env: SLICE=1/4 TASK=selenium SELENIUM_DRIVER=chrome
+    - env: SLICE=2/4 TASK=selenium SELENIUM_DRIVER=chrome
+    - env: SLICE=3/4 TASK=selenium SELENIUM_DRIVER=chrome
+    - env: SLICE=4/4 TASK=selenium SELENIUM_DRIVER=chrome
 
 script:
-  - bundle exec rake $TASK --trace
+  - bundle exec rake $TASK
+

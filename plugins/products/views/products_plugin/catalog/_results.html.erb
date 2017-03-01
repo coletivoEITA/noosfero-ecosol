@@ -1,0 +1,13 @@
+
+<% if @products.present? %>
+  <%= render 'products_plugin/catalog/form' %>
+
+  <div id="catalog-results">
+
+    <ul id="product-list">
+      <%= render 'products_plugin/catalog/products', products: @products %>
+    </ul>
+
+    <%= render 'products_plugin/catalog/pagination' %>
+  </div>
+<% end %>

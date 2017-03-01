@@ -1,8 +1,12 @@
-require 'mailing_job'
+require_dependency 'mailing_job'
 
-class Mailing < ActiveRecord::Base
+class Mailing < ApplicationRecord
 
-  attr_accessible :subject, :body
+  extend ActsAsHavingSettings::ClassMethods
+  acts_as_having_settings field: :data
+
+  attr_accessible :subject, :body, :data
+
   validates_presence_of :source_id, :subject, :body
   belongs_to :source, :foreign_key => :source_id, :polymorphic => true
   belongs_to :person
@@ -20,11 +24,11 @@ class Mailing < ActiveRecord::Base
   end
 
   def generate_from
-    "#{source.name} <#{if source.is_a? Environment then source.noreply_email else source.contact_email end}>"
+    "#{source.name} <#{if source.is_a? Environment then source.noreply_email else source.contact_email end}>".html_safe
   end
 
   def generate_subject
-    '[%s] %s' % [source.name, subject]
+    '[%s] %s'.html_safe % [source.name, subject]
   end
 
   def signature_message
@@ -40,15 +44,14 @@ class Mailing < ActiveRecord::Base
       begin
         Mailing::Sender.notification(self, recipient.email).deliver
         self.mailing_sents.create(:person => recipient)
-      rescue Exception
-        # FIXME should not discard errors silently. An idea is to collect all
-        # errors and generate a task (notification) for the +source+
-        # (environment/organization) listing these errors.
+      rescue Exception => ex
+        Rails.logger.error("#{ex.class.to_s} - #{ex.to_s} at #{__FILE__}:#{__LINE__}")
       end
     end
   end
 
-  class Sender < ActionMailer::Base
+  class Sender < ApplicationMailer
+
     def notification(mailing, recipient)
       @message = mailing.body
       @signature_message = mailing.signature_message

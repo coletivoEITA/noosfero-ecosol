@@ -44,7 +44,7 @@ class ChatController < PublicController
   end
 
   def avatar
-    profile = environment.profiles.find_by_identifier(params[:id])
+    profile = environment.profiles.find_by(identifier: params[:id])
     filename, mimetype = profile_icon(profile, :minor, true)
     if filename =~ /^(https?:)?\/\//
       redirect_to filename
@@ -67,7 +67,7 @@ class ChatController < PublicController
 
   def update_presence_status
     if request.xhr?
-      current_user.update_attributes({:chat_status_at => DateTime.now}.merge(params[:status] || {}))
+      current_user.update({:chat_status_at => DateTime.now}.merge(params[:status] || {}))
     end
     render :nothing => true
   end
@@ -87,7 +87,7 @@ class ChatController < PublicController
   end
 
   def recent_messages
-    other = environment.profiles.find_by_identifier(params[:identifier])
+    other = environment.profiles.find_by(identifier: params[:identifier])
     if other.kind_of?(Organization)
       messages = ChatMessage.where('to_id=:other', :other => other.id)
     else
@@ -107,14 +107,27 @@ class ChatController < PublicController
   end
 
   def recent_conversations
-    profiles = Profile.where(:id => ActiveRecord::Base.connection.execute("select profiles.id from profiles inner join (select distinct r.id as id, MAX(r.created_at) as created_at from (select from_id, to_id, created_at, (case when from_id=#{user.id} then to_id else from_id end) as id from chat_messages where from_id=#{user.id} or to_id=#{user.id}) as r group by id order by created_at desc, id) as t on profiles.id=t.id order by t.created_at desc").entries.map {|e| e['id']})
+    profiles = Profile.find_by_sql("select profiles.* from profiles inner join (select distinct r.id as id, MAX(r.created_at) as created_at from (select from_id, to_id, created_at, (case when from_id=#{user.id} then to_id else from_id end) as id from chat_messages where from_id=#{user.id} or to_id=#{user.id}) as r group by id order by created_at desc, id) as t on profiles.id=t.id order by t.created_at desc")
     jids = profiles.map(&:jid).reverse
     render :json => jids.to_json
   end
 
   #TODO Ideally this is done through roster table on ejabberd.
-  def roster_groups
-    render :text => user.memberships.map {|m| {:jid => m.jid, :name => m.name}}.to_json
+  def rosters
+    rooms = user.memberships.map {|m| {:jid => m.jid, :name => m.name}}
+    friends = user.friends.map {|f| {:jid => f.jid, :name => f.name}}
+    rosters = {:rooms => rooms, :friends => friends}
+    render :text => rosters.to_json
+  end
+
+  def availabilities
+    current_user.update_column(:chat_status_at, DateTime.now)
+    availabilities = user.friends.map do |friend|
+      status = friend.user.chat_status
+      status = 'offline' if status.blank? || !friend.user.chat_alive?
+      {:jid => friend.jid, :status => status}
+    end
+    render :text => availabilities.to_json
   end
 
   protected

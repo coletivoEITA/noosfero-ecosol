@@ -12,6 +12,11 @@ class HighlightsBlock < Block
     block.images.each do |i|
       i[:image_id] = i[:image_id].to_i
       i[:position] = i[:position].to_i
+      if !Noosfero.root.nil? and !i[:address].start_with?(Noosfero.root + '/')
+        i[:address] = Noosfero.root + i[:address]
+      end
+      i[:new_window] = i[:new_window] == '1' ? true : false
+
       begin
         file = UploadedFile.find(i[:image_id])
         i[:image_src] = file.public_filename
@@ -22,18 +27,19 @@ class HighlightsBlock < Block
   end
 
   def self.description
-    _('Highlights')
+    _('Creates image slideshow')
   end
 
   def featured_images
-    block_images = images.select{|i| !i[:image_src].nil? }.sort { |x, y| x[:position] <=> y[:position] }
-    shuffle ? block_images.shuffle : block_images
+    images = get_images
+    shuffle ? images.shuffle : images
   end
 
-  def content(args={})
-    block = self
-    proc do
-      render :file => 'blocks/highlights', :locals => { :block => block }
+  def get_images
+    images.select do |i|
+      !i[:image_src].nil?
+    end.sort do |x, y|
+      x[:position] <=> y[:position]
     end
   end
 

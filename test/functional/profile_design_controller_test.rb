@@ -1,7 +1,4 @@
-require_relative "../test_helper"
-require 'profile_design_controller'
-
-class ProfileDesignController; def rescue_action(e) raise e end; end
+require_relative '../test_helper'
 
 class ProfileDesignControllerTest < ActionController::TestCase
 
@@ -9,14 +6,11 @@ class ProfileDesignControllerTest < ActionController::TestCase
   PERSON_BLOCKS = COMMOM_BLOCKS + [ FavoriteEnterprisesBlock, CommunitiesBlock, EnterprisesBlock ]
   PERSON_BLOCKS_WITH_BLOG = PERSON_BLOCKS + [BlogArchivesBlock]
 
-  ENTERPRISE_BLOCKS = COMMOM_BLOCKS + [DisabledEnterpriseMessageBlock, FeaturedProductsBlock, FansBlock, ProductCategoriesBlock]
-  ENTERPRISE_BLOCKS_WITH_PRODUCTS_ENABLE = ENTERPRISE_BLOCKS + [ProductsBlock]
+  ENTERPRISE_BLOCKS = COMMOM_BLOCKS + [DisabledEnterpriseMessageBlock, FansBlock]
 
   attr_reader :holder
   def setup
     @controller = ProfileDesignController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
 
     @profile = @holder = create_user('designtestuser').person
     holder.save!
@@ -32,37 +26,29 @@ class ProfileDesignControllerTest < ActionController::TestCase
     ###### BOX 1
     @b1 = ArticleBlock.new
     @box1.blocks << @b1
-    @b1.save!
 
     @b2 = Block.new
     @box1.blocks << @b2
-    @b2.save!
 
     ###### BOX 2
     @b3 = Block.new
     @box2.blocks << @b3
-    @b3.save!
 
     @b4 = MainBlock.new
     @box2.blocks << @b4
-    @b4.save!
 
     @b5 = Block.new
     @box2.blocks << @b5
-    @b5.save!
 
     @b6 = Block.new
     @box2.blocks << @b6
-    @b6.save!
 
     ###### BOX 3
     @b7 = Block.new
     @box3.blocks << @b7
-    @b7.save!
 
     @b8 = Block.new
     @box3.blocks << @b8
-    @b8.save!
 
     @request.env['HTTP_REFERER'] = '/editor'
 
@@ -70,8 +56,6 @@ class ProfileDesignControllerTest < ActionController::TestCase
 
     @controller.stubs(:boxes_holder).returns(holder)
     login_as 'designtestuser'
-
-    @product_category = fast_create(ProductCategory)
   end
   attr_reader :profile
 
@@ -169,7 +153,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
     end
   end
 
-  should 'a block plugin with center position add new blocks only in this position' do
+  should 'a block plugin add new blocks' do
     class CustomBlock1 < Block; end;
     class CustomBlock2 < Block; end;
     class CustomBlock3 < Block; end;
@@ -181,7 +165,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
     class CustomBlock9 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => Person, :position => [1]},
           CustomBlock2 => {:type => Person, :position => 1},
@@ -197,60 +181,10 @@ class ProfileDesignControllerTest < ActionController::TestCase
     end
 
     Noosfero::Plugin::Manager.any_instance.stubs(:enabled_plugins).returns([TestBlockPlugin.new])
-    get :add_block, :profile => 'designtestuser'
+    get :index, :profile => 'designtestuser'
     assert_response :success
 
-    assert @controller.instance_variable_get('@center_block_types').include?(CustomBlock1)
-    assert @controller.instance_variable_get('@center_block_types').include?(CustomBlock2)
-    assert @controller.instance_variable_get('@center_block_types').include?(CustomBlock3)
-    assert !@controller.instance_variable_get('@center_block_types').include?(CustomBlock4)
-    assert !@controller.instance_variable_get('@center_block_types').include?(CustomBlock5)
-    assert !@controller.instance_variable_get('@center_block_types').include?(CustomBlock6)
-    assert !@controller.instance_variable_get('@center_block_types').include?(CustomBlock7)
-    assert !@controller.instance_variable_get('@center_block_types').include?(CustomBlock8)
-    assert !@controller.instance_variable_get('@center_block_types').include?(CustomBlock9)
-  end
-
-  should 'a block plugin with side position add new blocks only in this position' do
-    class CustomBlock1 < Block; end;
-    class CustomBlock2 < Block; end;
-    class CustomBlock3 < Block; end;
-    class CustomBlock4 < Block; end;
-    class CustomBlock5 < Block; end;
-    class CustomBlock6 < Block; end;
-    class CustomBlock7 < Block; end;
-    class CustomBlock8 < Block; end;
-    class CustomBlock9 < Block; end;
-
-    class TestBlockPlugin < Noosfero::Plugin
-      def extra_blocks
-        {
-          CustomBlock1 => {:type => Person, :position => [1]},
-          CustomBlock2 => {:type => Person, :position => 1},
-          CustomBlock3 => {:type => Person, :position => '1'},
-          CustomBlock4 => {:type => Person, :position => [2]},
-          CustomBlock5 => {:type => Person, :position => 2},
-          CustomBlock6 => {:type => Person, :position => '2'},
-          CustomBlock7 => {:type => Person, :position => [3]},
-          CustomBlock8 => {:type => Person, :position => 3},
-          CustomBlock9 => {:type => Person, :position => '3'},
-        }
-      end
-    end
-
-    Noosfero::Plugin::Manager.any_instance.stubs(:enabled_plugins).returns([TestBlockPlugin.new])
-    get :add_block, :profile => 'designtestuser'
-    assert_response :success
-
-    assert !@controller.instance_variable_get('@side_block_types').include?(CustomBlock1)
-    assert !@controller.instance_variable_get('@side_block_types').include?(CustomBlock2)
-    assert !@controller.instance_variable_get('@side_block_types').include?(CustomBlock3)
-    assert @controller.instance_variable_get('@side_block_types').include?(CustomBlock4)
-    assert @controller.instance_variable_get('@side_block_types').include?(CustomBlock5)
-    assert @controller.instance_variable_get('@side_block_types').include?(CustomBlock6)
-    assert @controller.instance_variable_get('@side_block_types').include?(CustomBlock7)
-    assert @controller.instance_variable_get('@side_block_types').include?(CustomBlock8)
-    assert @controller.instance_variable_get('@side_block_types').include?(CustomBlock9)
+    (1..9).each {|i| assert_tag :tag => 'div', :attributes => { 'data-block-type' => "ProfileDesignControllerTest::CustomBlock#{i}" } }
   end
 
   should 'a block plugin cannot be listed for unspecified types' do
@@ -264,7 +198,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
     class CustomBlock8 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => Person, :position => 1},
           CustomBlock2 => {:type => Community, :position => 1},
@@ -279,17 +213,11 @@ class ProfileDesignControllerTest < ActionController::TestCase
     end
 
     Noosfero::Plugin::Manager.any_instance.stubs(:enabled_plugins).returns([TestBlockPlugin.new])
-    get :add_block, :profile => 'designtestuser'
+    get :index, :profile => 'designtestuser'
     assert_response :success
 
-    assert @controller.instance_variable_get('@center_block_types').include?(CustomBlock1)
-    assert !@controller.instance_variable_get('@center_block_types').include?(CustomBlock2)
-    assert !@controller.instance_variable_get('@center_block_types').include?(CustomBlock3)
-    assert !@controller.instance_variable_get('@center_block_types').include?(CustomBlock4)
-    assert @controller.instance_variable_get('@side_block_types').include?(CustomBlock5)
-    assert !@controller.instance_variable_get('@side_block_types').include?(CustomBlock6)
-    assert !@controller.instance_variable_get('@side_block_types').include?(CustomBlock7)
-    assert !@controller.instance_variable_get('@side_block_types').include?(CustomBlock8)
+    [1, 5].each {|i| assert_tag :tag => 'div', :attributes => { 'data-block-type' => "ProfileDesignControllerTest::CustomBlock#{i}" }}
+    [2, 3, 4, 6, 7, 8].each {|i| assert_no_tag :tag => 'div', :attributes => { 'data-block-type' => "ProfileDesignControllerTest::CustomBlock#{i}" }}
   end
 
   should 'not edit main block with never option' do
@@ -339,15 +267,9 @@ class ProfileDesignControllerTest < ActionController::TestCase
   # BEGIN - tests for ProfileDesignController features
   ######################################################
 
-  should 'display popup for adding a new block' do
-    get :add_block, :profile => 'designtestuser'
-    assert_response :success
-    assert_no_tag :tag => 'body' # e.g. no layout
-  end
-
   should 'actually add a new block' do
     assert_difference 'Block.count' do
-      post :add_block, :profile => 'designtestuser', :box_id => @box1.id, :type => RecentDocumentsBlock.name
+      post :move_block, :profile => 'designtestuser', :target => "end-of-box-#{@box1.id}", :type => RecentDocumentsBlock.name
       assert_redirected_to :action => 'index'
     end
   end
@@ -355,7 +277,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
   should 'not allow to create unknown types' do
     assert_no_difference 'Block.count' do
       assert_raise ArgumentError do
-        post :add_block, :profile => 'designtestuser', :box_id => @box1.id, :type => "PleaseLetMeCrackYourSite"
+        post :move_block, :profile => 'designtestuser', :box_id => @box1.id, :type => "PleaseLetMeCrackYourSite"
       end
     end
   end
@@ -375,48 +297,10 @@ class ProfileDesignControllerTest < ActionController::TestCase
     assert_equal 999, @b1.article_id
   end
 
-  should 'be able to edit ProductsBlock' do
-    block = ProductsBlock.new
-
-    enterprise = fast_create(Enterprise, :name => "test", :identifier => 'testenterprise')
-    enterprise.boxes << Box.new
-    p1 = enterprise.products.create!(:name => 'product one', :product_category => @product_category)
-    p2 = enterprise.products.create!(:name => 'product two', :product_category => @product_category)
-    enterprise.boxes.first.blocks << block
-    enterprise.add_admin(holder)
-
-    enterprise.blocks(true)
-    @controller.stubs(:boxes_holder).returns(enterprise)
-    login_as('designtestuser')
-
-    get :edit, :profile => 'testenterprise', :id => block.id
-
-    assert_response :success
-    assert_tag :tag => 'input', :attributes => { :name => "block[product_ids][]", :value => p1.id.to_s }
-    assert_tag :tag => 'input', :attributes => { :name => "block[product_ids][]", :value => p2.id.to_s }
-  end
-
-  should 'be able to save ProductsBlock' do
-    block = ProductsBlock.new
-
-    enterprise = fast_create(Enterprise, :name => "test", :identifier => 'testenterprise')
-    enterprise.boxes << Box.new
-    p1 = enterprise.products.create!(:name => 'product one', :product_category => @product_category)
-    p2 = enterprise.products.create!(:name => 'product two', :product_category => @product_category)
-    enterprise.boxes.first.blocks << block
-    enterprise.add_admin(holder)
-
-    enterprise.blocks(true)
-    @controller.stubs(:boxes_holder).returns(enterprise)
-    login_as('designtestuser')
-
-    post :save, :profile => 'testenterprise', :id => block.id, :block => { :product_ids => [p1.id.to_s, p2.id.to_s ] }
-
-    assert_response :redirect
-
-    block.reload
-    assert_equal [p1.id, p2.id], block.product_ids
-
+  should 'not be able to save a non editable block' do
+    Block.any_instance.expects(:editable?).returns(false)
+    post :save, :profile => 'designtestuser', :id => @b1.id, :block => { }
+    assert_response :forbidden
   end
 
   should 'display back to control panel button' do
@@ -424,17 +308,10 @@ class ProfileDesignControllerTest < ActionController::TestCase
     assert_tag :tag => 'a', :content => 'Back to control panel'
   end
 
-  should 'not allow products block if environment do not let' do
-    env = Environment.default
-    env.disable('products_for_enterprises')
-    env.save!
-    ent = fast_create(Enterprise, :name => 'test ent', :identifier => 'test_ent', :environment_id => env.id)
-    person = create_user_with_permission('test_user', 'edit_profile_design', ent)
-    login_as(person.user.login)
-
-    get :add_block, :profile => 'test_ent'
-
-    assert_no_tag :tag => 'input', :attributes => {:type => 'radio', :value => 'ProductsBlock'}
+  should 'display avaliable blocks in alphabetical order' do
+    @controller.stubs(:available_blocks).returns([TagsBlock, ArticleBlock])
+    get :index, :profile => 'designtestuser'
+    assert_equal assigns(:available_blocks), [ArticleBlock, TagsBlock]
   end
 
   should 'create back link to profile control panel' do
@@ -448,18 +325,18 @@ class ProfileDesignControllerTest < ActionController::TestCase
 
   should 'offer to create blog archives block only if has blog' do
     holder.articles << Blog.new(:name => 'Blog test', :profile => holder)
-    get :add_block, :profile => 'designtestuser'
-    assert_tag :tag => 'input', :attributes => { :name => 'type', :value => 'BlogArchivesBlock' }
+    get :index, :profile => 'designtestuser'
+    assert_tag :tag => 'div', :attributes => { 'data-block-type' => 'BlogArchivesBlock' }
   end
 
   should 'not offer to create blog archives block if user dont have blog' do
-    get :add_block, :profile => 'designtestuser'
-    assert_no_tag :tag => 'input', :attributes => { :name => 'type', :value => 'BlogArchivesBlock' }
+    get :index, :profile => 'designtestuser'
+    assert_no_tag :tag => 'div', :attributes => { 'data-block-type' => 'BlogArchivesBlock' }
   end
 
   should 'offer to create feed reader block' do
-    get :add_block, :profile => 'designtestuser'
-    assert_tag :tag => 'input', :attributes => { :name => 'type', :value => 'FeedReaderBlock' }
+    get :index, :profile => 'designtestuser'
+    assert_tag :tag => 'div', :attributes => { 'data-block-type' => 'FeedReaderBlock' }
   end
 
   should 'be able to edit FeedReaderBlock' do
@@ -476,7 +353,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
   should 'be able to save FeedReaderBlock configurations' do
     @box1.blocks << FeedReaderBlock.new(:address => 'feed address')
     holder.blocks(true)
-    block = @box1.blocks.last
+    block = @box1.blocks.find_by(type: FeedReaderBlock)
 
     post :save, :profile => 'designtestuser', :id => block.id, :block => {:address => 'new feed address', :limit => '20'}
 
@@ -544,42 +421,24 @@ class ProfileDesignControllerTest < ActionController::TestCase
     environment = mock
     profile.stubs(:environment).returns(environment)
     environment.stubs(:enabled?).returns(true)
-    environment.stubs(:enabled?).with('products_for_enterprises').returns(false)
     @controller.stubs(:profile).returns(profile)
     @controller.stubs(:user).returns(profile)
     Noosfero::Plugin::Manager.any_instance.stubs(:enabled_plugins).returns([])
     assert_equal [], @controller.available_blocks - ENTERPRISE_BLOCKS
   end
 
-  should 'the enterprise with products for enterprise enable blocks are all available' do
-    profile = mock
-    profile.stubs(:has_members?).returns(false)
-    profile.stubs(:person?).returns(false)
-    profile.stubs(:community?).returns(true)
-    profile.stubs(:enterprise?).returns(true)
-    profile.stubs(:has_blog?).returns(false)
-    profile.stubs(:is_admin?).with(anything).returns(false)
-    environment = mock
-    profile.stubs(:environment).returns(environment)
-    environment.stubs(:enabled?).returns(true)
-    @controller.stubs(:profile).returns(profile)
-    @controller.stubs(:user).returns(profile)
-    Noosfero::Plugin::Manager.any_instance.stubs(:enabled_plugins).returns([])
-    assert_equal [], @controller.available_blocks - ENTERPRISE_BLOCKS_WITH_PRODUCTS_ENABLE
-  end
-
   should 'allow admins to add RawHTMLBlock' do
-    profile.stubs(:is_admin?).with(profile.environment).returns(true)
+    profile.stubs(:is_admin?).returns(true)
     @controller.stubs(:user).returns(profile)
-    get :add_block, :profile => 'designtestuser'
-    assert_tag :tag => 'input', :attributes => { :name => 'type', :value => 'RawHTMLBlock' }
+    get :index, :profile => 'designtestuser'
+    assert_tag :tag => 'div', :attributes => { 'data-block-type' => 'RawHTMLBlock' }
   end
 
   should 'not allow normal users to add RawHTMLBlock' do
-    profile.stubs(:is_admin?).with(profile.environment).returns(false)
+    profile.stubs(:is_admin?).returns(false)
     @controller.stubs(:user).returns(profile)
-    get :add_block, :profile => 'designtestuser'
-    assert_no_tag :tag => 'input', :attributes => { :name => 'type', :value => 'RawHTMLBlock' }
+    get :index, :profile => 'designtestuser'
+    assert_no_tag :tag => 'div', :attributes => { 'data-block-type' => 'RawHTMLBlock' }
   end
 
   should 'editing article block displays right selected article' do
@@ -606,7 +465,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
     class CustomBlock1 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {},
         }
@@ -634,7 +493,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
     class CustomBlock1 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => Person},
         }
@@ -662,7 +521,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
     class CustomBlock1 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => Community},
         }
@@ -690,7 +549,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
     class CustomBlock1 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => Enterprise},
         }
@@ -718,7 +577,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
     class CustomBlock1 < Block; end;
 
     class TestBlockPlugin < Noosfero::Plugin
-      def extra_blocks
+      def self.extra_blocks
         {
           CustomBlock1 => {:type => Environment},
         }
@@ -737,9 +596,9 @@ class ProfileDesignControllerTest < ActionController::TestCase
     end
   end
 
-  test 'should forbid POST to save for fixed blocks' do
+  test 'should forbid POST to save for uneditable blocks' do
     block = profile.blocks.last
-    block.fixed = true
+    block.edit_modes = "none"
     block.save!
 
     post :save, id: block.id, profile: profile.identifier
@@ -748,7 +607,7 @@ class ProfileDesignControllerTest < ActionController::TestCase
 
   test 'should forbid POST to move_block for fixed blocks' do
     block = profile.blocks.last
-    block.fixed = true
+    block.move_modes = "none"
     block.save!
 
     post :move_block, id: block.id, profile: profile.identifier, target: "end-of-box-#{@box3.id}"
@@ -758,9 +617,27 @@ class ProfileDesignControllerTest < ActionController::TestCase
   should 'guarantee main block is always visible to everybody' do
     get :edit, :profile => 'designtestuser', :id => @b4.id
     %w[logged not_logged followers].each do |option|
-    assert_no_tag :select, :attributes => {:name => 'block[display_user]'},
-     :descendant => {:tag => 'option', :attributes => {:value => option}}
+      assert_no_tag :select, :attributes => {:name => 'block[display_user]'},
+        :descendant => {:tag => 'option', :attributes => {:value => option}}
     end
   end
 
+  should 'update selected categories in blocks' do
+    env = Environment.default
+    c1 = env.categories.build(:name => "Test category 1"); c1.save!
+
+    block = profile.blocks.last
+
+    Block.any_instance.expects(:accept_category?).at_least_once.returns true
+
+    xhr :get, :update_categories, :profile => profile.identifier, :id => block.id, :category_id => c1.id
+
+    assert_equal assigns(:current_category), c1
+  end
+
+  should 'not fail when a profile has a tag block' do
+    a = create(Article, :name => 'my article', :profile_id => holder.id, :tag_list => 'tag')
+    @box1.blocks << TagsBlock.new
+    get :index, :profile => 'designtestuser'
+  end
 end

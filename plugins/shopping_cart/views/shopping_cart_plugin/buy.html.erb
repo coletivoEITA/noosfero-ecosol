@@ -35,7 +35,7 @@
 
       <% if profile.delivery_methods.size > 0 %>
         <fieldset>
-          <legend><%=_('Delivery or pickup method')%></legend>
+          <legend><%=t('controllers.profile.consumer.delivery_method')%></legend>
 
           <%= render 'delivery_plugin/order_select', f: f, order: @order %>
         </fieldset>
@@ -49,5 +49,4 @@
   <% end %>
 </div>
 
-<%= javascript_include_tag '../plugins/shopping_cart/buy' %>
-
+<%= javascript_include_tag 'plugins/shopping_cart/buy' %>

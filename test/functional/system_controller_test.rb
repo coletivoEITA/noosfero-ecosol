@@ -1,14 +1,9 @@
 require_relative "../test_helper"
 require 'system_controller'
 
-# Re-raise errors caught by the controller.
-class SystemController; def rescue_action(e) raise e end; end
-
 class SystemControllerTest < ActionController::TestCase
   def setup
     @controller = SystemController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
   end
 
   # Replace this with your real tests.

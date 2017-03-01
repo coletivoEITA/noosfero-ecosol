@@ -1,8 +1,5 @@
-require File.dirname(__FILE__) + '/../../../../test/test_helper'
-require File.dirname(__FILE__) + '/../../../../app/controllers/my_profile/profile_editor_controller'
-
-# Re-raise errors caught by the controller.
-class ProfileEditorController; def rescue_action(e) raise e end; end
+require 'test_helper'
+require_relative '../../../../app/controllers/my_profile/profile_editor_controller'
 
 class StoaPluginProfileEditorControllerTest < ActionController::TestCase
 
@@ -10,13 +7,12 @@ class StoaPluginProfileEditorControllerTest < ActionController::TestCase
 
   def setup
     @controller = ProfileEditorController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+
     @person = User.create(:login => 'test_user', :email => 'test_user@example.com', :password => 'test', :password_confirmation => 'test').person
     login_as(@person.identifier)
     Environment.default.enable_plugin(StoaPlugin.name)
     db = Tempfile.new('stoa-test')
-    ActiveRecord::Base.configurations['stoa'] = {:adapter => 'sqlite3', :database => db.path}
+    ApplicationRecord.configurations['stoa'] = {:adapter => 'sqlite3', :database => db.path}
   end
 
   attr_accessor :person

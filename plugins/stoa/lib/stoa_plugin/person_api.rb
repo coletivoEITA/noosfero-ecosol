@@ -28,14 +28,14 @@ class StoaPlugin::PersonApi < Noosfero::FieldsDecorator
   end
 
   def tags
-    articles.published.tag_counts({:order => 'count desc', :limit => 10}).inject({}) do |memo,tag|
+    articles.published.tag_counts.order('count desc').limit(10).inject({}) do |memo,tag|
       memo[tag.name] = tag.count
       memo
     end
   end
 
   def communities
-    object.communities.public.map {|community| {:url => profile_homepage(context, community), :name => community.name}}
+    object.communities.is_public.map {|community| {:url => profile_homepage(context, community), :name => community.name}}
   end
 
   private

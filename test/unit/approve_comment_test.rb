@@ -7,7 +7,7 @@ class ApproveCommentTest < ActiveSupport::TestCase
     ActionMailer::Base.perform_deliveries = true
     ActionMailer::Base.deliveries = []
     @profile = create_user('test_user', :email => "someone@anyhost.com").person
-    @article = fast_create(TextileArticle, :profile_id => @profile.id, :name => 'test name', :abstract => 'Lead of article', :body => 'This is my article')
+    @article = fast_create(TextArticle, :profile_id => @profile.id, :name => 'test name', :abstract => 'Lead of article', :body => 'This is my article')
     @community = create(Community, :contact_email => "someone@anyhost.com")
     @comment = build(Comment, :article => @article, :title => 'any comment', :body => "any text", :author => create_user('someperson').person)
   end
@@ -162,7 +162,7 @@ class ApproveCommentTest < ActiveSupport::TestCase
 
   should 'accept_disabled be false if there is an article associated to task' do
     a = ApproveComment.new(:comment_attributes => @comment.attributes.to_json)
-    assert !a.accept_disabled?
+    refute a.accept_disabled?
   end
 
   should 'have target notification description' do

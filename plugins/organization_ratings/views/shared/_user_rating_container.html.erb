@@ -1,0 +1,39 @@
+<% extend RatingsHelper %>
+<div class="user-rating-block">
+  <div class="star-profile-information">
+    <div class="star-profile-image">
+      <%= link_to profile_image(user_rate.person, :portrait), user_rate.person.url %>
+    </div>
+
+    <div class="star-profile-name">
+      <%= link_to user_rate.person.name,  user_rate.person.url %>
+    </div>
+  </div>
+
+  <div class="user-testimony-container">
+    <div class="testimony-rate-date">
+      <%= time_ago_in_words(user_rate.created_at) %>
+    </div>
+
+    <div class="star-container">
+      <% (1..5).each do |rate_number| %>
+        <% if rate_number <=  user_rate.value %>
+          <div class="small-star-positive"></div>
+        <% else %>
+          <div class="small-star-negative"></div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="user-testimony">
+      <%= status_message_for(user, user_rate) %>
+      <% if user_rate.comment.present? %>
+        <p class="comment-body"> <%= user_rate.comment.body %> </p>
+      <% elsif user && user.is_admin? %>
+        <% rating_task = CreateOrganizationRatingComment.with_rating(user_rate) %>
+        <p class="comment-body"> <%= rating_task.body if rating_task.respond_to?(:body) %> </p>
+      <% end %>
+    </div>
+    <%= @plugins.dispatch(:organization_ratings_plugin_container_extra_fields, user_rate).collect { |content| instance_exec(&content) }.join("") %>
+  </div>
+</div>

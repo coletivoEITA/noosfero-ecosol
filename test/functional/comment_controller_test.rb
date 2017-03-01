@@ -1,15 +1,10 @@
 require_relative "../test_helper"
 require 'comment_controller'
 
-# Re-raise errors caught by the controller.
-class CommentController; def rescue_action(e) raise e end; end
-
 class CommentControllerTest < ActionController::TestCase
 
   def setup
     @controller = CommentController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
 
     @profile = create_user('testinguser').person
     @environment = @profile.environment
@@ -358,7 +353,7 @@ class CommentControllerTest < ActionController::TestCase
   should "render the root comment when a reply is made" do
     login_as profile.identifier
     page = profile.articles.create!(:name => 'myarticle')
- 
+
     comment = fast_create(Comment, :body => 'some content', :source_id => page.id, :source_type => 'Article')
 
     xhr :post, :create, :profile => profile.identifier, :id => page.id, :comment => {:body => 'Some comment...', :reply_of_id => comment.id}, :confirm => 'true'
@@ -390,8 +385,24 @@ class CommentControllerTest < ActionController::TestCase
     Article.record_timestamps = true
 
     login_as @profile.identifier
-    xhr :post, :create, :profile => profile.identifier, :id => page.id, :comment => { :title => 'crap!', :body => 'I think that this article is crap' }, :confirm => 'true'
+    xhr :post, :create, :profile => profile.identifier, :id => page.id, :comment => {:title => 'crap!', :body => 'I think that this article is crap' }, :confirm => 'true'
     assert_not_equal yesterday, page.reload.updated_at
+  end
+
+  should 'follow article when commenting' do
+    page = create(Article, :profile => profile, :name => 'myarticle', :body => 'the body of the text')
+    login_as @profile.identifier
+
+    xhr :post, :create, :profile => profile.identifier, :id => page.id, :comment => {:title => 'crap!', :body => 'I think that this article is crap', :follow_article => true}, :confirm => 'true'
+    assert_includes page.person_followers, @profile
+  end
+
+  should 'not follow article when commenting' do
+    page = create(Article, :profile => profile, :name => 'myarticle', :body => 'the body of the text')
+    login_as @profile.identifier
+
+    xhr :post, :create, :profile => profile.identifier, :id => page.id, :comment => {:title => 'crap!', :body => 'I think that this article is crap', :follow_article => false }, :confirm => 'true'
+    assert_not_includes page.person_followers, @profile
   end
 
   should 'be able to mark comments as spam' do
@@ -417,7 +428,7 @@ class CommentControllerTest < ActionController::TestCase
     login_as 'normaluser' # normaluser cannot remove other people's comments
     xhr :post, :mark_as_spam, :profile => profile.identifier, :id => comment.id
     comment.reload
-    assert !comment.spam?
+    refute comment.spam?
   end
 
   should "not be able to mark as spam other people's comments if not moderator or admin and return json if is an ajax request" do
@@ -434,7 +445,7 @@ class CommentControllerTest < ActionController::TestCase
     xhr :post, :mark_as_spam, :profile => profile.identifier, :id => comment.id
     assert_response :success
     comment.reload
-    assert !comment.spam?
+    refute comment.spam?
     assert_match /\{\"ok\":false\}/, @response.body
   end
 

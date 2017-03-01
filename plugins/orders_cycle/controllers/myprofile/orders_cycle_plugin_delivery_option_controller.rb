@@ -12,6 +12,6 @@ class OrdersCyclePluginDeliveryOptionController < DeliveryPlugin::AdminOptionsCo
   protected
 
   extend HMVC::ClassMethods
-  hmvc OrdersCyclePlugin, orders_context: OrdersCyclePlugin
+  hmvc OrdersCyclePlugin
 
 end

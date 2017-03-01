@@ -1,14 +1,14 @@
-require File.expand_path(File.dirname(__FILE__) + "/../../../../../test/test_helper")
+require 'test_helper'
 
 class WorkAssignmentTest < ActiveSupport::TestCase
   should 'find or create sub-folder based on author identifier' do
     profile = fast_create(Profile)
     author = fast_create(Person)
     work_assignment = WorkAssignmentPlugin::WorkAssignment.create!(:name => 'Sample Work Assignment', :profile => profile)
-    assert_nil work_assignment.children.find_by_slug(author.identifier)
+    assert_nil work_assignment.children.find_by slug: author.identifier
 
     folder = work_assignment.find_or_create_author_folder(author)
-    assert_not_nil work_assignment.children.find_by_slug(author.identifier)
+    assert_not_nil work_assignment.children.find_by slug: author.identifier
     assert_equal folder, work_assignment.find_or_create_author_folder(author)
   end
 

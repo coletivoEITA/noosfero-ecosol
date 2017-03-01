@@ -1,0 +1,85 @@
+import-modal.modal.fade tabindex="-1" role="dialog"
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        .row
+          .col-xs-12
+            h1
+              |{t('views.product.import.action')}
+
+      .modal-body
+        .row
+          .col-xs-12
+            form
+              p
+                |{t('views.product.import.help')}
+                br
+                strong
+                  |{t('views.product.import.help2')}
+              table
+                thead
+                  th
+                    |{t('views.product.import.field_supplier_name')}
+                  th
+                    |{t('views.product.import.field_product_name')}
+                  th
+                    |{t('views.product.import.field_product_unit')}
+                  th
+                    |{t('views.product.import.field_product_price')}
+                tbody
+                  tr
+                    td
+                    td
+                    td
+                    td
+              p
+                |{t('views.product.import.unit_help', {units: _.pluck(units, 'name').join(' - ')})}
+
+              .checkbox
+                label name='remove_all_suppliers'
+                  input type="checkbox" class="remove_all_suppliers" onchange="confirmRemoveAll"
+                    |{t('views.product.import.remove_all')}
+
+            input type="file" class="csv" accept='text/csv'
+
+      .modal-footer
+        button onclick="{import}" class="default"
+          |{t('views.product.import.send')}
+        button onclick="{close}" class="default grey"
+          i class="fa fa-times close-cross"
+          |{t('views.product.cancel')}
+
+  javascript:
+    this.t = window.products.t
+
+    confirmRemoveAll() {
+      var input = $('input.remove_all_suppliers')[0]
+      if (input.check) 
+        input.check = confirm(t('views.product.import.confirm_remove_all'))
+    }
+
+    import() {
+      var self = this
+      var importUrl = Routes.suppliers_plugin_product_path({profile: noosfero.profile, action: 'import'})
+      
+      data = new FormData();
+      data.append( 'csv',                  $('input.csv')[0].files[0]               )
+      data.append( 'remove_all_suppliers', $('input.remove_all_suppliers')[0].value )
+
+      var opts = {
+        url:         importUrl,
+        data:        data,
+        cache:       false,
+        contentType: false,
+        processData: false,
+        dataType:    'json',
+        type:        'POST',
+        success: function(data) {
+          display_notice(self.t("views.product.import.import_in_progress"))
+          self.close()
+        }
+      };
+      $.ajax(opts);
+    }
+
+    close() { $(this.root).modal('hide'); }

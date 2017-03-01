@@ -6,7 +6,7 @@
   <% nodes = profile.nodes.select{ |p| p.lat } %>
 
   <% if profile.lat or suppliers.present? or nodes.present? %>
-    <%= block_title t('networks_plugin.views.blocks.location.title') % {:profile => profile.name} %>
+    <%= block_title t('networks_plugin.views.blocks.location.title', profile: profile.name) %>
 
     <% center = if profile.lat then "center=#{profile.lat},#{profile.lng}" else '' end %>
     <% markers = [profile].map{ |p| "markers=color:red|#{p.lat},#{p.lng}" if p.lat }.join '&' %>

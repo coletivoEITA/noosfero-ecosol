@@ -1,4 +1,5 @@
-class CustomFormsPlugin::Submission < Noosfero::Plugin::ActiveRecord
+class CustomFormsPlugin::Submission < ApplicationRecord
+
   belongs_to :form, :class_name => 'CustomFormsPlugin::Form'
   belongs_to :profile
 
@@ -14,7 +15,7 @@ class CustomFormsPlugin::Submission < Noosfero::Plugin::ActiveRecord
   validate :check_answers
 
   def self.human_attribute_name_with_customization(attrib, options={})
-    if /\d+/ =~ attrib and (f = CustomFormsPlugin::Field.find_by_id(attrib.to_s))
+    if /\d+/ =~ attrib and (f = CustomFormsPlugin::Field.find_by(id: attrib.to_s))
       f.name
     else
       _(self.human_attribute_name_without_customization(attrib))
@@ -47,6 +48,14 @@ class CustomFormsPlugin::Submission < Noosfero::Plugin::ActiveRecord
     end
 
     self.answers
+  end
+
+  def q_and_a
+    qa = {}
+    form.fields.each do |f|
+      self.answers.select{|a| a.field == f}.map{|answer| qa[f] = answer }
+    end
+    qa
   end
 
   protected

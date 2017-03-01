@@ -1,14 +1,9 @@
-require File.dirname(__FILE__) + '/../test_helper'
-
-# Re-raise errors caught by the controller.
-class AccountController; def rescue_action(e) raise e end; end
+require_relative '../test_helper'
 
 class AccountControllerPluginTest < ActionController::TestCase
 
   def setup
     @controller = AccountController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
 
     @environment = Environment.default
     @environment.enabled_plugins = ['LdapPlugin']

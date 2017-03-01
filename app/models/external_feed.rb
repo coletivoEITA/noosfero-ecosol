@@ -1,16 +1,18 @@
-class ExternalFeed < ActiveRecord::Base
+class ExternalFeed < ApplicationRecord
 
   belongs_to :blog
   validates_presence_of :blog_id
   validates_presence_of :address, :if => lambda {|efeed| efeed.enabled}
   validates_uniqueness_of :blog_id
 
-  scope :enabled, :conditions => { :enabled => true }
-  scope :expired, lambda {
-    { :conditions => ['(fetched_at is NULL) OR (fetched_at < ?)', Time.now - FeedUpdater.update_interval] }
+  scope :enabled, -> { where enabled: true }
+  scope :expired, -> {
+    where '(fetched_at is NULL) OR (fetched_at < ?)', Time.now - FeedUpdater.update_interval
   }
 
   attr_accessible :address, :enabled, :only_once
+
+  delegate :environment, :to => :blog, :allow_nil => true
 
   def add_item(title, link, date, content)
     return if content.blank?
@@ -23,7 +25,7 @@ class ExternalFeed < ActiveRecord::Base
     end
     content = doc.to_s
 
-    article = TinyMceArticle.new
+    article = TextArticle.new
     article.name = title
     article.profile = blog.profile
     article.body = content

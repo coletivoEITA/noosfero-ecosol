@@ -4,13 +4,11 @@
   .title.filter-box
     = t'views.filter.filter'
 
-  - url = {controller: :orders_cycle_plugin_order, action: :filter} if type == :order
+  - url =  if type == :order then {controller: :orders_cycle_plugin_order, action: :filter} else params end
   = form_tag url, remote: true, id: 'filter-form', data: {loading: "#filter", update: '#search-results', type: 'html'}, method: :get do
     .fields.filter-box
       - if type == :supplier
         = render 'suppliers_plugin_myprofile/filter_fields'
-      - elsif type == :product
-        = render 'suppliers_plugin/product/filter_fields'
       - elsif type == :order
         = render 'filter_fields', actor: cycle.suppliers, cycle: cycle, order: order
       - else

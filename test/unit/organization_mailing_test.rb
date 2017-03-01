@@ -22,7 +22,7 @@ class OrganizationMailingTest < ActiveSupport::TestCase
 
     mailing.source_id = community.id
     mailing.valid?
-    assert !mailing.errors[:source_id.to_s].present?
+    refute mailing.errors[:source_id.to_s].present?
   end
 
   should 'return community name' do
@@ -57,7 +57,7 @@ class OrganizationMailingTest < ActiveSupport::TestCase
 
   should 'return url for organization on url' do
     mailing = build(OrganizationMailing, :source => community)
-    assert_equal "#{community.environment.top_url}/#{community.name.to_slug}/", mailing.url
+    assert_equal "#{community.environment.top_url}/#{community.name.to_slug}", mailing.url
   end
 
   should 'deliver mailing to each member after create' do
@@ -98,6 +98,11 @@ class OrganizationMailingTest < ActiveSupport::TestCase
     assert_equal [Person['user_one'], Person['user_two']], mailing.recipients
   end
 
+  should 'return recipients previously filtered' do
+    mailing = create(OrganizationMailing, :source => community, :subject => 'Hello', :body => 'We have some news', :person => person, :data => {:members_filtered => [Person['user_one'].id,Person['user_two'].id]})
+    assert_equivalent [Person['user_one'], Person['user_two']], mailing.recipients
+  end
+
   should 'return recipients according to limit' do
     mailing = create(OrganizationMailing, :source => community, :subject => 'Hello', :body => 'We have some news', :person => person)
     assert_equal [Person['user_one']], mailing.recipients(0, 1)
@@ -107,7 +112,7 @@ class OrganizationMailingTest < ActiveSupport::TestCase
     member = Person['user_one']
     mailing = create(OrganizationMailing, :source => community, :subject => 'Hello', :body => 'We have some news', :person => person)
     process_delayed_job_queue
-    assert mailing.mailing_sents.find_by_person_id(member.id)
+    assert mailing.mailing_sents.find_by(person_id: member.id)
   end
 
   should 'return false if did not sent mailing to a recipient' do
@@ -115,7 +120,7 @@ class OrganizationMailingTest < ActiveSupport::TestCase
     mailing = create(OrganizationMailing, :source => community, :subject => 'Hello', :body => 'We have some news', :person => person)
     process_delayed_job_queue
 
-    assert !mailing.mailing_sents.find_by_person_id(recipient.id)
+    refute mailing.mailing_sents.find_by(person_id: recipient.id)
   end
 
   protected

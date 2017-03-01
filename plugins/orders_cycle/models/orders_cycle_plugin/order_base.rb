@@ -4,17 +4,21 @@ module OrdersCyclePlugin::OrderBase
   extend ActiveSupport::Concern
   included do
 
-    attr_accessible :cycle
+    # has_one is used by inverse_of
+    has_many :cycle_sales, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :sale_id
+    has_one :cycle_sale, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :sale_id
+    has_many :cycle_purchases, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :purchase_id
+    has_one :cycle_purchase, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :purchase_id
 
-    has_many :cycle_sales, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :sale_id, dependent: :destroy
-    has_one  :cycle_sale,  class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :sale_id
-    has_many :cycle_purchases, class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :purchase_id, dependent: :destroy
-    has_one  :cycle_purchase,  class_name: 'OrdersCyclePlugin::CycleOrder', foreign_key: :purchase_id
     def all_cycles
       self.cycle_sales.includes(:cycle).map(&:cycle) + self.cycle_purchases.includes(:cycle).map(&:cycle)
     end
 
-    # TODO: test if the has_one defined on Sale/Purchase works and these are not needed
+    ##
+    # has_one :cycle, through: :cycle_{sale,purchase} doesn't have a setter
+    #
+    attr_accessible :cycle
+    has_many :cycles, through: :cycle_sales, source: :cycle
     def cycle
       self.cycles.first
     end
@@ -27,13 +31,13 @@ module OrdersCyclePlugin::OrderBase
       joins(:cycles)
     }
 
-    has_many :items, class_name: 'OrdersCyclePlugin::Item', foreign_key: :order_id, dependent: :destroy, order: 'name ASC'
+    has_many :items, -> { order 'name ASC' }, class_name: 'OrdersCyclePlugin::Item', foreign_key: :order_id, dependent: :destroy
 
-    has_many :offered_products, through: :items, source: :offered_product, uniq: true
-    has_many :distributed_products, through: :offered_products, source: :from_products, uniq: true
-    has_many :supplier_products, through: :distributed_products, source: :from_products, uniq: true
+    has_many :offered_products, -> { distinct }, through: :items, source: :offered_product
+    has_many :distributed_products, -> { distinct }, through: :offered_products, source: :from_products
+    has_many :supplier_products, -> { distinct }, through: :distributed_products, source: :from_products
 
-    has_many :suppliers, through: :supplier_products, uniq: true
+    has_many :suppliers, -> { distinct }, through: :supplier_products
 
     extend CodeNumbering::ClassMethods
     code_numbering :code, scope: (proc do
@@ -59,6 +63,7 @@ module OrdersCyclePlugin::OrderBase
     end
 
     protected
+
   end
 
 end

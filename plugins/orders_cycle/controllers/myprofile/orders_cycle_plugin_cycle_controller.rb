@@ -1,7 +1,5 @@
 class OrdersCyclePluginCycleController < OrdersPluginAdminController
 
-  no_design_blocks
-
   # FIXME: remove me when styles move from consumers_coop plugin
   include ConsumersCoopPlugin::ControllerHelper
   include OrdersCyclePlugin::TranslationHelper
@@ -22,23 +20,24 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def new
-    if request.put?
+    if request.patch?
+      # can't use profile.orders_cycle here
       @cycle = OrdersCyclePlugin::Cycle.find params[:id]
 
       params[:cycle][:status] = 'orders' if @open = params[:open] == '1'
-      @success = @cycle.update_attributes params[:cycle]
+      @success = @cycle.update params[:cycle]
 
       if @success
         session[:notice] = t('controllers.myprofile.cycle_controller.cycle_created')
         if params[:sendmail]
           OrdersCyclePlugin::Mailer.delay(run_at: @cycle.start).open_cycle(
-            @cycle.profile, @cycle ,t('controllers.myprofile.cycle_controller.new_open_cycle')+": "+@cycle.name, @cycle.opening_message)
+            @cycle.profile, @cycle, "#{t'controllers.myprofile.cycle_controller.new_open_cycle'}: #{@cycle.name}", @cycle.opening_message)
         end
       else
         render action: :edit
       end
     else
-      count = OrdersCyclePlugin::Cycle.count conditions: {profile_id: profile}
+      count = profile.orders_cycles.maximum(:code) || 1
       @cycle = OrdersCyclePlugin::Cycle.create! profile: profile, status: 'new',
         name: t('controllers.myprofile.cycle_controller.cycle_n_n') % {n: count+1}
     end
@@ -48,13 +47,14 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
     # editing an order
     return super if params[:actor_name]
 
-    @cycle = OrdersCyclePlugin::Cycle.find params[:id]
+    @cycle = profile.orders_cycles.find params[:id]
     @products = products
+    @hubs = profile.hubs.all.map{|h| [h.name, h.id]}
 
     if request.xhr?
       if params[:commit]
         params[:cycle][:status] = 'orders' if @open = params[:open] == '1'
-        @success = @cycle.update_attributes params[:cycle]
+        @success = @cycle.update params[:cycle]
 
         if params[:sendmail]
           OrdersCyclePlugin::Mailer.delay(run_at: @cycle.start).open_cycle(@cycle.profile,
@@ -65,7 +65,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def products_load
-    @cycle = OrdersCyclePlugin::Cycle.find params[:id]
+    @cycle = profile.orders_cycles.find params[:id]
     @products = products
 
     if @cycle.add_products_job
@@ -76,50 +76,60 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   end
 
   def destroy
-    @cycle = OrdersCyclePlugin::Cycle.find params[:id]
+    @cycle = profile.orders_cycles.find params[:id]
     @cycle.destroy
     redirect_to action: :index
   end
 
   def step
-    @cycle = OrdersCyclePlugin::Cycle.find params[:id]
+    @cycle = profile.orders_cycles.find params[:id]
     @cycle.step
     @cycle.save!
     redirect_to action: :edit, id: @cycle.id
   end
 
   def step_back
-    @cycle = OrdersCyclePlugin::Cycle.find params[:id]
+    @cycle = profile.orders_cycles.find params[:id]
     @cycle.step_back
     @cycle.save!
     redirect_to action: :edit, id: @cycle.id
   end
 
   def add_missing_products
-    @cycle = OrdersCyclePlugin::Cycle.find params[:id]
+    @cycle = profile.orders_cycles.find params[:id]
     @cycle.add_products
     render partial: 'suppliers_plugin/shared/pagereload'
   end
 
-  def report_products
+  def report
     return super if params[:ids].present?
-    @cycle = OrdersCyclePlugin::Cycle.find params[:id]
-    report_file = report_products_by_supplier @cycle.supplier_products_by_suppliers(@cycle.sales.ordered)
 
-    send_file report_file, type: 'application/xlsx',
-      disposition: 'attachment',
-      filename: t('controllers.myprofile.admin.products_report') % {
+    @cycle = profile.orders_cycles.find params[:id]
+    scope = @cycle.sales.ordered
+
+    @hub = SuppliersPlugin::Hub.where(id: params[:report][:hub_id]).first
+    scope = scope.where(consumer_id: @hub.consumer_profiles) if @hub
+
+    # specifics
+    if params.include? :supplier
+      report_file = report_products_by_supplier @cycle.supplier_products_by_suppliers(scope)
+      file_str = 'controllers.myprofile.admin.products_report'
+    else
+      report_file = report_orders_by_consumer scope
+      file_str = 'controllers.myprofile.admin.orders_report'
+    end
+
+    if @hub
+      filename = t(file_str+'_by_hub') % {
+        date: DateTime.now.strftime("%Y-%m-%d"), profile_identifier: profile.identifier, name: @cycle.name_with_code, hub: @hub.name}
+    else
+      filename = t(file_str) % {
         date: DateTime.now.strftime("%Y-%m-%d"), profile_identifier: profile.identifier, name: @cycle.name_with_code}
-  end
-
-  def report_orders
-    return super if params[:ids].present?
-    @cycle = OrdersCyclePlugin::Cycle.find params[:id]
-    report_file = report_orders_by_consumer @cycle.sales.ordered
+    end
 
     send_file report_file, type: 'application/xlsx',
       disposition: 'attachment',
-      filename: t('controllers.myprofile.admin.orders_report') % {date: DateTime.now.strftime("%Y-%m-%d"), profile_identifier: profile.identifier, name: @cycle.name_with_code}
+      filename: filename
   end
 
   def filter
@@ -135,7 +145,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
   attr_accessor :cycle
 
   extend HMVC::ClassMethods
-  hmvc OrdersCyclePlugin, orders_context: OrdersCyclePlugin
+  hmvc OrdersCyclePlugin
 
   def search_scope scope
     params[:date] ||= {}

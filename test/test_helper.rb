@@ -1,14 +1,27 @@
 ENV["RAILS_ENV"] = "test"
 
-require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
-require 'rails/test_help'
-require 'mocha'
+require_relative "../config/environment"
+# FIXME: shouldn't be necessary
+require 'user'
 
-require 'noosfero/test'
-require 'authenticated_test_helper'
-require File.dirname(__FILE__) + '/factories'
-require File.dirname(__FILE__) + '/noosfero_doc_test'
-require File.dirname(__FILE__) + '/action_tracker_test_helper'
+require 'rails/test_help'
+
+require 'mocha'
+require 'mocha/mini_test'
+require "minitest/spec"
+require "minitest/reporters"
+Minitest::Reporters.use! Minitest::Reporters::ProgressReporter.new, ENV, Minitest.backtrace_filter
+
+require_relative 'support/should'
+require_relative 'support/factories'
+require_relative 'support/integration_test'
+require_relative 'support/controller_test_case'
+require_relative 'support/authenticated_test_helper'
+require_relative 'support/action_tracker_test_helper'
+require_relative 'support/noosfero_doc_test'
+require_relative 'support/performance_helper'
+require_relative 'support/noosfero_test_helper'
+
 plugins_factories = Dir.glob(File.join(Rails.root, 'config', 'plugins', '*','test', 'factories.rb'))
 plugins_factories.each { |f| require f.sub(/\.rb$/, '') }
 
@@ -42,14 +55,12 @@ class ActiveSupport::TestCase
   # then set this back to true.
   self.use_instantiated_fixtures  = false
 
-  # Add more helper methods to be used by all tests here...
+  extend Test::Should
 
-  # for fixture_file_upload
   include ActionDispatch::TestProcess
-
   include Noosfero::Factory
-
   include AuthenticatedTestHelper
+  include PerformanceHelper
 
   fixtures :environments, :roles
 
@@ -59,24 +70,13 @@ class ActiveSupport::TestCase
     end
   end
 
-  def self.should(name, &block)
-    @shoulds ||= []
-
-    destname = 'test_should_' + name.gsub(/[^a-zA-z0-9]+/, '_')
-    if @shoulds.include?(destname)
-      raise "there is already a test named \"#{destname}\""
+  # deprecated on minitest
+  def assert_block message=nil
+    assert message || 'yield' do
+      yield
     end
-
-    @shoulds << destname
-    if block_given?
-      self.send(:define_method, destname, &block)
-    else
-      self.send(:define_method, destname) do
-        flunk 'pending: should ' + name
-      end
-    end
-
   end
+  alias_method :ok, :assert_block
 
   setup :global_setup
 
@@ -84,18 +84,14 @@ class ActiveSupport::TestCase
     User.current = nil
   end
 
-  alias :ok :assert_block
+  alias_method :ok, :assert_block
 
   def assert_equivalent(enum1, enum2)
-    assert( ((enum1 - enum2) == []) && ((enum2 - enum1) == []), "<#{enum1.inspect}> expected to be equivalent to <#{enum2.inspect}>")
-  end
-
-  def assert_includes(array, element)
-    assert(array.include?(element), "<#{array.inspect}> expected to include <#{element.inspect}>")
-  end
-
-  def assert_not_includes(array, element)
-    assert(!array.include?(element), "<#{array.inspect}> expected to NOT include <#{element.inspect}>")
+    norm1 = enum1.group_by{|e|e}.values
+    norm2 = enum2.group_by{|e|e}.values
+    assert_equal norm1.size, norm2.size, "Size mismatch: #{enum1.inspect} vs #{enum2.inspect}"
+    assert_equal [], norm1 - norm2, "Arrays #{norm1} and #{norm2} are not equivalents"
+    assert_equal [], norm2 - norm1, "Arrays #{norm1} and #{norm2} are not equivalents"
   end
 
   def assert_mandatory(object, attribute, test_value = 'some random string')
@@ -113,15 +109,12 @@ class ActiveSupport::TestCase
     assert !object.errors[attribute.to_s].present?
   end
 
-  def assert_subclass(parent, child)
-    assert_equal parent, child.superclass, "Class #{child} expected to be a subclass of #{parent}"
-  end
-
   # this check only if text has html tag
   def assert_sanitized(text)
     assert !text.index('<'), "Text '#{text}' expected to be sanitized"
   end
 
+  # TODO: HTML::Document is deprecated, port to Nokogiri::HTML
   def assert_tag_in_string(text, options)
     doc = HTML::Document.new(text, false, false)
     tag = doc.find(options)
@@ -145,6 +138,18 @@ class ActiveSupport::TestCase
       end
     end
     assert reference.blank?, "The following elements are not in the collection: #{reference.inspect}"
+  end
+
+  def h2s(value) # make a string from ordered hash to simplify tests
+    case value
+      when Hash, HashWithIndifferentAccess
+        '{'+ value.stringify_keys.to_a.sort{|a,b|a[0]<=>b[0]}.map{ |k,v| k+':'+h2s(v) }.join(',') +'}'
+      when Array
+        '['+ value.map{|i|h2s(i)}.join(',') +']'
+      when NilClass
+        '<nil>'
+      else value.to_s
+    end
   end
 
   # For models that render views (blocks, articles, ...)
@@ -185,20 +190,20 @@ class ActiveSupport::TestCase
   end
 
   def process_delayed_job_queue
-    silence_stream(STDOUT) do
+    silence_stream STDOUT do
       Delayed::Worker.new.work_off
     end
   end
 
   def uses_postgresql(schema_name = 'test_schema')
-    adapter = ActiveRecord::Base.connection.class
+    adapter = ApplicationRecord.connection.class
     adapter.any_instance.stubs(:adapter_name).returns('PostgreSQL')
     adapter.any_instance.stubs(:schema_search_path).returns(schema_name)
     Noosfero::MultiTenancy.stubs(:on?).returns(true)
   end
 
   def uses_sqlite
-    adapter = ActiveRecord::Base.connection.class
+    adapter = ApplicationRecord.connection.class
     adapter.any_instance.stubs(:adapter_name).returns('SQLite')
     Noosfero::MultiTenancy.stubs(:on?).returns(false)
   end
@@ -209,99 +214,9 @@ class ActiveSupport::TestCase
     ret
   end
 
-end
-
-module NoosferoTestHelper
-  def link_to(content, url, options = {})
-    "<a href='#{url.inspect}'>#{content}</a>"
-  end
-
-  def content_tag(tag, content, options = {})
-    tag_attr = options.blank? ? '' : ' ' + options.collect{ |o| "#{o[0]}=\"#{o[1]}\"" }.join(' ')
-    "<#{tag}#{tag_attr}>#{content}</#{tag}>"
-  end
-
-  def submit_tag(content, options = {})
-    content
-  end
-
-  def remote_function(options = {})
-    ''
-  end
-
-  def tag(tag, args = {})
-    attrs = args.map{|k,v| "#{k}='#{v}'"}.join(' ')
-    "<#{tag} #{attrs} />"
-  end
-
-  def options_from_collection_for_select(collection, value_method, content_method)
-    "<option value='fake value'>fake content</option>"
-  end
-
-  def select_tag(id, collection, options = {})
-    "<select id='#{id}'>fake content</select>"
-  end
-
-  def options_for_select(collection, selected = nil)
-    collection.map{|item| "<option value='#{item[1]}'>#{item[0]}</option>"}.join("\n")
-  end
-
-  def params
-    {}
-  end
-
-  def ui_icon(icon)
-    icon
-  end
-
-  def will_paginate(arg1, arg2)
-  end
-
-  def javascript_tag(any)
-    ''
-  end
-  def javascript_include_tag(any)
-    ''
-  end
-  def check_box_tag(name, value = 1, checked = false, options = {})
-    name
-  end
-  def stylesheet_link_tag(arg)
-    arg
-  end
-
-  def show_date(date)
-    date.to_s
-  end
-
-  def strip_tags(html)
-    html.gsub(/<[^>]+>/, '')
-  end
-
-  def icon_for_article(article)
-    ''
+  def json_response
+    ActiveSupport::JSON.decode(@response.body)
   end
 
 end
 
-class ActionController::IntegrationTest
-  def assert_can_login
-    assert_tag :tag => 'a', :attributes => { :id => 'link_login' }
-  end
-
-  def assert_can_signup
-    assert_tag :tag => 'a', :attributes => { :href => '/account/signup'}
-  end
-
-  def login(username, password)
-    ActionController::Integration::Session.any_instance.stubs(:https?).returns(true)
-
-    post '/account/login', :user => { :login => username, :password => password }
-    assert_response :redirect
-    follow_redirect!
-    assert_not_equal '/account/login', path
-  end
-
-end
-
-Profile

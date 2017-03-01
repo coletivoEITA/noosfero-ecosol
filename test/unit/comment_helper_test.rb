@@ -1,10 +1,10 @@
 require_relative "../test_helper"
 
-class CommentHelperTest < ActiveSupport::TestCase
+class CommentHelperTest < ActionView::TestCase
 
   include CommentHelper
-  include ActionView::Helpers::TagHelper
-  include NoosferoTestHelper
+
+  helper ApplicationHelper
 
   def setup
     @user = create_user('usertest').person
@@ -12,6 +12,7 @@ class CommentHelperTest < ActiveSupport::TestCase
     self.stubs(:logged_in?).returns(true)
     self.stubs(:report_abuse).returns('<a href="#">link</a>')
     self.stubs(:expirable_comment_link).returns('<a href="#">link</a>')
+    self.stubs(:url_for)
     @plugins = mock
     @plugins.stubs(:dispatch).returns([])
   end
@@ -71,7 +72,7 @@ class CommentHelperTest < ActiveSupport::TestCase
   should 'do not return link for report abuse action when comment has no author' do
     comment = Comment.new
     link = link_for_report_abuse(comment)
-    assert !link
+    refute link
   end
 
   should 'return link for mark comment as spam' do
@@ -138,10 +139,6 @@ class CommentHelperTest < ActiveSupport::TestCase
     @plugins.stubs(:dispatch).returns([plugin_action])
     html = comment_actions(comment)
     assert_match /plugin_action/, Nokogiri::HTML.fragment(html).css('.comments-action-bar').to_html
-  end
-
-  def link_to_function(content, url, options = {})
-    link_to(content, url, options)
   end
 
 end

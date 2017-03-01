@@ -1,25 +1,21 @@
 # for some unknown reason, if this is named SuppliersPlugin::Product then
 # cycle.products will go to an infinite loop
-class SuppliersPlugin::BaseProduct < Product
+class SuppliersPlugin::BaseProduct < ProductsPlugin::Product
+
+  # undo ProductsPlugin::Product
+  def self.sti_name
+    self.name
+  end
+
+  has_one :supplier_image, through: :from_product, source: :image
 
   attr_accessible :default_margin_percentage, :margin_percentage, :default_unit, :unit_detail,
     :supplier_product_attributes
 
   accepts_nested_attributes_for :supplier_product
 
-  default_scope include: [
-    # from_products is required for products.available
-    :from_products,
-    # FIXME: move use cases to a scope called 'includes_for_links'
-    {
-      suppliers: [{ profile: [:domains, {environment: :domains}] }]
-    },
-    {
-      profile: [:domains, {environment: :domains}]
-    }
-  ]
-
-  self.abstract_class = true
+  # if abstract_class is true then it will trigger https://github.com/rails/rails/issues/20871
+  #self.abstract_class = true
 
   settings_items :minimum_selleable, type: Float, default: nil
   settings_items :margin_percentage, type: Float, default: nil
@@ -39,9 +35,6 @@ class SuppliersPlugin::BaseProduct < Product
 
   default_delegate_setting :qualifiers, to: :supplier_product
   default_delegate :product_qualifiers, default_setting: :default_qualifiers, to: :supplier_product
-
-  default_delegate_setting :product_category, to: :supplier_product
-  default_delegate :product_category_id, default_setting: :default_product_category, to: :supplier_product
 
   default_delegate_setting :image, to: :supplier_product, prefix: :_default
   default_delegate :image_id, default_setting: :_default_image, to: :supplier_product
@@ -75,11 +68,12 @@ class SuppliersPlugin::BaseProduct < Product
     Unit.new(singular: I18n.t('suppliers_plugin.models.product.unit'), plural: I18n.t('suppliers_plugin.models.product.units'))
   end
 
+  # override SuppliersPlugin::BaseProduct
   def self.search_scope scope, params
-    scope = scope.from_supplier_id params[:supplier_id] if params[:supplier_id].present?
+    scope = scope.from_supplier_id params[:supplier_id] if params[:supplier_id].present? && params[:supplier_id].to_s != "0"
     scope = scope.with_available(if params[:available] == 'true' then true else false end) if params[:available].present?
-    scope = scope.name_like params[:name] if params[:name].present?
-    scope = scope.with_product_category_id params[:category_id] if params[:category_id].present?
+    scope = scope.fp_name_like params[:name] if params[:name].present?
+    scope = scope.fp_with_product_category_id params[:category_id] if params[:category_id].present? && params[:category_id].to_s != "0"
     scope
   end
 
@@ -98,7 +92,7 @@ SQL
   def self.archive_orphans
     self.where(id: self.orphans_ids).find_each batch_size: 50 do |product|
       # need full save to trigger search index
-      product.update_attributes archived: true
+      product.update archived: true
     end
   end
 
@@ -141,6 +135,7 @@ SQL
     margin_percentage ||= self.profile.margin_percentage if self.profile
 
     base_price ||= 0
+    base_price = base_price.to_f
     price = if margin_percentage and not base_price.zero?
       base_price.to_f + (margin_percentage.to_f / 100) * base_price.to_f
     else
@@ -156,6 +151,9 @@ SQL
 
   # FIXME: move to core
   # just in case the from_products is nil
+  def product_category_id
+    self[:product_category_id]
+  end
   def product_category_with_default
     self.product_category_without_default or self.class.default_product_category(self.environment)
   end
@@ -173,10 +171,17 @@ SQL
 
   # FIXME: move to core
   def archive
-    self.update_attributes! archived: true
+    self.update! archived: true
   end
   def unarchive
-    self.update_attributes! archived: false
+    self.update! archived: false
+  end
+
+  def notifiable?
+    false
+  end
+  def solr_index?
+    false
   end
 
   protected

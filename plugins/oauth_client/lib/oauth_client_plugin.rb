@@ -31,13 +31,20 @@ class OauthClientPlugin < Noosfero::Plugin
 
   PROVIDERS = {
     :facebook => {
-      :name => 'Facebook'
+      :name => 'Facebook',
+      :info_fields => 'name,email'
     },
     :google_oauth2 => {
       :name => 'Google'
     },
     :noosfero_oauth2 => {
       :name => 'Noosfero'
+    },
+    :github => {
+      :name => 'Github'
+    },
+    :twitter => {
+      :name => 'Twitter'
     }
   }
 
@@ -56,14 +63,16 @@ class OauthClientPlugin < Noosfero::Plugin
         strategy = env['omniauth.strategy']
 
         Noosfero::MultiTenancy.setup!(request.host)
-        domain = Domain.find_by_name(request.host)
+        domain = Domain.by_name(request.host)
         environment = domain.environment rescue Environment.default
 
         provider_id = request.params['id']
         provider_id ||= request.session['omniauth.params']['id'] if request.session['omniauth.params']
         provider = environment.oauth_providers.find(provider_id)
+        strategy.options.merge! consumer_key: provider.client_id, consumer_secret: provider.client_secret
         strategy.options.merge! client_id: provider.client_id, client_secret: provider.client_secret
-        strategy.options.merge! provider.options.symbolize_keys
+        strategy.options.merge! options
+        strategy.options.merge! provider.options
 
         request.session[:provider_id] = provider_id
       }
@@ -93,6 +102,10 @@ class OauthClientPlugin < Noosfero::Plugin
         end
       }
     }
+  end
+
+  def js_files
+  ["script.js"]
   end
 
 end

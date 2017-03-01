@@ -1,0 +1,2 @@
+page.insert_html :after, "exchange-new-message", :partial => "proposal_message", :locals => {:message => @message, :actor => 'profile'}
+page['body'].clear

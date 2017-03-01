@@ -1,7 +1,5 @@
 class OrdersPluginMessageController < MyProfileController
 
-  no_design_blocks
-
   #protect 'edit_profile', :profile
 
   include OrdersPlugin::TranslationHelper
@@ -46,6 +44,6 @@ class OrdersPluginMessageController < MyProfileController
   end
 
   extend HMVC::ClassMethods
-  hmvc OrdersPlugin, orders_context: OrdersPlugin
+  hmvc OrdersPlugin
 
 end

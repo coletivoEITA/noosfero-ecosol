@@ -1,10 +1,8 @@
-class ConsumersCoopPluginSupplierController < OrdersCyclePluginSupplierController
+class ConsumersCoopPluginSupplierController < SuppliersPluginMyprofileController
 
   include ConsumersCoopPlugin::TranslationHelper
 
   helper ConsumersCoopPlugin::TranslationHelper
-
-  no_design_blocks
 
   protected
 

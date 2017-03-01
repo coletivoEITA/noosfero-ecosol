@@ -36,7 +36,7 @@ Feature: search inside a profile
       | joaosilva | ProfileSearchBlock  |
     When I go to joaosilva's profile
     And I fill in "q" with "bees" within ".profile-search-block"
-    And I press "Search"
+    And I press "Search" within ".profile-search-block"
     Then I should see "bees and butterflies" within ".main-block"
 
   Scenario: not display unpublished articles
@@ -47,8 +47,8 @@ Feature: search inside a profile
     And I go to joaosilva's profile
     And I fill in "q" with "article"
     And I press "Search"
-    Then I should see "public article" within ".main-block"
-    And I should not see "private article" within ".main-block"
+    Then I should see "published article" within ".main-block"
+    And I should not see "unpublished article" within ".main-block"
 
   Scenario: search on environment
     Given I go to joaosilva's profile

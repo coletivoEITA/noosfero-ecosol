@@ -7,8 +7,6 @@ module ChatHelper
   module ResponsiveMethods
 
     def responsive_chat_user_status_menu icon_class, status
-      return super unless theme_responsive?
-
       links = [
         ['icon-menu-online', _('Online'), 'chat-connect'],
         ['icon-menu-busy', _('Busy'), 'chat-busy'],
@@ -23,12 +21,7 @@ module ChatHelper
   end
 
   include ResponsiveChecks
-  if RUBY_VERSION >= '2.0.0'
-    prepend ResponsiveMethods
-  else
-    extend ActiveSupport::Concern
-    included { include ResponsiveMethods }
-  end
+  prepend ResponsiveMethods
 
 end
 

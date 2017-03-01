@@ -6,6 +6,12 @@
       <h1><%= _('Searches') %></h1>
       <%= assets_menu(@asset) %>
       <%= filters(@asset) %>
+      <div class="clear"></div>
+    </div>
+
+    <div id='search-subheader'>
+      <%# ridiculous option %>
+      <%# assets_submenu(@asset) %>
     </div>
 
     <div id='search-box' class="search-field form-group">
@@ -22,7 +28,7 @@
   <% end %>
 
   <% if @empty_query %>
-    <% hint = environment.search_hints[@asset] %>
+    <% hint = environment.search_hints[@asset].html_safe %>
     <% if hint and !hint.blank? %>
       <div class="search-hint"><%= hint %></div>
     <% end %>

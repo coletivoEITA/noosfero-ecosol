@@ -8,7 +8,7 @@ class ApproveComment < Task
   def comment
     unless @comment || self.comment_attributes.nil?
       @comment = Comment.new
-      @comment.assign_attributes(ActiveSupport::JSON.decode(self.comment_attributes), :without_protection => true)
+      @comment.assign_attributes(ActiveSupport::JSON.decode(self.comment_attributes.to_s), :without_protection => true)
     end
     @comment
   end
@@ -18,7 +18,7 @@ class ApproveComment < Task
   end
 
   def article
-    Article.find_by_id comment.source_id unless self.comment.nil?
+    Article.find_by id: comment.source_id unless self.comment.nil?
   end
 
   def article_name

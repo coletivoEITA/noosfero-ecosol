@@ -1,0 +1,13 @@
+pt_BR: &pt_BR
+  work_assignment_plugin:
+    views:
+      submissions:
+        work: 'Arquivo'
+        date: 'Data de submissão'
+        delete_confirm: 'Tem certeza que deseja excluir este trabalho enviado?'
+        mark_as_read: 'Marcar como lido'
+        unmark_as_read: 'Desmarcar como lido'
+
+pt:
+  <<: *pt_BR
+

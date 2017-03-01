@@ -1,0 +1,19 @@
+doctype html
+html
+  head
+    meta content=("text/html; charset=utf-8") http-equiv="Content-Type"
+
+  body
+    p= t'orders_plugin.views.mailer.order_received.dear_name', name: @profile.name
+
+    p= t'orders_plugin.views.mailer.purchase_received.the_order_made_on_co',
+      name: @profile.name, date: day_time(@order.updated_at)
+
+    p= t'orders_plugin.views.mailer.order_received.order_data_received'
+
+    = render "orders_plugin_order/show_simple", actor_name: :consumer
+
+    p
+      |--
+      br
+      = t'orders_plugin.views.mailer.order_received.greetings'

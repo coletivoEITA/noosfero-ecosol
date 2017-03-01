@@ -66,7 +66,7 @@ class BlogTest < ActiveSupport::TestCase
   should 'has posts' do
     p = create_user('testuser').person
     blog = fast_create(Blog, :profile_id => p.id, :name => 'Blog test')
-    post = fast_create(TextileArticle, :name => 'First post', :profile_id => p.id, :parent_id => blog.id)
+    post = fast_create(TextArticle, :name => 'First post', :profile_id => p.id, :parent_id => blog.id)
     blog.children << post
     assert_includes blog.posts, post
   end
@@ -81,8 +81,8 @@ class BlogTest < ActiveSupport::TestCase
   should 'list posts ordered by published at' do
     p = create_user('testuser').person
     blog = fast_create(Blog, :profile_id => p.id, :name => 'Blog test')
-    newer = create(TextileArticle, :name => 'Post 2', :parent => blog, :profile => p)
-    older = create(TextileArticle, :name => 'Post 1', :parent => blog, :profile => p, :published_at => Time.now - 1.month)
+    newer = create(TextArticle, :name => 'Post 2', :parent => blog, :profile => p)
+    older = create(TextArticle, :name => 'Post 1', :parent => blog, :profile => p, :published_at => Time.now - 1.month)
     assert_equal [newer, older], blog.posts
   end
 
@@ -118,7 +118,7 @@ class BlogTest < ActiveSupport::TestCase
     p = create_user('testuser').person
     blog = build(Blog, :profile => p, :name => 'Blog test', :external_feed_builder => {:enabled => true})
     blog.save
-    assert ! blog.valid?
+    refute  blog.valid?
   end
 
   should 'remove external feed when removing blog' do
@@ -161,7 +161,16 @@ class BlogTest < ActiveSupport::TestCase
     assert_equal 'short', p.blog.visualization_format
   end
 
-  should 'allow only full and short as visualization_format' do
+  should 'update visualization_format setting to compact' do
+    p = create_user('testuser').person
+    p.articles << build(Blog, :profile => p, :name => 'Blog test')
+    blog = p.blog
+    blog.visualization_format = 'compact'
+    assert blog.save!
+    assert_equal 'compact', p.blog.visualization_format
+  end
+
+  should 'allow only full, short or compact as visualization_format' do
     blog = build(Blog, :name => 'blog')
     blog.visualization_format = 'wrong_format'
     blog.valid?
@@ -169,11 +178,15 @@ class BlogTest < ActiveSupport::TestCase
 
     blog.visualization_format = 'short'
     blog.valid?
-    assert !blog.errors[:visualization_format.to_s].present?
+    refute blog.errors[:visualization_format.to_s].present?
 
     blog.visualization_format = 'full'
     blog.valid?
-    assert !blog.errors[:visualization_format.to_s].present?
+    refute blog.errors[:visualization_format.to_s].present?
+
+    blog.visualization_format = 'compact'
+    blog.valid?
+    refute blog.errors[:visualization_format.to_s].present?
   end
 
   should 'have posts' do
@@ -182,8 +195,8 @@ class BlogTest < ActiveSupport::TestCase
 
   should 'not display posts in current language by default' do
     blog = Blog.new
-    assert !blog.display_posts_in_current_language
-    assert !blog.display_posts_in_current_language?
+    refute blog.display_posts_in_current_language
+    refute blog.display_posts_in_current_language?
   end
 
   should 'update display posts in current language setting' do
@@ -192,8 +205,8 @@ class BlogTest < ActiveSupport::TestCase
     blog = p.blog
     blog.display_posts_in_current_language = false
     assert blog.save! && blog.reload
-    assert !blog.reload.display_posts_in_current_language
-    assert !blog.reload.display_posts_in_current_language?
+    refute blog.reload.display_posts_in_current_language
+    refute blog.reload.display_posts_in_current_language?
   end
 
   #FIXME This should be used until there is a migration to fix all blogs that
@@ -202,7 +215,7 @@ class BlogTest < ActiveSupport::TestCase
     p = create_user('testuser').person
     blog =  Blog.create!(:profile => p, :name => 'Blog test')
     folder = fast_create(Folder, :parent_id => blog.id)
-    article = fast_create(TextileArticle, :parent_id => blog.id)
+    article = fast_create(TextArticle, :parent_id => blog.id)
 
     assert_not_includes blog.posts, folder
     assert_includes blog.posts, article
@@ -210,15 +223,15 @@ class BlogTest < ActiveSupport::TestCase
 
   should 'not accept uploads' do
     folder = fast_create(Blog)
-    assert !folder.accept_uploads?
+    refute folder.accept_uploads?
   end
 
   should 'know when blog has or when has no posts' do
     p = create_user('testuser').person
     blog =  Blog.create!(:profile => p, :name => 'Blog test')
     assert blog.empty?
-    fast_create(TextileArticle, :parent_id => blog.id)
-    assert ! blog.empty?
+    fast_create(TextArticle, :parent_id => blog.id)
+    refute  blog.empty?
   end
 
   should 'set cover image' do
@@ -253,4 +266,23 @@ class BlogTest < ActiveSupport::TestCase
 
     assert_equal blog.image(true).filename, 'noosfero-network.png'
   end
+
+  should 'count total number of posts by year' do
+    p = create_user('testuser').person
+    blog = fast_create(Blog, :profile_id => p.id, :name => 'Blog test')
+    create(TextArticle, :name => 'Post 1', :parent => blog, :profile => p, :published_at => DateTime.parse('16-08-2010'))
+    create(TextArticle, :name => 'Post 2', :parent => blog, :profile => p, :published_at => DateTime.parse('17-08-2010'))
+    create(TextArticle, :name => 'Post 3', :parent => blog, :profile => p, :published_at => DateTime.parse('10-05-2012'))
+    assert_equal [[2012.0, 1], [2010.0, 2]], blog.total_number_of_posts(:by_year)
+  end
+
+  should 'count total number of posts by month' do
+    p = create_user('testuser').person
+    blog = fast_create(Blog, :profile_id => p.id, :name => 'Blog test')
+    create(TextArticle, :name => 'Post 1', :parent => blog, :profile => p, :published_at => DateTime.parse('16-08-2010'))
+    create(TextArticle, :name => 'Post 2', :parent => blog, :profile => p, :published_at => DateTime.parse('17-08-2010'))
+    create(TextArticle, :name => 'Post 3', :parent => blog, :profile => p, :published_at => DateTime.parse('11-10-2010'))
+    assert_equal [[10.0, 1], [8.0, 2]], blog.total_number_of_posts(:by_month, 2010)
+  end
+
 end

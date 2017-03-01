@@ -1,0 +1,24 @@
+- return if @admin
+
+- return unless profile.consumers_coop_settings.payments_enabled
+
+- return if profile.payment_methods.count == 0
+
+- return unless ['edition', 'draft'].include? order.status
+
+- edition = order.may_edit?(user, @admin)
+- return unless edition
+- payment_method = order.payment_data[:method]
+- other_method = order.payment_data[:other_method]
+
+.payment-edition
+  = f.fields_for :payment_data do |ff|
+    - options = options_for_select [""] + profile.payment_methods.map{ |pm| [t("payments_plugin.models.payment_methods."+pm.slug), pm.slug] }, payment_method
+    = labelled_form_field t("views.order._payment_edition.choose_payment_method"), ff.select(:method, options )
+    = ff.text_field(:other_method, value: other_method, placeholder: t("views.order._payment_edition.other_method"), style: "display: none")
+
+javascript:
+  jQuery(".payment-edition select").on('change', orders.set_other_payment_method_field)
+  orders.set_other_payment_method_field()
+
+

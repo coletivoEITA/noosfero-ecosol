@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../../../../test/test_helper'
+require 'test_helper'
 
 class RoleAssignmentsTest < ActiveSupport::TestCase
   should 'create membership_surveys on membership creation' do
@@ -67,6 +67,6 @@ class RoleAssignmentsTest < ActiveSupport::TestCase
     assert_difference 'CustomFormsPlugin::AdmissionSurvey.count', 2 do
       organization.add_member(person)
     end
-    assert !organization.members.include?(person)
+    refute organization.members.include?(person)
   end
 end

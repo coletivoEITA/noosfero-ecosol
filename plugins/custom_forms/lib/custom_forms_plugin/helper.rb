@@ -69,12 +69,13 @@ module CustomFormsPlugin::Helper
   end
 
   def display_custom_field(field, submission, form)
+    sanitized_name = ActionView::Base.white_list_sanitizer.sanitize field.name
     answer = submission.answers.select{|answer| answer.field == field}.first
-    field_tag = send("display_#{type_for_options(field.class)}",field, answer, form)
+    field_tag = send("display_#{type_for_options(field.class)}",field, answer, form).html_safe
     if field.mandatory? && submission.id.nil?
-      required(labelled_form_field(field.name, field_tag))
+      required(labelled_form_field(sanitized_name, field_tag))
     else
-      labelled_form_field(field.name, field_tag)
+      labelled_form_field(sanitized_name, field_tag)
     end
   end
 
@@ -84,13 +85,10 @@ module CustomFormsPlugin::Helper
 
   def display_text_field(field, answer, form)
     value = answer.present? ? answer.value : field.default_value
-    case field.show_as
-    when 'textarea'
-      text_area form, "#{field.id}", :value => value, :disabled => display_disabled?(field, answer), :rows => 5
-    when 'tinymce'
-      text_area form, "#{field.id}", :value => value, :disabled => display_disabled?(field, answer), :class => 'mceEditor'
-    else # includes 'input'
-      text_field form, "#{field.id}", :value => value, :disabled => display_disabled?(field, answer)
+    if field.show_as == 'textarea'
+      text_area(form, "#{field.id}", :value => value, :disabled => display_disabled?(field, answer))
+    else
+      text_field(form, "#{field.id}", :value => value, :disabled => display_disabled?(field, answer))
     end
   end
 

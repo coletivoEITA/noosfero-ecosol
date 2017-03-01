@@ -33,6 +33,28 @@ Facebook
 
 [Create Facebook application](https://developers.facebook.com/docs/facebook-login/v2.1)
 
+Github
+--------
+
+[Create Github application](https://github.com/settings/developers)
+
+Twitter
+--------
+
+- Specially on twitter you need to request user's email address, see more
+in https://dev.twitter.com/rest/reference/get/account/verify_credentials
+
+[Create Twitter application](https://apps.twitter.com/)
+
+
+Callback
+========
+
+This is the callback path that you need to use in your app configuration:
+
+/plugin/oauth_client/public/callback
+
+
 Varnish Settings
 ================
 If varnish has been used in your stack, you've to bypass the cache for signup page and prevent cookies to be removed when calling the oauth_client plugin callback. E.g.:

@@ -26,18 +26,13 @@ class ProfileMembersHeadlinesBlock < Block
   end
 
   def authors_list
-    result = owner.members_by_role(filtered_roles).public.includes([:image,:domains,:preferred_domain,:environment]).order('updated_at DESC')
+    result = owner
+      .members_by_role(filtered_roles)
+      .is_public
+      .includes([:image,:domains,:preferred_domain,:environment]).order('updated_at DESC')
+      .limit(limit * 5)
 
-    result.all(:limit => limit * 5).select { |p| p.has_headline?
-}.slice(0..limit-1)
-  end
-
-  def content(args={})
-    block = self
-    members = authors_list
-    proc do
-      render :file => 'blocks/headlines', :locals => { :block => block, :members => members }
-    end
+    result.select{ |p| p.has_headline? }.slice(0..limit-1)
   end
 
 end

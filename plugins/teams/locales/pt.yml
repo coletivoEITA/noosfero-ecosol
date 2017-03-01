@@ -1,0 +1,28 @@
+
+pt: &pt
+  teams_plugin:
+    lib:
+      plugin:
+        name: 'Equipes'
+        description: 'Defina equipes em vários contextos'
+
+    models:
+      team:
+        default_name: 'Equipe %{code}'
+
+    views:
+      teams:
+        title: 'Equipes'
+        add: 'Adicionar equipe'
+        saved: 'Equipe salva'
+        delete: 'Deletar equipe'
+        confirm_delete: "Por favor confirme para deletar a equipe '%{team}'"
+      team:
+        add_member: 'Adicione uma pessoa'
+      member:
+        title: 'Membros da equipe'
+        remove: 'Remover'
+
+pt_BR:
+  <<: *pt
+

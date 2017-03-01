@@ -1,0 +1,28 @@
+pt-BR: &pt-BR
+
+  number:
+    currency:
+      format:
+        xlsx_currency: "[$R$-416]* #,##0.00;[RED]-[$R$-416]* #,##0.00"
+
+  products_plugin:
+    lib:
+      spreadsheet:
+        supplier: "Fornecedor"
+        unit: "Unidade"
+        price: "Preço"
+        product_cod: "Cód. produto"
+        product_category: "Categoria do produto"
+        product_name: "Nome do produto"
+        products_spreadsheet: "planilha de produtos"
+        spreadsheet_name: "Planilha de produtos - Grupo %{name} - emitida em %{date}"
+
+    controllers:
+      product:
+        spreadsheet: "Planilha de produtos - %{profile_identifier} - %{date}.xlsx"
+
+pt_BR:
+  <<: *pt-BR
+pt:
+  <<: *pt-BR
+

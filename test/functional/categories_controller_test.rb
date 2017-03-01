@@ -1,16 +1,11 @@
 require_relative "../test_helper"
 require 'categories_controller'
 
-# Re-raise errors caught by the controller.
-class CategoriesController; def rescue_action(e) raise e end; end
-
 class CategoriesControllerTest < ActionController::TestCase
   all_fixtures
   def setup
     @controller = CategoriesController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
-   
+
     @env = fast_create(Environment, :name => "My test environment")
     Environment.stubs(:default).returns(env)
     assert (@cat1 = env.categories.create(:name => 'a test category'))
@@ -25,19 +20,14 @@ class CategoriesControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_template 'index'
-    assert_kind_of Array, assigns(:categories)
-    assert_kind_of Array, assigns(:product_categories)
-    assert_kind_of Array, assigns(:regions)
     assert_tag :tag => 'a', :attributes => { :href => '/admin/categories/new'}
   end
 
   def test_edit
-    cat = Category.new
-    env.categories.expects(:find).with('1').returns(cat)
-    get :edit, :id => '1'
+    get :edit, :id => cat1
     assert_response :success
     assert_template 'edit'
-    assert_equal cat, assigns(:category)
+    assert_equal cat1, assigns(:category)
   end
 
   def test_edit_save
@@ -50,12 +40,6 @@ class CategoriesControllerTest < ActionController::TestCase
     cat = Category.new
     Category.expects(:new).returns(cat)
     get :new
-  end
-
-  def test_new_product_category
-    cat = ProductCategory.new
-    ProductCategory.expects(:new).returns(cat)
-    get :new, :type => 'ProductCategory'
   end
 
   def test_new_save
@@ -145,22 +129,20 @@ class CategoriesControllerTest < ActionController::TestCase
     assert_tag :tag => 'input', :attributes => { :name => "category[display_color]" }
   end
 
-  should 'not list regions and product categories' do
+  should 'not list regions' do
     Environment.default.categories.destroy_all
     c = create(Category, :name => 'Regular category', :environment => Environment.default)
-    p = create(ProductCategory, :name => 'Product category', :environment => Environment.default)
     r = create(Region, :name => 'Some region', :environment => Environment.default)
 
     get :index
     assert_equal [c], assigns(:categories)
-    assert_equal [p], assigns(:product_categories)
     assert_equal [r], assigns(:regions)
   end
 
   should 'use parent\'s type to determine subcategory\'s type' do
-    parent = create(ProductCategory, :name => 'Sample category', :environment => Environment.default)
+    parent = create(Region, name: 'Sample category', environment: Environment.default)
     post :new, :parent_id => parent.id, :parent_type => parent.class.name, :category => {:name => 'Subcategory'}
-    sub = ProductCategory.find_by_name('Subcategory')
+    sub = Region.find_by_name('Subcategory')
     assert_equal parent.class, sub.class
   end
 

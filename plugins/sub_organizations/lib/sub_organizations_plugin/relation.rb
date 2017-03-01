@@ -1,5 +1,4 @@
-class SubOrganizationsPlugin::Relation < Noosfero::Plugin::ActiveRecord
-  record_timestamps = false
+class SubOrganizationsPlugin::Relation < ApplicationRecord
 
   belongs_to :parent, :polymorphic => true
   belongs_to :child, :polymorphic => true
@@ -24,7 +23,7 @@ class SubOrganizationsPlugin::Relation < Noosfero::Plugin::ActiveRecord
   end
 
   def no_multi_level
-    if Organization.parents(parent).present? || Organization.children(child).present?
+    if Organization.parentz(parent).present? || Organization.children(child).present?
       errors.add(:child, _('multi-level paternity is not allowed.'))
     end
   end

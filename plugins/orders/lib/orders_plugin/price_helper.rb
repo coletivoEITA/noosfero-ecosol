@@ -11,10 +11,10 @@ module OrdersPlugin::PriceHelper
     detail ||= ''
     detail = " (#{detail})" if detail.present?
     unit = "#{t('lib.price_helper./')} #{unit.singular}" rescue ''
-    text = t('lib.price_helper.price_unit') % {
+    text = (t('lib.price_helper.price_unit') % {
       :price => price_span(price),
       :unit => content_tag('div', unit + detail, :class => 'price-unit', :title => (unit + detail)),
-    }
+    }).html_safe
 
     content_tag 'div', text, options
   end

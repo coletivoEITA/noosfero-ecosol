@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    meta content=("text/html; charset=utf-8") http-equiv="Content-Type"
+
+  body
+    p= t'orders_plugin.views.mailer.order_confirmation.dear_name', name: @profile.name
+
+    p= t'orders_plugin.views.mailer.order_confirmation.collective_made_a_purchase',
+      name: @consumer.name, date: day_time(@order.updated_at)
+
+    - if @order.respond_to? :cycle
+      p= t'orders_plugin.views.mailer.order_confirmation.the_delivery_period_w',
+        date: datetime_period_with_from(@order.cycle.delivery_start, @order.cycle.delivery_finish)
+
+    p= t'orders_plugin.views.mailer.order_confirmation.see_below_the_items'
+
+    = render "orders_plugin_order/show_simple", actor_name: :consumer
+
+    p
+      |--
+      br
+      = t'orders_plugin.views.mailer.order_confirmation.greetings'

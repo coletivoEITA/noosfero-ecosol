@@ -1,17 +1,13 @@
 require_relative "../test_helper"
 require 'role_controller'
 
-# Re-raise errors caught by the controller.
-class RoleController; def rescue_action(e) raise e end; end
-
 class RoleControllerTest < ActionController::TestCase
   all_fixtures
 
   def setup
     @controller = RoleController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
-    @role = Role.find(:first)
+
+    @role = Role.first
     login_as(:ze)
   end
 
@@ -26,13 +22,13 @@ class RoleControllerTest < ActionController::TestCase
     assert_response :success
     assert_template 'show'
     assert assigns(:role)
-    assert_equal @role.id, assigns(:role).id 
+    assert_equal @role.id, assigns(:role).id
   end
 
   def test_can_edit
     get 'edit', :id => @role.id
     assert_not_nil assigns(:role)
-    assert_equal @role.id, assigns(:role).id 
+    assert_equal @role.id, assigns(:role).id
   end
 
   def test_should_update_to_valid_parameters
@@ -42,7 +38,7 @@ class RoleControllerTest < ActionController::TestCase
     assert_not_nil assigns(:role)
     assert_nil session[:notice]
   end
-  
+
   def test_should_not_update_to_invalid_paramters
     Role.any_instance.stubs(:valid?).returns(false)
     post 'update', :id => @role.id
@@ -83,7 +79,7 @@ class RoleControllerTest < ActionController::TestCase
     role = Role.create!(:name => 'environment_role', :key => 'environment_role', :environment => Environment.default)
     get :edit, :id => role.id
     ['Environment', 'Profile'].each do |key|
-      ActiveRecord::Base::PERMISSIONS[key].each do |permission, value|
+      ApplicationRecord::PERMISSIONS[key].each do |permission, value|
         assert_select ".permissions.#{key.downcase} input##{permission}"
       end
     end
@@ -92,7 +88,7 @@ class RoleControllerTest < ActionController::TestCase
   should 'display permissions only for profile when editing a profile role' do
     role = Role.create!(:name => 'profile_role', :key => 'profile_role', :environment => Environment.default)
     get :edit, :id => role.id
-    ActiveRecord::Base::PERMISSIONS['Profile'].each do |permission, value|
+    ApplicationRecord::PERMISSIONS['Profile'].each do |permission, value|
       assert_select "input##{permission}"
     end
     assert_select ".permissions.environment", false

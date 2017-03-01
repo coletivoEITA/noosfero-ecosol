@@ -2,8 +2,6 @@ class OrdersPluginOrderController < ProfileController
 
   include OrdersPlugin::TranslationHelper
 
-  no_design_blocks
-
   before_filter :login_required, except: [:index, :edit]
   before_filter :load_order, except: [:new]
   before_filter :check_access, only: [:confirm, :remove, :cancel]
@@ -19,8 +17,8 @@ class OrdersPluginOrderController < ProfileController
   protected
 
   def load_order
-    @order = hmvc_orders_context::Sale.find_by_id params[:id]
-    render_access_denied if @order.present? and (not @user_is_admin or not @order.may_view? user)
+    @order = hmvc_context::Sale.find_by id: params[:id]
+    render_access_denied if @order.present? and not @user_is_admin and not @order.may_view? user
   end
 
   def check_access access = 'view'
@@ -39,7 +37,7 @@ class OrdersPluginOrderController < ProfileController
   end
 
   extend HMVC::ClassMethods
-  hmvc OrdersPlugin, orders_context: OrdersPlugin
+  hmvc OrdersPlugin
 
   def disable_purechat
     @disable_purechat = true

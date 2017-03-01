@@ -32,12 +32,17 @@
 <% if actions %>
   <div class="actions-bar">
     <% if cycle.status == view_status and cycle.status != 'closing' %>
-      <%= link_to t('views.cycle._timeline.close_status') % {:status => status_text},
+      <%= link_to t('views.cycle._timeline.close_status', :status => status_text),
         {:action => :step, :id => cycle.id, :method => :post},
-        {:confirm => t('views.cycle._timeline.are_you_sure_you_want_to_close') % {:status => status_text}, :class => 'action-button'} %>
+        {:confirm => t('views.cycle._timeline.are_you_sure_you_want_to_close', :status => status_text), :class => 'action-button'} %>
     <% end %>
 
     <%= render "orders_cycle_plugin_cycle/actions/#{view_status}", :cycle => cycle rescue nil %>
+
+    <% not_allowed = ['edition', 'closing'] %>
+    <% unless not_allowed.include?(view_status) || not_allowed.include?(cycle.status) %>
+      <%= link_to_function t('views.admin.new_order.add'), "orders.order.new_order(this)", class: 'action-button', 'data-toggle' => "modal", 'data-target' => ".new-order-modal" %>
+    <% end %>
   </div>
 <% end %>
 

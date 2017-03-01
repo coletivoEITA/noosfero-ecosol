@@ -7,6 +7,8 @@ class ModerateUserRegistration < Task
 
   after_create :schedule_spam_checking
 
+  validates :target, kind_of: {kind: Environment}
+
   alias :environment :target
   alias :environment= :target=
 
@@ -20,8 +22,12 @@ class ModerateUserRegistration < Task
     "#{name} (#{email})"
   end
 
+  def custom_fields_moderate
+    true
+  end
+
   def perform
-    user=environment.users.find_by_id(user_id)
+    user=environment.users.find_by(id: user_id)
     user.activate
   end
 

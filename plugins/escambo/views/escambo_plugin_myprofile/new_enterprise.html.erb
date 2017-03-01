@@ -1,0 +1,11 @@
+<div id="escambo-new-enterprise">
+  <h1> <%= _('Create new enterprise') %> </h1>
+
+  <%= form_tag do %>
+    <%= error_messages_for :enterprise %>
+
+    <%= render :partial => 'escambo_plugin_shared/enterprise_register' %>
+
+    <%= submit_tag _('Create') %>
+  <% end %>
+</div>

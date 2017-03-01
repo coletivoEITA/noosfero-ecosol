@@ -1,0 +1,198 @@
+consumer-view.modal.fade tabindex="-1" role="dialog"
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        .row
+          .col-xs-10
+            .picture-block.left
+              a.picture target='_blank' href='{consumerUrl}' style='background-image: url("{consumer.profile_icon_thumb}")'
+
+            .name_actions.left
+              .title-box
+                h1
+                  |{consumer.name}
+                  span if="{consumer.name != consumer.profile_name}"
+                    |  ({consumer.profile_name})
+              a.cs-button href="" onclick='{remove}' 
+                |{cs.t("views.consumer.index.remove")}
+
+          .col-xs-2
+            button type="button" class="close left" data-dismiss="modal" aria-label="Close"
+              span.left.close-text
+                |{cs.t("views.consumer.index.close")}
+              span aria-hidden="true"
+                |&times;
+      .modal-body
+        h2
+          |{cs.t("views.consumer.index.general_information")}
+
+        .fields
+          form.form-horizontal.consumer-form
+            .form-group
+              label for="name" class="col-sm-2 control-label"
+                |{cs.t("views.consumer.index.name")}
+              .col-sm-10
+                input type="text" name='name' value='{consumer.name}' class="form-control" id="name" placeholder='{cs.t("views.consumer.index.name")}'
+
+            .form-group
+              label for="telephone" class="col-sm-2 control-label"
+                |{cs.t("views.consumer.index.telephone")}
+              .col-sm-10
+                input type="tel" name='phone' value='{consumer.phone}' class="form-control" id="phone" placeholder='{cs.t("views.consumer.index.telephone")}'
+
+            .form-group
+              label for="inputCelular" class="col-sm-2 control-label"
+                |{cs.t("views.consumer.index.celular")}
+              .col-sm-10
+                input type="tel" name='phone' value='{consumer.cell_phone}' class="form-control" id="cell_phone" placeholder='{cs.t("views.consumer.index.celular")}'
+
+            .form-group
+              label for="email" class="col-sm-2 control-label"
+                |{cs.t("views.consumer.index.email")}
+              .col-sm-10
+                input type="email" name='email' value='{consumer.email}' class="form-control" id="email" placeholder='{cs.t("views.consumer.index.email")}'
+
+            .form-group
+              label for="hub" class="col-sm-2 control-label"
+                |{cs.t("views.consumer.index.hub")}
+              .col-sm-10
+                select value='{consumer.hub_id}' name='hub_id' class="form-control" id="hub_id"
+                  option each="{hubs}" value="{id}"
+                    |{name}
+
+            .form-group
+              label for="address" class="col-sm-2 control-label"
+                |{cs.t("views.consumer.index.address")}
+              .col-sm-10
+                input type="text" name='address' value='{consumer.address}' class="form-control" id="address" placeholder='{cs.t("views.consumer.index.address")}'
+
+            .form-group
+              label for="city" class="col-sm-2 control-label"
+                |{cs.t("views.consumer.index.city")}
+              .col-sm-10
+                input type="text" name='city' value='{consumer.city}' class="form-control" id="city" placeholder='{cs.t("views.consumer.index.city")}'
+
+            .form-group
+              label for="state" class="col-sm-2 control-label"
+                |{cs.t("views.consumer.index.state")}
+              .col-sm-10
+                input type="text" name='state' value='{consumer.state}' class="form-control" id="state" placeholder='{cs.t("views.consumer.index.state")}'
+
+            .form-group
+              label for="zip" class="col-sm-2 control-label"
+                |{cs.t("views.consumer.index.zip")}
+              .col-sm-10
+                input type="text" name='zip' value='{consumer.zip}' class="form-control" id="zip" placeholder='{cs.t("views.consumer.index.zip")}'
+
+            .form-group
+              .col-sm-10
+                a.cs-button href="" onclick='{save}'
+                  |{cs.t('views.consumer.index.save')}
+
+
+      .modal-footer
+        .orders_history if='{purchases.length == 0}'
+          h2
+            |{cs.t('views.consumer.index.no_orders')}
+
+        .orders_history if='{purchases.length > 0}'
+          h1
+            |{cs.t('views.consumer.index.orders_history')}
+
+          table.orders
+            tr
+              th
+                |{cs.t("views.consumer.index.date")}
+              th
+                |{cs.t("views.consumer.index.cycle")}
+              th
+                |{cs.t("views.consumer.index.value_ordered")}
+              th
+                |{cs.t("views.consumer.index.final_value")}
+              th
+                |{cs.t("views.consumer.index.status")}
+
+            tr each='{purchases}'
+              td
+                |{date}
+              td
+                |{cycle}
+              td
+                |{value_ordered}
+              td
+                |{final_value}
+              td
+                |{cs.t("views.consumer.index."+status)}
+
+
+
+  javascript:
+    this.cs = window.consumers;
+    this.hubs = this.parent.hubs;
+
+    setConsumer(consumer) {
+      if (!consumer) return false
+      this.consumer = consumer;
+      this.consumerUrl = Routes.profile_path({profile: this.consumer.identifier})
+      if (this.consumer.purchases == undefined)
+        this.consumer.purchases = {}
+      this.purchases = this.consumer.purchases
+    }
+    this.setConsumer(opts.consumer)
+
+    remove(e) {
+      if (!confirm(this.cs.t('views.consumer.index.confirm_remove', {consumer: this.consumer.name}))) return
+
+      var unassociateUrl = Routes.myprofile_path({profile: noosfero.profile, controller: 'profile_members', action: 'unassociate/'+this.consumer.consumer_id})
+      var self = this
+      $.ajax({url: unassociateUrl, type: 'POST', data: {},
+        success: function () {
+          var index = self.parent.consumers.indexOf(self.consumer)
+          self.parent.consumers.splice(index, 1)
+          self.parent.reset()
+        },
+      })
+    }
+
+    loadPurchases() {
+      if (this.consumer.purchases.length == 0) {
+        purchasesUrl = Routes.suppliers_plugin_consumer_path({profile: noosfero.profile, action: 'purchases', consumer_id: this.consumer.consumer_id});
+        var self = this
+        $.get(purchasesUrl, {}, function(purchases) {
+          purchases.forEach(function(p) {
+            self.consumer.purchases.push(p);
+          }) 
+          self.update();
+        }, 'json');
+      }
+    }
+
+    save (e) {
+      var updateUrl = Routes.suppliers_plugin_consumer_path({profile: noosfero.profile, action: 'update/'+this.consumer.id})
+      var self = this
+      $.post(updateUrl, {consumer: this.prepareForm()}, function (data) {
+        display_notice(self.cs.t('views.consumer.index.saved'))
+        self.parent.update()
+      })
+
+      $(this.root).modal('hide');
+    }
+
+    prepareForm() {
+      var data = Object();
+      var keys = ['name', 'phone', 'cell_phone', 'email', 'hub_id', 'address','city', 'state', 'zip'];
+
+      var self = this;
+      keys.forEach(function(key) {
+        var input = self[key];
+        if (input == undefined) {
+          console.log("Haven't found key "+key)
+        }
+        else {
+          self.consumer[key] = input.value;
+          data[key] = self.consumer[key];
+        }
+      })
+
+      return data;
+    }

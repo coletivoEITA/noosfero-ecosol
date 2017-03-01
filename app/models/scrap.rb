@@ -1,6 +1,8 @@
-class Scrap < ActiveRecord::Base
+class Scrap < ApplicationRecord
 
-  attr_accessible :content, :sender_id, :receiver_id, :scrap_id
+  include SanitizeHelper
+
+  attr_accessible :content, :sender_id, :receiver_id, :scrap_id, :marked_people
 
   SEARCHABLE_FIELDS = {
     :content => {:label => _('Content'), :weight => 1},
@@ -13,24 +15,31 @@ class Scrap < ActiveRecord::Base
   has_many :replies, :class_name => 'Scrap', :foreign_key => 'scrap_id', :dependent => :destroy
   belongs_to :root, :class_name => 'Scrap', :foreign_key => 'scrap_id'
 
-  has_many :profile_activities, foreign_key: :activity_id, conditions: {profile_activities: {activity_type: 'Scrap'}}, dependent: :destroy
+  has_many :profile_activities, -> {
+    where profile_activities: {activity_type: 'Scrap'}
+  }, foreign_key: :activity_id, dependent: :destroy
+
+  has_and_belongs_to_many :marked_people, :join_table => :private_scraps, :class_name => 'Person'
 
   after_create :create_activity
   after_update :update_activity
 
-  scope :all_scraps, lambda {|profile| {:conditions => ["receiver_id = ? OR sender_id = ?", profile, profile], :limit => 30}}
+  scope :all_scraps, -> profile { limit(30).where("receiver_id = ? OR sender_id = ?", profile, profile) }
 
-  scope :not_replies, :conditions => {:scrap_id => nil}
+  scope :not_replies, -> { where scrap_id: nil }
 
-  track_actions :leave_scrap, :after_create, :keep_params => ['sender.name', 'content', 'receiver.name', 'receiver.url'], :if => Proc.new{|s| s.sender != s.receiver && s.sender != s.top_root.receiver}, :custom_target => :action_tracker_target
+  track_actions :leave_scrap, :after_create, :keep_params => ['sender.name', 'content', 'receiver.name', 'receiver.url'], :if => Proc.new{|s| s.sender != s.receiver && s.sender != s.top_root.receiver}, :custom_target => :action_tracker_target, :custom_user => :sender
 
-  track_actions :leave_scrap_to_self, :after_create, :keep_params => ['sender.name', 'content'], :if => Proc.new{|s| s.sender == s.receiver}
+  track_actions :leave_scrap_to_self, :after_create, :keep_params => ['sender.name', 'content'], :if => Proc.new{|s| s.sender == s.receiver}, :custom_user => :sender
 
-  track_actions :reply_scrap_on_self, :after_create, :keep_params => ['sender.name', 'content'], :if => Proc.new{|s| s.sender != s.receiver && s.sender == s.top_root.receiver}
+  track_actions :reply_scrap_on_self, :after_create, :keep_params => ['sender.name', 'content'], :if => Proc.new{|s| s.sender != s.receiver && s.sender == s.top_root.receiver}, :custom_user => :sender
 
   after_create :send_notification
 
   before_validation :strip_all_html_tags
+
+  alias :user :sender
+  alias :target :receiver
 
   def top_root
     scrap = self
@@ -39,8 +48,7 @@ class Scrap < ActiveRecord::Base
   end
 
   def strip_all_html_tags
-    sanitizer = HTML::WhiteListSanitizer.new
-    self.content = sanitizer.sanitize(self.content, :tags => [])
+    self.content = sanitize_html(self.content)
   end
 
   def action_tracker_target
@@ -57,6 +65,10 @@ class Scrap < ActiveRecord::Base
 
   def send_notification?
     sender != receiver && (is_root? ? root.receiver.receives_scrap_notification? : receiver.receives_scrap_notification?)
+  end
+
+  def display_to?(user = nil)
+    marked_people.blank? || marked_people.include?(user)
   end
 
   protected

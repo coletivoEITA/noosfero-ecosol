@@ -1,0 +1,11 @@
+<% plugins = Noosfero::Plugin.all.map{ |p| p.gsub(/Plugin$/, '').underscore } %>
+
+translations:
+- file: "public/javascripts/i18n/%{locale}.js"
+  except: <%= plugins.map{ |p| "*.#{p}_plugin" }.inspect %>
+
+<% plugins.each do |plugin| %>
+- file: "public/javascripts/i18n/<%=plugin%>/%{locale}.js"
+  only: "*.<%=plugin%>_plugin"
+<% end %>
+

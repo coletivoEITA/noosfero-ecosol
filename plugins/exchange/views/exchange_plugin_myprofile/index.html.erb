@@ -1,0 +1,52 @@
+
+<h1> <%= _("%s's Exchanges") % profile.name %>  </h1>
+
+<% if !@active_exchanges.blank? %>
+  <h2><%= _('Active Exchanges') %></h2>
+  <% @active_exchanges.each do |ee|  %>
+
+  <div id="exchange-<%= ee.exchange_id %>" class="exchange-index">
+    <div class="exchange-index-col1">
+      <p><%= _('Exchange created at %{time} by %{profile}') % {
+        :time => ee.exchange.created_at.strftime("%m/%d/%Y"),
+        :profile => (ee.role == "origin" ? ee.profile.name : ee.the_other.name)
+      } %></p>
+
+      <%= link_to _('Open Exchange'), {:controller => 'exchange_plugin_myprofile', :action => 'exchange_console', :exchange_id => ee.exchange.id} , :class => 'action-button' %>
+    </div>
+
+    <div class="exchange-index-col2">
+      <%= render :partial => "states", :locals => {:exchange => ee.exchange}%>
+    </div>
+
+    <div class="exchange-index-col3">
+      <%= profile_link_with_image ee.the_other, :thumb %>
+      <h4><%= link_to ee.the_other.name, ee.the_other.url %></h4>
+    </div>
+  </div>
+
+  <% end %>
+<% end %>
+
+<% unless @inactive_exchanges.blank? %>
+
+  <h2><%= _('Closed Exchanges') %></h2>
+
+  <% @inactive_exchanges.each do |ee|  %>
+
+  <div id="exchange-<%= ee.exchange_id %>" class="exchange-index">
+
+    <div class="exchange-index-col2">
+      <p><%= _('Exchange with %{the_other} created at %{time} by %{profile} and closed at %{closed_time}') % {
+        :the_other => ee.the_other.name, :time => ee.exchange.created_at.strftime("%m/%d/%Y"),
+        :profile => (ee.role == "origin" ? ee.profile.name : ee.the_other.name), :closed_time => ee.exchange.concluded_at.strftime("%m/%d/%Y")
+      } %></p>
+    </div>
+
+    <div class="exchange-index-col3">
+      <%= link_to _('See history'), {:controller => 'exchange_plugin_myprofile', :action => 'exchange_console', :exchange_id => ee.exchange.id} , :class => 'action-button' %>
+    </div>
+  </div>
+
+  <% end %>
+<% end %>

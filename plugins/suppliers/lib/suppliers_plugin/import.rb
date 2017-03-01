@@ -7,7 +7,8 @@ class SuppliersPlugin::Import
     keys = I18n.t'suppliers_plugin.lib.import.keys'
     columns = []
     header.each do |name|
-      c = nil; keys.each do |key, regex|
+      c = nil
+      keys.each do |key, regex|
         if /#{regex}/i =~ name
           c = key
           break
@@ -22,7 +23,7 @@ class SuppliersPlugin::Import
   end
 
   def self.products consumer, csv
-    default_product_category = consumer.environment.product_categories.find_by_name 'Produtos'
+    default_product_category = consumer.environment.product_categories.find_by name: 'Produtos'
 
     detection = CharlockHolmes::EncodingDetector.detect csv
     csv = CharlockHolmes::Converter.convert csv, detection[:encoding], 'UTF-8'
@@ -123,14 +124,14 @@ class SuppliersPlugin::Import
         product ||= supplier.profile.products.build attrs
         # let update happen only on dummy suppliers
         if product.persisted? and supplier.dummy?
-          product.update_attributes! attrs
+          product.update! attrs
         elsif product.new_record?
           # create products as not available
           attrs[:available] = false if not supplier.dummy?
-          product.update_attributes! attrs
+          product.update! attrs
         end
 
-        distributed_product = product.distribute_to_consumer consumer, distributed_attrs
+        product.distribute_to_consumer consumer, distributed_attrs
       end
     end
   end

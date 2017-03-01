@@ -45,10 +45,9 @@ class UsersController < AdminController
     redirect_to :action => :index, :q => params[:q], :filter => params[:filter]
   end
 
-
   def destroy_user
     if request.post?
-      person = environment.people.find_by_id(params[:id])
+      person = environment.people.find_by id: params[:id]
       if person && person.destroy
         session[:notice] = _('The profile was deleted.')
       else
@@ -58,12 +57,11 @@ class UsersController < AdminController
     redirect_to :action => :index, :q => params[:q], :filter => params[:filter]
   end
 
-
   def download
     respond_to do |format|
       format.html
       format.xml do
-        users = User.find(:all, :conditions => {:environment_id => environment.id}, :include => [:person])
+        users = User.where(:environment_id => environment.id).includes(:person)
         send_data users.to_xml(
             :skip_types => true,
             :only => %w[email login created_at updated_at],
@@ -87,8 +85,11 @@ class UsersController < AdminController
   end
 
   def send_mail
-    @mailing = environment.mailings.build(params[:mailing])
     if request.post?
+      @mailing = environment.mailings.build(params[:mailing])
+      @mailing.recipients_roles = []
+      @mailing.recipients_roles << "profile_admin" if params[:recipients][:profile_admins].include?("true")
+      @mailing.recipients_roles << "environment_administrator" if params[:recipients][:env_admins].include?("true")
       @mailing.locale = locale
       @mailing.person = user
       if @mailing.save

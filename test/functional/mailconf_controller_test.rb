@@ -4,8 +4,7 @@ class MailconfControllerTest < ActionController::TestCase
 
   def setup
     @controller = MailconfController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+
     User.destroy_all
     @user = create_user('ze')
 
@@ -60,7 +59,7 @@ class MailconfControllerTest < ActionController::TestCase
 
   should 'display correctly the state false of e-mail enable/disable' do
     login_as('ze')
-    user.update_attributes!(:enable_email => false)
+    user.update!(:enable_email => false)
     get :index, :profile => 'ze'
     assert_tag :tag => 'a', :content => 'Enable e-Mail'
     assert_no_tag :tag => 'a', :content => 'Disable e-Mail', :attributes => { :href => '/myprofile/ze/mailconf/disable' }
@@ -71,8 +70,10 @@ class MailconfControllerTest < ActionController::TestCase
     env = Environment.default
     env.force_www = true
     env.save!
+    env.domains.delete_all
+    env.domains.create! name: 'example.com'
     get :index, :profile => 'ze'
-    assert_tag :tag => 'li', :content => /ze@colivre.net/
+    assert_tag :tag => 'li', :content => /ze@example.com/
   end
 
   should 'not display www in email address when force_www=false' do
@@ -80,8 +81,10 @@ class MailconfControllerTest < ActionController::TestCase
     env = Environment.default
     env.force_www = false
     env.save!
+    env.domains.delete_all
+    env.domains.create! name: 'example.com'
     get :index, :profile => 'ze'
-    assert_tag :tag => 'li', :content => /ze@colivre.net/
+    assert_tag :tag => 'li', :content => /ze@example.com/
   end
 
   should 'create task to environment admin when enable email' do
@@ -95,7 +98,7 @@ class MailconfControllerTest < ActionController::TestCase
     login_as('ze')
     assert user.enable_email!
     post :disable, :profile => 'ze'
-    assert !Profile['ze'].user.enable_email
+    refute Profile['ze'].user.enable_email
   end
 
   should 'go back on save' do

@@ -252,9 +252,9 @@ sniffer = {
           var marker = sniffer.search.profile.findMarker(profile.id);
           if (marker) {
             [].push.apply(sp, marker.profile.suppliersProducts);
-            sp = jQuery.unique( sp );
+            sp = _.uniq(sp, function(product) { return product.id; });
             [].push.apply(cp, marker.profile.consumersProducts);
-            cp = jQuery.unique( cp );
+            cp = _.uniq(cp, function(product) { return product.id; });
           }
 
           if (_.size(sp) > 0 && _.size(cp) > 0)

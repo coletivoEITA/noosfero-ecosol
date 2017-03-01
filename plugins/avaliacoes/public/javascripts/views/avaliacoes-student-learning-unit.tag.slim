@@ -1,0 +1,61 @@
+avaliacoes-student-learning-unit
+  table.table
+    tbody
+      tr
+        th colspan='{essay_grades.length + multiple_choice_grades.length + 2 + 2}'
+          |{learning_unit.name}
+    tbody
+      tr
+        th colspan='{essay_grades.length + 1}' if='{essay_grades.length}'
+          |Dissertativas
+        th colspan='{multiple_choice_grades.length + 1}' if='{multiple_choice_grades.length}'
+          |Objetivas
+        th rowspan='2'
+          |Nota
+        th rowspan='2'
+          |Frequência
+      tr
+        th each='{grade in essay_grades}'
+          |{grade.question.index}
+        th if='{essay_grades.length}'
+          |Média
+        th each='{grade in multiple_choice_grades}'
+          |{grade.question.index}
+        th if='{multiple_choice_grades.length}'
+          |Média
+      tr
+        td each='{grade in essay_grades}'
+          |{a.n(grade.grade)}
+        td if='{essay_grades.length}'
+          |{a.n(essayAverage)}
+        td each='{grade in multiple_choice_grades}'
+          |{a.n(grade.grade)}
+        td if='{multiple_choice_grades.length}'
+          |{a.n(mcAverage)}
+        td
+          |{a.n(grade)}
+        td
+          |{a.n(frequency)}%
+
+  javascript:
+    this.a = window.avaliacoes
+    this.essay_grades = opts.data.essay_grades
+    this.multiple_choice_grades = opts.data.multiple_choice_grades
+
+    average (grades) {
+      return _.sum(grades, function (g) { return g.grade }) / grades.length
+    }
+    calcFrequency (grades) {
+      return _.select(grades, function (g) { return g.answered }).length
+    }
+
+    this.on('update', function() {
+      this.grade = 0
+      if (this.essayAverage) this.grade += this.parent.essayWeight * this.essayAverage
+      if (this.mcAverage) this.grade += this.parent.mcWeight * this.mcAverage
+      this.frequency = 100 * ( this.calcFrequency(this.essay_grades) + this.calcFrequency(this.multiple_choice_grades) ) /
+      ( this.essay_grades.length + this.multiple_choice_grades.length )
+      this.essayAverage = this.average(this.essay_grades)
+      this.mcAverage = this.average(this.multiple_choice_grades)
+    })
+

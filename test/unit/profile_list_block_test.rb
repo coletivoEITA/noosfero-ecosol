@@ -20,6 +20,8 @@ class ProfileListBlockTest < ActiveSupport::TestCase
     assert_equal 20, block.limit
   end
 
+  include BoxesHelper
+
   should 'list people' do
     env = fast_create(Environment)
 
@@ -30,15 +32,20 @@ class ProfileListBlockTest < ActiveSupport::TestCase
     block = ProfileListBlock.new
     block.stubs(:owner).returns(env)
 
-    self.expects(:profile_image_link).with(person1, :minor).once
-    self.expects(:profile_image_link).with(person2, :minor).once
-    self.expects(:profile_image_link).with(person3, :minor).once
+    ApplicationHelper.class_eval do
+      alias_method :original_profile_image_link, :profile_image_link
+      def profile_image_link( profile, size=:portrait, tag='li', extra_info = nil )
+        "<#{profile.name}>"
+      end
+    end
 
-    self.stubs(:tag).returns('<div></div>')
-    self.expects(:content_tag).returns('<div></div>').at_least_once
-    self.expects(:block_title).returns('block title').at_least_once
-
-    assert_kind_of String, instance_eval(&block.content)
+    content = render_block_content(block)
+    assert_match '<testperson1>', content
+    assert_match '<testperson2>', content
+    assert_match '<testperson3>', content
+    ApplicationHelper.class_eval do
+      alias_method :profile_image_link, :original_profile_image_link
+    end
   end
 
   should 'list private profiles' do
@@ -77,7 +84,7 @@ class ProfileListBlockTest < ActiveSupport::TestCase
     block.save!
     assert_equal 'Title from block', block.view_title
   end
-  
+
   should 'provide view title with variables' do
     env = fast_create(Environment)
     env.boxes << Box.new
@@ -87,7 +94,7 @@ class ProfileListBlockTest < ActiveSupport::TestCase
     assert_equal '0 members', block.view_title
   end
 
-  should 'count number of public and private profiles' do
+  should 'count number of only public profiles' do
     env = fast_create(Environment)
     env.boxes << Box.new
     block = ProfileListBlock.new
@@ -103,7 +110,7 @@ class ProfileListBlockTest < ActiveSupport::TestCase
     priv_e = fast_create(Enterprise, :public_profile => false , :environment_id => env.id)
     pub_e = fast_create(Enterprise, :public_profile => true , :environment_id => env.id)
 
-    assert_equal 6, block.profile_count
+    assert_equal 3, block.profile_count
   end
 
   should 'only count number of visible profiles' do

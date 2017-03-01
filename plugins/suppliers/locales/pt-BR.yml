@@ -140,8 +140,6 @@ pt-BR: &pt-BR
     controllers:
       myprofile:
         supplier_created: "%{terms.supplier.singular.capitalize} criado"
-      product:
-        import_in_progress: "Os produtos estão sendo importados. Aguarde um pouco e recarregue a página para visualizá-los."
 
     models:
       base_product:
@@ -166,6 +164,102 @@ pt-BR: &pt-BR
         filter_it: Filtrar
       actions:
 
+      product:
+        products: Produtos
+        product_name: 'Nome do produto'
+        name: 'Nome'
+        categories: categorias
+        all_the_categories: 'Todas as categorias'
+        supplier: Fornecedor
+        situation: situação
+        active: ativo
+        inactive: inativo
+        filter: Filtro
+        image: Imagem
+        available: Disponível
+        category: Categoria
+        margin: Margem
+        stock: Estoque
+        total_price: 'Preço final'
+        supplier_price: 'Preço produtor'
+        total_price_currency: 'Preço final (R$)'
+        supplier_price_currency: 'Preço fornec. (R$)'
+        unit: unidade
+        mass_action: "Com selecionados"
+        activate: "ativar produtos"
+        deactivate: "desativar produtos"
+        ok: ok
+        state: Estado
+        in_any_state: "Em qualquer estado"
+        inactive: inativa
+        active: ativa
+        complete_edition: "edição completa"
+        fast_edition: "edição rápida"
+        showing: "Mostrando %{count} produtos"
+        save: "Salvar"
+        edit: "Editar"
+        saved: "Salvo!"
+        close: "Fechar"
+        stock_modal: "Movimentação de Estoque"
+        action: "Ação"
+        quantity: "Quantidade" 
+        description: "Descrição"
+        the_description: "Descreva a movimentação. Ex: Saída de 2 caixas para distribuição"
+        adition: "adição"
+        remotion: "remoção"
+        stock_modal_qtt: "Em estoque agora: %{stock}"
+        stock_qtt_validation_error: "A quantidade da movimentação de estoque precisa ser preenchida"
+        stock_desc_validation_error: "A descrição da movimentação de estoque precisa ser preenchida"
+        use_stock: "Usar estoque"
+        about_product: "Sobre o produto"
+        the_supplier_price: "Preço do produto no fornecedor"
+        change_image: "Mudar a imagem"
+        initial_qtt_stock: "Quantidade inicial em estoque"
+        cancel: "Cancelar"
+        remove: "Remover produto"
+        remove_warning: "CUIDADO: Ao remover esse produto haverá perda de histórico. Talvez você prefira desabilitá-lo."
+        removed_product: "Produto removido com sucesso"
+        created: "Produto criado com sucesso"
+        final_price_with_margin: "Preço final com a margem:"
+        currency: "R$ "
+        enable_product: "Habilitar/desabilitar produto"
+        add_product: "Adicionar produto"
+        adding_product: "Adicionando produto"
+        import_products: "Importar produtos"
+        validation_error_product_category_id: "Erro de validação: Por favor preencher o campo Categoria"
+        validation_error_supplier_id: "Erro de validação: Por favor preencher o campo Fornecedor"
+        validation_error_name: "Erro de validação: Por favor preencher o campo Nome"
+        validation_error_supplier_price: "Erro de validação: Por favor preencher o campo preço do fornecedor"
+        validation_error_margin_percentage: "Erro de validação: Por favor preencher o campo margem"
+        import:
+          action: "Importar planilha"
+          help: "Formate sua planilha para que tenha exatamente os campos abaixo com cabeçalho. Depois, salve-a escolhendo o tipo de arquivo CSV (extensão .csv)."
+          help2: "Produtos com nomes iguais têm seus dados (preço/unidade) atualizados."
+          field_supplier_name: "Nome do fornecedor"
+          field_product_name: "Nome do produto"
+          field_product_unit: "Unidade"
+          field_product_price: "Preço por unidade"
+          remove_all: 'Remover todos os atuais fornecedores cadastrados e todos os seus produtos (começar uma nova lista de produtos).'
+          confirm_remove_all: "ATENÇÃO! Essa opção removerá todos os fornecedores cadastrados e todos os seus produtos!"
+          unit_help: "Use como unidade das seguintes (use o nome igual): %{units}"
+          send: "Enviar"
+          import_in_progress: "Os produtos estão sendo importados. Aguarde um pouco e recarregue a página para visualizá-los."
+
+      myprofile:
+        margin_change:
+          ? "%"
+          : "%"
+          notice: "Ao mudar a margem padrão de comercialização, os produtos que são marcados como \"use a margem padrão\" automaticamente terão sua margem atualizada."
+          cancel: Cancelar
+          change_default_margin: "Mudar a margem padrão de comercialização"
+          confirm: Confirmar
+          apply_to_all: "Aplicar para os produtos com margens personalizadas"
+          apply_to_open_cycles: "Aplicar para os produtos nos ciclos abertos"
+          new_margin: "Nova margem"
+        index:
+          redistribution_situation: "Distribuição dos produtos"
+          name: "Nome"
+
       manage_products:
         compare_tab:
           see_supplier: 'Ver produto original na página do fornecedor "%{supplier}".'
@@ -185,101 +279,74 @@ pt-BR: &pt-BR
         suppliers: "Gerenciar fornecedores"
         products: "Gerenciar produtos distribuídos"
 
-      myprofile:
-        margin_change:
-          ? "%"
-          : "%"
-          notice: "Ao mudar a margem padrão de comercialização, os produtos que são marcados como \"use a margem padrão\" automaticamente terão sua margem atualizada."
-          cancel: Cancelar
-          change_default_margin: "Mudar a margem padrão de comercialização"
-          confirm: Confirmar
-          apply_to_all: "Aplicar para os produtos com margens personalizadas"
-          apply_to_open_cycles: "Aplicar para os produtos nos ciclos abertos"
-          new_margin: "Nova margem"
-        index:
-          redistribution_situation: "Distribuição dos produtos"
-          name: "Nome"
-
-      product:
-        import:
-          action: "Importar planilha"
-          help: "Formate sua planilha para que tenha exatamente os campos abaixo. Depois, salve-a escolhendo o tipo de arquivo CSV (extensão .csv).<br><b>Produtos com nomes iguais tem seus dados (preço/unidade) atualizados.</b>"
-          field_supplier_name: "Nome do fornecedor"
-          field_product_name: "Nome do produto"
-          field_product_unit: "Unidade"
-          field_product_price: "Preço por unidade"
-          remove_all: 'Remover todos os atuais fornecedores cadastrados e todos os seus produtos (começar uma nova lista de produtos).'
-          confirm_remove_all: "ATENÇÃO! Essa opção removerá todos os fornecedores cadastrados e todos os seus produtos!"
-          unit_help: "Use como <b>unidade</b> uma entre (coloque o nome igual): %{units}"
-          send: "Enviar"
-        _edit:
-          distribution_setts: "Configurações de distribuição do produto"
-          margin_price: "Margem / preço"
-          default_margin: "Usar padrão"
-          stock: "Configuração de estoque"
-          default_stock: "Manter estoque"
-          current_stock: "Estoque atual"
-          distribution_state: "Estado da distribuição"
-          available: Ativa
-          are_you_sure_you_want: "Tem certeza de que deseja remover este produto?"
-          remove_product: remover
-          cancel: cancelar
-          save: salvar mudanças
-          view_on_supplier_page: "Ver produto na página %{terms.supplier.from_article.singular}"
-          product_registry: "Cadastro do produto"
-          selling_unit: "Unidade de venda"
-          same_from_purchase: "Mesma da compra"
-          unit: "Unidade"
-          unit_detail: "Especificação da unidade"
-        _edit_line:
-          active: Ativo
-          inactive: Inativo
-        _form_errors:
-          errors_found: "Erros encontrados:"
-        _price_details:
-          commercialization_act: "Comercialização ativa"
-          minimum_order: "Pedido mínimo"
-          price: Preço
-          unit: Unidade
-          unit_specification: "Especificações de unidade"
-        _search:
-          status: Estado
-          category: Categoria
-          supplier: "%{terms.supplier.singular.capitalize}"
-          product: Produto
-          margin: Margem
-          price: Preço
-          stock: Estoque
-          unit: Unidade
-          showing_pcount_produc: "Total: %{count} produtos"
-          we_don_t_have_product: "Não temos produtos a mostrar."
-        add:
-          title: "Criar produto"
-          own_product: "Criar produto próprio"
-          or_from_a_supplier: 'ou de um fornecedor gerido pelo coletivo:'
-        index:
-          active: ativa
-          add_product: "Criar produto"
-          all_the_categories: "todas as categorias"
-          all_the_suppliers: "todos %{terms.supplier.article.plural}"
-          situation: "Situação de distribuição"
-          anyone: anyone
-          bigger_than_the_stock: "maior do que o estoque"
-          change: mudar
-          default_margin_of_com: "Margem padrão de comercialização"
-          default_margin_info: "Esta margem é automaticamente aplicada em todos os produtos, mas é possível estabelecer margens específicas para certos produtos."
-          in_any_state: "Em qualquer estado"
-          inactive: inativa
-          margin: "%{margin} %"
-          no_margin_set: "Sem margem definida"
-          products: Produtos
-          supplier: "%{terms.supplier.singular.capitalize}"
-          info: "Esta é a lista de produtos %{terms.profile.from_which_article.singular} distribuí. Os produtos se dividem entre ativos e inativos."
-          the_products: "Os produtos"
-          name: "Nome"
-          whose_qty_available_i: "cuja qtd disponível é"
-          category: "Categoria"
-          with_the_qualifiers: "com os qualificadores"
+      backup:
+        product:
+          _edit:
+            distribution_setts: "Configurações de distribuição do produto"
+            margin_price: "Margem / preço"
+            default_margin: "Usar padrão"
+            stock: "Configuração de estoque"
+            default_stock: "Manter estoque"
+            current_stock: "Estoque atual"
+            distribution_state: "Estado da distribuição"
+            available: Ativa
+            are_you_sure_you_want: "Tem certeza de que deseja remover este produto?"
+            remove_product: remover
+            cancel: cancelar
+            save: salvar mudanças
+            view_on_supplier_page: "Ver produto na página %{terms.supplier.from_article.singular}"
+            product_registry: "Cadastro do produto"
+            selling_unit: "Unidade de venda"
+            same_from_purchase: "Mesma da compra"
+            unit: "Unidade"
+            unit_detail: "Especificação da unidade"
+          _edit_line:
+            active: Ativo
+            inactive: Inativo
+          _form_errors:
+            errors_found: "Erros encontrados:"
+          _price_details:
+            commercialization_act: "Comercialização ativa"
+            minimum_order: "Pedido mínimo"
+            price: Preço
+            unit: Unidade
+            unit_specification: "Especificações de unidade"
+          _search:
+            status: Estado
+            category: Categoria
+            supplier: "%{terms.supplier.singular.capitalize}"
+            product: Produto
+            margin: Margem
+            price: Preço
+            stock: Estoque
+            unit: Unidade
+            showing_pcount_produc: "Total: %{count} produtos"
+            we_don_t_have_product: "Não temos produtos a mostrar."
+          add:
+            title: "Criar produto"
+            own_product: "Criar produto próprio"
+            or_from_a_supplier: 'ou de um fornecedor gerido pelo coletivo:'
+          index:
+            add_product: "Criar produto"
+            all_the_categories: "Todas as categorias"
+            all_the_suppliers: "todos %{terms.supplier.article.plural}"
+            situation: "Situação de distribuição"
+            anyone: anyone
+            bigger_than_the_stock: "maior do que o estoque"
+            in_any_state: "Em qualquer estado"
+            inactive: inativa
+            change: mudar
+            default_margin_of_com: "Margem padrão de comercialização"
+            default_margin_info: "Esta margem é automaticamente aplicada em todos os produtos, mas é possível estabelecer margens específicas para certos produtos."
+            margin: "%{margin} %"
+            no_margin_set: "Sem margem definida"
+            products: Produtos
+            supplier: "%{terms.supplier.singular.capitalize}"
+            info: "Esta é a lista de produtos %{terms.profile.from_which_article.singular} distribui."
+            the_products: "Os produtos"
+            name: "Nome"
+            whose_qty_available_i: "cuja qtd disponível é"
+            with_the_qualifiers: "com os qualificadores"
 
       supplier:
         _new:
@@ -366,6 +433,50 @@ pt-BR: &pt-BR
           name: Nome
           suppliers: "%{terms.supplier.plural.capitalize}"
           this_is_the_list_of_s: "Esta é a lista de %{terms.supplier.plural} associados %{terms.profile.to_article.singular}. É possível associar %{terms.supplier.to.plural} existentes ou registrar %{terms.supplier.one}."
+      consumer:
+        index:
+          consumer: "Consumidores"
+          description: "Nesta página você encontrará a listagem de consumidores e suas informações. Pode aparecer também uma caixa com requisições de associação ao grupo a serem aprovadas"
+          search: "PESQUISAR ..."
+          detail: "detalhar"
+          general_information: "Informações gerais"
+          close: Fechar
+          name: Nome
+          telephone: Telefone
+          celular: Celular
+          email: Email
+          hub: Núcleo
+          address: Endereço
+          city: Cidade
+          state: Estado
+          zip: CEP
+          orders_history: Histórico de pedidos
+          no_orders: Sem pedidos para mostrar
+          date: Data
+          cycle: Feira
+          value_ordered: Valor pedido
+          final_value: Valor final
+          status: Situação
+          draft: Rascunho
+          accepted: Aceito
+          ordered: Pedido
+          received: Recebido
+          delivered: Entregue
+          cancelled: Cancelado
+          remove: Remover do grupo
+          confirm_remove: "Você tem certeza de que quer remover '%{consumer}' do grupo?"
+          tasks: "<strong>%{people} pessoas</strong> aguardam aprovação para entrar no grupo"
+          manage: "Gerenciar"
+          saved: "Salvo!"
+          add_consumer: "Adicionar novo"
+          adding_consumer: "Adicionando novo consumidor"
+          search_members: Procure abaixo por um usuário cadastrado no site
+          save: Salvar
+          accept: Aceitar
+          reject: Rejeitar
+          send: Enviar
+          cancel: Cancelar
+          rejection_message: "Por favor, explique por que você está rejeitando o pedido de filiação desse membro ao grupo."
 
   orders_cycle_plugin:
     terms:

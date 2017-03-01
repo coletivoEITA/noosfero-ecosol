@@ -1,0 +1,3 @@
+var table = $(".orders-admin-index").children(".table-content")
+table.prepend('<%= escape_javascript render 'orders_plugin_admin/order', order: @order, actor_name: :supplier, edit: false %>');
+$(".new-order-modal").modal("hide");

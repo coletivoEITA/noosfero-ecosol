@@ -1,15 +1,15 @@
-require File.dirname(__FILE__) + '/../../../../../test/test_helper'
+require 'test_helper'
 
 class MarkCommentAsReadPlugin::CommentTest < ActiveSupport::TestCase
 
   def setup
     @person = create_user('user').person
-    @article = TinyMceArticle.create!(:profile => @person, :name => 'An article')
+    @article = TextArticle.create!(:profile => @person, :name => 'An article')
     @comment = Comment.create!(:title => 'title', :body => 'body', :author => @person, :source => @article)
   end
 
   should 'mark comment as read' do
-    assert !@comment.marked_as_read?(@person)
+    refute @comment.marked_as_read?(@person)
     @comment.mark_as_read(@person)
     assert @comment.marked_as_read?(@person)
   end
@@ -25,7 +25,7 @@ class MarkCommentAsReadPlugin::CommentTest < ActiveSupport::TestCase
     @comment.mark_as_read(@person)
     assert @comment.marked_as_read?(@person)
     @comment.mark_as_not_read(@person)
-    assert !@comment.marked_as_read?(@person)
+    refute @comment.marked_as_read?(@person)
   end
 
   should 'return comments marked as read for a user' do

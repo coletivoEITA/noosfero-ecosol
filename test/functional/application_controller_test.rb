@@ -2,15 +2,11 @@
 require_relative "../test_helper"
 require 'test_controller'
 
-# Re-raise errors caught by the controller.
-class TestController; def rescue_action(e) raise e end; end
-
 class ApplicationControllerTest < ActionController::TestCase
   all_fixtures
+
   def setup
     @controller = TestController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
   end
 
   def test_detection_of_environment_by_host
@@ -53,7 +49,7 @@ class ApplicationControllerTest < ActionController::TestCase
     current = fast_create(Environment, :name => 'test environment')
     current.domains.create!(:name => 'example.com')
 
-    @request.expects(:host).returns('example.com').at_least_once
+    @request.env['HTTP_HOST'] = 'example.com'
     get :index
 
     assert_equal current, assigns(:environment)
@@ -101,38 +97,6 @@ class ApplicationControllerTest < ActionController::TestCase
     })
   end
 
-  def test_should_generate_help_box_expanding_textile_markup_when_passing_string
-    get :help_textile_with_string
-    assert_tag({
-      :tag => 'div',
-      :attributes => { :class => 'help_box'},
-      :descendant => {
-        :tag => 'div',
-        :attributes => { :class => 'help_message', :style => /display:\s+none/},
-        :descendant => {
-          :tag => 'strong',
-          :content => /my_bold_help_message/
-        }
-      }
-    })
-  end
-
-  def test_should_generate_help_box_expanding_textile_markup_when_passing_block
-    get :help_textile_with_block
-    assert_tag({
-      :tag => 'div',
-      :attributes => { :class => 'help_box'},
-      :descendant => {
-        :tag => 'div',
-        :attributes => { :class => 'help_message', :style => /display:\s+none/},
-        :descendant => {
-          :tag => 'strong',
-          :content => /my_bold_help_message/
-        }
-      }
-    })
-  end
-
   def test_shouldnt_generate_help_box_markup_when_no_block_is_passed
     get :help_without_block
     assert_no_tag({
@@ -150,7 +114,7 @@ class ApplicationControllerTest < ActionController::TestCase
     class DoesNotUsesBlocksTestController < ApplicationController
       no_design_blocks
     end
-    assert !DoesNotUsesBlocksTestController.new.send(:uses_design_blocks?)
+    refute DoesNotUsesBlocksTestController.new.send(:uses_design_blocks?)
   end
 
   should 'generate blocks' do
@@ -197,7 +161,7 @@ class ApplicationControllerTest < ActionController::TestCase
     User.expects(:current=).with do |user|
       user == testuser
     end.at_least_once
-    User.expects(:current=).with(nil).at_least_once
+    User.expects(:current=).with(nil)
     get :index
   end
 
@@ -227,7 +191,7 @@ class ApplicationControllerTest < ActionController::TestCase
   end
 
   should 'display theme test panel when testing theme' do
-    @request.session[:theme] = 'my-test-theme'
+    @request.session[:user_theme] = 'my-test-theme'
     theme = mock
     profile = mock
     theme.expects(:owner).returns(profile).at_least_once
@@ -291,10 +255,7 @@ class ApplicationControllerTest < ActionController::TestCase
     uses_host 'other.environment'
     get :index
     assert_tag :tag => 'div', :attributes => {:id => 'user_menu_ul'}
-    assert_tag :tag => 'div', :attributes => {:id => 'user_menu_ul'},
-                :descendant => {:tag => 'a', :attributes => { :href => 'http://other.environment/adminuser' }},
-                :descendant => {:tag => 'a', :attributes => { :href => 'http://other.environment/myprofile/adminuser' }},
-                :descendant => {:tag => 'a', :attributes => { :href => '/admin' }}
+    assert_tag tag: 'div', attributes: {id: 'user_menu_ul'}, descendant: {tag: 'a', attributes: { href: '/admin' }}
   end
 
   should 'not display invisible blocks' do
@@ -372,19 +333,16 @@ class ApplicationControllerTest < ActionController::TestCase
     environment.enable_plugin(Plugin1.name)
     environment.enable_plugin(Plugin2.name)
 
-    ActionView::Helpers::AssetTagHelper::StylesheetIncludeTag.any_instance.stubs('asset_file_path!')
-    ActionView::Helpers::AssetTagHelper::JavascriptIncludeTag.any_instance.stubs('asset_file_path!')
-
     get :index
 
-    assert_tag :tag => 'link', :attributes => {:href => /#{plugin1_path}/, :type => 'text/css', :rel => 'stylesheet'}
-    assert_tag :tag => 'link', :attributes => {:href => /#{plugin2_path}/, :type => 'text/css', :rel => 'stylesheet'}
+    assert_tag tag: 'link', attributes: {href: /#{plugin1_path}/, rel: 'stylesheet'}
+    assert_tag tag: 'link', attributes: {href: /#{plugin2_path}/, rel: 'stylesheet'}
   end
 
   should 'include javascripts supplied by plugins' do
     class Plugin1 < Noosfero::Plugin
       def js_files
-        ['js1.js']
+        ['js1.js'.html_safe]
       end
     end
 
@@ -393,7 +351,7 @@ class ApplicationControllerTest < ActionController::TestCase
 
     class Plugin2 < Noosfero::Plugin
       def js_files
-        ['js2.js', 'js3.js']
+        ['js2.js'.html_safe, 'js3.js'.html_safe]
       end
     end
 
@@ -408,24 +366,22 @@ class ApplicationControllerTest < ActionController::TestCase
     environment.enable_plugin(Plugin1.name)
     environment.enable_plugin(Plugin2.name)
 
-    ActionView::Helpers::AssetTagHelper::JavascriptIncludeTag.any_instance.stubs('asset_file_path!')
-
     get :index
 
-    assert_tag :tag => 'script', :attributes => {:src => /#{plugin1_path}/, :type => 'text/javascript'}
-    assert_tag :tag => 'script', :attributes => {:src => /#{plugin2_path2}/, :type => 'text/javascript'}
-    assert_tag :tag => 'script', :attributes => {:src => /#{plugin2_path3}/, :type => 'text/javascript'}
+    assert_tag tag: 'script', attributes: {src: /#{plugin1_path}/}
+    assert_tag tag: 'script', attributes: {src: /#{plugin2_path2}/}
+    assert_tag tag: 'script', attributes: {src: /#{plugin2_path3}/}
   end
 
   should 'include content in the beginning of body supplied by plugins regardless it is a block or html code' do
     class TestBodyBeginning1Plugin < Noosfero::Plugin
       def body_beginning
-        lambda {"<span id='plugin1'>This is [[plugin1]] speaking!</span>"}
+        lambda {"<span id='plugin1'>This is [[plugin1]] speaking!</span>".html_safe}
       end
     end
     class TestBodyBeginning2Plugin < Noosfero::Plugin
       def body_beginning
-        "<span id='plugin2'>This is Plugin2 speaking!</span>"
+        "<span id='plugin2'>This is Plugin2 speaking!</span>".html_safe
       end
     end
 
@@ -443,12 +399,12 @@ class ApplicationControllerTest < ActionController::TestCase
 
     class TestHeadEnding1Plugin < Noosfero::Plugin
       def head_ending
-        lambda {"<script>alert('This is [[plugin1]] speaking!')</script>"}
+        lambda {"<script>alert('This is [[plugin1]] speaking!')</script>".html_safe}
       end
     end
     class TestHeadEnding2Plugin < Noosfero::Plugin
       def head_ending
-        "<style>This is Plugin2 speaking!</style>"
+        "<style>This is Plugin2 speaking!</style>".html_safe
       end
     end
 
@@ -474,38 +430,19 @@ class ApplicationControllerTest < ActionController::TestCase
     e.access_control_allow_origin = ['http://allowed']
     e.save!
 
-    @request.env["Origin"] = "http://allowed"
+    @request.headers["Origin"] = "http://allowed"
     get :index
     assert_response :success
 
-    @request.env["Origin"] = "http://other"
+    @request.headers["Origin"] = "http://other"
     get :index
     assert_response :success
 
-    @request.env["Origin"] = "http://other"
+    @request.headers["Origin"] = "http://other"
     e.restrict_to_access_control_origins = true
     e.save!
     get :index
     assert_response :forbidden
-  end
-
-  if ActiveRecord::Base.connection.adapter_name == 'PostgreSQL'
-
-    should 'change postgresql schema' do
-      uses_host 'schema1.com'
-      Noosfero::MultiTenancy.expects(:on?).returns(true)
-      Noosfero::MultiTenancy.expects(:mapping).returns({ 'schema1.com' => 'schema1' })
-      exception = assert_raise(ActiveRecord::StatementInvalid) { get :index }
-      assert_match /SET search_path TO schema1/, exception.message
-    end
-
-    should 'not change postgresql schema if multitenancy is off' do
-      uses_host 'schema1.com'
-      Noosfero::MultiTenancy.stubs(:on?).returns(false)
-      Noosfero::MultiTenancy.stubs(:mapping).returns({ 'schema1.com' => 'schema1' })
-      assert_nothing_raised(ActiveRecord::StatementInvalid) { get :index }
-    end
-
   end
 
   should 'register search_term occurrence on find_by_contents' do
@@ -534,6 +471,21 @@ class ApplicationControllerTest < ActionController::TestCase
     Environment.default.enable(:restrict_to_members)
     get :index
     assert_redirected_to :controller => 'account', :action => 'login'
+  end
+
+  should 'override user when current is an admin' do
+    user        = create_user
+    other_user  = create_user
+    environment = Environment.default
+    login_as user.login
+    @controller.stubs(:environment).returns(environment)
+
+    get :index, override_user: other_user.id
+    assert_equal user, assigns(:current_user)
+
+    environment.add_admin user.person
+    get :index, override_user: other_user.id
+    assert_equal other_user, assigns(:current_user)
   end
 
   should 'do not allow member not included in whitelist to access an restricted environment' do
@@ -586,6 +538,56 @@ class ApplicationControllerTest < ActionController::TestCase
     login_as create_user.login
     get :index
     assert_response :success
+  end
+
+  should "redirect to 404 if profile is '~' and user is not logged in" do
+    get :index, :profile => '~'
+    assert_response :missing
+  end
+
+  should "redirect to action when profile is '~' " do
+    login_as('ze')
+    get :index, :profile => '~'
+    assert_response 302
+  end
+
+  should "substitute '~' by current user and redirect properly " do
+    login_as('ze')
+    profile = Profile.where(:identifier => 'ze').first
+    get :index, :profile => '~'
+    assert_redirected_to :controller => 'test', :action => 'index', :profile => profile.identifier
+  end
+
+  should 'set session theme if a params theme is passed as parameter' do
+    current_theme = 'my-test-theme'
+    environment = Environment.default
+    Theme.stubs(:system_themes).returns([Theme.new(current_theme)])
+    environment.themes = [current_theme]
+    environment.save!
+    assert_nil @request.session[:theme]
+    get :index, :theme => current_theme
+    assert_equal current_theme, @request.session[:theme]
+  end
+
+  should 'set session theme only in environment available themes' do
+    environment = Environment.default
+    assert_nil @request.session[:theme]
+    environment.stubs(:theme_ids).returns(['another_theme'])
+    get :index, :theme => 'my-test-theme'
+    assert_nil @request.session[:theme]
+  end
+
+  should 'unset session theme if not environment available themes is defined' do
+    environment = Environment.default
+    current_theme = 'my-test-theme'
+    Theme.stubs(:system_themes).returns([Theme.new(current_theme)])
+    environment.themes = [current_theme]
+    environment.save!
+    get :index, :theme => current_theme
+    assert_equal current_theme, @request.session[:theme]
+
+    get :index, :theme => 'another_theme'
+    assert_nil @request.session[:theme]
   end
 
 end

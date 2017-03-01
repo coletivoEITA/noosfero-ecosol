@@ -12,8 +12,15 @@ module ArticleHelper
     @article = article
 
     visibility_options(@article, tokenized_children) +
+    topic_creation(@article) +
     content_tag('h4', _('Options')) +
     content_tag('div',
+      content_tag(
+        'div',
+        check_box(:article, :archived) +
+        content_tag('label', _('Do not allow new content on this article and its children'), :for => 'article_archived_true')
+      ) +
+
       (article.profile.has_members? ?
       content_tag(
         'div',
@@ -22,13 +29,11 @@ module ArticleHelper
       ) :
       '') +
 
-      (article.parent && article.parent.forum? && controller.action_name == 'new' ?
-      hidden_field_tag('article[accept_comments]', 1) :
       content_tag(
         'div',
         check_box(:article, :accept_comments) +
         content_tag('label', (article.parent && article.parent.forum? ? _('This topic is opened for replies') : _('I want to receive comments about this article')), :for => 'article_accept_comments')
-      )) +
+      ) +
 
       content_tag(
         'div',
@@ -57,12 +62,7 @@ module ArticleHelper
         content_tag('label', _('I want this article to display a link to older versions'), :for => 'article_display_versions')
       ) : '') +
 
-      (article.forum? && article.profile.community? ?
-      content_tag(
-        'div',
-        check_box(:article, :allows_members_to_create_topics) +
-        content_tag('label', _('Allow members to create topics'), :for => 'article_allows_members_to_create_topics')
-        ) : '')
+      (self.respond_to?(:extra_options) ? self.extra_options : "")
     )
   end
 
@@ -71,14 +71,37 @@ module ArticleHelper
     content_tag('div',
       content_tag('div',
         radio_button(:article, :published, true) +
-          content_tag('label', _('Public (visible to other people)'), :for => 'article_published_true')
+          content_tag('span', '&nbsp;'.html_safe, :class => 'access-public-icon') +
+          content_tag('label', _('Public'), :for => 'article_published_true') +
+          content_tag('span', _('Visible to other people'), :class => 'access-note'),
+          :class => 'access-item'
            ) +
       content_tag('div',
         radio_button(:article, :published, false) +
-          content_tag('label', _('Private'), :for => 'article_published_false', :id => "label_private")
+          content_tag('span', '&nbsp;'.html_safe, :class => 'access-private-icon') +
+          content_tag('label', _('Private'), :for => 'article_published_false', :id => "label_private") +
+          content_tag('span', _('Limit visibility of this article'), :class => 'access-note'),
+          :class => 'access-item'
       ) +
-      privacity_exceptions(article, tokenized_children)
+      privacity_exceptions(article, tokenized_children),
+      :class => 'access-itens'
     )
+  end
+
+  def topic_creation(article)
+    return '' unless article.forum?
+
+    general_options = Forum::TopicCreation.general_options(article)
+    slider_options = {:id => 'topic-creation-slider'}
+    slider_options = general_options.keys.inject(slider_options) do |result, option|
+      result.merge!({'data-'+option => general_options[option]})
+    end
+
+    content_tag('h4', _('Topic creation')) +
+    content_tag( 'small', _('Who will be able to create new topics on this forum?')) +
+    content_tag('div', '', slider_options) +
+    hidden_field_tag('article[topic_creation]', article.topic_creation) +
+    javascript_include_tag("#{Noosfero.root}/assets/topic-creation-config.js")
   end
 
   def privacity_exceptions(article, tokenized_children)
@@ -97,7 +120,7 @@ module ArticleHelper
   end
 
   def add_option_to_followers(article, tokenized_children)
-    label_message = article.profile.organization? ? _('For all community members') : _('For all your friends')
+    label_message = article.profile.organization? ? _('Allow all community members to view this content') : _('Allow all your friends to view this content')
 
     check_box(
       :article,
@@ -115,7 +138,7 @@ module ArticleHelper
         'div',
         content_tag(
           'label',
-          _('Fill in the search field to add the exception members to see this content'),
+          _('Allow only community members entered below to view this content'),
           :id => "text-input-search-exception-users"
         ) +
         token_input_field_tag(
@@ -124,7 +147,7 @@ module ArticleHelper
           {:action => 'search_article_privacy_exceptions'},
           {
             :focus => false,
-            :hint_text => _('Type in a search term for a user'),
+            :hint_text => _('Type in a name of a community member'),
             :pre_populate => tokenized_children
           }
         )
@@ -139,12 +162,59 @@ module ArticleHelper
     array.map { |object| {:label => object.name, :value => object.name} }
   end
 
+  def prepare_to_token_input_by_class(array)
+    array.map { |object| {:id => "#{object.class.name}_#{object.id || object.name}", :name => "#{object.name} (#{_(object.class.name)})", :class => object.class.name}}
+  end
+
   def cms_label_for_new_children
     _('New article')
   end
 
   def cms_label_for_edit
     _('Edit')
+  end
+
+  def follow_button_text(article)
+    if article.event?
+      _('Attend')
+    else
+      _('Follow')
+    end
+  end
+
+  def unfollow_button_text(article)
+    if article.event?
+      _('Unattend')
+    else
+      _('Unfollow')
+    end
+  end
+
+  def following_button(page, user)
+    if !user.blank? and user != page.author
+      if page.is_followed_by? user
+        button :cancel, unfollow_button_text(page), {controller: :profile, profile: page.profile.identifier, action: :unfollow_article, article_id: page.id}
+      else
+        button :add, follow_button_text(page), {controller: :profile, profile: page.profile.identifier, action: :follow_article, article_id: page.id}
+      end
+    end
+  end
+
+  def filter_html(html, source)
+    if @plugins && source && source.has_macro?
+      html = convert_macro(html, source) unless @plugins.enabled_macros.blank?
+      #TODO This parse should be done through the macro infra, but since there
+      #     are old things that do not support it we are keeping this hot spot.
+      html = @plugins.pipeline(:parse_content, html, source).first
+    end
+    html && html.html_safe
+  end
+
+  def article_to_html(article, options = {})
+    options.merge!(:page => params[:npage])
+    content = article.to_html(options)
+    content = content.kind_of?(Proc) ? self.instance_exec(&content).html_safe : content.html_safe
+    filter_html(content, article)
   end
 
 end

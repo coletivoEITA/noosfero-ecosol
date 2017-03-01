@@ -1,6 +1,6 @@
-require "#{File.dirname(__FILE__)}/../../../../test/test_helper"
+require_relative '../test_helper'
 
-class SnifferMapTest < ActionController::IntegrationTest
+class SnifferMapTest < ActionDispatch::IntegrationTest
 
   fixtures :users, :profiles
 
@@ -22,7 +22,7 @@ class SnifferMapTest < ActionController::IntegrationTest
     end
     # Create 2 products to each enterprise with its own category:
     8.times do |i| n = (i+=1).to_s
-      @c[i] = fast_create(ProductCategory, :name => 'Category'+n)
+      @c[i] = create(ProductCategory, :name => 'Category'+n)
       @p[i] = fast_create(Product,
         :product_category_id => @c[i].id, :profile_id => @e[(i+1)/2].id
       )
@@ -95,8 +95,9 @@ class SnifferMapTest < ActionController::IntegrationTest
     assert_response 200
     assert_tag :tag => 'a', :attributes => { :href => '/profile/ent2'}, :content => @e[2].name
     assert_tag :tag => 'a', :attributes => { :href => url_for(@p[3].url) }, :content => @p[3].name
-    assert_select '.consumer-products', nil, 'consumer-products must to exist'
-    assert_select '.consumer-products *', 0, 'consumer-products must to be empty for @c1 on @e2'
+    doc = Nokogiri::HTML @response.body
+    assert_select doc, '.consumer-products', nil, 'consumer-products must to exist'
+    assert_select doc, '.consumer-products *', 0, 'consumer-products must to be empty for @c1 on @e2'
   end
 
   should 'create balloon on map for a consumer' do
@@ -114,8 +115,9 @@ class SnifferMapTest < ActionController::IntegrationTest
     assert_response 200
     assert_tag :tag => 'a', :attributes => { :href => '/profile/ent4'}, :content => @e[4].name
     assert_tag :tag => 'a', :attributes => { :href => url_for(@p[2].url) }, :content => @p[2].name
-    assert_select '.suppliers-products', nil, 'suppliers-products must to exist'
-    assert_select '.suppliers-products *', 0, 'suppliers-products must to be empty for @c2 on @e4'
+    doc = Nokogiri::HTML @response.body
+    assert_select doc, '.suppliers-products', nil, 'suppliers-products must to exist'
+    assert_select doc, '.suppliers-products *', 0, 'suppliers-products must to be empty for @c2 on @e4'
   end
 
   should 'create balloon on map for a supplier and consumer' do
@@ -138,9 +140,10 @@ class SnifferMapTest < ActionController::IntegrationTest
     }
     assert_response 200
     assert_tag :tag => 'a', :attributes => { :href => '/profile/ent3'}, :content => @e[3].name
-    assert_select ".suppliers-products a[href=#{url_for(@p[6].url)}]", @p[6].name,
+    doc = Nokogiri::HTML @response.body
+    assert_select doc, ".suppliers-products a[href=#{url_for(@p[6].url)}]", @p[6].name,
       "Can't find link to @p6 (#{@p[6].name})."
-    assert_select ".consumer-products a[href=#{url_for(@p[2].url)}]", @p[2].name,
+    assert_select doc, ".consumer-products a[href=#{url_for(@p[2].url)}]", @p[2].name,
       "Can't find link to @p2 (#{@p[2].name})."
   end
 
@@ -162,10 +165,9 @@ class SnifferMapTest < ActionController::IntegrationTest
       :identifier => 'acme', :name => 'ACME S.A.', :lat => 0, :lng => 0
     )
     # get the extended sniffer profile for the enterprise:
-    sniffer_acme = SnifferPlugin::Profile.find_or_create acme
-    sniffer_acme.product_category_string_ids = "#{@c[1].id},#{@c[4].id}"
-    sniffer_acme.enabled = true
-    sniffer_acme.save!
+    acme.sniffer_interested_product_category_string_ids = "#{@c[1].id},#{@c[4].id}"
+    acme.enabled = true
+    acme.save!
 
     # visit the map page:
     get url_plugin_myprofile(acme, :search)

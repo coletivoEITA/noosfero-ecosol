@@ -1,9 +1,6 @@
 require_relative "../test_helper"
 require 'my_profile_controller'
 
-# Re-raise errors caught by the controller.
-class MyProfileController; def rescue_action(e) raise e end; end
-
 class OnlyForPersonTestController < MyProfileController
   requires_profile_class Person
   def index
@@ -16,8 +13,6 @@ class MyProfileControllerTest < ActionController::TestCase
   all_fixtures
   def setup
     @controller = MyProfileController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
   end
 
   def test_should_allow_person

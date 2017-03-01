@@ -1,6 +1,6 @@
 require 'noosfero/multi_tenancy'
 
-class Domain < ActiveRecord::Base
+class Domain < ApplicationRecord
 
   attr_accessible :name, :owner, :is_default
 
@@ -14,7 +14,7 @@ class Domain < ActiveRecord::Base
 
   # <tt>name</tt> must be sequences of alphanumeric characters (a to z,
   # 0 to 9), plus '_' or '-', separated by dots. Letters must be lowercase.
-  validates_format_of :name, :with => /^([a-z0-9_-]+\.)+[a-z0-9_-]+$/, :message => N_('{fn} must be composed of sequences of lowercase letters (a to z), numbers (0 to 9), "_" and "-", separated by dots.').fix_i18n
+  validates_format_of :name, with: /\A([a-z0-9_-]+\.)+[a-z0-9_-]+\z/, message: N_('{fn} must be composed of sequences of lowercase letters (a to z), numbers (0 to 9), "_" and "-", separated by dots.').fix_i18n
 
   # checks validations that could not be expressed using Rails' predefined
   # validations. In particular:
@@ -36,8 +36,8 @@ class Domain < ActiveRecord::Base
   # finds a domain by its name. The argument <tt>name</tt> can start with
   # "www.", but it will be removed before searching. So searching for
   # 'www.example.net' is exactly the same as searching for just 'example.net'
-  def self.find_by_name(name)
-    self.find(:first, :conditions => [ 'name = ?', self.extract_domain_name(name) ])
+  def self.by_name(name)
+    self.find_by(name: self.extract_domain_name(name))
   end
 
   # turns the argument (expected to be a String) into a domain name that is
@@ -86,7 +86,7 @@ class Domain < ActiveRecord::Base
     Noosfero::MultiTenancy.setup!(domainname)
     @hosting[domainname] ||=
       begin
-        domain = Domain.find_by_name(domainname)
+        domain = Domain.by_name(domainname)
         !domain.nil? && (domain.owner_type == 'Profile')
       end
   end

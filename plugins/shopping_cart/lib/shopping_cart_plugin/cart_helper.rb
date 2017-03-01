@@ -13,7 +13,7 @@ module ShoppingCartPlugin::CartHelper
   end
 
   def cart_applet
-    button_to_function 'cart', '&nbsp;<span class="cart-qtty"></span>', "cart.toggle()", class: 'cart-applet-indicator', type: 'primary'
+    button_to_function 'cart', '&nbsp;<span class="cart-qtty"></span>'.html_safe, "cart.toggle()", class: 'cart-applet-indicator', type: 'primary'
   end
 
   def cart_minimized
@@ -59,7 +59,7 @@ module ShoppingCartPlugin::CartHelper
     @order
   end
 
-  def items_table(items, profile, delivery_method = nil, by_mail = false)
+  def items_table(items, delivery_method = nil, by_mail = false)
     # partial key needed in mailer context
     order = @order || build_order(items, delivery_method)
     render partial: 'shopping_cart_plugin/items', locals: {order: order, by_mail: by_mail}
@@ -71,8 +71,8 @@ module ShoppingCartPlugin::CartHelper
     number_to_currency value, options
   end
 
-  def options_for_payment
-    options_for_select OrdersPlugin::Order::PaymentMethods.map{ |key, text| [text.call, key] }
+  def options_for_payment selected=nil
+    options_for_select PaymentsPlugin::PaymentMethod.as_hash_n_translation.map{ |key, text| [text.call, key] }, selected
   end
 
 end

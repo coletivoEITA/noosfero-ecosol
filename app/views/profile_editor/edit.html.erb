@@ -1,6 +1,5 @@
-<h1><%= _('Profile settings for %s') % profile.name %></h1>
+<h1><%= _('Profile settings for %s').html_safe % profile.name %></h1>
 
-<%= javascript_include_tag 'deactivate_profile' %>
 <%= error_messages_for :profile_data %>
 
 <%= labelled_form_for :profile_data, :html => { :id => 'profile-data', :multipart => true } do |f| %>
@@ -19,25 +18,30 @@
   </div>
   <div id="profile_change_picture">
     <%= f.fields_for :image_builder, @profile.image do |i| %>
-      <%= file_field_or_thumbnail(_('Image:'), @profile.image, i) %><%= _("Max size: %s (.jpg, .gif, .png)")% Image.max_size.to_humanreadable %>
+      <%= file_field_or_thumbnail(_('Image:'), @profile.image, i) %><%= _("Max size: %s (.jpg, .gif, .png)").html_safe % Image.max_size.to_humanreadable %>
     <% end %>
   </div>
 
   <h2><%= _('Privacy options') %></h2>
-
+  <div>
+    <%= labelled_check_box _("Allow other users to follow me"), 'profile_data[allow_followers]', true, @profile.allow_followers?, :class => "person-can-be-followed" %>
+  </div>
   <% if profile.person? %>
-    <div>
-      <%= labelled_radio_button _('Public &mdash; show my contents to all internet users'), 'profile_data[public_profile]', true, @profile.public_profile? %>
+    <div id="profile_allow_follows">
+      <%= labelled_radio_button _('Public &mdash; show my contents to all internet users').html_safe, 'profile_data[public_profile]', true, @profile.public_profile? %>
     </div>
     <div>
-      <%= labelled_radio_button _('Private &mdash; show my contents only to friends'), 'profile_data[public_profile]', false, !@profile.public_profile? %>
+      <%= labelled_radio_button _('Private &mdash; show my contents only to friends').html_safe, 'profile_data[public_profile]', false, !@profile.public_profile? %>
     </div>
   <% else %>
     <div>
-      <%= labelled_radio_button _('Public &mdash; show content of this group to all internet users'), 'profile_data[public_profile]', true, @profile.public_profile? %>
+      <%= labelled_check_box _("Secret &mdash; hide the community and all its contents for non members and other people can't join this community unless they are invited to.").html_safe, 'profile_data[secret]', true, profile.secret, :class => "profile-secret-box" %>
     </div>
     <div>
-      <%= labelled_radio_button _('Private &mdash; show content of this group only to members'), 'profile_data[public_profile]', false, !@profile.public_profile? %>
+      <%= labelled_radio_button _('Public &mdash; show content of this group to all internet users').html_safe, 'profile_data[public_profile]', true, @profile.public_profile?, :class => "public-community-button" %>
+    </div>
+    <div>
+      <%= labelled_radio_button _('Private &mdash; show content of this group only to members').html_safe, 'profile_data[public_profile]', false, !@profile.public_profile?, :class => "private-community-button" %>
     </div>
   <% end %>
 
@@ -58,30 +62,41 @@
   )%>
 
   <%=
-    @plugins.dispatch(:profile_editor_extras).map do |content|
+    safe_join(@plugins.dispatch(:profile_editor_extras).map do |content|
       content.kind_of?(Proc) ? self.instance_exec(&content) : content
-    end.join("\n")
+    end, "\n")
   %>
 
   <%= select_categories(:profile_data, _('Select the categories of your interest'), 2) %>
 
-  <% button_bar do %>
+  <%= button_bar do %>
     <%= submit_button('save', _('Save'), :cancel => {:action => 'index'}, :option => 'success') %>
     <%= button(:back, _('Back to control panel'), :controller => 'profile_editor') %>
   <% end %>
 
   <% if user && user.has_permission?('destroy_profile', profile) %>
-    <% button_bar(:id => 'delete-profile') do %>
-      <%= button(:remove, _('Delete profile'), {:action => :destroy_profile}) %>
+    <%= button_bar(:id => 'delete-profile') do %>
 
-      <% if environment.admins.include?(current_person) %>
+      <% if !environment.enabled?('forbid_destroy_profile') || user.is_admin?(environment) %>
+        <%= button(:remove, _('Delete profile'), {:action => :destroy_profile}) %>
+      <% end %>
 
+      <% if user.is_admin?(environment) %>
         <% if profile.visible? %>
-          <%= button(:remove, _('Deactivate profile'), {:action => :deactivate_profile, :id=>profile.id}, :id=>'deactivate_profile_button', :data => {:confirm=>_("Are you sure you want to deactivate this profile?")}) %>
+          <%= button(:remove, _('Deactivate profile'),
+            {:action => :deactivate_profile, :id=>profile.id},
+            :id=>'deactivate_profile_button',
+            :data => {:confirm=>_("Are you sure you want to deactivate this profile?")})
+          %>
         <% else %>
-          <%= button(:add, _('Activate profile'), {:action => :activate_profile, :id=>profile.id}, :data => {:confirm=>_("Are you sure you want to deactivate this profile?")}) %>
+          <%= button(:add, _('Activate profile'),
+            {:action => :activate_profile, :id=>profile.id},
+            :data => {:confirm=>_("Are you sure you want to activate this profile?")})
+          %>
         <% end %>
       <% end %>
     <% end %>
   <% end %>
 <% end %>
+
+<%= javascript_include_tag 'profile_editor' %>

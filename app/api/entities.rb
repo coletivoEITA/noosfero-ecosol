@@ -1,0 +1,339 @@
+module Api
+  module Entities
+
+    Entity.format_with :timestamp do |date|
+      date.strftime('%Y/%m/%d %H:%M:%S') if date
+    end
+
+    PERMISSIONS = {
+      :admin => 0,
+      :self  => 10,
+      :private_content => 20,
+      :logged_user => 30,
+      :anonymous => 40
+    }
+
+    def self.can_display_profile_field? profile, options, permission_options={}
+      permissions={:field => "", :permission => :private_content}
+      permissions.merge!(permission_options)
+      field = permissions[:field]
+      permission = permissions[:permission]
+      return true if profile.public? && profile.public_fields.map{|f| f.to_sym}.include?(field.to_sym)
+
+      current_person = options[:current_person]
+
+      current_permission = if current_person.present?
+        if current_person.is_admin?
+          :admin
+        elsif current_person == profile
+          :self
+        elsif profile.display_private_info_to?(current_person)
+          :private_content
+        else
+          :logged_user
+        end
+      else
+        :anonymous
+      end
+      PERMISSIONS[current_permission] <= PERMISSIONS[permission]
+    end
+
+    def self.expose_optional_field?(field, options = {})
+      return false if options[:params].nil?
+      optional_fields = options[:params][:optional_fields] || []
+      optional_fields.include?(field.to_s)
+    end
+
+
+    class Image < Entity
+      root 'images', 'image'
+
+      expose :filename
+      expose  :url do |image, options|
+        image.public_filename
+      end
+
+      expose  :icon_url do |image, options|
+        image.public_filename(:icon)
+      end
+
+      expose  :minor_url do |image, options|
+        image.public_filename(:minor)
+      end
+
+      expose  :portrait_url do |image, options|
+        image.public_filename(:portrait)
+      end
+
+      expose  :thumb_url do |image, options|
+        image.public_filename(:thumb)
+      end
+    end
+
+    class CategoryBase < Entity
+      root 'categories', 'category'
+      expose :name, :id, :slug
+    end
+
+    class Category < CategoryBase
+      root 'categories', 'category'
+      expose :full_name do |category, options|
+        category.full_name
+      end
+      expose :parent, :using => CategoryBase, if: { parent: true }
+      expose :children, :using => CategoryBase, if: { children: true }
+      expose :image, :using => Image
+      expose :display_color
+    end
+
+    class Region < Category
+      root 'regions', 'region'
+      expose :parent_id
+    end
+
+    class Block < Entity
+      root 'blocks', 'block'
+      expose :id, :type, :settings, :position, :enabled
+      expose :mirror, :mirror_block_id, :title
+      expose :api_content, if: lambda { |object, options| options[:display_api_content] || object.display_api_content_by_default? }
+      expose :permissions do |block, options|
+        Entities.permissions_for_entity(block, options[:current_person], :allow_edit?)
+      end
+    end
+
+    class Box < Entity
+      root 'boxes', 'box'
+      expose :id, :position
+      expose :blocks, :using => Block do |box, options|
+        box.blocks.select {|block| block.visible_to_user?(options[:current_person]) || block.allow_edit?(options[:current_person]) }
+      end
+    end
+
+    class Profile < Entity
+      expose :identifier, :name, :id
+      expose :created_at, :format_with => :timestamp
+      expose :updated_at, :format_with => :timestamp
+      expose :additional_data do |profile, options|
+        hash ={}
+        profile.public_values.each do |value|
+          hash[value.custom_field.name]=value.value
+        end
+
+        profile.public_fields.each do |field|
+          hash[field] = profile.send(field.to_sym)
+        end
+
+        private_values = profile.custom_field_values - profile.public_values
+        private_values.each do |value|
+          if Entities.can_display_profile_field?(profile,options)
+            hash[value.custom_field.name]=value.value
+          end
+        end
+        hash
+      end
+      expose :image, :using => Image
+      expose :region, :using => Region
+      expose :type
+      expose :custom_header
+      expose :custom_footer
+      expose :layout_template
+      expose :permissions do |profile, options|
+        Entities.permissions_for_entity(profile, options[:current_person],
+        :allow_post_content?, :allow_edit?, :allow_destroy?)
+      end
+    end
+
+    class UserBasic < Entity
+      expose :id
+      expose :login
+    end
+
+    class Person < Profile
+      root 'people', 'person'
+      expose :user, :using => UserBasic, documentation: {type: 'User', desc: 'The user data of a person' }
+      expose :vote_count
+      expose :comments_count do |person, options|
+        person.comments.count
+      end
+      expose :following_articles_count do |person, options|
+        person.following_articles.count
+      end
+      expose :articles_count do |person, options|
+        person.articles.count
+      end
+      expose :friends_count do |person, options|
+        person.friends.size
+      end
+    end
+
+    class Enterprise < Profile
+      root 'enterprises', 'enterprise'
+    end
+
+    class Community < Profile
+      root 'communities', 'community'
+      expose :description
+      expose :admins, :if => lambda { |community, options| community.display_info_to? options[:current_person]} do |community, options|
+        community.admins.map{|admin| {"name"=>admin.name, "id"=>admin.id, "username" => admin.identifier}}
+      end
+      expose :categories, :using => Category
+      expose :members_count
+      expose :members, :if => lambda {|community, options| Entities.expose_optional_field?(:members, options)}
+    end
+
+    class CommentBase < Entity
+      expose :body, :title, :id
+      expose :created_at, :format_with => :timestamp
+      expose :author, :using => Profile
+      expose :reply_of, :using => CommentBase
+      expose :permissions do |comment, options|
+        Entities.permissions_for_entity(comment, options[:current_person],
+        :allow_destroy?)
+      end
+    end
+
+    class Comment < CommentBase
+      root 'comments', 'comment'
+      expose :children, as: :replies, :using => Comment
+    end
+
+    class ArticleBase < Entity
+      root 'articles', 'article'
+      expose :id
+      expose :body
+      expose :abstract, documentation: {type: 'String', desc: 'Teaser of the body'}
+      expose :created_at, :format_with => :timestamp
+      expose :updated_at, :format_with => :timestamp
+      expose :title, :documentation => {:type => "String", :desc => "Title of the article"}
+      expose :created_by, :as => :author, :using => Profile, :documentation => {type: 'Profile', desc: 'The profile author that create the article'}
+      expose :profile, :using => Profile, :documentation => {type: 'Profile', desc: 'The profile associated with the article'}
+      expose :categories, :using => Category
+      expose :image, :using => Image
+      expose :votes_for
+      expose :votes_against
+      expose :setting
+      expose :position
+      expose :hits
+      expose :start_date
+      expose :end_date, :documentation => {type: 'DateTime', desc: 'The date of finish of the article'}
+      expose :tag_list
+      expose :children_count
+      expose :slug, :documentation => {:type => "String", :desc => "Trimmed and parsed name of a article"}
+      expose :path
+      expose :followers_count
+      expose :votes_count
+      expose :comments_count
+      expose :archived, :documentation => {:type => "Boolean", :desc => "Defines if a article is readonly"}
+      expose :type
+      expose :comments, using: CommentBase, :if => lambda{|comment,options| Entities.expose_optional_field?(:comments, options)}
+      expose :published
+      expose :accept_comments?, as: :accept_comments
+    end
+
+    def self.permissions_for_entity(entity, current_person, *method_names)
+      method_names.map { |method| entity.send(method, current_person) ? method.to_s.gsub(/\?/,'') : nil }.compact
+    end
+
+    class Article < ArticleBase
+      root 'articles', 'article'
+      expose :parent, :using => ArticleBase
+      expose :children, :using => ArticleBase do |article, options|
+        article.children.published.limit(V1::Articles::MAX_PER_PAGE)
+      end
+      expose :permissions do |article, options|
+        Entities.permissions_for_entity(article, options[:current_person],
+          :allow_edit?, :allow_post_content?, :allow_delete?, :allow_create?,
+          :allow_publish_content?)
+      end
+    end
+
+    class User < Entity
+      root 'users', 'user'
+
+      attrs = [:id,:login,:email,:activated?]
+      aliases = {:activated? => :activated}
+
+      attrs.each do |attribute|
+        name = aliases.has_key?(attribute) ? aliases[attribute] : attribute
+        expose attribute, :as => name, :if => lambda{|user,options| Entities.can_display_profile_field?(user.person, options, {:field =>  attribute})}
+      end
+
+      expose :person, :using => Person, :if => lambda{|user,options| user.person.display_info_to? options[:current_person]}
+      expose :permissions, :if => lambda{|user,options| Entities.can_display_profile_field?(user.person, options, {:field => :permissions, :permission => :self})} do |user, options|
+        output = {}
+        user.person.role_assignments.map do |role_assigment|
+          if role_assigment.resource.respond_to?(:identifier) && !role_assigment.role.nil?
+            output[role_assigment.resource.identifier] = role_assigment.role.permissions
+          end
+        end
+        output
+      end
+    end
+
+    class UserLogin < User
+      root 'users', 'user'
+      expose :private_token, documentation: {type: 'String', desc: 'A valid authentication code for post/delete api actions'}, if: lambda {|object, options| object.activated? }
+    end
+
+    class Task < Entity
+      root 'tasks', 'task'
+      expose :id
+      expose :type
+      expose :requestor, using: Profile
+      expose :status
+      expose :created_at
+      expose :data
+      expose :accept_details
+      expose :reject_details
+      expose :accept_disabled?, as: :accept_disabled
+      expose :reject_disabled?, as: :reject_disabled
+      expose :target do |task, options|
+        type_map = {Profile => ::Profile, Environment => ::Environment}.find {|h| task.target.kind_of?(h.last)}
+        type_map.first.represent(task.target) unless type_map.nil?
+      end
+    end
+
+    class Environment < Entity
+      expose :name
+      expose :id
+      expose :description
+      expose :layout_template
+      expose :signup_intro
+      expose :terms_of_use
+      expose :top_url, as: :host
+      expose :settings, if: lambda { |instance, options| options[:is_admin] }
+      expose :permissions, if: lambda { |environment, options| options[:current_person].present? } do |environment, options|
+        environment.permissions_for(options[:current_person])
+      end
+    end
+
+    class Tag < Entity
+      root 'tags', 'tag'
+      expose :name
+    end
+
+    class Activity < Entity
+      root 'activities', 'activity'
+      expose :id, :created_at, :updated_at
+      expose :user, :using => Profile
+
+      expose :target do |activity, opts|
+        type_map = {Profile => ::Profile, ArticleBase => ::Article}.find {|h| activity.target.kind_of?(h.last)}
+        type_map.first.represent(activity.target) unless type_map.nil?
+      end
+      expose :params, :if => lambda { |activity, options| activity.kind_of?(ActionTracker::Record)}
+      expose :content, :if => lambda { |activity, options| activity.kind_of?(Scrap)}
+      expose :verb do |activity, options|
+        activity.kind_of?(Scrap) ? 'leave_scrap' : activity.verb
+      end
+
+    end
+
+    class Role < Entity
+      root 'roles', 'role'
+      expose :id
+      expose :name
+      expose :key
+    end
+  end
+end

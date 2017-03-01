@@ -19,8 +19,8 @@ class SubOrganizationsPlugin < Noosfero::Plugin
   end
 
   def control_panel_buttons
-    if context.profile.organization? && Organization.parents(context.profile).blank?
-      { :title => _('Manage sub-groups'), :icon => 'groups', :url => {:controller => 'sub_organizations_plugin_myprofile'} }
+    if context.profile.organization? && Organization.parentz(context.profile).blank?
+      { title: _('Manage sub-groups'), icon: 'groups', url: {profile: profile.identifier, controller: :sub_organizations_plugin_myprofile} }
     end
   end
 
@@ -34,12 +34,12 @@ class SubOrganizationsPlugin < Noosfero::Plugin
   end
 
   def person_memberships(person)
-    Organization.parents(*Profile.memberships_of(person))
+    Organization.parentz(*Profile.memberships_of(person))
   end
 
   def has_permission?(person, permission, target)
     if !target.kind_of?(Environment) && target.organization?
-      Organization.parents(target).map do |parent|
+      Organization.parentz(target).map do |parent|
         person.has_permission_without_plugins?(permission, parent)
       end.include?(true)
     end
@@ -56,10 +56,10 @@ class SubOrganizationsPlugin < Noosfero::Plugin
   end
 
   def self.limit(organizations)
-    organizations.all(:limit => DISPLAY_LIMIT, :order => 'updated_at DESC').sort_by{ rand }
+    organizations.limit(DISPLAY_LIMIT).order('updated_at DESC').sort_by{ rand }
   end
 
-  def extra_blocks
+  def self.extra_blocks
     {
       RelatedOrganizationsBlock => {:type => [Enterprise, Community], :position => ['1', '2', '3']}
     }

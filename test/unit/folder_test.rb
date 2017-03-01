@@ -63,9 +63,9 @@ class FolderTest < ActiveSupport::TestCase
     folder = fast_create(Folder, :profile_id => c.id)
     f = fast_create(Folder, :name => 'folder', :profile_id => c.id, :parent_id => folder.id)
     u = create(UploadedFile, :profile => c, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'), :parent => folder)
-    older_t = fast_create(TinyMceArticle, :name => 'old news', :profile_id => c.id, :parent_id => folder.id)
-    t = fast_create(TinyMceArticle, :name => 'news', :profile_id => c.id, :parent_id => folder.id)
-    t_in_f = fast_create(TinyMceArticle, :name => 'news', :profile_id => c.id, :parent_id => f.id)
+    older_t = fast_create(TextArticle, :name => 'old news', :profile_id => c.id, :parent_id => folder.id)
+    t = fast_create(TextArticle, :name => 'news', :profile_id => c.id, :parent_id => folder.id)
+    t_in_f = fast_create(TextArticle, :name => 'news', :profile_id => c.id, :parent_id => f.id)
 
     assert_equal [t], folder.news(1)
   end
@@ -73,8 +73,8 @@ class FolderTest < ActiveSupport::TestCase
   should 'not return highlighted news when not asked' do
     c = fast_create(Community)
     folder = fast_create(Folder, :profile_id => c.id)
-    highlighted_t = fast_create(TinyMceArticle, :name => 'high news', :profile_id => c.id, :highlighted => true, :parent_id => folder.id)
-    t = fast_create(TinyMceArticle, :name => 'news', :profile_id => c.id, :parent_id => folder.id)
+    highlighted_t = fast_create(TextArticle, :name => 'high news', :profile_id => c.id, :highlighted => true, :parent_id => folder.id)
+    t = fast_create(TextArticle, :name => 'news', :profile_id => c.id, :parent_id => folder.id)
 
     assert_equal [t].map(&:slug), folder.news(2).map(&:slug)
   end
@@ -82,8 +82,8 @@ class FolderTest < ActiveSupport::TestCase
   should 'return highlighted news when asked' do
     c = fast_create(Community)
     folder = fast_create(Folder, :profile_id => c.id)
-    highlighted_t = fast_create(TinyMceArticle, :name => 'high news', :profile_id => c.id, :highlighted => true, :parent_id => folder.id)
-    t = fast_create(TinyMceArticle, :name => 'news', :profile_id => c.id, :parent_id => folder.id)
+    highlighted_t = fast_create(TextArticle, :name => 'high news', :profile_id => c.id, :highlighted => true, :parent_id => folder.id)
+    t = fast_create(TextArticle, :name => 'news', :profile_id => c.id, :parent_id => folder.id)
 
     assert_equal [highlighted_t].map(&:slug), folder.news(2, true).map(&:slug)
   end
@@ -93,11 +93,12 @@ class FolderTest < ActiveSupport::TestCase
     image = UploadedFile.create!(:profile => person, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
 
     community = fast_create(Community)
+    community.add_member(person)
     folder = fast_create(Folder, :profile_id => community.id)
     a = create(ApproveArticle, :article => image, :target => community, :requestor => person, :article_parent => folder)
     a.finish
 
-    assert_includes folder.images(true), community.articles.find_by_name('rails.png')
+    assert_includes folder.images(true), community.articles.find_by(name: 'rails.png')
   end
 
   should 'not let pass javascript in the name' do
@@ -129,15 +130,7 @@ class FolderTest < ActiveSupport::TestCase
     folder.body = '<p><!-- <asdf> << aasdfa >>> --> <h1> Wellformed html code </h1>'
     folder.valid?
 
-    assert_match  /<!-- .* --> <h1> Wellformed html code <\/h1>/, folder.body
-  end
-
-  should 'escape malformed html tags' do
-    folder = Folder.new
-    folder.body = "<h1<< Description >>/h1>"
-    folder.valid?
-
-    assert_no_match /[<>]/, folder.body
+    assert_match  /<p><!-- .* --> <\/p><h1> Wellformed html code <\/h1>/, folder.body
   end
 
   should 'not have a blog as parent' do

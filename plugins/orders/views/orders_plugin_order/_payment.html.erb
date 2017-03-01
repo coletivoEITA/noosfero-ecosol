@@ -6,9 +6,13 @@
     <% next if value.empty? %>
     <div>
       <strong>
-        <%= label_tag key, t("models.order.payment_data.#{key}") %>
+        <%= label_tag key, t("models.order.payment_data.#{key}")+":" %>
       </strong>
-      <%= value %>
+      <% if key == 'method' %>
+        <%= t("payments_plugin.models.payment_methods."+value) %>
+      <% else %>
+        <%= value %>
+      <% end %>
     </div>
   <% end %>
 </div>

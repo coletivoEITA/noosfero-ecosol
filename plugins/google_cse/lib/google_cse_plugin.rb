@@ -9,7 +9,7 @@ class GoogleCsePlugin < Noosfero::Plugin
   end
 
   def google_id
-    context.environment.settings[:google_cse_id]
+    environment.settings[:google_cse_id]
   end
 
   def self.results_url_path

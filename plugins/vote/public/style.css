@@ -1,5 +1,4 @@
 .vote-actions {
-  position: absolute;
   top: 40px;
   right: 0px;
 }
@@ -73,4 +72,13 @@
 
 #article .action .vote-detail img {
   vertical-align: bottom;
+}
+
+.comments-action-bar span.disabled a,
+.comments-action-bar span.disabled a:hover,
+.vote-actions span.disabled a,
+.vote-actions span.disabled a:hover {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: default;
 }

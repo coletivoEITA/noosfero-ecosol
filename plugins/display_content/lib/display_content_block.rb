@@ -24,11 +24,12 @@ class DisplayContentBlock < Block
                               {:value => 'title', :checked => true},
                               {:value => 'abstract', :checked => true}]
   settings_items :display_folder_children, :type => :boolean, :default => true
-  settings_items :types, :type => Array, :default => ['TextileArticle', 'TinyMceArticle', 'RawHTMLArticle']
+	  settings_items :types, :type => Array, :default => ['TextArticle']
   settings_items :order_by_recent, :type => :boolean, :default => :true
+  settings_items :content_with_translations, :type => :boolean, :default => :true
   settings_items :limit_to_show, :type => :integer, :default => 6
 
-  attr_accessible :sections, :checked_nodes, :display_folder_children, :types, :order_by_recent, :limit_to_show
+  attr_accessible :sections, :checked_nodes, :display_folder_children, :types, :order_by_recent, :limit_to_show, :content_with_translations
 
   def self.description
     _('Display your contents')
@@ -60,7 +61,7 @@ class DisplayContentBlock < Block
   end
 
   def available_content_types
-    @available_content_types ||= [TinyMceArticle, RawHTMLArticle, TextileArticle, UploadedFile, Event, Folder, Blog, Forum, Gallery, RssFeed] + plugins.dispatch(:content_types)
+    @available_content_types ||= [TextArticle, UploadedFile, Event, Folder, Blog, Forum, Gallery, RssFeed] + plugins.dispatch(:content_types)
     checked_types = types.map {|t| t.constantize}
     checked_types + (@available_content_types - checked_types)
   end
@@ -107,70 +108,38 @@ class DisplayContentBlock < Block
     @parent_nodes ||= self.holder.articles.where(:id => nodes).map { |article| get_parent(article) }.compact.flatten
   end
 
-  VALID_CONTENT = ['RawHTMLArticle', 'TextArticle', 'TextileArticle', 'TinyMceArticle', 'Folder', 'Blog', 'Forum']
+  VALID_CONTENT = ['TextArticle', 'Folder', 'Blog', 'Forum']
 
   include Noosfero::Plugin::HotSpot
 
   def articles_of_parent(parent = nil)
     return [] if self.holder.nil?
     types = VALID_CONTENT + plugins.dispatch(:content_types).map(&:name)
-    holder.articles.find(:all, :conditions => {:type => types, :parent_id => (parent.nil? ? nil : parent)})
+    holder.articles.where(type: types, parent_id: if parent.nil? then nil else parent end)
   end
 
-  def content(args={})
-    block = self
-
-    nodes_conditions = nodes.blank? ? '' : " AND articles.id IN(:nodes) "
-    nodes_conditions += ' OR articles.parent_id IN(:nodes) ' if !nodes.blank? && display_folder_children
-
+  def docs
     order_string = "published_at"
     order_string += " DESC" if order_by_recent
 
     limit_final = [limit_to_show, 0].max
 
-    docs = owner.articles.order(order_string).where(["articles.type IN(:types) #{nodes.blank? ? '' : nodes_conditions}", {:nodes => self.nodes, :types => self.types}]).includes(:profile, :image, :tags)
-    docs = docs.limit(limit_final) if display_folder_children
-
-    proc do
-      block.block_title(block.title) +
-        content_tag('ul', docs.map {|item|
-        if !item.folder? && item.class != RssFeed
-          content_sections = ''
-          read_more_section = ''
-          tags_section = ''
-
-          block.sections.select { |section|
-            case section[:value]
-            when 'publish_date'
-              content_sections += (block.display_section?(section) ? (content_tag('div', show_date(item.published_at, false), :class => 'published-at') ) : '')
-            when 'title'
-              content_sections += (block.display_section?(section) ? (content_tag('div', link_to(h(item.title), item.url), :class => 'title') ) : '')
-            when 'abstract'
-              content_sections += (block.display_section?(section) ? (content_tag('div', item.abstract , :class => 'lead')) : '' )
-              if block.display_section?(section)
-                read_more_section = content_tag('div', link_to(_('Read more'), item.url), :class => 'read_more')
-              end
-            when 'body'
-              content_sections += (block.display_section?(section) ? (content_tag('div', item.body ,:class => 'body')) : '' )
-            when 'image'
-              image_section = image_tag item.image.public_filename if item.image
-              if !image_section.blank?
-                content_sections += (block.display_section?(section) ? (content_tag('div', link_to( image_section, item.url ) ,:class => 'image')) : '' )
-              end
-            when 'tags'
-              if !item.tags.empty?
-                tags_section = item.tags.map { |t| content_tag('span', t.name) }.join("")
-                content_sections += (block.display_section?(section) ? (content_tag('div', tags_section, :class => 'tags')) : '')
-              end
-            end
-          }
-
-          content_sections += read_more_section if !read_more_section.blank?
-#raise sections.inspect
-          content_tag('li', content_sections)
-        end
-      }.join(" "))
+    documents = owner.articles.order(order_string)
+      .where(articles: {type: self.types})
+      .includes(:profile, :image, :tags)
+    if nodes.present?
+      nodes_conditions  = 'articles.id IN(:nodes)'
+      nodes_conditions << ' OR articles.parent_id IN(:nodes) ' if display_folder_children
+      documents = documents.where nodes_conditions, nodes: nodes
     end
+    documents = documents.limit limit_final if display_folder_children
+
+    if content_with_translations
+      documents = documents.native_translations
+      documents.replace documents.map{ |p| p.get_translation_to(FastGettext.locale) }.compact
+    end
+
+    documents
   end
 
   def url_params

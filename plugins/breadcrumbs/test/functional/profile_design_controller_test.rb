@@ -1,11 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
-
-class ProfileDesignController
-  append_view_path File.join(File.dirname(__FILE__) + '/../../views')
-  def rescue_action(e)
-    raise e
-  end
-end
+require_relative '../test_helper'
 
 class ProfileDesignControllerTest < ActionController::TestCase
 
@@ -37,8 +30,13 @@ class ProfileDesignControllerTest < ActionController::TestCase
     post :save, :id => @block.id, :profile => @profile.identifier, :block => {:title => 'breadcrumbs', :show_cms_action => false, :show_profile => false}
     @block.reload
     assert_equal 'breadcrumbs', @block.title
-    assert !@block.show_profile
-    assert !@block.show_cms_action
+    refute @block.show_profile
+    refute @block.show_cms_action
   end
 
+  should 'be able save breadcrumbs block with show_section_name option' do
+    get :edit, :id => @block.id, :profile => @profile.identifier
+    post :save, :id => @block.id, :profile => @profile.identifier, :block => {:title => 'breadcrumbs', :show_cms_action => false, :show_profile => true, :show_section_name => true }
+    assert @block.show_section_name
+  end
 end

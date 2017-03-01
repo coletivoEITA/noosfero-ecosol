@@ -2,6 +2,8 @@ require_relative "../test_helper"
 
 class RecentDocumentsBlockTest < ActiveSupport::TestCase
 
+  include ActionView::Helpers::OutputSafetyHelper
+
   def setup
     @articles = []
     @profile = create_user('testinguser').person
@@ -35,17 +37,6 @@ class RecentDocumentsBlockTest < ActiveSupport::TestCase
     assert_equivalent block.docs, articles
   end
 
-  should 'link to documents' do
-    articles.each do |a|
-      expects(:link_to).with(a.title, a.url)
-    end
-    stubs(:block_title).returns("")
-    stubs(:content_tag).returns("")
-    stubs(:li).returns("")
-
-    instance_eval(&block.content)
-  end
-
   should 'respect the maximum number of items as configured' do
     block.limit = 3
 
@@ -68,23 +59,8 @@ class RecentDocumentsBlockTest < ActiveSupport::TestCase
     assert block.limit > 0
   end
 
-  should 'display a link to sitemap with title "All content"' do
-    expects(:link_to).with('All content', :controller => 'profile', :action => 'sitemap', :profile => profile.identifier)
-    expects(:_).with('All content').returns('All content')
-
-    instance_eval(&(block.footer))
-  end
-
-  should 'not display link to sitemap when owner is environment' do
-    block = RecentDocumentsBlock.new
-    box = mock
-    block.expects(:box).returns(box).at_least_once
-    box.expects(:owner).returns(Environment.new).at_least_once
-    assert_equal nil, block.footer
-  end
-
   should 'be able to update display setting' do
-    assert @block.update_attributes!(:display => 'always')
+    assert @block.update!(:display => 'always')
     @block.reload
     assert_equal 'always', @block.display
   end
@@ -98,5 +74,66 @@ class RecentDocumentsBlockTest < ActiveSupport::TestCase
     block = RecentDocumentsBlock.new
     block.limit = -5
     assert_equal 0, block.get_limit
+  end
+end
+
+require 'boxes_helper'
+
+class RecentDocumentsBlockViewTest < ActionView::TestCase
+  include BoxesHelper
+
+  def setup
+    @articles = []
+    @profile = create_user('testinguser').person
+    @profile.articles.destroy_all
+    ['first', 'second', 'third', 'fourth', 'fifth'].each do |name|
+      article = @profile.articles.create!(:name => name)
+      @articles << article
+    end
+
+    box = Box.new
+    box.owner = profile
+    box.save!
+
+
+    @block = RecentDocumentsBlock.new
+    @block.box_id = box.id
+    @block.save!
+
+  end
+  attr_reader :block, :profile, :articles
+
+  should 'link to documents' do
+    articles.each do |a|
+      ActionView::Base.any_instance.expects(:link_to).with(a.title, a.url)
+    end
+    ActionView::Base.any_instance.stubs(:block_title).returns("")
+    ActionView::Base.any_instance.stubs(:content_tag).returns("")
+    ActionView::Base.any_instance.stubs(:li).returns("")
+
+    render_block_content(block)
+  end
+
+  should 'display a link to sitemap with title "All content"' do
+    ActionView::Base.any_instance.expects(:link_to).with('All content', :controller => 'profile', :action => 'sitemap', :profile => profile.identifier)
+    ActionView::Base.any_instance.expects(:_).with('All content').returns('All content')
+
+    render_block_footer(block)
+  end
+
+  should 'not display link to sitemap when owner is environment' do
+    block = RecentDocumentsBlock.new
+    box = mock
+    block.expects(:box).returns(box).at_least_once
+    box.expects(:owner).returns(Environment.new).at_least_once
+    assert_equal '', render_block_footer(block)
+  end
+
+  should 'return articles in api_content' do
+    profile = fast_create(Profile)
+    article = fast_create(TextArticle, profile_id: profile.id)
+    block = RecentDocumentsBlock.new
+    block.stubs(:owner).returns(profile)
+    assert_equal [article.id], block.api_content['articles'].map {|a| a[:id]}
   end
 end

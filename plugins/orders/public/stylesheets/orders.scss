@@ -174,11 +174,25 @@
     }
 
     .order-product-add {
+      margin: 18px 12px;
       .add-input {
         // fix for typeahead's background-color: transparent
-        width: $order-items-admin-width - 2*$border;
+        width: $order-items-admin-width - 2*$border - 4*$padding;
       }
     }
+
+  }
+
+  .actions {
+    .space {
+      margin: 4px;
+      float: left;
+    }
+  }
+
+  .payment-edition {
+    border-top: 2*$border solid black;
+    padding: $padding;
   }
 
   .order-section {

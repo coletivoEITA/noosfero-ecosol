@@ -6,7 +6,7 @@
 
 <%= _("Comment:") %>
 -------------------------------------------------------------------------------
-<%= word_wrap(@comment_body) %>
+<%= word_wrap(@comment_body).html_safe %>
 -------------------------------------------------------------------------------
 
 <%= _('Click on the address below to view this comment:') %>
@@ -18,5 +18,5 @@
 <%= _("Greetings,") %>
 
 --
-<%= _('%s team.') % @environment %>
+<%= _('%s team.') % @environment.name %>
 <%= url_for @url %>

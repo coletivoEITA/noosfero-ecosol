@@ -1,0 +1,8 @@
+<%= labelled_form_for @currency, as: :currency, url: {action: (@currency.new_record? ? :create : :edit)} do |f| %>
+  <%= f.text_field :name %>
+  <%= f.text_area :description %>
+  <%= f.text_field :symbol %>
+
+  <%= f.submit _('OK'), class: 'currency-action-button' %>
+  <%= modal_close_button _('cancel') %>
+<% end %>

@@ -7,7 +7,7 @@ class CommunityTrackPlugin::Step < Folder
 
   alias :tools :children
 
-  acts_as_list  :scope => :parent
+  acts_as_list scope: -> step { where parent_id: step.parent_id }
 
   def belong_to_track
     errors.add(:parent, _("Step not allowed at this parent.")) unless parent.kind_of?(CommunityTrackPlugin::Track)
@@ -29,10 +29,10 @@ class CommunityTrackPlugin::Step < Folder
 
   def initialize(*args)
     super(*args)
-    self.start_date ||= Date.today
-    self.end_date ||= Date.today + 1.day
+    self.start_date ||= DateTime.now
+    self.end_date ||= DateTime.now + 1.day
   end
-  
+
   def set_hidden_position
     if hidden
       decrement_positions_on_lower_items
@@ -60,8 +60,8 @@ class CommunityTrackPlugin::Step < Folder
     accept_comments
   end
 
-  def self.enabled_tools
-    [TinyMceArticle, Forum]
+  def enabled_tools
+    [TextArticle, Forum]
   end
 
   def to_html(options = {})
@@ -72,20 +72,20 @@ class CommunityTrackPlugin::Step < Folder
   end
 
   def active?
-    (start_date..end_date).include?(Date.today)
+    (start_date..end_date).cover?(DateTime.now)
   end
 
   def finished?
-    Date.today > end_date
+    DateTime.now > end_date
   end
 
   def waiting?
-    Date.today < start_date
+    DateTime.now < start_date
   end
 
   def schedule_activation
     return if !changes['start_date'] && !changes['end_date']
-    if Date.today <= end_date || accept_comments
+    if DateTime.now <= end_date || accept_comments
       schedule_date = !accept_comments ? start_date : end_date + 1.day
       CommunityTrackPlugin::ActivationJob.find(id).destroy_all
       Delayed::Job.enqueue(CommunityTrackPlugin::ActivationJob.new(self.id), :run_at => schedule_date)
@@ -108,7 +108,7 @@ class CommunityTrackPlugin::Step < Folder
   end
 
   def tool
-    tools.find(:first, :conditions => {:type => tool_type })
+    tools.where(type: tool_type).first
   end
 
 end

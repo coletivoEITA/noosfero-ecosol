@@ -1,0 +1,471 @@
+# translation of noosfero.po to
+# Krishnamurti Lelis Lima Vieira Nunes <krishna@colivre.coop.br>, 2007.
+# noosfero - Brazilian Portuguese translation
+# Copyright (C) 2007,
+# Forum Brasileiro de Economia Solidaria <http://www.fbes.org.br/>
+# Copyright (C) 2007,
+# Ynternet.org Foundation <http://www.ynternet.org/>
+# This file is distributed under the same license as noosfero itself.
+# Joenio Costa <joenio@colivre.coop.br>, 2008.
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: noosfero 0.44.4\n"
+"POT-Creation-Date: 2013-10-15 09:01-0300\n"
+"PO-Revision-Date: 2016-03-12 08:56-0300\n"
+"Last-Translator: Rodrigo Souto <rodrigo@colivre.coop.br>\n"
+"Language-Team: LANGUAGE TEAM <E-MAIL@ADDRESS or HOME PAGE>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 1.0.2\n"
+
+#: app/views/profile_editor/_person_form.rhtml:23
+#: app/views/maps/edit_location.rhtml:13
+#: app/views/shared/_organization_custom_fields.rhtml:12
+#: plugins/escambo/views/profile_editor/edit.html.erb:88
+#: plugins/escambo/views/profile_editor/_organization_custom_fields.html.erb:12
+#: plugins/shopping_cart/views/shopping_cart_plugin/buy.html.erb:15
+msgid "Address (street and number)"
+msgstr "Endereço (rua e número)"
+
+#: app/views/profile_editor/_organization.rhtml:1
+#: plugins/escambo/views/profile_editor/_organization.html.erb:1
+msgid "General information"
+msgstr "Informações gerais"
+
+#: app/views/profile_editor/_organization.rhtml:48 app/views/cms/_blog.rhtml:41
+#: plugins/escambo/views/profile_editor/_organization.html.erb:48
+#: plugins/bsc/views/shared/_fields.html.erb:38
+msgid "WARNING!"
+msgstr "ATENÇÃO!"
+
+#: app/views/profile_editor/_organization.rhtml:49
+#: plugins/escambo/views/profile_editor/_organization.html.erb:49
+msgid ""
+"You are about to change the address, and this will break external links to "
+"the homepage or to content inside it. Do you really want to change?"
+msgstr ""
+"Você está prestes a alterar o endereço, e isto vai quebrar links externos "
+"para a homepage ou para conteúdo dentro dela. Você quer realmente mudar?"
+
+#: app/views/profile_editor/_organization.rhtml:51
+#: app/views/manage_products/_edit_info.rhtml:22
+#: app/views/manage_products/_edit_input.rhtml:20
+#: app/views/manage_products/_edit_input.rhtml:29
+#: app/views/account/activate_enterprise.rhtml:10
+#: app/views/account/logout_popup.rhtml:4 app/views/cms/_blog.rhtml:44
+#: app/views/friends/remove.rhtml:20
+#: plugins/evaluation/models/evaluation_plugin/evaluation.rb:12
+#: plugins/currency/views/manage_products/_edit_info.html.erb:27
+#: plugins/escambo/views/profile_editor/_organization.html.erb:51
+#: plugins/bsc/views/shared/_fields.html.erb:41
+msgid "Yes"
+msgstr "Sim"
+
+#: app/views/profile_editor/_organization.rhtml:52
+#: app/views/manage_products/_edit_info.rhtml:22
+#: app/views/manage_products/_edit_input.rhtml:22
+#: app/views/manage_products/_edit_input.rhtml:31
+#: app/views/account/activate_enterprise.rhtml:11 app/views/cms/_blog.rhtml:45
+#: app/views/friends/remove.rhtml:21
+#: plugins/evaluation/models/evaluation_plugin/evaluation.rb:15
+#: plugins/currency/views/manage_products/_edit_info.html.erb:27
+#: plugins/escambo/views/profile_editor/_organization.html.erb:52
+#: plugins/bsc/views/shared/_fields.html.erb:42
+msgid "No"
+msgstr "Não"
+
+#: app/views/profile_editor/_organization.rhtml:65
+#: plugins/escambo/views/profile_editor/_organization.html.erb:65
+msgid "Enable \"contact us\""
+msgstr "Habilitar \"fale conosco\""
+
+#: app/views/profile_editor/index.rhtml:17 app/views/maps/edit_location.rhtml:1
+#: plugins/escambo/views/profile_editor/edit.html.erb:76
+#: plugins/bsc/views/shared/_fields.html.erb:60
+msgid "Location"
+msgstr "Localização"
+
+#: app/views/profile_editor/edit.rhtml:1
+#: plugins/escambo/views/profile_editor/edit.html.erb:1
+msgid "Profile settings for %s"
+msgstr "Configurações do perfil para %s"
+
+#: app/views/profile_editor/edit.rhtml:16
+#: plugins/escambo/views/profile_editor/edit.html.erb:13
+msgid "Change picture"
+msgstr "Mudar foto"
+
+#: app/views/profile_editor/edit.rhtml:21
+#: app/views/manage_products/_form.rhtml:11
+#: app/views/memberships/new_community.rhtml:28
+#: app/views/categories/_form.rhtml:23
+#: plugins/escambo/views/profile_editor/edit.html.erb:18
+msgid "Image:"
+msgstr "Imagem:"
+
+#: app/views/profile_editor/edit.rhtml:21
+#: app/views/manage_products/_edit_image.rhtml:8
+#: plugins/escambo/views/profile_editor/edit.html.erb:18
+msgid "Max size: %s (.jpg, .gif, .png)"
+msgstr "Tamanho máximo: %s (.jpg, .gif, .png)"
+
+#: app/views/profile_editor/edit.rhtml:25
+#: plugins/escambo/views/profile_editor/edit.html.erb:22
+msgid "Privacy options"
+msgstr "Opções de privacidade"
+
+#: app/views/profile_editor/edit.rhtml:29
+#: plugins/escambo/views/profile_editor/edit.html.erb:26
+msgid "Public &mdash; show my contents to all internet users"
+msgstr "Público &mdash; exibir meu conteúdo para todos os usuários da internet"
+
+#: app/views/profile_editor/edit.rhtml:32
+#: plugins/escambo/views/profile_editor/edit.html.erb:29
+msgid "Private &mdash; show my contents only to friends"
+msgstr "Privado &mdash; mostrar meu conteúdo apenas para amigos"
+
+#: app/views/profile_editor/edit.rhtml:36
+#: plugins/escambo/views/profile_editor/edit.html.erb:33
+msgid "Public &mdash; show content of this group to all internet users"
+msgstr ""
+"Público &mdash; exibir conteúdo deste grupo para todos os usuários da "
+"internet"
+
+#: app/views/profile_editor/edit.rhtml:39
+#: plugins/escambo/views/profile_editor/edit.html.erb:36
+msgid "Private &mdash; show content of this group only to members"
+msgstr "Privado &mdash; exibir conteúdo deste grupo apenas para membros"
+
+#: app/views/profile_editor/edit.rhtml:44 app/views/features/index.rhtml:29
+#: plugins/escambo/views/profile_editor/edit.html.erb:41
+msgid "Page to redirect after login"
+msgstr "Página para redirecionar após o login"
+
+#: app/views/profile_editor/edit.rhtml:64 app/views/cms/view.rhtml:9
+#: app/views/maps/edit_location.rhtml:17 app/views/spam/index.rhtml:4
+#: app/views/spam/index.rhtml:19 app/views/mailconf/index.rhtml:10
+#: app/views/mailconf/index.rhtml:28 app/views/mailconf/index.rhtml:38
+#: app/views/box_organizer/index.rhtml:5 app/views/friends/index.rhtml:15
+#: app/views/friends/index.rhtml:46 app/views/tasks/index.rhtml:37
+#: app/views/tasks/index.rhtml:62
+#: plugins/escambo/views/profile_editor/edit.html.erb:64
+#: plugins/escambo/views/profile_editor/edit.html.erb:92
+#: plugins/sniffer/views/sniffer_plugin_myprofile/edit.html.erb:19
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/edit.html.erb:43
+msgid "Back to control panel"
+msgstr "Voltar ao painel de controle"
+
+#: app/views/profile_editor/edit.rhtml:69
+#: plugins/escambo/views/profile_editor/edit.html.erb:69
+msgid "Delete profile"
+msgstr "Remover perfil"
+
+#: app/views/profile/_common.rhtml:43
+#: plugins/sniffer/lib/sniffer_plugin/interests_block.rb:12
+#: plugins/escambo/views/profile/_interests.html.erb:2
+msgid "Interests"
+msgstr "Interesses"
+
+#: app/views/memberships/new_community.rhtml:50 app/views/themes/new.rhtml:8
+#: plugins/escambo/views/escambo_plugin_myprofile/new_enterprise.html.erb:9
+msgid "Create"
+msgstr "Criar"
+
+#: app/views/trusted_sites/index.rhtml:9
+#: plugins/escambo/views/profile/_info.html.erb:40
+msgid "Site"
+msgstr "Site"
+
+#: app/views/cms/_blog.rhtml:65 app/views/cms/_rss_feed.rhtml:9
+#: app/views/tasks/index.rhtml:6 plugins/escambo/views/tasks/index.html.erb:6
+#: plugins/shopping_cart/views/shopping_cart_plugin_myprofile/reports.html.erb:6
+msgid "All"
+msgstr "Todos"
+
+#: app/views/maps/edit_location.rhtml:15
+#: plugins/escambo/views/profile_editor/edit.html.erb:90
+msgid "Locate in the map"
+msgstr "Localize no mapa"
+
+#: app/views/maps/edit_location.rhtml:15
+#: plugins/escambo/views/profile_editor/edit.html.erb:90
+msgid ""
+"Locate the address informed above in the map below (note that you'll "
+"probably need to adjust the marker to get a precise position)"
+msgstr ""
+"Localize o endereço informado acima no mapa abaixo (note que você irá "
+"provavelmente precisar ajustar o marcador para conseguir uma posição precisa)"
+
+#: app/views/maps/edit_location.rhtml:21
+#: plugins/escambo/views/profile_editor/edit.html.erb:96
+msgid "Drag the balloon to find the exact location."
+msgstr "Arraste o balão para encontrar a localização exata."
+
+#: app/views/box_organizer/_location_block.rhtml:6
+#: plugins/escambo/views/profile/_info.html.erb:31
+msgid "Mobile"
+msgstr "Móvel"
+
+#: app/views/tasks/index.rhtml:3 plugins/escambo/views/tasks/index.html.erb:3
+msgid "%s's pending tasks"
+msgstr "Tarefas pendentes de %s"
+
+#: app/views/tasks/index.rhtml:15 plugins/escambo/views/tasks/index.html.erb:13
+msgid "This error happened with the following tasks: "
+msgstr "O erro ocorreu com as seguintes tarefas: "
+
+#: app/views/tasks/index.rhtml:29 plugins/escambo/views/tasks/index.html.erb:24
+msgid "No pending tasks for %s"
+msgstr "Sem tarefas pendentes para %s"
+
+#: app/views/tasks/index.rhtml:35 app/views/tasks/index.rhtml:60
+#: plugins/escambo/views/tasks/index.html.erb:28
+msgid "Apply!"
+msgstr "Aplicar!"
+
+#: app/views/tasks/index.rhtml:36 app/views/tasks/index.rhtml:61
+#: plugins/escambo/views/tasks/index.html.erb:29
+msgid "View processed tasks"
+msgstr "Ver tarefas processadas"
+
+#: app/views/account/_signup_page.html.erb:3
+#: plugins/escambo/views/account/_signup_page.html.erb:3
+msgid "Are you a robot?"
+msgstr "Você é um robô?"
+
+#: app/views/account/_signup_page.html.erb:4
+#: plugins/escambo/views/account/_signup_page.html.erb:4
+msgid "Please, prove that you are human by filling the captcha."
+msgstr "Por favor, prove que você é humano preenchendo o captcha."
+
+#: app/views/account/_signup_page.html.erb:31
+#: plugins/escambo/views/account/_signup_page.html.erb:37
+msgid "Create my account"
+msgstr "Criar minha conta"
+
+#: plugins/cms_learning/models/cms_learning_plugin/learning.rb:25
+#: plugins/cms_learning/models/cms_learning_plugin/learning.rb:29
+#: plugins/cms_learning/models/cms_learning_plugin/learning.rb:41
+#: plugins/escambo/views/snippets/_cms_learning_plugin_learning.html.erb:6
+msgid "Learning"
+msgstr "Saber"
+
+#: plugins/escambo/views/snippets/_sniffer_plugin_opportunity.html.erb
+msgid "Are you sure that you want to remove this interest?"
+msgstr "Tem certeza que quer excluir este interesse?"
+
+#: plugins/escambo/views/snippets/_cms_learning_plugin_learning.html.erb
+msgid "Are you sure that you want to remove this knowledge?"
+msgstr "Tem certeza que quer excluir este saber?"
+
+#: plugins/escambo/views/escambo_plugin_public/_enterprise_results.html.erb
+msgid "No enterprise found"
+msgstr "Nenhum ponto de cultura encontrado"
+
+#: plugins/escambo/lib/escambo_plugin.rb:15
+msgid "ESCAMBO network integration plugin"
+msgstr ""
+
+#: plugins/escambo/views/profile/_products.html.erb:2
+msgid "Offers from this enterprise"
+msgstr "Ofertas deste Ponto de Cultura"
+
+#: plugins/escambo/views/profile/members.html.erb:2
+msgid "Members from this enterprise"
+msgstr "Integrantes deste Ponto de Cultura"
+
+#: plugins/escambo/views/profile/_products.html.erb:9
+#: plugins/escambo/views/profile/_interests.html.erb:9
+#: plugins/escambo/views/profile/_knowledges.html.erb:9
+#: plugins/escambo/views/home/index.html.erb:30
+#: plugins/escambo/views/home/index.html.erb:51
+msgid "See all"
+msgstr "Ver todos"
+
+#: plugins/escambo/views/profile/_members.html.erb:12
+msgid "Get in contact"
+msgstr "Entre em contato"
+
+#: plugins/escambo/views/profile/_info.html.erb:5
+msgid "About this enterprise"
+msgstr "Sobre este Ponto de Cultura"
+
+#: plugins/escambo/views/profile/_info.html.erb:9
+msgid "Contact the enterprise"
+msgstr "Contate o Ponto de Cultura"
+
+#: plugins/escambo/views/profile/_info.html.erb:27
+msgid "Phone"
+msgstr "Telefone"
+
+#: plugins/escambo/views/profile/_info.html.erb:45
+msgid "Evaluations of this enterprise"
+msgstr "Avaliações deste ponto de cultura"
+
+#: plugins/escambo/views/profile/_info.html.erb:50
+msgid "Accepted Currencies"
+msgstr "Moedas Aceitas"
+
+#: plugins/escambo/views/profile/_knowledges.html.erb:2
+#: plugins/exchange/views/exchange_plugin_myprofile/_proposal_knowledges.html.erb:3
+msgid "Knowledges"
+msgstr "Saberes"
+
+#: plugins/escambo/views/account/_enterprise_register.html.erb:3
+#: plugins/escambo/views/escambo_plugin_shared/_enterprise_register.html.erb:2
+msgid "Enterprise name"
+msgstr "Ponto de Cultura"
+
+#: plugins/escambo/views/account/_signup_second_step.html.erb:12
+msgid "Your enterprise is already registered? Click here!"
+msgstr "Seu ponto de cultura já está registrado? Clique aqui."
+
+#: plugins/escambo/views/account/_signup_second_step.html.erb:21
+msgid "Find bellow your enterprise. If it doesn't exist, you can %{register}."
+msgstr ""
+"Ache seu ponto de cultura aqui. Se ainda não estiver cadastrado, você pode "
+"%{register}"
+
+#: plugins/escambo/views/account/_signup_second_step.html.erb:22
+msgid "register it"
+msgstr "registre"
+
+#: plugins/escambo/views/account/_signup_second_step.html.erb:30
+msgid ""
+"Your membership will wait for aproval of one the administrators from the "
+"selected enteprise"
+msgstr ""
+"Sua participação no ponto de cultura precisa ser aprovada. Por favor, "
+"aguarde a resposta do administrador do ponto de cultura. "
+
+#: plugins/escambo/views/account/_signup_form.html.erb:3
+msgid "I want to exchange in %{environment}!"
+msgstr "Quero trocar no %{environment}!"
+
+#: plugins/escambo/views/account/signup.html.erb:3
+msgid "Please select an enterprise"
+msgstr "Por favor, selecione um ponto de cultura"
+
+#: plugins/escambo/views/search/index.html.erb:1
+#: plugins/escambo/views/home/index.html.erb:50
+msgid "Offers, knowledges and interests"
+msgstr "Ofertas, saberes e interesses"
+
+#: plugins/escambo/views/search/_results.html.erb
+msgid "Showing results near of your enterprise '%{enterprise}'"
+msgstr "Mostrando resultados próximos de seu ponto de cultura '%{enterprise}'"
+
+#: plugins/escambo/views/search/index.html.erb:2
+#: plugins/escambo/views/home/index.html.erb:53
+msgid "search for..."
+msgstr "Buscar por:"
+
+#: plugins/escambo/views/escambo_plugin_shared/profile_image_link.html.erb:26
+msgid "Localization wasn't informed"
+msgstr "Localização não informada"
+
+#: plugins/escambo/views/escambo_plugin_shared/profile_image_link.html.erb:31
+msgid ""
+"Already made %{exchanges_count} exchanges with %{enterprises_count} "
+"enterprises."
+msgstr ""
+"Já realizou %{exchanges_count} trocas com %{enterprises_count} pontos de "
+"cultura."
+
+#: plugins/escambo/views/home/index.html.erb:29
+msgid "Some enterprises"
+msgstr "Alguns pontos de cultura"
+
+#: plugins/escambo/views/escambo_plugin_myprofile/new_enterprise.html.erb:2
+msgid "Create new enterprise"
+msgstr "Criar novo ponto de cultura"
+
+#: plugins/escambo/views/snippets/_cms_learning_plugin_learning.html.erb:11
+msgid "%{profile} knows %{learning}"
+msgstr "%{profile} sabe %{learning}"
+
+#: plugins/escambo/views/snippets/_sniffer_plugin_opportunity.html.erb:6
+msgid "Interest"
+msgstr "Interesses"
+
+#: plugins/escambo/views/snippets/_sniffer_plugin_opportunity.html.erb:11
+msgid "%{profile} is interested in %{interest}"
+msgstr "%{profile} está interessado em %{interest}"
+
+#: plugins/escambo/views/snippets/_product.html.erb:6
+msgid "Offer"
+msgstr "Oferta"
+
+#: plugins/escambo/views/snippets/_product.html.erb:11
+msgid "%{profile} offers %{product}"
+msgstr "%{profile} oferece %{product}"
+
+#: plugins/escambo/views/snippets/_local.html.erb:4
+msgid "Region of %{city_with_state}"
+msgstr "Região de %{city_with_state}"
+
+#: public/designs/themes/escambo/header.html.erb:18
+msgid "home"
+msgstr "início"
+
+#: public/designs/themes/escambo/header.html.erb:19
+msgid "culture points"
+msgstr "pontos de cultura"
+
+#: public/designs/themes/escambo/header.html.erb:20
+msgid "offers, knowledges and interests"
+msgstr "ofertas, saberes e interesses"
+
+#: public/designs/themes/escambo/header.html.erb:42
+msgid "New enterprise"
+msgstr "Novo ponto de cultura"
+
+#: public/designs/themes/escambo/header.html.erb:46
+msgid "Log out"
+msgstr "deslogar-se"
+
+#: public/designs/themes/escambo/header.html.erb:53
+msgid "sign up"
+msgstr "cadastro"
+
+#: public/designs/themes/escambo/header.html.erb:54
+msgid "login"
+msgstr "entrar!"
+
+#: public/designs/themes/escambo/profile_line.html.erb:17
+msgid "members"
+msgstr "integrantes"
+
+#: public/designs/themes/escambo/profile_line.html.erb:18
+msgid "exchanges"
+msgstr "trocas"
+
+#: public/designs/themes/escambo/profile_line.html.erb:20
+msgid "offers"
+msgstr "ofertas"
+
+#: public/designs/themes/escambo/profile_line.html.erb:21
+msgid "knowledges"
+msgstr "saberes"
+
+#: public/designs/themes/escambo/profile_line.html.erb:22
+msgid "interests"
+msgstr "interesses"
+
+#: public/designs/themes/escambo/profile_line.html.erb:23
+msgid "currencies"
+msgstr "moedas"
+
+#: public/designs/themes/escambo/profile_line.html.erb:24
+msgid "sniffer"
+msgstr "farejador"
+
+#: public/designs/themes/escambo/profile_line.html.erb:25
+msgid "settings"
+msgstr "configurações"
+

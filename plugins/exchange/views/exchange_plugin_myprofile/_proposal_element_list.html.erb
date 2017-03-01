@@ -1,0 +1,11 @@
+<% elements = proposal.elements.select{ |el| el.profile_id == profile.id } %>
+
+<% if elements.present? %>
+  <ul class="exchange-elements-list" id="exchange-elements-list-<%=actor%>">
+    <% elements.each do |e| %>
+      <%= render "exchange_plugin_element/view", element: e, actor: actor %>
+    <% end %>
+  </ul>
+<% else %>
+  <ul class="exchange-elements-list" id="exchange-elements-list-<%=actor%>"></ul>
+<% end %>

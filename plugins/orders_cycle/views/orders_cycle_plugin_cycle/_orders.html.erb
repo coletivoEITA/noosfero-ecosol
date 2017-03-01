@@ -1,6 +1,8 @@
 <div class="subtitle">
-  <%= hideable_help_text t('views.cycle._orders.header_help') %>
+  <%= content_tag('div', t('views.cycle._orders.header_help')) %>
 </div>
+
+<%= render 'financial_plugin/cycle_report', :cycle => @cycle %>
 
 <% if @cycle.orders? or @cycle.passed_by? 'orders' %>
   <% if @cycle.orders? %>

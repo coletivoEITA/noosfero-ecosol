@@ -1,8 +1,15 @@
 @import 'base';
 
-$filter-border-color: #d6e9bc;
-$filter-bg: #BCDC91;
+$filter-border-color: #ccc;
+$filter-bg: #EAEAEA;
 
+.controller-consumers_coop_plugin_cycle #filter {
+  background-color: $filter-bg;
+  width: $wireframe;
+  .filter-box {
+    border-bottom: $border solid $filter-border-color;
+  }
+}
 #filter {
   background-color: $filter-bg;
   padding: 0;
@@ -15,12 +22,12 @@ $filter-bg: #BCDC91;
   }
 
   &.wireframe-size {
-    margin-left: -($wireframe-padding);
-    margin-right: -($wireframe-padding);
+    margin-left: -($wireframe-padding - $border);
+    margin-right: -($wireframe-padding - $border);
 
     .title, .filter-box, .submit {
-      padding-left: $wireframe-padding + $padding;
-      padding-right: $wireframe-padding + $padding;
+      padding-left: ($wireframe-padding + $padding)/2;
+      padding-right: ($wireframe-padding + $padding)/2;
     }
   }
 
@@ -31,18 +38,24 @@ $filter-bg: #BCDC91;
     font-size: 13px;
   }
 
-  .submit {
-    padding: $padding;
+  .filter-box .submit {
+    margin-top: 23px;
 
+    input[type=submit] {
+      margin-left: 8px;
+    }
+  }
+  .filter-box .submit, .submit {
+    padding: $padding;
     input[type=submit] {
       font-weight: bold;
       text-transform: uppercase;
       padding: $half-padding $padding;
-      background-color: #4B583C;
+      background-color: #153d35;
       color: #FFFFFF;
       border: $border solid white;
       border-radius: $border-radius;
-      font-size: 9px;
+      font-size: 10px;
       text-align: center;
       margin: none;
       width: auto !important;
@@ -50,7 +63,7 @@ $filter-bg: #BCDC91;
   }
 
   .filter-box {
-    border-bottom: $border solid $filter-border-color;
+    border-bottom: 1px solid $filter-border-color;
     @extend .container-clean;
     @import 'field';
 

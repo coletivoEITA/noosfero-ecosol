@@ -1,15 +1,11 @@
-require File.expand_path(File.dirname(__FILE__) + "/../../../../test/test_helper")
+require 'test_helper'
 require 'work_assignment_plugin_myprofile_controller'
-
-# Re-raise errors caught by the controller.
-class WorkAssignmentPluginMyprofileController; def rescue_action(e) raise e end; end
 
 class WorkAssignmentPluginMyprofileControllerTest < ActionController::TestCase
 
   def setup
     @controller = WorkAssignmentPluginMyprofileController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+
     @person = create_user('test_user').person
     login_as :test_user
     e = Environment.default
@@ -35,14 +31,14 @@ class WorkAssignmentPluginMyprofileControllerTest < ActionController::TestCase
             },
             :without_protection => true
           )
-    submission = UploadedFile.find_by_filename("test.txt")
+    submission = UploadedFile.find_by filename: 'test.txt'
     assert_equal false, submission.published
     assert_equal false, submission.parent.published
 
     post :edit_visibility, :profile => @organization.identifier, :article_id => parent.id
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
     post :edit_visibility, :profile => @organization.identifier, :article_id => parent.id, :article => { :published => true }
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
 
     submission.reload
     assert_equal false, submission.published
@@ -56,9 +52,9 @@ class WorkAssignmentPluginMyprofileControllerTest < ActionController::TestCase
     assert_equal true, @person.is_admin?
 
     post :edit_visibility, :profile => @organization.identifier, :article_id => parent.id
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
     post :edit_visibility, :profile => @organization.identifier, :article_id => parent.id, :article => { :published => true }
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
 
     submission.reload
     assert_equal false, submission.published
@@ -81,7 +77,7 @@ class WorkAssignmentPluginMyprofileControllerTest < ActionController::TestCase
             :without_protection => true
           )
     logout
-    submission = UploadedFile.find_by_filename("test.txt")
+    submission = UploadedFile.find_by filename: 'test.txt'
     assert_equal false, submission.parent.published
     assert_equal false, submission.published
 
@@ -116,14 +112,14 @@ class WorkAssignmentPluginMyprofileControllerTest < ActionController::TestCase
     login_as :other_user
 
     @organization.add_member(other_person)
-    submission = UploadedFile.find_by_filename("test.txt")
+    submission = UploadedFile.find_by filename: 'test.txt'
     assert_equal(submission.author, @person)
 
     post :edit_visibility, :profile => @organization.identifier, :article_id => parent.id
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
 
     post :edit_visibility, :profile => @organization.identifier, :article_id => parent.id, :article => { :published => true }
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
 
     submission.reload
     assert_equal false, submission.parent.published
@@ -146,7 +142,7 @@ class WorkAssignmentPluginMyprofileControllerTest < ActionController::TestCase
             },
             :without_protection => true
           )
-    submission = UploadedFile.find_by_filename("test.txt")
+    submission = UploadedFile.find_by filename: 'test.txt'
     assert_equal false, submission.article_privacy_exceptions.include?(other_person)
     post :edit_visibility, :profile => @organization.identifier, :article_id  => parent.id, :article => { :published => false }, :q => other_person.id
     submission.reload
@@ -169,15 +165,15 @@ class WorkAssignmentPluginMyprofileControllerTest < ActionController::TestCase
             :without_protection => true
           )
     @organization.remove_member(@person)
-    submission = UploadedFile.find_by_filename("test.txt")
+    submission = UploadedFile.find_by filename: 'test.txt'
 
     assert_equal false, (@person.is_member_of? submission.profile)
 
     post :edit_visibility, :profile => @organization.identifier, :article_id => parent.id
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
 
     post :edit_visibility, :profile => @organization.identifier, :article_id => parent.id, :article => { :published => true }
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
 
     submission.reload
     assert_equal false, submission.parent.published

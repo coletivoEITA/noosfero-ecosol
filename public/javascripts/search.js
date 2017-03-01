@@ -18,8 +18,10 @@
     $('form.search_form').submit();
   });
 
-  // Custom styled select
-  $('#search-filters select').selectOrDie();
+  // Filter submenu
+  $('#search-subheader select').change(function(){
+    $('form.search_form').submit();
+  });
 
   // Form Ajax submission
   $('form.search_form').submit(function () {

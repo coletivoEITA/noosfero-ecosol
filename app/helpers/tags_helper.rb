@@ -58,13 +58,26 @@ module TagsHelper
 
       if options[:show_count]
         display_count = options[:show_count] ? "<small><sup>(#{count})</sup></small>" : ""
-        link_to tag + display_count, destination, :style => style
+        link_to (tag + display_count).html_safe, destination, :style => style
       else
         link_to h(tag) , destination, :style => style,
           :title => n_( 'one item', '%d items', count ) % count
       end
 
     end.join("\n").html_safe
+  end
+
+  def linked_article_tags(article)
+    if @profile
+      # We are rendering a page inside a profile, so link to the profile tag search.
+      url = { :controller => 'profile', :profile => @profile.identifier, :action => 'tags' }
+      tagname_option = :id
+    else
+      # We are rendering a page outside a profile, so link to the global tag search.
+      url = { :action => 'tag' }
+      tagname_option = :tag
+    end
+    article.tags.map { |t| link_to(t, url.merge(tagname_option=>t.name) ) }.join("\n")
   end
 
 end

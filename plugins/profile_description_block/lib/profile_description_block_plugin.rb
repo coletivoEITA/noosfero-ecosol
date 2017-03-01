@@ -10,7 +10,7 @@ class ProfileDescriptionBlockPlugin < Noosfero::Plugin
     _("A plugin that adds a block that show the profile description")
   end
 
-  def extra_blocks
+  def self.extra_blocks
     {
       ProfileDescriptionBlock  => { :type => [Community, Person] }
     }

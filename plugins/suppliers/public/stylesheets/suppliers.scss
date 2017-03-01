@@ -2,10 +2,13 @@
 @import 'popin';
 @import 'sortable-table';
 
+@import 'mixins';
+
 @import 'filter';
 @import 'actions';
 
 @import 'product';
+@import 'consumer';
 
 .controller-profile_editor a.control-panel-suppliers-manage-suppliers {
   background-image: url("/plugins/suppliers/images/control-panel/manage-suppliers.png")
@@ -156,5 +159,11 @@
     th {
       font-weight: bold;
     }
+  }
+}
+
+#suppliers-plugin-margin-change {
+  .input-group {
+    max-width: 200px;
   }
 }

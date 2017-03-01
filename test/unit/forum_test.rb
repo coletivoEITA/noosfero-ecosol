@@ -61,7 +61,7 @@ class ForumTest < ActiveSupport::TestCase
   should 'has posts' do
     p = create_user('testuser').person
     p.articles << forum = build(Forum, :profile => p, :name => 'Forum test', :body => 'Forum test')
-    post = fast_create(TextileArticle, :name => 'First post', :profile_id => p.id, :parent_id => forum.id)
+    post = fast_create(TextArticle, :name => 'First post', :profile_id => p.id, :parent_id => forum.id)
     forum.children << post
     assert_includes forum.posts, post
   end
@@ -76,9 +76,9 @@ class ForumTest < ActiveSupport::TestCase
   should 'list posts ordered by updated at' do
     p = create_user('testuser').person
     forum = fast_create(Forum, :profile_id => p.id, :name => 'Forum test')
-    newer = create(TextileArticle, :name => 'Post 2', :parent => forum, :profile => p)
-    older = create(TextileArticle, :name => 'Post 1', :parent => forum, :profile => p)
-    older.updated_at = Time.now - 1.month
+    newer = create(TextArticle, :name => 'Post 2', :parent => forum, :profile => p)
+    older = create(TextArticle, :name => 'Post 1', :parent => forum, :profile => p)
+    older.updated_at = Time.now.in_time_zone - 1.month
     older.stubs(:record_timestamps).returns(false)
     older.save!
     assert_equal [newer, older], forum.posts
@@ -107,7 +107,7 @@ class ForumTest < ActiveSupport::TestCase
 
   should 'not accept uploads' do
     folder = fast_create(Forum)
-    assert !folder.accept_uploads?
+    refute folder.accept_uploads?
   end
 
   should 'be notifiable' do
@@ -174,4 +174,70 @@ class ForumTest < ActiveSupport::TestCase
     assert_equal true, Forum.find(forum.id).agrees_with_terms?(person)
   end
 
+  should 'always allow topic creation to the person himself' do
+    person = fast_create(Person)
+    someone = fast_create(Person)
+    forum = Forum.new(:profile => person)
+
+    assert forum.can_create_topic?(person)
+    refute forum.can_create_topic?(someone)
+  end
+
+  should 'always allow topic creation to profile admins' do
+    admin = fast_create(Person)
+    someone = fast_create(Person)
+    profile = fast_create(Profile)
+    admins = [admin]
+    profile.stubs(:admins).returns(admins)
+    forum = Forum.new(:profile => profile)
+
+    assert forum.can_create_topic?(admin)
+    refute forum.can_create_topic?(someone)
+  end
+
+  should 'always allow topic creation to environment admins' do
+    admin = fast_create(Person)
+    someone = fast_create(Person)
+    profile = fast_create(Profile)
+    admins = [admin]
+    environment = profile.environment
+    environment.stubs(:admins).returns(admins)
+    forum = Forum.new(:profile => profile)
+
+    assert forum.can_create_topic?(admin)
+    refute forum.can_create_topic?(someone)
+  end
+
+  should 'allow only person friends to create topics when topic_creation is related' do
+    person = fast_create(Person)
+    friend = fast_create(Person)
+    someone = fast_create(Person)
+    friends = [friend]
+    person.stubs(:friends).returns(friends)
+    forum = Forum.new(:profile => person, :topic_creation => 'related')
+
+    assert forum.can_create_topic?(friend)
+    refute forum.can_create_topic?(someone)
+  end
+
+  should 'allow only group members to create topics when topic_creation is related' do
+    organization = fast_create(Organization)
+    member = fast_create(Person)
+    someone = fast_create(Person)
+    members = [member]
+    organization.stubs(:members).returns(members)
+    forum = Forum.new(:profile => organization, :topic_creation => 'related')
+
+    assert forum.can_create_topic?(member)
+    refute forum.can_create_topic?(someone)
+  end
+
+  should 'allow every user to create topics when topic_creation is users' do
+    profile = fast_create(Profile)
+    user = fast_create(Person)
+    forum = Forum.new(:profile => profile, :topic_creation => 'users')
+
+    assert forum.can_create_topic?(user)
+    refute forum.can_create_topic?(nil)
+  end
 end

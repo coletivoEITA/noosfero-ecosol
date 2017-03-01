@@ -80,12 +80,6 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal '', show_date(nil)
   end
 
-
-  should 'append with-text class and keep existing classes' do
-    expects(:button_without_text).with('type', 'label', 'url', { :class => 'with-text class1'})
-    button('type', 'label', 'url', { :class => 'class1' })
-  end
-
   should 'generate correct link to category' do
     cat = mock
     cat.expects(:path).returns('my-category/my-subcatagory')
@@ -149,35 +143,6 @@ class ApplicationHelperTest < ActionView::TestCase
     community.add_admin(member2)
     assert_tag_in_string rolename_for(member2, community), :tag => 'span', :content => 'Profile Member'
     assert_tag_in_string rolename_for(member2, community), :tag => 'span', :content => 'Profile Administrator'
-  end
-
-  should 'get theme from environment by default' do
-    @environment = mock
-    @environment.stubs(:theme).returns('my-environment-theme')
-    stubs(:profile).returns(nil)
-    assert_equal 'my-environment-theme', current_theme
-  end
-
-  should 'get theme from profile when profile is present' do
-    profile = mock
-    profile.stubs(:theme).returns('my-profile-theme')
-    stubs(:profile).returns(profile)
-    assert_equal 'my-profile-theme', current_theme
-  end
-
-  should 'override theme with testing theme from session' do
-    stubs(:session).returns(:theme => 'theme-under-test')
-    assert_equal 'theme-under-test', current_theme
-  end
-
-  should 'point to system theme path by default' do
-    expects(:current_theme).returns('my-system-theme')
-    assert_equal '/designs/themes/my-system-theme', theme_path
-  end
-
-  should 'point to user theme path when testing theme' do
-    stubs(:session).returns({:theme => 'theme-under-test'})
-    assert_equal '/user_themes/theme-under-test', theme_path
   end
 
   should 'render theme footer' do
@@ -301,38 +266,6 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_nil select_categories(mock)
   end
 
-  should 'provide sex icon for males' do
-    stubs(:environment).returns(Environment.default)
-    expects(:content_tag).with(anything, 'male').returns('MALE!!')
-    expects(:content_tag).with(anything, 'MALE!!', is_a(Hash)).returns("FINAL")
-    assert_equal "FINAL", profile_sex_icon(build(Person, :sex => 'male'))
-  end
-
-  should 'provide sex icon for females' do
-    stubs(:environment).returns(Environment.default)
-    expects(:content_tag).with(anything, 'female').returns('FEMALE!!')
-    expects(:content_tag).with(anything, 'FEMALE!!', is_a(Hash)).returns("FINAL")
-    assert_equal "FINAL", profile_sex_icon(build(Person, :sex => 'female'))
-  end
-
-  should 'provide undef sex icon' do
-    stubs(:environment).returns(Environment.default)
-    expects(:content_tag).with(anything, 'undef').returns('UNDEF!!')
-    expects(:content_tag).with(anything, 'UNDEF!!', is_a(Hash)).returns("FINAL")
-    assert_equal "FINAL", profile_sex_icon(build(Person, :sex => nil))
-  end
-
-  should 'not draw sex icon for non-person profiles' do
-    assert_equal '', profile_sex_icon(Community.new)
-  end
-
-  should 'not draw sex icon when disabled in the environment' do
-    env = fast_create(Environment, :name => 'env test')
-    env.expects(:enabled?).with('disable_gender_icon').returns(true)
-    stubs(:environment).returns(env)
-    assert_equal '', profile_sex_icon(build(Person, :sex => 'male'))
-  end
-
   should 'display field on person signup' do
     env = create(Environment, :name => 'env test')
     stubs(:environment).returns(env)
@@ -358,6 +291,23 @@ class ApplicationHelperTest < ActionView::TestCase
     enterprise = Enterprise.new
     enterprise.expects(:signup_fields).returns(['field'])
     assert_equal 'SIGNUP_FIELD', optional_field(enterprise, 'field', 'SIGNUP_FIELD')
+  end
+
+  should 'display field on home for a not logged user' do
+    env = create(Environment, :name => 'env test')
+    stubs(:environment).returns(env)
+
+    controller = mock
+    stubs(:controller).returns(controller)
+    controller.stubs(:controller_name).returns('home')
+    controller.stubs(:action_name).returns('index')
+
+    stubs(:user).returns(nil)
+
+
+    person = Person.new
+    person.expects(:signup_fields).returns(['field'])
+    assert_equal 'SIGNUP_FIELD', optional_field(person, 'field', 'SIGNUP_FIELD')
   end
 
   should 'display field on community creation' do
@@ -463,13 +413,13 @@ class ApplicationHelperTest < ActionView::TestCase
 
   should 'base theme uses default icon theme' do
     stubs(:current_theme).returns('base')
-    assert_equal "/designs/icons/default/style.css", icon_theme_stylesheet_path.first
+    assert_equal "designs/icons/default/style.css", icon_theme_stylesheet_path.first
   end
 
   should 'base theme uses config to specify more then an icon theme' do
     stubs(:current_theme).returns('base')
-    assert_includes icon_theme_stylesheet_path, "/designs/icons/default/style.css"
-    assert_includes icon_theme_stylesheet_path, "/designs/icons/pidgin/style.css"
+    assert_includes icon_theme_stylesheet_path, "designs/icons/default/style.css"
+    assert_includes icon_theme_stylesheet_path, "designs/icons/pidgin/style.css"
   end
 
   should 'not display active field if only required' do
@@ -513,23 +463,10 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal Environment.default.name, page_title
   end
 
-  should 'gravatar default parameter' do
-    profile = mock
-    profile.stubs(:theme).returns('some-theme')
-    stubs(:profile).returns(profile)
-
-    NOOSFERO_CONF.stubs(:[]).with('gravatar').returns('crazyvatar')
-    assert_equal gravatar_default, 'crazyvatar'
-
-    stubs(:theme_option).returns('gravatar' => 'nicevatar')
-    NOOSFERO_CONF.stubs(:[]).with('gravatar').returns('nicevatar')
-    assert_equal gravatar_default, 'nicevatar'
-  end
-
   should 'use theme passed via param when in development mode' do
     stubs(:environment).returns(build(Environment, :theme => 'environment-theme'))
     Rails.env.stubs(:development?).returns(true)
-    self.stubs(:params).returns({:theme => 'skyblue'})
+    self.stubs(:params).returns({:user_theme => 'skyblue'})
     assert_equal 'skyblue', current_theme
   end
 
@@ -545,60 +482,6 @@ class ApplicationHelperTest < ActionView::TestCase
     stubs(:environment).returns(fast_create(Environment, :theme => 'new-theme'))
     stubs(:profile).returns(fast_create(Profile))
     assert_equal environment.theme, current_theme
-  end
-
-  should 'trunc to 15 chars the big filename' do
-    assert_equal 'AGENDA(...).mp3', short_filename('AGENDA_CULTURA_-_FESTA_DE_VAQUEIROS_PONTO_DE_SERRA_PRETA_BAIXA.mp3',15)
-  end
-
-  should 'trunc to default limit the big filename' do
-    assert_equal 'AGENDA_CULTURA_-_FESTA_DE_VAQUEIRO(...).mp3', short_filename('AGENDA_CULTURA_-_FESTA_DE_VAQUEIROS_PONTO_DE_SERRA_PRETA_BAIXA.mp3')
-  end
-
-  should 'does not trunc short filename' do
-    assert_equal 'filename.mp3', short_filename('filename.mp3')
-  end
-
-  should 'return nil when :show_balloon_with_profile_links_when_clicked is not enabled in environment' do
-    env = Environment.default
-    env.stubs(:enabled?).with(:show_balloon_with_profile_links_when_clicked).returns(false)
-    stubs(:environment).returns(env)
-    profile = Profile.new
-    assert_nil links_for_balloon(profile)
-  end
-
-  should 'return ordered list of links to balloon to Person' do
-    env = Environment.default
-    env.stubs(:enabled?).with(:show_balloon_with_profile_links_when_clicked).returns(true)
-    stubs(:environment).returns(env)
-    person = Person.new identifier: 'person'
-    person.stubs(:url).returns('url for person')
-    person.stubs(:public_profile_url).returns('url for person')
-    links = links_for_balloon(person)
-    assert_equal ['Wall', 'Friends', 'Communities', 'Send an e-mail', 'Add'], links.map{|i| i.keys.first}
-  end
-
-  should 'return ordered list of links to balloon to Community' do
-    env = Environment.default
-    env.stubs(:enabled?).with(:show_balloon_with_profile_links_when_clicked).returns(true)
-    stubs(:environment).returns(env)
-    community = Community.new identifier: 'comm'
-    community.stubs(:url).returns('url for community')
-    community.stubs(:public_profile_url).returns('url for community')
-    links = links_for_balloon(community)
-    assert_equal ['Wall', 'Members', 'Agenda', 'Join', 'Leave community', 'Send an e-mail'], links.map{|i| i.keys.first}
-  end
-
-  should 'return ordered list of links to balloon to Enterprise' do
-    env = Environment.default
-    env.stubs(:enabled?).with(:show_balloon_with_profile_links_when_clicked).returns(true)
-    stubs(:environment).returns(env)
-    enterprise = Enterprise.new identifier: 'coop'
-    enterprise.stubs(:url).returns('url for enterprise')
-    enterprise.stubs(:public_profile_url).returns('url for enterprise')
-    stubs(:catalog_path)
-    links = links_for_balloon(enterprise)
-    assert_equal ['Products', 'Members', 'Agenda', 'Send an e-mail'], links.map{|i| i.keys.first}
   end
 
   should 'use favicon from environment theme if does not have profile' do
@@ -652,24 +535,6 @@ class ApplicationHelperTest < ActionView::TestCase
     assert admin_link.present?
   end
 
-  should 'not return mime type of profile icon if not requested' do
-    stubs(:profile).returns(Person.new)
-    stubs(:current_theme).returns('default')
-
-    filename, mime = profile_icon(Person.new, :thumb)
-    assert_not_nil filename
-    assert_nil mime
-  end
-
-  should 'return mime type of profile icon' do
-    stubs(:profile).returns(Person.new)
-    stubs(:current_theme).returns('default')
-
-    filename, mime = profile_icon(Person.new, :thumb, true)
-    assert_not_nil filename
-    assert_not_nil mime
-  end
-
   should 'pluralize without count' do
     assert_equal "tests", pluralize_without_count(2, "test")
     assert_equal "test", pluralize_without_count(1, "test")
@@ -678,12 +543,6 @@ class ApplicationHelperTest < ActionView::TestCase
 
   should 'unique with count' do
     assert_equal ["1 for b", "2 for c", "3 for a"], unique_with_count(%w(a b c a c a))
-  end
-
-  should 'show task information with the requestor' do
-    person = create_user('usertest').person
-    task = create(Task, :requestor => person)
-    assert_match person.name, task_information(task)
   end
 
   should 'return nil when :show_zoom_button_on_article_images is not enabled in environment' do
@@ -750,7 +609,7 @@ class ApplicationHelperTest < ActionView::TestCase
 
   should 'reference to article' do
     c = fast_create(Community)
-    a = fast_create(TinyMceArticle, :profile_id => c.id)
+    a = fast_create(TextArticle, :profile_id => c.id)
     assert_equal(
       "<a href=\"/#{c.identifier}/#{a.slug}\">x</a>",
       reference_to_article('x', a) )
@@ -758,7 +617,7 @@ class ApplicationHelperTest < ActionView::TestCase
 
   should 'reference to article, with anchor' do
     c = fast_create(Community)
-    a = fast_create(TinyMceArticle, :profile_id => c.id)
+    a = fast_create(TextArticle, :profile_id => c.id)
     assert_equal(
       "<a href=\"/#{c.identifier}/#{a.slug}#place\">x</a>",
       reference_to_article('x', a, 'place') )
@@ -767,7 +626,7 @@ class ApplicationHelperTest < ActionView::TestCase
   should 'reference to article, in a blog' do
     c = fast_create(Community)
     b = fast_create(Blog, :profile_id => c.id)
-    a = fast_create(TinyMceArticle, :profile_id => c.id, :parent_id => b.id)
+    a = fast_create(TextArticle, :profile_id => c.id, :parent_id => b.id)
     a.save! # needed to link to the parent blog
     assert_equal(
       "<a href=\"/#{c.identifier}/#{b.slug}/#{a.slug}\">x</a>",
@@ -778,7 +637,7 @@ class ApplicationHelperTest < ActionView::TestCase
     c = fast_create(Community)
     c.domains << build(Domain, :name=>'domain.xyz')
     b = fast_create(Blog, :profile_id => c.id)
-    a = fast_create(TinyMceArticle, :profile_id => c.id, :parent_id => b.id)
+    a = fast_create(TextArticle, :profile_id => c.id, :parent_id => b.id)
     a.save!
     assert_equal(
       "<a href=\"http://domain.xyz/#{b.slug}/#{a.slug}\">x</a>",
@@ -789,7 +648,7 @@ class ApplicationHelperTest < ActionView::TestCase
     article = fast_create(Article, :name => 'my article')
     response = content_id_to_str(article)
     assert_equal String, response.class
-    assert !response.empty?
+    refute response.empty?
   end
 
   should 'content_id_to_str return empty string when receiving nil' do
@@ -815,29 +674,6 @@ class ApplicationHelperTest < ActionView::TestCase
     profile = create_user('testuser').person
     blog    = fast_create(Blog,    :profile_id => profile.id)
     assert_nil default_folder_for_image_upload(profile)
-  end
-
-  should 'envelop a html with button-bar div' do
-    result = button_bar { '<b>foo</b>' }
-    assert_equal '<div class="button-bar"><b>foo</b>'+
-                 '<br style=\'clear: left;\' /></div>', result
-  end
-
-  should 'add more classes to button-bar envelope' do
-    result = button_bar :class=>'test' do
-      '<b>foo</b>'
-    end
-    assert_equal '<div class="test button-bar"><b>foo</b>'+
-                 '<br style=\'clear: left;\' /></div>', result
-  end
-
-  should 'add more attributes to button-bar envelope' do
-    result = button_bar :id=>'bt1' do
-      '<b>foo</b>'
-    end
-    assert_tag_in_string result, :tag =>'div', :attributes => {:class => 'button-bar', :id => 'bt1'}
-    assert_tag_in_string result, :tag =>'b', :content => 'foo', :parent => {:tag => 'div', :attributes => {:id => 'bt1'}}
-    assert_tag_in_string result, :tag =>'br', :parent => {:tag => 'div', :attributes => {:id => 'bt1'}}
   end
 
   should 'not filter html if source does not have macros' do
@@ -961,6 +797,194 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal '', manage_communities
   end
 
+  should 'include file from current theme out of a profile page' do
+    def profile; nil; end
+    def environment; e={}; def e.theme; 'env-theme'; end; e; end
+    def render(opt); opt; end
+    File.stubs(:exists?).returns(false)
+    file = Rails.root.join 'public/designs/themes/env-theme/somefile.html.erb'
+    assert_nil theme_include('somefile') # exists? = false
+    File.expects(:exists?).with(file).returns(true).at_least_once
+    assert_equal file, theme_include('somefile')[:file] # exists? = true
+  end
+
+  should 'include file from current theme inside a profile page' do
+    def profile; p={}; def p.theme; 'my-theme'; end; p; end
+    def render(opt); opt; end
+    File.stubs(:exists?).returns(false)
+    file = Rails.root.join 'public/designs/themes/my-theme/otherfile.html.erb'
+    assert_nil theme_include('otherfile') # exists? = false
+    File.expects(:exists?).with(file).returns(true).at_least_once
+    assert_equal file, theme_include('otherfile')[:file] # exists? = true
+  end
+
+  should 'include file from env theme' do
+    def profile; p={}; def p.theme; 'my-theme'; end; p; end
+    def environment; e={}; def e.theme; 'env-theme'; end; e; end
+    def render(opt); opt; end
+    File.stubs(:exists?).returns(false)
+    file = Rails.root.join 'public/designs/themes/env-theme/afile.html.erb'
+    assert_nil env_theme_include('afile') # exists? = false
+    File.expects(:exists?).with(file).returns(true).at_least_once
+    assert_equal file, env_theme_include('afile')[:file] # exists? = true
+  end
+
+  should 'include file from some theme' do
+    def render(opt); opt; end
+    File.stubs(:exists?).returns(false)
+    file = Rails.root.join 'public/designs/themes/atheme/afile.html.erb'
+    assert_nil from_theme_include('atheme', 'afile') # exists? = false
+    File.expects(:exists?).with(file).returns(true).at_least_once
+    assert_equal file, from_theme_include('atheme', 'afile')[:file] # exists? = true
+  end
+
+  should 'enable fullscreen buttons' do
+    html = fullscreen_buttons("#article")
+    assert html.include?("<script>fullscreenPageLoad('#article')</script>")
+    assert html.include?("class=\"button with-text icon-fullscreen\"")
+    assert html.include?("onClick=\"toggle_fullwidth(&#39;#article&#39;)\"")
+  end
+
+  should "return the related class string" do
+    assert_equal "Clone Folder", label_for_clone_article(Folder.new)
+    assert_equal "Clone Blog", label_for_clone_article(Blog.new)
+    assert_equal "Clone Event", label_for_clone_article(Event.new)
+    assert_equal "Clone Forum", label_for_clone_article(Forum.new)
+    assert_equal "Clone Article", label_for_clone_article(TextArticle.new)
+  end
+
+  should "return top url of environment" do
+    env = Environment.default
+    request = mock()
+    request.expects(:scheme).returns('http')
+    stubs(:request).returns(request)
+    stubs(:environment).returns(env)
+    stubs(:profile).returns(nil)
+    assert_equal env.top_url('http'), top_url
+  end
+
+  should "return top url considering profile" do
+    env = Environment.default
+    c = fast_create(Community)
+    request = mock()
+    request.stubs(:scheme).returns('http')
+    stubs(:request).returns(request)
+    stubs(:environment).returns(env)
+    stubs(:profile).returns(c)
+    assert_equal c.top_url, top_url
+  end
+
+  should "current editor return the editor defined in article" do
+    person = fast_create(Person)
+    @article = fast_create(Article)
+    @article.editor = Article::Editor::TEXTILE
+    @article.save
+    stubs(:current_person).returns(person)
+    assert_equal Article::Editor::TEXTILE, current_editor
+  end
+
+  should "current editor be tiny mce if an article is present and no editor is defined" do
+    person = fast_create(Person)
+    @article = fast_create(Article)
+    @article.editor = nil
+    @article.save
+    stubs(:current_person).returns(person)
+    assert_equal Article::Editor::TINY_MCE, current_editor
+  end
+
+  should "current editor be the person editor if there is no article" do
+    person = fast_create(Person)
+    request = mock()
+    stubs(:current_person).returns(person)
+    person.stubs(:editor).returns(Article::Editor::TEXTILE)
+    assert_equal Article::Editor::TEXTILE, current_editor
+  end
+
+
+  should "current editor be tiny mce if there is no article and no person editor is defined" do
+    person = fast_create(Person)
+    stubs(:current_person).returns(person)
+    person.stubs(:editor).returns(nil)
+    assert_equal Article::Editor::TINY_MCE, current_editor
+  end
+
+  should "current editor return the editor defined in article even if there is a person editor defined" do
+    person = fast_create(Person)
+    @article = fast_create(Article)
+    @article.editor = Article::Editor::TEXTILE
+    @article.save
+    stubs(:current_person).returns(person)
+    person.stubs(:editor).returns(Article::Editor::TINY_MCE)
+    assert_equal Article::Editor::TEXTILE, current_editor
+  end
+
+  should "current editor be tiny mce if an article is present and no editor is defined  even if there is a person editor defined" do
+    person = fast_create(Person)
+    @article = fast_create(Article)
+    @article.editor = nil
+    @article.save
+    stubs(:current_person).returns(person)
+    person.stubs(:editor).returns(Article::Editor::TINY_MCE)
+    assert_equal Article::Editor::TINY_MCE, current_editor
+  end
+
+  should "current editor concat the mode passed as parameter" do
+    person = fast_create(Person)
+    @article = fast_create(Article)
+    @article.editor = Article::Editor::TEXTILE
+    @article.save
+    stubs(:current_person).returns(person)
+    mode = 'something'
+    assert_equal Article::Editor::TEXTILE + '_' + mode, current_editor(mode)
+  end
+  should "current_editor_is? be true if the test editor is equal to defined one" do
+    stubs(:current_editor).returns(Article::Editor::TEXTILE)
+    assert current_editor_is?(Article::Editor::TEXTILE)
+  end
+
+  should "current_editor_is? be false if the test editor is different to defined one" do
+    stubs(:current_editor).returns(Article::Editor::TINY_MCE)
+    refute current_editor_is?(Article::Editor::TEXTILE)
+  end
+
+  should "current_editor_is? be false if the test editor is nil" do
+    stubs(:current_editor).returns(Article::Editor::TEXTILE)
+    refute current_editor_is?(nil)
+    stubs(:current_editor).returns(Article::Editor::TINY_MCE)
+    refute current_editor_is?(nil)
+  end
+
+  should 'show task information with the requestor' do
+    person = create_user('usertest').person
+    task = create(Task, :requestor => person)
+    assert_match person.name, task_information(task)
+  end
+
+  should 'show task information with variables information on suggest article tasks' do
+    person = create_user('usertest').person
+    task = create(SuggestArticle, :name => person.name, :target => person)
+    assert_match person.name, task_information(task)
+  end
+
+  should 'show task information with target detail information on suggest article tasks' do
+    person = create_user('usertest').person
+    task = create(SuggestArticle, :target => person)
+    assert_match /in.*#{person.name}/, task_information(task)
+  end
+
+  should "show task information without target detail information on suggest article tasks if it's in the same profile" do
+    profile = fast_create(Community)
+    task = create(SuggestArticle, :target => profile)
+    assert_no_match /in.*#{profile.name}/, task_information(task, {:profile => profile.identifier})
+  end
+
+  should "show task information with target detail information on suggest article with profile parameter to another profile" do
+    profile = fast_create(Community)
+    another_profile = fast_create(Community)
+    task = create(SuggestArticle, :target => profile)
+    assert_match /in.*#{profile.name}/, task_information(task, {:profile => another_profile.identifier})
+  end
+
   protected
   include NoosferoTestHelper
 
@@ -973,3 +997,4 @@ class ApplicationHelperTest < ActionView::TestCase
   end
 
 end
+

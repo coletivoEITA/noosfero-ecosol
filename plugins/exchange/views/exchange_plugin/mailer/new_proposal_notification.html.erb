@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+
+    <p>
+      <%= _('%{origin} made a new %{proposal} for you.') % {
+        :origin => @origin.name,
+        :proposal => link_to(_('proposal'), :controller => 'exchange_plugin_myprofile', :profile => @target.identifier, :action => 'index'),
+      } %>
+    </p>
+
+    <br /><br />
+  </body>
+</html>

@@ -1,15 +1,10 @@
 require_relative "../test_helper"
 require 'profile_members_controller'
 
-# Re-raise errors caught by the controller.
-class ProfileMembersController; def rescue_action(e) raise e end; end
-
 class ProfileMembersControllerTest < ActionController::TestCase
   def setup
     super
     @controller = ProfileMembersController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
   end
 
   should 'not access index if dont have permission' do
@@ -20,7 +15,7 @@ class ProfileMembersControllerTest < ActionController::TestCase
     get 'index', :profile => 'test_enterprise'
 
     assert_response 403
-    assert_template 'access_denied'
+    assert_template 'shared/access_denied'
   end
 
   should 'access index' do
@@ -32,6 +27,31 @@ class ProfileMembersControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_template 'index'
+  end
+
+  should 'access index and filter members by name and roles' do
+
+    ent = fast_create(Enterprise, :identifier => 'test_enterprise', :name => 'test enterprise')
+    roles = {
+     :admin => Profile::Roles.admin(Environment.default),
+     :member => Profile::Roles.member(Environment.default)
+    }
+
+    member = create_user('test_member', :email => 'testmember@test.com.br').person
+    member.add_role(roles[:member], ent)
+
+    admin = create_user('test_admin').person
+    admin.add_role roles[:admin], ent
+
+    user = create_user_with_permission('test_user', 'manage_memberships', ent)
+    login_as :test_user
+
+    post :index, :profile => 'test_enterprise' , :filters => {:name => 'testmember@test.com.br', :roles => [roles[:member].id]}
+
+    assert_response :success
+    assert_template 'index'
+
+    assert_includes assigns(:data)[:members], member
   end
 
   should 'show form to change role' do
@@ -174,7 +194,7 @@ class ProfileMembersControllerTest < ActionController::TestCase
     login_as :test_user
 
     get :index, :profile => community.identifier
-    assert_tag :tag => 'a', :attributes => {:href => /send_mail/}
+    assert_tag :tag => 'input', :attributes => {:value => 'Send e-mail to members'}
   end
 
   should 'not display send email to members if doesn\'t have the permission' do
@@ -228,7 +248,7 @@ class ProfileMembersControllerTest < ActionController::TestCase
     u = create_user('member_wannabe').person
     post :add_member, :profile => ent.identifier, :id => u.id
 
-    assert_equivalent Profile::Roles.all_roles(ent.environment).compact, u.role_assignments.find_all_by_resource_id(ent.id).map(&:role).compact
+    assert_equivalent Profile::Roles.all_roles(ent.environment).compact, u.role_assignments.where(resource_id: ent.id).map(&:role).compact
   end
 
   should 'not add member to community' do

@@ -1,15 +1,10 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require File.dirname(__FILE__) + '/../../controllers/public/comment_group_plugin_public_controller'
-
-# Re-raise errors caught by the controller.
-class CommentGroupPluginPublicController; def rescue_action(e) raise e end; end
+require_relative '../test_helper'
+require_relative '../../controllers/public/comment_group_plugin_public_controller'
 
 class CommentGroupPluginPublicControllerTest < ActionController::TestCase
 
   def setup
     @controller = CommentGroupPluginPublicController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
 
     @profile = create_user('testuser').person
     @article = profile.articles.build(:name => 'test')

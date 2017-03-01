@@ -1,0 +1,67 @@
+avaliacoes-student-discipline
+  div
+    h2
+      |{discipline.name}
+    label
+      |Peso de dissertativas
+      |&nbsp;
+      input type='number' min='0' max='1' step='0.1' value='{essayWeight}' onkeyup='{essayWeightChanged}' oninput='{essayWeightChanged}'
+    |&emsp;
+    label
+      |Peso de multipla escolhas
+      |&nbsp;
+      input type='number' min='0' max='1' step='0.1' value='{mcWeight}' onkeyup='{mcWeightChanged}' oninput='{mcWeightChanged}'
+
+  div colspan='3' riot-tag='avaliacoes-student-learning-unit' each='{learning_unit in learning_units}' data='{learning_unit}'
+
+  div
+    strong
+      |Nota:&emsp;
+    |{a.n(grade)}
+  div
+    strong
+      |Frequência:&emsp;
+    |{a.n(frequency)}%
+
+  javascript:
+    this.a = window.avaliacoes
+    this.learning_units = opts.data.learning_units
+    this.essayWeight = 0.6
+    this.mcWeight = 0.4
+
+    essayWeightChanged (e) {
+      this.essayWeight = parseFloat(e.target.value)
+      this.mcWeight = 1 - this.essayWeight
+      this.weightChanged()
+    }
+    mcWeightChanged (e) {
+      this.wcWeight = parseFloat(e.target.value)
+      this.essayWeight = 1 - this.mcWeight
+      this.weightChanged()
+    }
+    weightChanged () {
+      this.calculate()
+      this.update()
+    }
+
+    average (values) {
+      return _.sum(values) / values.length
+    }
+
+    calculate () {
+      var tags = this.tags['avaliacoes-student-learning-unit']
+      this.grade = this.average(_.map(tags, function (u) { return u.grade }))
+      this.frequency = this.average(_.map(tags, function (u) { return u.frequency }))
+    }
+
+    // FIXME: ugly workaround to update after child has values calculated
+    this.on('update', function() {
+      if (this.loaded) return
+      var self = this
+      setTimeout(function () {
+        self.calculate()
+        self.update()
+        this.loaded = true
+      }, 500)
+    })
+

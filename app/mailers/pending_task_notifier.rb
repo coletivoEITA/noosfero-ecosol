@@ -1,18 +1,19 @@
-class PendingTaskNotifier < ActionMailer::Base
+class PendingTaskNotifier < ApplicationMailer
 
   def notification(person)
+    self.environment = person.environment
+
     @person = person
     @tasks = person.tasks.pending
     @organizations_with_pending_tasks = person.organizations_with_pending_tasks
-    @environment = person.environment.name
     @url = url_for(:host => person.environment.default_hostname, :controller => 'home')
     @default_hostname = person.environment.default_hostname
     @url_for_pending_tasks = url_for(:host => person.environment.default_hostname, :controller => 'tasks', :profile => person.identifier)
 
     mail(
       to: person.email,
-      from: "#{person.environment.name} <#{person.environment.noreply_email}>",
-      subject: _("[%s] Pending tasks") % person.environment.name
+      from: "#{person.environment.name} <#{person.environment.noreply_email}>".html_safe,
+      subject: _("[%s] Pending tasks").html_safe % person.environment.name
     )
   end
 

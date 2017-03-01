@@ -129,7 +129,11 @@ module ProfileEditorHelper
     else
       domains = environment.domains
     end
-    labelled_form_field(_('Preferred domain name:'), select(object, :preferred_domain_id, domains.map {|item| [item.name, item.id]}, :prompt => '&lt;' + _('Select domain') + '&gt;'))
+    select_domain_prompt = '&lt;'.html_safe + _('Select domain').html_safe + '&gt;'.html_safe
+    select_field = select(object, :preferred_domain_id, domains.map {
+      |item| [item.name, item.id]}, :prompt => select_domain_prompt.html_safe)
+
+    labelled_form_field(_('Preferred domain name:'), select_field)
   end
 
   def control_panel(&block)
@@ -152,6 +156,10 @@ module ProfileEditorHelper
     else
       ''
     end
+  end
+
+  def select_editor(title, object, method, options)
+    labelled_form_field(title, select(object, method, current_person.available_editors.map { |k,v| [v, k] }))
   end
 
 end

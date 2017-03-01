@@ -4,11 +4,21 @@ class ProfileDesignController < BoxOrganizerController
 
   protect 'edit_profile_design', :profile
 
-  before_filter :protect_fixed_block, :only => [:save, :move_block]
+  before_filter :protect_uneditable_block, :only => [:save]
+  before_filter :protect_fixed_block, :only => [:move_block]
+  include CategoriesHelper
+
+  def protect_uneditable_block
+    block = boxes_holder.blocks.find(params[:id].gsub(/^block-/, ''))
+    if !current_person.is_admin? && !block.editable?
+      render_access_denied
+    end
+  end
 
   def protect_fixed_block
+    return if params[:id].blank?
     block = boxes_holder.blocks.find(params[:id].gsub(/^block-/, ''))
-    if block.fixed && !current_person.is_admin?
+    if block.present? && !current_person.is_admin? && !block.movable?
       render_access_denied
     end
   end
@@ -16,34 +26,27 @@ class ProfileDesignController < BoxOrganizerController
   def available_blocks
     blocks = [ ArticleBlock, TagsBlock, RecentDocumentsBlock, ProfileInfoBlock, LinkListBlock, MyNetworkBlock, FeedReaderBlock, ProfileImageBlock, LocationBlock, SlideshowBlock, ProfileSearchBlock, HighlightsBlock ]
 
-    blocks += plugins_extra_blocks
+    blocks += plugins.dispatch(:extra_blocks)
 
     # blocks exclusive to people
     if profile.person?
       blocks << FavoriteEnterprisesBlock
       blocks << CommunitiesBlock
       blocks << EnterprisesBlock
-      blocks += plugins_extra_blocks :type => Person
+      blocks += plugins.dispatch(:extra_blocks, :type => Person)
     end
 
     # blocks exclusive to communities
     if profile.community?
-      blocks += plugins_extra_blocks :type => Community
+      blocks += plugins.dispatch(:extra_blocks, :type => Community)
     end
 
     # blocks exclusive for enterprises
     if profile.enterprise?
       blocks << DisabledEnterpriseMessageBlock
       blocks << HighlightsBlock
-      blocks << ProductCategoriesBlock
-      blocks << FeaturedProductsBlock
       blocks << FansBlock
-      blocks += plugins_extra_blocks :type => Enterprise
-    end
-
-    # product block exclusive for enterprises in environments that permits it
-    if profile.enterprise? && profile.environment.enabled?('products_for_enterprises')
-      blocks << ProductsBlock
+      blocks += plugins.dispatch(:extra_blocks, :type => Enterprise)
     end
 
     # block exclusive to profiles that have blog
@@ -55,9 +58,12 @@ class ProfileDesignController < BoxOrganizerController
       blocks << RawHTMLBlock
     end
 
-    blocks += @plugins.dispatch :profile_blocks, profile
-
     blocks
+  end
+
+  def update_categories
+    @object = params[:id] ? @profile.blocks.find(params[:id]) : Block.new
+    render_categories 'block'
   end
 
 end

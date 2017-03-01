@@ -1,15 +1,11 @@
 require_relative "../test_helper"
 require 'licenses_controller'
 
-# Re-raise errors caught by the controller.
-class LIcensesController; def rescue_action(e) raise e end; end
-
 class LicensesControllerTest < ActionController::TestCase
 
   def setup
     @controller = LicensesController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+
     @environment = Environment.default
     login_as(create_admin_user(@environment))
   end

@@ -1,0 +1,51 @@
+<%
+  #css classes for the states
+  if exchange.state == "proposal"
+    @state1class = "exchange-active"
+    @state2class = "exchange-future"
+    @state3class = "exchange-future"
+    @state4class = "exchange-future"
+  elsif exchange.state == "negociation"
+    @state1class = "exchange-past"
+    @state2class = "exchange-active"
+    @state3class = "exchange-future"
+    @state4class = "exchange-future"
+  elsif exchange.state == "evaluation"
+    @state1class = "exchange-past"
+    @state2class = "exchange-past"
+    @state3class = "exchange-active"
+    @state4class = "exchange-future"
+  elsif exchange.state == "concluded"
+    @state1class = "exchange-past"
+    @state2class = "exchange-past"
+    @state3class = "exchange-past"
+    @state4class = "exchange-active"
+  end
+%>
+
+<div id="exchange-states">
+  <div class="exchange-outer-border">
+    <div class="exchange-state <%= @state1class %> ">
+      <p class="exchange-state_number">1</p>
+      <p class="exchange-state_name"><%= _('Proposal') %></p>
+    </div>
+  </div>
+  <div class="exchange-outer-border">
+    <div class="exchange-state <%= @state2class %> ">
+      <p class="exchange-state_number">2</p>
+      <p class="exchange-state_name"><%= _('Negociation') %></p>
+    </div>
+  </div>
+  <div class="exchange-outer-border">
+    <div class="exchange-state <%= @state3class %> ">
+      <p class="exchange-state_number">3</p>
+      <p class="exchange-state_name"><%= _('Evaluation') %></p>
+    </div>
+  </div>
+  <div class="exchange-outer-border">
+    <div class="exchange-state <%= @state4class %> ">
+      <p class="exchange-state_number">4</p>
+      <p class="exchange-state_name"><%= _('Finished') %></p>
+    </div>
+  </div>
+</div>

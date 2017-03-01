@@ -8,16 +8,12 @@ class ResponsivePlugin < Noosfero::Plugin
     _("Responsive layout for Noosfero")
   end
 
-  def stylesheet?
-    true
-  end
-
   def js_files
     %w[bootstrap responsive-noosfero].map{ |j| "javascripts/#{j}" }
   end
 
   def head_ending
-    '<meta name="viewport" content="width=device-width, initial-scale=1">'
+    '<meta name="viewport" content="width=device-width, initial-scale=1">'.html_safe
   end
 
   def body_ending

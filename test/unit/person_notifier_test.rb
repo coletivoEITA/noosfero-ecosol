@@ -1,6 +1,7 @@
 require_relative "../test_helper"
 
 class PersonNotifierTest < ActiveSupport::TestCase
+
   FIXTURES_PATH = File.dirname(__FILE__) + '/../fixtures'
   CHARSET = "utf-8"
 
@@ -17,9 +18,8 @@ class PersonNotifierTest < ActiveSupport::TestCase
     @member.save!
     @community = fast_create(Community)
     @community.add_member(@admin)
-    @article = fast_create(TextileArticle, :name => 'Article test', :profile_id => @community.id, :notify_comments => false)
+    @article = fast_create(TextArticle, :name => 'Article test', :profile_id => @community.id, :notify_comments => false)
     Delayed::Job.delete_all
-    notify
     ActionMailer::Base.deliveries = []
   end
 
@@ -48,7 +48,9 @@ class PersonNotifierTest < ActiveSupport::TestCase
 
   should 'display author name in delivered mail' do
     @community.add_member(@member)
-    Comment.create!(:author => @admin, :title => 'test comment', :body => 'body!', :source => @article)
+    User.current = @admin.user
+    comment = Comment.create!(:author => @admin, :title => 'test comment', :body => 'body!', :source => @article)
+    comment.save!
     process_delayed_job_queue
     notify
     sent = ActionMailer::Base.deliveries.last
@@ -59,7 +61,7 @@ class PersonNotifierTest < ActiveSupport::TestCase
     @community.add_member(@member)
     ActionTracker::Record.delete_all
     comment = Comment.create!(:author => @admin, :title => 'test comment', :body => 'body!', :source => @article )
-    @member.last_notification = DateTime.now + 1.day
+    @member.last_notification = DateTime.now.in_time_zone + 1.day
     assert_no_difference 'ActionMailer::Base.deliveries.count' do
       notify
     end
@@ -67,8 +69,11 @@ class PersonNotifierTest < ActiveSupport::TestCase
 
   should 'update last notification date' do
     Comment.create!(:author => @admin, :title => 'test comment 2', :body => 'body 2!', :source => @article)
-    @community.add_member(@member)
+    notify
     initial_notification = @member.last_notification
+
+    Comment.create!(:author => @admin, :title => 'test comment 2', :body => 'body 2!', :source => @article)
+    @community.add_member(@member)
     notify
     assert @member.last_notification > initial_notification
   end
@@ -83,7 +88,7 @@ class PersonNotifierTest < ActiveSupport::TestCase
 
   should 'schedule next mail at notification time' do
     @member.notification_time = 12
-    time = Time.now
+    time = Time.now.in_time_zone
     @member.notifier.schedule_next_notification_mail
     job = Delayed::Job.handler_like(PersonNotifier::NotifyJob.name).last
     assert job.run_at >= time + @member.notification_time.hours
@@ -135,7 +140,7 @@ class PersonNotifierTest < ActiveSupport::TestCase
   end
 
   should 'reschedule with changed notification time' do
-    time = Time.now
+    time = Time.now.in_time_zone
     assert_difference 'job_count(PersonNotifier::NotifyJob)', 1 do
       @member.notification_time = 2
       @member.save!
@@ -150,45 +155,72 @@ class PersonNotifierTest < ActiveSupport::TestCase
     assert job.run_at < time + (@member.notification_time+1).hours
   end
 
-  should 'display error message if fail to render a notificiation' do
+  should 'fail to render an invalid notificiation' do
     @community.add_member(@member)
     Comment.create!(:author => @admin, :title => 'test comment', :body => 'body!', :source => @article)
     ActionTracker::Record.any_instance.stubs(:verb).returns("some_invalid_verb")
     process_delayed_job_queue
-    notify
-    sent = ActionMailer::Base.deliveries.last
-    assert_match /cannot render notification for some_invalid_verb/, sent.body.to_s
+    assert_raise ActionView::Template::Error do
+      notify
+    end
   end
+
+  Targets = {
+    create_article: -> { create Forum, profile: @profile },
+    new_friendship: -> { create Friendship, person: @member, friend: @member },
+    join_community: -> { @member },
+    add_member_in_community: -> { create_user.person },
+    upload_image: -> { create Forum, profile: @profile },
+    leave_scrap: -> { create Scrap, sender: @member, receiver: @profile },
+    leave_scrap_to_self: -> { create Scrap, sender: @member, receiver: @profile },
+    reply_scrap_on_self: -> { create Scrap, sender: @member, receiver: @profile },
+    create_product: -> { create Product, profile: @profile, product_category: create(ProductCategory, environment: Environment.default) },
+    update_product: -> { create Product, profile: @profile, product_category: create(ProductCategory, environment: Environment.default) },
+    remove_product: -> { create Product, profile: @profile, product_category: create(ProductCategory, environment: Environment.default) },
+    favorite_enterprise: -> { create FavoriteEnterprisePerson, enterprise: create(Enterprise), person: @member },
+    new_follower: -> { @member }
+  }
 
   ActionTrackerConfig.verb_names.each do |verb|
     should "render notification for verb #{verb}" do
-      action = mock()
-      action.stubs(:verb).returns(verb)
-      action.stubs(:user).returns(@member)
-      action.stubs(:created_at).returns(DateTime.now)
-      action.stubs(:target).returns(fast_create(Forum))
-      action.stubs(:comments_count).returns(0)
-      action.stubs(:comments).returns([])
-      action.stubs(:params).returns({'name' => 'home', 'url' => '/', 'lead' => ''})
-      action.stubs(:get_url).returns('')
+      @member.tracked_notifications = []
 
-      notifications = []
-      notifications.stubs(:find).returns([action])
-      Person.any_instance.stubs(:tracked_notifications).returns(notifications)
+      a = @member.tracked_notifications.build
+      a.verb = verb
+      a.user = @member
+      a.created_at = @member.notifier.notify_from + 1.day
+      @profile = create(Community)
+      a.target = instance_exec &Targets[verb.to_sym]
+      a.comments_count = 0
+      a.params = {
+        'name' => 'home', 'url' => '/', 'lead' => '',
+        'receiver_url' => '/', 'content' => 'nothing',
+        'friend_url' => '/', 'friend_profile_custom_icon' => [], 'friend_name' => ['joe'],
+        'resource_name' => ['resource'], 'resource_profile_custom_icon' => [], 'resource_url' => ['/'],
+        'enterprise_name' => 'coop', 'enterprise_url' => '/coop',
+        'follower_url' => '/', 'follower_profile_custom_icon' => [], 'follower_name' => ['joe'],
+        'view_url'=> ['/'], 'thumbnail_path' => ['1'],
+      }
+      a.get_url = ''
+      a.save!
+      n = @member.action_tracker_notifications.build
+      n.action_tracker = a
+      n.profile = @member
+      n.save!
 
-      notify
-      sent = ActionMailer::Base.deliveries.last
-      assert_no_match /cannot render notification for #{verb}/, sent.body.to_s
+      assert_nothing_raised do
+        notify
+      end
     end
   end
 
   should 'exists? method in NotifyAllJob return false if there is no instance of this class created' do
     Delayed::Job.enqueue(PersonNotifier::NotifyJob.new)
-    assert !PersonNotifier::NotifyAllJob.exists?
+    refute PersonNotifier::NotifyAllJob.exists?
   end
 
   should 'exists? method in NotifyAllJob return false if there is no jobs created' do
-    assert !PersonNotifier::NotifyAllJob.exists?
+    refute PersonNotifier::NotifyAllJob.exists?
   end
 
   should 'exists? method in NotifyAllJob return true if there is at least one instance of this class' do
@@ -222,7 +254,7 @@ class PersonNotifierTest < ActiveSupport::TestCase
 
     process_delayed_job_queue
     jobs = PersonNotifier::NotifyJob.find(@member.id)
-    assert !jobs.select {|j| !j.failed? && j.last_error.nil? }.empty?
+    refute jobs.select {|j| !j.failed? && j.last_error.nil? }.empty?
   end
 
   should 'render image tags for both internal and external src' do
