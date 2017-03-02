@@ -3,7 +3,7 @@ module ProductsPlugin::ProductsHelper
   protected
 
   def product_path(product)
-    product.enterprise.public_profile_url.merge controller: 'products_plugin/page', profile: profile.identifier, action: :show, id: product.id
+    product.enterprise.public_profile_url.merge controller: 'products_plugin/page', profile: profile&.identifier, action: :show, id: product.id
   end
 
   def link_to_product_category(category)
