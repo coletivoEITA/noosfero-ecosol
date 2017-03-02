@@ -54,16 +54,18 @@ module SolrPlugin
           (Noosfero::MultiTenancy.on? and ActiveRecord::Base.postgresql?) ? ActiveRecord::Base.connection.schema_search_path : ''
         end
 
-        def find_by_contents query, pg_options = {}, options = {}, db_options = {}
-          options[:sql_options] = db_options
+        def find_by_contents query, pg_options = {}, options = {}
+          scope = self
 
-          pg_options[:page] ||= 1
+          pg_options[:page]     ||= 1
           pg_options[:per_page] ||= 20
+
           options[:page] = pg_options[:page].to_i
-          per_page = options[:per_page] = pg_options[:per_page].to_i
+          per_page       = options[:per_page] = pg_options[:per_page].to_i
+
           if options[:extra_limit]
             options[:per_page] = options.delete :extra_limit
-            options[:sql_options][:limit] = per_page
+            scope = scope.limit per_page
           end
 
           options[:scores] ||= true
@@ -75,8 +77,7 @@ module SolrPlugin
           results = []
           facets = all_facets = {}
 
-          pp options
-          solr_result = find_by_solr query, options
+          solr_result = scope.find_by_solr query, options
           if all_facets_enabled
             options[:facets][:browse] = nil
             all_facets = find_by_solr(query, options.merge(per_page: 0, results_format: :none)).facets
