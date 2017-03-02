@@ -1,7 +1,7 @@
 plugins_root = Rails.env.test? ? 'plugins' : '{baseplugins,config/plugins}'
 prefixes_by_folder = {public: 'plugin',
-                      profile: 'profile/:profile/plugin',
-                      myprofile: 'myprofile/:profile/plugin',
+                      profile: 'profile(/:profile)/plugin',
+                      myprofile: 'myprofile(/:profile)/plugin',
                       admin: 'admin/plugin'}
 
 Dir.glob(Rails.root.join(plugins_root, '*', 'controllers')) do |controllers_dir|
@@ -31,7 +31,7 @@ Dir.glob(Rails.root.join(plugins_root, '*', 'controllers')) do |controllers_dir|
   end
 
   match 'plugin/' + plugin_name + '(/:action(/:id))', controller: plugin_name + '_plugin', via: :all
-  match "profile/:profile/plugin/#{plugin_name}(/:action(/:id))", controller: "#{plugin_name}_plugin_profile", profile: /#{Noosfero.identifier_format}/i, via: :all
-  match "myprofile/:profile/plugin/#{plugin_name}(/:action(/:id))", controller: "#{plugin_name}_plugin_myprofile", profile: /#{Noosfero.identifier_format}/i, via: :all
+  match "profile(/:profile)/plugin/#{plugin_name}(/:action(/:id))", controller: "#{plugin_name}_plugin_profile", profile: /#{Noosfero.identifier_format}/i, via: :all
+  match "myprofile(/:profile)/plugin/#{plugin_name}(/:action(/:id))", controller: "#{plugin_name}_plugin_myprofile", profile: /#{Noosfero.identifier_format}/i, via: :all
   match 'admin/plugin/' + plugin_name + '(/:action(/:id))', controller: plugin_name + '_plugin_admin', via: :all
 end
