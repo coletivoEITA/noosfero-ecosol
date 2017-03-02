@@ -980,7 +980,7 @@ module ApplicationHelper
     if (task.target && task.target.respond_to?(:url))
       values.merge!({:target => link_to(task.target.name, task.target.url)})
       target_detail = _("in %s").html_safe % values[:target]
-      target_detail = '' if task.target.is_a? Profile && task.target.identifier == params[:profile]
+      target_detail = '' if task.target.is_a?(Profile) && task.target.identifier == params[:profile]
       values.merge!({:target_detail => target_detail})
     end
     values.merge!({:subject => content_tag('span', task.subject, :class=>'task_target')}) if task.subject
