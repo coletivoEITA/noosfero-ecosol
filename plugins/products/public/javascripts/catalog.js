@@ -2,7 +2,7 @@ catalog = {
 
   form: {
     element: function () {
-      return jQuery('#catalog-search')
+      return $('#catalog-search')
     },
     queryEl: function() {
       return this.element().get(0).elements.query
@@ -28,11 +28,11 @@ catalog = {
   },
   product: {
     list: function() {
-      return jQuery('#product-page ul#product-list')
+      return $('#product-page ul#product-list')
     },
     toggle_expandbox: function (element, open) {
       element.clicked = open;
-      jQuery(element).toggleClass('open', open);
+      $(element).toggleClass('open', open);
     },
     back: function (rank) {
       catalog.form.rankEl().value = rank
@@ -42,13 +42,13 @@ catalog = {
 
   categories: {
     select: function() {
-    	jQuery(catalog.form.element().get(0).elements.qualifier).val('')
+    	$(catalog.form.element().get(0).elements.qualifier).val('')
       catalog.search.run()
     },
   },
   qualifiers: {
     select: function() {
-    	jQuery(catalog.form.element().get(0).elements.category).val('')
+    	$(catalog.form.element().get(0).elements.category).val('')
       catalog.search.run()
     },
   },
@@ -62,9 +62,9 @@ catalog = {
   	external: false,
 
     init: function() {
-      this.animation.init();
-      this.autocomplete.init();
-      this.pagination.init();
+      this.animation.init()
+      this.autocomplete.init()
+      this.pagination.init()
     },
 
     result: function (html) {
@@ -77,21 +77,21 @@ catalog = {
       var page = pageEl.value
 
       pageEl.value = null
-      var url = catalog.base_url_path + jQuery(catalog.form.element()).serialize()
+      var url = catalog.base_url_path + $(catalog.form.element()).serialize()
       pageEl.value = page
 
       return url;
     },
 
     run: function(options) {
-      options = jQuery.extend({}, {animate: true}, options)
+      options = $.extend({}, {animate: true}, options)
 
       var url = this.url()
       if (this.external) {
         window.location.href = url;
         return;
       }
-      jQuery(catalog.form.element()).ajaxSubmit({
+      $(catalog.form.element()).ajaxSubmit({
         beforeSubmit: catalog.search.startLoading,
         success: function(html) {
           if (options.animate)
@@ -133,15 +133,15 @@ catalog = {
 
       toRank: function(rank) {
         if (rank >= 0)
-          jQuery(function() {
-            var product = jQuery('.product[data-rank='+rank+']')
+          $(function() {
+            var product = $('.product[data-rank='+rank+']')
             if (product.length)
               // gives a margin for eventual fixed top bars and offset() doesn't consider margin, padding and borders sizes
-              jQuery('html,body').animate({ scrollTop: product.offset().top-100 }, this.delay)
+              $('html,body').animate({ scrollTop: product.offset().top-100 }, this.delay)
           });
       },
       toTop: function(callback) {
-        jQuery('html,body').animate({ scrollTop: jQuery("#product-catalog").offset().top }, this.delay, callback)
+        $('html,body').animate({ scrollTop: $("#product-catalog").offset().top }, this.delay, callback)
       },
     },
 
@@ -177,8 +177,8 @@ catalog = {
     },
 
     replace: function(results_html) {
-      results_html = jQuery(results_html)
-      var content = jQuery('#product-page')
+      results_html = $(results_html)
+      var content = $('#product-page')
 
       // Update filter dropdowns and number of results
       content.find('.catalog-filter-categories').empty()
@@ -192,7 +192,7 @@ catalog = {
       if (content.find('#catalog-results').length) {
         //products
         results_html.find('.product').each(function(index, product) {
-          product = jQuery(product)
+          product = $(product)
           var old_product = content.find('#'+product.attr('id'))
           if (old_product.length) {
             old_product.attr('data-order', product.attr('data-order'))
@@ -216,7 +216,7 @@ catalog = {
       source: null,
 
       init: function() {
-        var input = jQuery(catalog.form.queryEl())
+        var input = $(catalog.form.queryEl())
         this.source = new Bloodhound({
           datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
           queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -265,22 +265,22 @@ catalog = {
       init: function() {
         this.container().isotope({
           itemSelector: '.product',
-          layoutMode: 'fitRows',
-          getSortData: {
+          layoutMode:   'fitRows',
+          getSortData:  {
             rank: '[data-rank] parseInt',
           },
         });
       },
 
-      filter: function(e){
-        var el = jQuery(e)
+      filter: function (e) {
+        var el = $(e)
         return (catalog.form.order() == el.attr('data-order')) &&
           (!catalog.form.category() || el.attr('data-category-name') == catalog.form.category()) &&
           (!catalog.form.qualifier() || (el.attr('data-qualifiers-ids') || '').indexOf(catalog.form.qualifier()) > -1) &&
           el.attr('data-term') == catalog.form.query()
       },
 
-      run: function(){
+      run: function() {
         this.container().isotope('updateSortData').isotope();
         this.container().isotope({
           isJQueryFiltering: false,
@@ -292,37 +292,37 @@ catalog = {
   },
 };
 
-jQuery(document).click(function (event) {
-  if (jQuery(event.target).parents('.expand-box').length === 0) {
-    jQuery('ul#product-list .expand-box').each(function(index, element){
+$(document).click(function (event) {
+  if ($(event.target).parents('.expand-box').length === 0) {
+    $('ul#product-list .expand-box').each(function(index, element){
       catalog.product.toggle_expandbox(element, false);
     });
   }
 });
-jQuery('ul#product-list .expand-box').live('click', function () {
+$('ul#product-list .expand-box').live('click', function () {
   var me = this;
-  jQuery('.expand-box').each(function(index, element){
+  $('.expand-box').each(function(index, element){
     if ( element != me ) catalog.product.toggle_expandbox(element, false);
   });
   catalog.product.toggle_expandbox(me, !me.clicked);
   return false;
 });
-jQuery('ul#product-list .float-box').live('click', function () {
+$('ul#product-list .float-box').live('click', function () {
   return false;
 });
 
 // This is to fix the catalog options bar in a way that the user can scroll down the catalog
 // and still see the filters, search input and basket applet (if the shopping cart plugin is active)
-jQuery(document).ready(function() {
-  var catalog_w = jQuery(window);
-  var catalog_catOptions = jQuery("#catalog-options");
+$(document).ready(function() {
+  var catalog_w = $(window);
+  var catalog_catOptions = $("#catalog-options");
   if (catalog_catOptions.length) {
     var catalog_originalTop   = catalog_catOptions.offset().top + catalog_catOptions.height();
     var catalog_originalWidth = catalog_catOptions.width() / catalog_w.width();
     var catalog_originalLeft  = catalog_catOptions.offset().left / catalog_w.width();
-    jQuery(window).bind("scroll", function() {
+    $(window).bind("scroll", function() {
       var catalog_originalRight = 1 - (catalog_originalLeft + catalog_originalWidth);
-      var top = jQuery(window).scrollTop();
+      var top = $(window).scrollTop();
       var above_top = (top >= catalog_originalTop);
       if (above_top) {
         catalog_catOptions
