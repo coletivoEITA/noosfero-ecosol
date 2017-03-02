@@ -2,7 +2,7 @@ class SuppliersPlugin::Consumer < SuppliersPlugin::Supplier
 
   self.table_name = :suppliers_plugin_suppliers
 
-  before_save :sync_profile
+  before_validation :sync_profile
 
   attr_accessible :email, :phone, :cell_phone, :hub_id, :address, :city, :state, :zip
 
@@ -45,6 +45,5 @@ class SuppliersPlugin::Consumer < SuppliersPlugin::Supplier
       end
     end
 
-    self.save if dirty
   end
 end

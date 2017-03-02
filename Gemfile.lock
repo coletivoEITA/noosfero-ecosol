@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/coletivoEITA/acts_as_solr_reloaded.git
+  revision: 9524ccefdf96c2d826c4b94229d61204cbbeb733
+  ref: 9524cce
+  specs:
+    acts_as_solr_reloaded (1.6.0)
+
+GIT
   remote: git://github.com/coletivoEITA/i18n-js.git
   revision: b47088c555fbe057bb70ec871677a9a1848b22e4
   specs:
@@ -599,6 +606,7 @@ DEPENDENCIES
   activerecord-session_store (= 1.0.0.pre)
   acts-as-taggable-on (~> 3.5)
   acts_as_list (= 0.0.0)!
+  acts_as_solr_reloaded!
   acts_as_tree (= 0.0.0)!
   acts_as_versioned (> 0.0.0)!
   api-pagination (>= 4.1.1)
@@ -665,7 +673,7 @@ DEPENDENCIES
   pry
   rack-contrib
   rack-cors
-  rails (~> 4.2.7.1)
+  rails (~> 4.2.7)
   rails-observers
   rails_autolink (~> 1.1.5)
   rails_rcov (= 0.0.0)!
