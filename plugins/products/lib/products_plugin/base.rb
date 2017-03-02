@@ -30,7 +30,7 @@ module ProductsPlugin
     end
 
     def content_types
-      [EnterpriseHomepage] if context.enterprise?
+      [EnterpriseHomepage] if context.respond_to? :enterprise? && context.enterprise?
     end
 
   end
