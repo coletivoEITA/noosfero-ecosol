@@ -263,18 +263,16 @@ catalog = {
         return catalog.product.list()
       },
       init: function() {
-        return
         this.container().isotope({
           itemSelector: '.product',
-          layoutMode: 'fitRows',
-          getSortData: {
+          layoutMode:   'fitRows',
+          getSortData:  {
             rank: '[data-rank] parseInt',
           },
         });
       },
 
-      filter: function(e) {
-        return
+      filter: function (e) {
         var el = $(e)
         return (catalog.form.order() == el.attr('data-order')) &&
           (!catalog.form.category() || el.attr('data-category-name') == catalog.form.category()) &&
@@ -283,7 +281,6 @@ catalog = {
       },
 
       run: function() {
-        return
         this.container().isotope('updateSortData').isotope();
         this.container().isotope({
           isJQueryFiltering: false,
