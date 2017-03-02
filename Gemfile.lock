@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/coletivoEITA/acts_as_solr_reloaded.git
-  revision: 9524ccefdf96c2d826c4b94229d61204cbbeb733
-  ref: 9524cce
+  revision: 2332f6a1949c1095c45eb49ccfd998e29affb47b
+  ref: 2332f6a
   specs:
     acts_as_solr_reloaded (1.6.0)
 
