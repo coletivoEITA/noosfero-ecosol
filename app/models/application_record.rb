@@ -19,8 +19,9 @@ class ApplicationRecord < ActiveRecord::Base
     self.class.name.underscore
   end
 
+  alias :meta_cache_key :cache_key
   def cache_key
-    key = [Noosfero::VERSION]
+    key = [Noosfero::VERSION, meta_cache_key]
     key.unshift ApplicationRecord.connection.schema_search_path
     key.join('/')
   end
