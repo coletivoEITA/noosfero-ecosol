@@ -1,3 +1,4 @@
+
 module ConsumersCoopPlugin
 
   extend Noosfero::Plugin::ParentMethods
@@ -10,4 +11,9 @@ module ConsumersCoopPlugin
     I18n.t('consumers_coop_plugin.lib.plugin.description')
   end
 
+  Order    = OrdersCyclePlugin::Order
+  Sale     = OrdersCyclePlugin::Sale
+  Purchage = OrdersCyclePlugin::Purchase
+
 end
+
