@@ -3,6 +3,7 @@
     <li id="category<%= item.display_color %>"<%= ' class="active"' if (@category && (@category.top_ancestor == item)) %>>
       <%= item.name %>
       <ul>
+        <% next if item.children_for_menu.blank? %>
         <% item.children_for_menu.each do |child| %>
           <li><%= link_to(content_tag('span', child.name), :controller => 'search', :action => 'category_index', :category_path => child.explode_path) %></li>
         <% end %>
