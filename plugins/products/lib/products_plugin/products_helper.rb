@@ -238,7 +238,7 @@ module ProductsPlugin::ProductsHelper
       end
       data << content_tag('li', "✔ #{content_tag(:span, "#{pq.qualifier.name}", property: 'essglobal:qualifier')} #{certified_by}".html_safe, class: 'product-qualifiers-item')
     end
-    content_tag('ul', data, id: 'product-qualifiers')
+    content_tag('ul', data.html_safe, id: 'product-qualifiers')
   end
 
   def qualifiers_for_select
