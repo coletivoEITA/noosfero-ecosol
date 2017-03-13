@@ -9,7 +9,7 @@ class Forum < Folder
 
   settings_items :terms_of_use, :type => :string, :default => ""
   settings_items :has_terms_of_use, :type => :boolean, :default => false
-  settings_items :topic_creation, :type => :string, :default => 'self'
+  settings_items :topic_creation, :type => :integer, :default => AccessLevels::LEVELS[:self]
   has_and_belongs_to_many :users_with_agreement, :class_name => 'Person', :join_table => 'terms_forum_people'
 
   before_save do |forum|
@@ -47,9 +47,6 @@ class Forum < Folder
     GROUP['self'] = _('Administrators')
     GROUP['related'] = _('Members')
 
-    def self.general_options(forum)
-      forum.profile.person? ? PERSON.merge(BASE) : GROUP.merge(BASE)
-    end
   end
 
   include ActionView::Helpers::TagHelper
@@ -88,17 +85,11 @@ class Forum < Folder
     self.users_with_agreement.exists? user
   end
 
-  def can_create_topic?(user)
-    return true if user == profile || profile.admins.include?(user) || profile.environment.admins.include?(user)
-    case topic_creation
-    when 'related'
-      profile.person? ? profile.friends.include?(user) : profile.members.include?(user)
-    when 'users'
-      user.present?
-    end
+  def topic_creation_access
+    AccessLevels.options(1)
   end
 
   def allow_create?(user)
-    super || can_create_topic?(user)
+    super || AccessLevels.can_access?(topic_creation, user, profile)
   end
 end

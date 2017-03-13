@@ -3,9 +3,16 @@
 # which by default is the one returned by Environment:default.
 class Profile < ApplicationRecord
 
-  attr_accessible :name, :identifier, :public_profile, :nickname, :custom_footer, :custom_header, :address, :zip_code, :contact_phone, :image_builder, :description, :closed, :template_id, :environment, :lat, :lng, :is_template, :fields_privacy, :preferred_domain_id, :category_ids, :country, :city, :state, :national_region_code, :email, :contact_email, :redirect_l10n, :notification_time,
-    :redirection_after_login, :custom_url_redirection,
-    :email_suggestions, :allow_members_to_invite, :invite_friends_only, :secret, :profile_admin_mail_notification, :allow_followers
+  attr_accessible :name, :identifier, :public_profile, :nickname,
+    :custom_footer, :custom_header, :address, :zip_code, :contact_phone,
+    :image_builder, :top_image_builder, :description, :closed, :template_id, :environment, :lat,
+    :lng, :is_template, :fields_privacy, :preferred_domain_id, :category_ids,
+    :country, :city, :state, :national_region_code, :email, :contact_email,
+    :redirect_l10n, :notification_time, :redirection_after_login,
+    :custom_url_redirection, :layout_template, :email_suggestions,
+    :allow_members_to_invite, :invite_friends_only, :secret,
+    :profile_admin_mail_notification, :allow_followers, :wall_access,
+    :profile_kinds
 
   # use for internationalizable human type names in search facets
   # reimplement on subclasses
@@ -204,6 +211,27 @@ class Profile < ApplicationRecord
   settings_items :email_suggestions, :type => :boolean, :default => false
   settings_items :profile_admin_mail_notification, :type => :boolean, :default => true
 
+  settings_items :profile_kinds, :type => :hash, :default => {}
+  after_save do |profile|
+    profile.profile_kinds.each do |key, value|
+      environment = profile.environment
+      kind = environment.kinds.where(:id => key.to_s).first
+      next unless kind.present?
+
+      value == '1' ? kind.add_profile(profile) : kind.remove_profile(profile)
+    end
+  end
+  before_save do |profile|
+    unless profile.setting_changed?(:profile_kinds)
+      profile.profile_kinds = {}
+    end
+  end
+
+  def kinds_style_classes
+    return nil if kinds.blank?
+    kinds.map(&:style_class).join(' ')
+  end
+
   extend ActsAsHavingBoxes::ClassMethods
   acts_as_having_boxes
 
@@ -239,6 +267,7 @@ class Profile < ApplicationRecord
     where('circles.id = ?', circle.id)
   }
 
+  settings_items :wall_access, :type => :integer, :default => AccessLevels::LEVELS[:users]
   settings_items :allow_followers, :type => :boolean, :default => true
   alias_method :allow_followers?, :allow_followers
 
@@ -318,6 +347,7 @@ class Profile < ApplicationRecord
 
   extend ActsAsHavingImage::ClassMethods
   acts_as_having_image
+  acts_as_having_image field: :top_image
 
   has_many :tasks, :dependent => :destroy, :as => 'target'
 
@@ -341,6 +371,8 @@ class Profile < ApplicationRecord
 
   has_many :profile_suggestions, :foreign_key => :suggestion_id, :dependent => :destroy
 
+  has_and_belongs_to_many :kinds
+
   def top_level_categorization
     ret = {}
     self.categories.each do |c|
@@ -348,6 +380,10 @@ class Profile < ApplicationRecord
       ret[p] = (ret[p] || []) + [c]
     end
     ret
+  end
+
+  def wall_access_levels
+    AccessLevels.options(1)
   end
 
   def interests
@@ -439,7 +475,7 @@ class Profile < ApplicationRecord
   validate :valid_identifier
 
   def valid_identifier
-    errors.add(:identifier, _('is not available.')) unless Profile.is_available?(identifier, environment, id)
+    errors.add(:identifier, :not_available) unless Profile.is_available?(identifier, environment, id)
   end
 
   def valid_template
@@ -794,8 +830,8 @@ private :generate_url, :url_options
   end
 
   # Adds a person as member of this Profile.
-  def add_member(person, attributes={})
-    if self.has_members? && !self.secret
+  def add_member(person, invited=false, **attributes)
+    if self.has_members? && (!self.secret || invited)
       if self.closed? && members.count > 0
         AddMember.create!(:person => person, :organization => self) unless self.already_request_membership?(person)
       else
@@ -817,6 +853,8 @@ private :generate_url, :url_options
   # adds a person as administrator os this profile
   def add_admin(person)
     self.affiliate(person, Profile::Roles.admin(environment.id))
+    circle = Circle.find_or_create_by(name: _('memberships'), person: person, profile_type: self.class.name)
+    person.follow(self, circle)
   end
 
   def remove_admin(person)
@@ -1145,7 +1183,7 @@ private :generate_url, :url_options
   end
 
   def followed_by?(person)
-    (person == self) || (person.in? self.followers)
+    (person == self) || (person.is_member_of?(self)) || (person.in? self.followers)
   end
 
   def in_social_circle?(person)

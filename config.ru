@@ -27,6 +27,6 @@ rails_app = Rack::Builder.new do
 end
 
 run Rack::Cascade.new([
-  Api::App,
-  rails_app
+  rails_app,
+  Api::App
 ])

@@ -46,8 +46,7 @@ module Api
 
 
     class Image < Entity
-      root 'images', 'image'
-
+      expose :id
       expose :filename
       expose  :url do |image, options|
         image.public_filename
@@ -71,12 +70,10 @@ module Api
     end
 
     class CategoryBase < Entity
-      root 'categories', 'category'
       expose :name, :id, :slug
     end
 
     class Category < CategoryBase
-      root 'categories', 'category'
       expose :full_name do |category, options|
         category.full_name
       end
@@ -87,22 +84,22 @@ module Api
     end
 
     class Region < Category
-      root 'regions', 'region'
       expose :parent_id
     end
 
     class Block < Entity
-      root 'blocks', 'block'
       expose :id, :type, :settings, :position, :enabled
       expose :mirror, :mirror_block_id, :title
-      expose :api_content, if: lambda { |object, options| options[:display_api_content] || object.display_api_content_by_default? }
+      expose :api_content, if: lambda { |object, options| options[:display_api_content] || object.display_api_content_by_default? } do |block, options|
+        block.api_content({:current_person => options[:current_person]}.merge(options[:api_content_params] || {}))
+      end
       expose :permissions do |block, options|
         Entities.permissions_for_entity(block, options[:current_person], :allow_edit?)
       end
+      expose :images, :using => Image
     end
 
     class Box < Entity
-      root 'boxes', 'box'
       expose :id, :position
       expose :blocks, :using => Block do |box, options|
         box.blocks.select {|block| block.visible_to_user?(options[:current_person]) || block.allow_edit?(options[:current_person]) }
@@ -132,6 +129,7 @@ module Api
         hash
       end
       expose :image, :using => Image
+      expose :top_image, :using => Image
       expose :region, :using => Region
       expose :type
       expose :custom_header
@@ -149,9 +147,15 @@ module Api
     end
 
     class Person < Profile
-      root 'people', 'person'
       expose :user, :using => UserBasic, documentation: {type: 'User', desc: 'The user data of a person' }
       expose :vote_count
+
+      attrs = [:email, :country, :state, :city, :nationality, :formation, :schooling]
+      attrs.each do |attribute|
+        name = attribute
+        expose attribute, :as => name, :if => lambda{|person,options| Entities.can_display_profile_field?(person, options, {:field =>  attribute})}
+      end
+
       expose :comments_count do |person, options|
         person.comments.count
       end
@@ -167,11 +171,9 @@ module Api
     end
 
     class Enterprise < Profile
-      root 'enterprises', 'enterprise'
     end
 
     class Community < Profile
-      root 'communities', 'community'
       expose :description
       expose :admins, :if => lambda { |community, options| community.display_info_to? options[:current_person]} do |community, options|
         community.admins.map{|admin| {"name"=>admin.name, "id"=>admin.id, "username" => admin.identifier}}
@@ -193,12 +195,10 @@ module Api
     end
 
     class Comment < CommentBase
-      root 'comments', 'comment'
       expose :children, as: :replies, :using => Comment
     end
 
     class ArticleBase < Entity
-      root 'articles', 'article'
       expose :id
       expose :body
       expose :abstract, documentation: {type: 'String', desc: 'Teaser of the body'}
@@ -235,7 +235,6 @@ module Api
     end
 
     class Article < ArticleBase
-      root 'articles', 'article'
       expose :parent, :using => ArticleBase
       expose :children, :using => ArticleBase do |article, options|
         article.children.published.limit(V1::Articles::MAX_PER_PAGE)
@@ -248,8 +247,6 @@ module Api
     end
 
     class User < Entity
-      root 'users', 'user'
-
       attrs = [:id,:login,:email,:activated?]
       aliases = {:activated? => :activated}
 
@@ -271,12 +268,10 @@ module Api
     end
 
     class UserLogin < User
-      root 'users', 'user'
       expose :private_token, documentation: {type: 'String', desc: 'A valid authentication code for post/delete api actions'}, if: lambda {|object, options| object.activated? }
     end
 
     class Task < Entity
-      root 'tasks', 'task'
       expose :id
       expose :type
       expose :requestor, using: Profile
@@ -301,6 +296,9 @@ module Api
       expose :signup_intro
       expose :terms_of_use
       expose :top_url, as: :host
+      expose :type do |environment, options|
+        "Environment"
+      end
       expose :settings, if: lambda { |instance, options| options[:is_admin] }
       expose :permissions, if: lambda { |environment, options| options[:current_person].present? } do |environment, options|
         environment.permissions_for(options[:current_person])
@@ -308,12 +306,10 @@ module Api
     end
 
     class Tag < Entity
-      root 'tags', 'tag'
       expose :name
     end
 
     class Activity < Entity
-      root 'activities', 'activity'
       expose :id, :created_at, :updated_at
       expose :user, :using => Profile
 
@@ -330,10 +326,30 @@ module Api
     end
 
     class Role < Entity
-      root 'roles', 'role'
       expose :id
       expose :name
       expose :key
+    end
+
+    class AbuseReport < Entity
+      expose :id
+      expose :reporter, using: Person
+      expose :reason
+      expose :created_at
+    end
+
+    class AbuseComplaint < Task
+      expose :abuse_reports, using: AbuseReport
+    end
+
+    class Domain < Entity
+      expose :id
+      expose :name
+      expose :is_default
+      expose :owner do |domain, options|
+        type_map = {Profile => ::Profile, Environment => ::Environment}.find {|k,v| domain.owner.kind_of?(v)}
+        type_map.first.represent(domain.owner, options) unless type_map.nil?
+      end
     end
   end
 end

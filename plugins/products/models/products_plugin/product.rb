@@ -55,9 +55,6 @@ module ProductsPlugin
     validates_presence_of :product_category
     validates_associated :product_category
 
-    validates_numericality_of :price, allow_nil: true
-    validates_numericality_of :discount, allow_nil: true
-
     extend CurrencyHelper::ClassMethods
     has_currency :price
     has_currency :discount
@@ -88,6 +85,10 @@ module ProductsPlugin
 
     attr_accessible :external_id
     settings_items :external_id, type: String, default: nil
+
+    validates_numericality_of :price, allow_nil: true
+    validates_numericality_of :discount, allow_nil: true
+    validate :valid_discount
 
     scope :enabled, -> { where 'profiles.enabled = ?', true }
     scope :visible, -> { where 'profiles.visible = ?', true }
@@ -334,6 +335,12 @@ module ProductsPlugin
 
     def action_tracker_user
       self.profile
+    end
+
+    def valid_discount
+      if discount && (price.blank? || discount > price)
+        self.errors.add(:discount, _("should not be bigger than the price"))
+      end
     end
 
   end

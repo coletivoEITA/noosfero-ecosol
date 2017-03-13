@@ -37,6 +37,14 @@ class ForumHelperTest < ActionView::TestCase
     assert_match /forum-post position-1 first odd-post.*forum-post position-2 last not-published even-post/, list_forum_posts(forum.posts)
   end
 
+  should 'display icon warning only for not published posts' do
+    post1 = create(TextArticle, :name => 'A post', :profile => profile, :parent => forum, :published => true, :author => profile)
+    post2 = create(TextArticle, :name => 'Another post', :profile => profile, :parent => forum, :published => false, :author => profile)
+
+    assert_no_tag_in_string topic_title(post1), :tag => 'span', :attributes => { :class => /ui-icon/ }
+    assert_tag_in_string topic_title(post2), :tag => 'span', :attributes => { :class => /ui-icon/ }
+  end
+
   should 'return post update if it has no comments' do
     author = create_user('forum test author').person
     some_post = create(TextArticle, :name => 'First post', :profile => profile, :parent => forum, :published => true, :author => author)
@@ -71,6 +79,13 @@ class ForumHelperTest < ActionView::TestCase
     assert_match 'John', out
 
     assert_match(/#{result} by John/m, last_topic_update(some_post))
+  end
+
+  should "not escape html in last topic update" do
+    person = create_user('john').person
+    some_post = create(TextArticle, name: 'First post', profile: profile, parent: forum, published: true)
+    some_post.comments << build(Comment, author: person, title: 'test', body: 'test')
+    assert_tag_in_string list_forum_posts(forum.posts), tag: 'a', content: 'john'
   end
 
   protected

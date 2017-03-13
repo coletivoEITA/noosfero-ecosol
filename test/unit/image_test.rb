@@ -63,6 +63,16 @@ class ImageTest < ActiveSupport::TestCase
     assert_equal '/images/icons-app/image-loading-thumb.png', file.public_filename(:thumb)
   end
 
+  should 'use origin image if thumbnails were not processed and fallback is enabled' do
+    NOOSFERO_CONF.expects(:[]).with('delayed_attachment_fallback_original_image').returns(true).at_least_once
+    file = create(Image, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
+    profile.update_attribute(:image_id, file.id)
+
+    assert_match(/rails.png/, Image.find(file.id).public_filename(:thumb))
+
+    file.destroy
+  end
+
   should 'return image thumbnail if thumbnails were processed' do
     file = create(Image, :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
     profile.update_attribute(:image_id, file.id)
@@ -121,6 +131,12 @@ class ImageTest < ActiveSupport::TestCase
   should 'not allow script files to be uploaded without append .txt in the end' do
     file = create(Image, :uploaded_data => fixture_file_upload('files/hello_world.php', 'image/png'))
     assert_equal 'hello_world.php.txt', file.filename
+  end
+
+  should 'have an owner' do
+    owner = fast_create(Block)
+    file = create(Image, uploaded_data: fixture_file_upload('/files/rails.png', 'image/png'), owner: owner)
+    assert_equal owner, file.owner
   end
 
 end

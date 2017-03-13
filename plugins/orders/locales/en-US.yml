@@ -201,7 +201,7 @@ en-US: &en-US
           placeholder: "Type to find and add products"
 
         _index:
-          header: "Purchase %{profile.code} - %{profile} / Sale - %{consumer}"
+          header: "Purchase %{profile_code} - %{profile} / Sale - %{consumer}"
           empty_order: "Empty order"
           supplier: "%{terms.supplier.singular}"
           product: "product"
@@ -261,7 +261,7 @@ en-US: &en-US
         _payment_edition:
           choose_payment_method: "Escolha um método de pagamento"
           other_method: "Define the method"
-          
+
       admin:
         reports:
           generate_spreadsheets: "Export spreadsheets"
@@ -269,8 +269,8 @@ en-US: &en-US
           orders_spreadsheet: "By consumers"
           suppliers_spreadsheet: "By suppliers"
           consumers_spreadsheet: "By consumers"
-          choose_hub: "Choose a hub" 
-          all_hubs: "all the hubs" 
+          choose_hub: "Choose a hub"
+          all_hubs: "all the hubs"
           close: "Close"
         index:
           no_orders_to_show: "No orders to show."
@@ -306,7 +306,7 @@ en-US: &en-US
         new_order:
           add: "Add order"
           adding_order: "Adding an order"
-          choose_the_consumer: "Choose the consumer below" 
+          choose_the_consumer: "Choose the consumer below"
           is_consumer_registered: "Is the consumer of this order registered?"
           consumer_registered: "He/She is registered - define who is the consumer"
           consumer_not_registered: "He/She is not registered - insert data about the buyer"

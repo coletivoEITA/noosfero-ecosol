@@ -2,7 +2,7 @@ class Block < ApplicationRecord
 
   attr_accessible :title, :subtitle, :display, :limit, :box_id, :posts_per_page,
                   :visualization_format, :language, :display_user,
-                  :box, :edit_modes, :move_modes, :mirror
+                  :box, :edit_modes, :move_modes, :mirror, :visualization, :images_builder
 
   include ActionView::Helpers::TagHelper
 
@@ -16,9 +16,12 @@ class Block < ApplicationRecord
   belongs_to :box
   belongs_to :mirror_block, :class_name => "Block"
   has_many :observers, :class_name => "Block", :foreign_key => "mirror_block_id"
+  has_many :images, foreign_key: "owner_id"
 
   extend ActsAsHavingSettings::ClassMethods
   acts_as_having_settings
+
+  settings_items :visualization, :type => Hash, :default => {}
 
   scope :enabled, -> { where :enabled => true }
 
@@ -302,7 +305,7 @@ class Block < ApplicationRecord
     self.observers << block
   end
 
-  def api_content
+  def api_content(options = {})
     nil
   end
 
@@ -320,7 +323,15 @@ class Block < ApplicationRecord
     false
   end
 
-  attr_accessor :api_content_params
+  def images_builder=(raw_images)
+    raw_images.each do |img|
+      if img[:remove_image] == true || img[:remove_image] == 'true'
+        images.find_by(id: img[:id]).destroy!
+      elsif !img[:uploaded_data].blank?
+        images.build(img)
+      end
+    end
+  end
 
   private
 

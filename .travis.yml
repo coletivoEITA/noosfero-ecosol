@@ -24,7 +24,7 @@ cache: bundler
 
 language: ruby
 rvm:
-  - 2.3.1
+  - 2.3.3
 
 services:
   - postgresql
@@ -38,6 +38,15 @@ addons:
   artifacts:
     paths:
       - $(ls tmp/artifact* | tr "\n" ":")
+  # same as in docker ci image
+  firefox: '45.7.0'
+
+before_install:
+  # geckodriver, from http://www.columbia.edu/~njn2118/journal/2016/10/28.html
+  - wget https://github.com/mozilla/geckodriver/releases/download/v0.14.0/geckodriver-v0.14.0-linux64.tar.gz
+  - mkdir geckodriver
+  - tar -xzf geckodriver-v0.14.0-linux64.tar.gz -C geckodriver
+  - export PATH=$PATH:$PWD/geckodriver
 
 before_script:
   - mkdir -p tmp/{pids,cache} log cache

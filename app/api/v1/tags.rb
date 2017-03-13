@@ -4,17 +4,17 @@ module Api
       resource :articles do
         resource ':id/tags' do
           get do
-            article = find_article(environment.articles, params[:id])
-            present article.tag_list
+            article = find_article(environment.articles, {:id => params[:id]})
+            present_partial article.tag_list, {}
           end
 
           desc "Add a tag to an article"
           post do
             authenticate!
-            article = find_article(environment.articles, params[:id])
+            article = find_article(environment.articles, {:id => params[:id]})
             article.tag_list=params[:tags]
             article.save
-            present article.tag_list
+            present_partial article.tag_list, {}
           end
         end
       end
@@ -22,7 +22,22 @@ module Api
       resource :environment do
         desc 'Return the tag counts for this environment'
         get '/tags' do
-          present environment.tag_counts
+          status Api::Status::DEPRECATED
+          present_partial environment.tag_counts, {}
+        end
+      end
+
+      resource :environments do
+        resource ':id/tags' do
+          get do
+            local_environment = Environment.find(params[:id])
+            present_partial local_environment.articles.tag_counts, {}
+          end
+        end
+
+        desc 'Return the tag counts for this environment'
+        get '/tags' do
+          present_partial environment.articles.tag_counts, {}
         end
       end
     end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160809123835) do
+ActiveRecord::Schema.define(version: 20170401104432) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -279,12 +279,14 @@ ActiveRecord::Schema.define(version: 20160809123835) do
   add_index "chat_messages", ["to_id"], name: "index_chat_messages_on_to_id", using: :btree
 
   create_table "circles", force: :cascade do |t|
-    t.string  "name"
-    t.integer "person_id"
-    t.string  "profile_type", null: false
+    t.string   "name"
+    t.integer  "person_id"
+    t.string   "profile_type", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  add_index "circles", ["person_id", "name"], name: "circles_composite_key_index", unique: true, using: :btree
+  add_index "circles", ["person_id", "name", "profile_type"], name: "circles_composite_key_index", unique: true, using: :btree
 
   create_table "comments", force: :cascade do |t|
     t.string   "title"
@@ -457,8 +459,11 @@ ActiveRecord::Schema.define(version: 20160809123835) do
     t.integer "height"
     t.boolean "thumbnails_processed", default: false
     t.string  "label",                default: ""
+    t.integer "owner_id"
+    t.string  "owner_type"
   end
 
+  add_index "images", ["owner_type", "owner_id"], name: "index_images_on_owner_type_and_owner_id", using: :btree
   add_index "images", ["parent_id"], name: "index_images_on_parent_id", using: :btree
 
   create_table "inputs", force: :cascade do |t|
@@ -476,6 +481,18 @@ ActiveRecord::Schema.define(version: 20160809123835) do
 
   add_index "inputs", ["product_category_id"], name: "index_inputs_on_product_category_id", using: :btree
   add_index "inputs", ["product_id"], name: "index_inputs_on_product_id", using: :btree
+
+  create_table "kinds", force: :cascade do |t|
+    t.string  "name"
+    t.string  "type"
+    t.boolean "moderated",      default: false
+    t.integer "environment_id"
+  end
+
+  create_table "kinds_profiles", force: :cascade do |t|
+    t.integer "kind_id"
+    t.integer "profile_id"
+  end
 
   create_table "licenses", force: :cascade do |t|
     t.string  "name",           null: false
@@ -645,6 +662,7 @@ ActiveRecord::Schema.define(version: 20160809123835) do
     t.boolean  "invite_friends_only",                default: false
     t.boolean  "secret",                             default: false
     t.string   "editor",                             default: "tiny_mce", null: false
+    t.integer  "top_image_id"
   end
 
   add_index "profiles", ["activities_count"], name: "index_profiles_on_activities_count", using: :btree

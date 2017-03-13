@@ -4,12 +4,15 @@ module LayoutHelper
 
   def body_classes
     # Identify the current controller and action for the CSS:
-    (logged_in? ? " logged-in" : "") +
-    "#{" responsive" if theme_option :responsive}" +
-    " controller-#{controller.controller_name}" +
-    " action-#{controller.controller_name}-#{controller.action_name}" +
-    " template-#{@layout_template || if profile.blank? then 'default' else profile.layout_template end}" +
-    (!profile.nil? && profile.is_on_homepage?(request.path,@page) ? " profile-homepage" : "")
+    [
+      (logged_in? ? 'logged-in' : nil),
+      "#{" responsive" if theme_option :responsive}",
+      "controller-#{controller.controller_name}",
+      "action-#{controller.controller_name}-#{controller.action_name}",
+      "template-#{@layout_template || if profile.blank? then 'default' else profile.layout_template end}",
+      !profile.nil? && profile.is_on_homepage?(request.path,@page) ? 'profile-homepage' : nil,
+      profile.present? ? profile.kinds_style_classes : nil,
+    ].compact.join(' ')
   end
 
   def html_tag_classes

@@ -23,7 +23,7 @@ module Api
           detail 'Get all articles filtered by fields in query params'
           params Entities::Article.documentation
           success Entities::Article
-          failure [[403, 'Forbidden']]
+          failure [[Api::Status::FORBIDDEN, 'Forbidden']]
           named 'ArticlesList'
           headers [
             'Per-Page' => {
@@ -40,7 +40,7 @@ module Api
           detail 'Get only one article by id. If not found the "forbidden" http error is showed'
           params Entities::Article.documentation
           success Entities::Article
-          failure [[403, 'Forbidden']]
+          failure [[Api::Status::FORBIDDEN, 'Forbidden']]
           named 'ArticleById'
         end
         get ':id', requirements: {id: /[0-9]+/} do
@@ -59,20 +59,20 @@ module Api
           return forbidden! unless article.allow_delete?(current_person)
           begin
             article.destroy
-            { :success => true }
+            { success: true }
           rescue Exception => exception
-            render_api_error!(_('The article couldn\'t be removed due to some problem. Please contact the administrator.'), 400)
-          end          
+            render_api_error!(_('The article couldn\'t be removed due to some problem. Please contact the administrator.'), Api::Status::BAD_REQUEST)
+          end
         end
 
         desc 'Report a abuse and/or violent content in a article by id' do
           detail 'Submit a abuse (in general, a content violation) report about a specific article'
           params Entities::Article.documentation
-          failure [[400, 'Bad Request']]
+          failure [[Api::Status::BAD_REQUEST, 'Bad Request']]
           named 'ArticleReportAbuse'
         end
         post ':id/report_abuse' do
-          article = find_article(environment.articles, params[:id])
+          article = find_article(environment.articles, {:id => params[:id]})
           profile = article.profile
           begin
             abuse_report = AbuseReport.new(:reason => params[:report_abuse])
@@ -94,14 +94,14 @@ module Api
             }
           rescue Exception => exception
             #logger.error(exception.to_s)
-            render_api_error!(_('Your report couldn\'t be saved due to some problem. Please contact the administrator.'), 400)
+            render_api_error!(_('Your report couldn\'t be saved due to some problem. Please contact the administrator.'), Api::Status::BAD_REQUEST)
           end
 
         end
 
         desc "Returns the articles I voted" do
           detail 'Get the Articles I make a vote'
-          failure [[403, 'Forbidden']]
+          failure [[Api::Status::FORBIDDEN, 'Forbidden']]
           named 'ArticleFollowers'
         end
          #FIXME refactor this method
@@ -112,32 +112,21 @@ module Api
         desc 'Perform a vote on a article by id' do
           detail 'Vote on a specific article with values: 1 (if you like) or -1 (if not)'
           params Entities::UserLogin.documentation
-          failure [[401,'Unauthorized']]
+          failure [[Api::Status::UNAUTHORIZED,'Unauthorized']]
           named 'ArticleVote'
         end
         post ':id/vote' do
           authenticate!
           value = (params[:value] || 1).to_i
           # FIXME verify allowed values
-          render_api_error!('Vote value not allowed', 400) unless [-1, 1].include?(value)
-          article = find_article(environment.articles, params[:id])
+          render_api_error!('Vote value not allowed', Api::Status::BAD_REQUEST) unless [-1, 1].include?(value)
+          article = find_article(environment.articles, {:id => params[:id]})
           begin
             vote = Vote.new(:voteable => article, :voter => current_person, :vote => value)
             {:vote => vote.save!}
           rescue ActiveRecord::RecordInvalid => e
-            render_api_error!(e.message, 400)
+            render_api_error!(e.message, Api::Status::BAD_REQUEST)
           end
-        end
-
-        desc "Returns the total followers for the article" do
-          detail 'Get the followers of a specific article by id'
-          failure [[403, 'Forbidden']]
-          named 'ArticleFollowers'
-        end
-        get ':id/followers' do
-          article = find_article(environment.articles, params[:id])
-          total = article.person_followers.count
-          {:total_followers => total}
         end
 
         desc "Return the articles followed by me"
@@ -148,12 +137,12 @@ module Api
         desc "Add a follower for the article" do
           detail 'Add the current user identified by private token, like a follower of a article'
           params Entities::UserLogin.documentation
-          failure [[401, 'Unauthorized']]
+          failure [[Api::Status::UNAUTHORIZED, 'Unauthorized']]
           named 'ArticleFollow'
         end
         post ':id/follow' do
           authenticate!
-          article = find_article(environment.articles, params[:id])
+          article = find_article(environment.articles, {:id => params[:id]})
           if article.article_followers.exists?(:person_id => current_person.id)
             {:success => false, :already_follow => true}
           else
@@ -168,13 +157,13 @@ module Api
         desc 'Return the children of a article identified by id' do
           detail 'Get all children articles of a specific article'
           params Entities::Article.documentation
-          failure [[403, 'Forbidden']]
+          failure [[Api::Status::FORBIDDEN, 'Forbidden']]
           named 'ArticleChildren'
         end
 
         paginate per_page: MAX_PER_PAGE, max_per_page: MAX_PER_PAGE
         get ':id/children' do
-          article = find_article(environment.articles, params[:id])
+          article = find_article(environment.articles, {:id => params[:id]})
 
           #TODO make tests for this situation
           votes_order = params.delete(:order) if params[:order]=='votes_score'
@@ -193,12 +182,14 @@ module Api
           detail 'Get a child of a specific article'
           params Entities::Article.documentation
           success Entities::Article
-          failure [[403, 'Forbidden']]
+          failure [[Api::Status::FORBIDDEN, 'Forbidden']]
           named 'ArticleChild'
         end
         get ':id/children/:child_id' do
-          article = find_article(environment.articles, params[:id])
-          child = find_article(article.children, params[:child_id])
+          article = find_article(environment.articles, {:id => params[:id]})
+          child_params = {}
+          child_params[:id] = params[:child_id]
+          child = find_article(article.children, child_params)
           child.hit
           present_partial child, :with => Entities::Article
         end
@@ -207,7 +198,7 @@ module Api
           detail 'Suggest a article to another profile (person, community...)'
           params Entities::Article.documentation
           success Entities::Task
-          failure [[401,'Unauthorized']]
+          failure [[Api::Status::UNAUTHORIZED,'Unauthorized']]
           named 'ArticleSuggest'
         end
         post ':id/children/suggest' do
@@ -232,7 +223,7 @@ module Api
           detail 'Create a new article and associate to a parent'
           params Entities::Article.documentation
           success Entities::Article
-          failure [[401,'Unauthorized']]
+          failure [[Api::Status::UNAUTHORIZED,'Unauthorized']]
           named 'ArticleAddChild'
         end
         post ':id/children' do
@@ -261,7 +252,7 @@ module Api
                 detail 'Get a list of articles of a profile'
                 params Entities::Article.documentation
                 success Entities::Article
-                failure [[403, 'Forbidden']]
+                failure [[Api::Status::FORBIDDEN, 'Forbidden']]
                 named 'ArticlesOfProfile'
               end
               get do
@@ -272,6 +263,8 @@ module Api
                   if article && !article.display_to?(current_person)
                     article = forbidden!
                   end
+                  article ||= []
+                  status Api::Status::DEPRECATED
 
                   present_partial article, :with => Entities::Article, current_person: current_person
                 else
@@ -284,10 +277,10 @@ module Api
                 detail 'Get only one article of a profile'
                 params Entities::Article.documentation
                 success Entities::Article
-                failure [[403, 'Forbidden']]
+                failure [[Api::Status::FORBIDDEN, 'Forbidden']]
                 named 'ArticleOfProfile'
               end
-              get ':id' do
+              get '/*id' do
                 profile = environment.send(kind.pluralize).find(params["#{kind}_id"])
                 present_article(profile)
               end
@@ -298,7 +291,7 @@ module Api
                 detail 'Create a new article and associate with a profile'
                 params Entities::Article.documentation
                 success Entities::Article
-                failure [[403, 'Forbidden']]
+                failure [[Api::Status::FORBIDDEN, 'Forbidden']]
                 named 'ArticleCreateToProfile'
               end
               post do

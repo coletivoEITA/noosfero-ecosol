@@ -15,7 +15,7 @@ class Environment < ApplicationRecord
                   :members_whitelist, :highlighted_news_amount,
                   :portal_news_amount, :date_format, :signup_intro,
                   :enable_feed_proxy, :http_feed_proxy, :https_feed_proxy,
-                  :disable_feed_ssl
+                  :disable_feed_ssl, :layout_template
 
   has_many :users
 
@@ -56,6 +56,7 @@ class Environment < ApplicationRecord
     'manage_environment_templates' => N_('Manage environment templates'),
     'manage_environment_licenses' => N_('Manage environment licenses'),
     'manage_environment_trusted_sites' => N_('Manage environment trusted sites'),
+    'manage_environment_kinds' => N_('Manage environment kinds'),
     'edit_appearance'      => N_('Edit appearance'),
     'edit_raw_html_block'      => N_('Edit Raw HTML block'),
     'manage_email_templates' => N_('Manage Email Templates'),
@@ -155,7 +156,7 @@ class Environment < ApplicationRecord
       'display_header_footer_explanation' => _("Display explanation about header and footer"),
       'articles_dont_accept_comments_by_default' => _("Articles don't accept comments by default"),
       'organizations_are_moderated_by_default' => _("Organizations have moderated publication by default"),
-      'enable_organization_url_change' => _("Allow organizations to change their URL"),
+      'enable_profile_url_change' => _("Allow profiles to change their URL"),
       'admin_must_approve_new_communities' => _("Admin must approve creation of communities"),
       'admin_must_approve_new_users' => _("Admin must approve registration of new users"),
       'show_balloon_with_profile_links_when_clicked' => _('Show a balloon with profile links when a profile image is clicked'),
@@ -241,6 +242,7 @@ class Environment < ApplicationRecord
   has_many :cities
 
   has_many :roles, :dependent => :destroy
+  has_many :kinds
 
   has_many :mailings, :class_name => 'EnvironmentMailing', :foreign_key => :source_id, :as => 'source'
 

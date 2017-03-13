@@ -120,6 +120,16 @@ class ProfileTest < ActiveSupport::TestCase
     end
   end
 
+  should 'remove top images when removing profile' do
+    profile = build(Profile, :top_image_builder => {:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png')})
+    top_image = profile.top_image
+    top_image.save!
+    profile.destroy
+    assert_raise ActiveRecord::RecordNotFound do
+      top_image.reload
+    end
+  end
+
   def test_should_avoid_reserved_identifiers
     Profile::RESERVED_IDENTIFIERS.each do |identifier|
       assert_invalid_identifier identifier
@@ -1585,7 +1595,7 @@ class ProfileTest < ActiveSupport::TestCase
   should 'list all events' do
     profile = fast_create(Profile)
     event1 = Event.new(:name => 'Ze Birthday', :start_date => DateTime.now.in_time_zone)
-    event2 = Event.new(:name => 'Mane Birthday', :start_date => DateTime.now.in_time_zone >> 1)
+    event2 = Event.new(:name => 'Mane Birthday', :start_date => DateTime.now.in_time_zone + 1.day)
     profile.events << [event1, event2]
     assert_includes profile.events, event1
     assert_includes profile.events, event2
@@ -1884,6 +1894,28 @@ class ProfileTest < ActiveSupport::TestCase
     with_image = fast_create(Person, :name => 'with_image', :environment_id => env.id, :image_id => img.id)
     assert_equal 2, env.profiles.without_image.count
     assert_not_includes env.profiles.without_image, with_image
+  end
+
+  should 'find profiles with top image' do
+    env = fast_create(Environment)
+    2.times do |n|
+      img = Image.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
+      fast_create(Person, :name => "with_top_image_#{n}", :environment_id => env.id, :top_image_id => img.id)
+    end
+    without_top_image = fast_create(Person, :name => 'without_top_image', :environment_id => env.id)
+    assert_equal 2, env.profiles.with_top_image.count
+    assert_not_includes env.profiles.with_top_image, without_top_image
+  end
+
+  should 'find profiles withouth top image' do
+    env = fast_create(Environment)
+    2.times do |n|
+      fast_create(Person, :name => "without_top_image_#{n}", :environment_id => env.id)
+    end
+    img = Image.create!(:uploaded_data => fixture_file_upload('/files/rails.png', 'image/png'))
+    with_top_image = fast_create(Person, :name => 'with_top_image', :environment_id => env.id, :top_image_id => img.id)
+    assert_equal 2, env.profiles.without_top_image.count
+    assert_not_includes env.profiles.without_top_image, with_top_image
   end
 
   should 'return enterprises subclasses too on namedscope enterprises' do
@@ -2221,7 +2253,7 @@ class ProfileTest < ActiveSupport::TestCase
     assert_not_includes profiles, p3
     assert_not_includes profiles, p4
   end
-  
+
   ['post_content', 'edit_profile', 'destroy_profile'].each do |permission|
     should "return true in #{permission} when user has this permission" do
       profile = fast_create(Profile)
@@ -2248,5 +2280,48 @@ class ProfileTest < ActiveSupport::TestCase
     assert_raise RuntimeError do
       c.add_member(p)
     end
+  end
+
+  should 'allow to add members in secret profiles if they are invited' do
+    community = fast_create(Community, secret: true)
+    person = create_user('mytestuser').person
+    community.add_member(person, true)
+    assert_includes community.members, person
+  end
+
+  should 'have kinds' do
+    k1 = fast_create(Kind, :name => 'Captain', :type => 'Profile', :environment_id => Environment.default.id)
+    k2 = fast_create(Kind, :name => 'Number One', :type => 'Profile', :environment_id => Environment.default.id)
+    k3 = fast_create(Kind, :name => 'Officer', :type => 'Profile', :environment_id => Environment.default.id)
+    profile = fast_create(Profile)
+
+    profile.kinds << k1
+    profile.kinds << k3
+
+    assert_includes profile.kinds, k1
+    assert_includes profile.kinds, k3
+    assert_not_includes profile.kinds, k2
+  end
+
+  should 'use profile_kinds to define kinds after save' do
+    to_add1 = fast_create(Kind, :name => 'Captain', :type => 'Profile', :environment_id => Environment.default.id)
+    to_add2 = fast_create(Kind, :name => 'Number One', :type => 'Profile', :environment_id => Environment.default.id)
+    to_remove = fast_create(Kind, :name => 'Officer', :type => 'Profile', :environment_id => Environment.default.id)
+
+    profile = fast_create(Profile)
+    profile.kinds << to_remove
+
+    assert_includes profile.kinds, to_remove
+    assert_not_includes profile.kinds, to_add1
+    assert_not_includes profile.kinds, to_add2
+
+    profile.profile_kinds = {to_add1.id.to_s => '1', to_add2.id.to_s => '1', to_remove.id.to_s => '0'}
+    profile.save! ; profile.save!
+    profile.reload
+
+    assert_not_includes profile.kinds, to_remove
+    assert_includes profile.kinds, to_add1
+    assert_includes profile.kinds, to_add2
+    assert profile.profile_kinds.blank?
   end
 end

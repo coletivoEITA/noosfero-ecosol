@@ -24,11 +24,18 @@ class Theme
       theme
     end
 
-    def find id
-      if File.directory? File.join(Rails.root, 'public', self.system_themes_dir, id)
-        self.new id, :base_dir => self.system_themes_dir
-      elsif File.directory? File.join(Rails.root, 'public', self.user_themes_dir, id)
-        self.new id
+    def find_system_theme(theme_id)
+      Theme.system_themes.find { |t| t.id == theme_id }
+    end
+
+    def angular_theme?(theme_id)
+      theme = Theme.find_system_theme(theme_id)
+      !theme.nil? && theme.config['angular_theme']
+    end
+
+    def find(the_id)
+      if File.directory?(File.join(user_themes_dir, the_id))
+        Theme.new(the_id)
       else
         nil
       end
@@ -121,23 +128,12 @@ class Theme
     config['public'] = value
   end
 
-  StylesheetFiles = [
-    'stylesheets/style.scss', 'stylesheets/style.sass',
-    'stylesheets/theme.scss', 'stylesheets/theme.sass',
-    'style.css',
-  ]
-  UserStylesheetFiles = %w[ common help menu article button search blocks forms login-box ]
-
-  def stylesheet_file
-    return @stylesheet_file if @stylesheet_file.present?
-    StylesheetFiles.each do |file|
-      return @stylesheet_file = file if File.file? "#{self.path}/#{file}"
-    end
-    @stylesheet_file
+  def angular_theme
+    config['angular_theme'] || false
   end
 
-  def style
-    @style ||= File.read "#{self.path}/#{self.stylesheet_file}"
+  def angular_theme=(value)
+    config['angular_theme'] = value
   end
 
   def public_path

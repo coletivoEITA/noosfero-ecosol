@@ -5,6 +5,9 @@ module Api
   module Helpers
     PRIVATE_TOKEN_PARAM = :private_token
     ALLOWED_PARAMETERS = [:parent_id, :from, :until, :content_type, :author_id, :identifier, :archived, :status]
+    ALLOWED_KEY_PARAMETERS = {
+      Article => [:path]
+    }
 
     include SanitizeParams
     include Noosfero::Plugin::HotSpot
@@ -58,7 +61,12 @@ module Api
           options[:only] = Array.wrap(fields)
         end
       end
-      present model, options
+      if params[:count].to_s == 'true' && model.respond_to?(:size)
+        value = {:count => model.size}
+        present value
+      else
+        present model, options
+      end
     end
 
     include FindByContents
@@ -99,8 +107,9 @@ module Api
       end
     end
 
-    def find_article(articles, id)
-      article = articles.find(id)
+    def find_article(articles, params)
+      conditions = make_conditions_with_parameter(params, Article)
+      article = articles.find_by(conditions)
       article.display_to?(current_person) ? article : forbidden!
     end
 
@@ -122,7 +131,7 @@ module Api
     end
 
     def present_article(asset)
-      article = find_article(asset.articles, params[:id])
+      article = find_article(asset.articles, params)
       present_partial article, with: Entities::Article, params: params, current_person: current_person
     end
 
@@ -178,6 +187,11 @@ module Api
     def present_task(asset, method_or_relation = 'tasks')
       task = find_task(asset, method_or_relation, params[:id])
       present_partial task, :with => Entities::Task
+      if task.kind_of?(AbuseComplaint)
+        present_partial task, :with => Entities::AbuseComplaint
+      else
+        present_partial task, :with => Entities::Task
+      end
     end
 
     def present_tasks_for_asset(asset, method_or_relation = 'tasks')
@@ -211,8 +225,8 @@ module Api
       present_partial activities, :with => Entities::Activity, :current_person => current_person
     end
 
-    def make_conditions_with_parameter(params = {})
-      parsed_params = parser_params(params)
+    def make_conditions_with_parameter(params = {}, class_type = nil)
+      parsed_params = class_type.nil? ? parser_params(params) : parser_params_by_type(class_type, params)
       conditions = {}
       from_date = DateTime.parse(parsed_params.delete(:from)) if parsed_params[:from]
       until_date = DateTime.parse(parsed_params.delete(:until)) if parsed_params[:until]
@@ -331,34 +345,34 @@ module Api
     ##########################################
 
     def not_found!
-      render_api_error!('404 Not found', 404)
+      render_api_error!('404 Not found', Api::Status::NOT_FOUND)
     end
 
     def forbidden!
-      render_api_error!('403 Forbidden', 403)
+      render_api_error!('403 Forbidden', Api::Status::FORBIDDEN)
     end
 
     def cant_be_saved_request!(attribute)
       message = _("(Invalid request) %s can't be saved").html_safe % attribute
-      render_api_error!(message, 400)
+      render_api_error!(message, Api::Status::BAD_REQUEST)
     end
 
     def bad_request!(attribute)
       message = _("(Invalid request) %s not given").html_safe % attribute
-      render_api_error!(message, 400)
+      render_api_error!(message, Api::Status::BAD_REQUEST)
     end
 
     def something_wrong!
       message = _("Something wrong happened")
-      render_api_error!(message, 400)
+      render_api_error!(message, Api::Status::BAD_REQUEST)
     end
 
     def unauthorized!
-      render_api_error!(_('Unauthorized'), 401)
+      render_api_error!(_('Unauthorized'), Api::Status::UNAUTHORIZED)
     end
 
     def not_allowed!
-      render_api_error!(_('Method Not Allowed'), 405)
+      render_api_error!(_('Method Not Allowed'), Api::Status::METHOD_NOT_ALLOWED)
     end
 
     # javascript_console_message is supposed to be executed as console.log()
@@ -374,7 +388,7 @@ module Api
 
     def render_api_errors!(messages)
       messages = messages.to_a if messages.class == ActiveModel::Errors
-      render_api_error!(messages.join(','), 400)
+      render_api_error!(messages.join(','), Api::Status::BAD_REQUEST)
     end
 
     protected
@@ -405,12 +419,26 @@ module Api
     end
 
     def asset_with_image params
-      if !params.nil? && params.has_key?(:image_builder)
+      asset_with_custom_image(:image, params)
+    end
+
+    def asset_with_custom_image(field, params)
+      builder_field = "#{field}_builder".to_sym
+      if !params.nil? && params.has_key?(builder_field)
         asset_api_params = params
-        asset_api_params[:image_builder] = base64_to_uploadedfile(asset_api_params[:image_builder])
+        asset_api_params[builder_field] = base64_to_uploadedfile(asset_api_params[builder_field])
         return asset_api_params
       end
       params
+    end
+
+    def asset_with_images params
+      return params if params.nil? || !params.has_key?(:images_builder)
+      asset_api_params = params
+      asset_api_params[:images_builder] = asset_api_params[:images_builder].map do |image_builder|
+        image_builder[:tempfile] ? base64_to_uploadedfile(image_builder) : image_builder
+      end
+      asset_api_params
     end
 
     def base64_to_uploadedfile(base64_image)
@@ -445,12 +473,23 @@ module Api
     def is_a_relation?(method_or_relation)
       method_or_relation.kind_of?(ActiveRecord::Relation)
     end
-  
+
 
     def parser_params(params)
       parsed_params = {}
       params.map do |k,v|
         parsed_params[k.to_sym] = v if ALLOWED_PARAMETERS.include?(k.to_sym)
+      end
+      parsed_params
+    end
+
+    def parser_params_by_type(class_type, params)
+      parsed_params = parser_params(params)
+      key = params[:key].to_sym if params[:key].present?
+      if key.present? && ALLOWED_KEY_PARAMETERS[class_type].include?(key)
+         parsed_params[key] = params[:id]
+      else
+         parsed_params[:id] = params[:id]
       end
       parsed_params
     end

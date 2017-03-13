@@ -28,8 +28,8 @@ class RecentActivitiesPlugin::ActivitiesBlock < Block
     _('Recent activities')
   end
 
-  def api_content
-    Api::Entities::Activity.represent(activities).as_json
+  def api_content(options = {})
+    {:activities => Api::Entities::Activity.represent(activities)}.as_json
   end
 
   def display_api_content_by_default?

@@ -6,6 +6,9 @@ class ProfileController < PublicController
   before_filter :login_required, :only => [:add, :join, :leave, :unblock, :leave_scrap, :remove_scrap, :remove_activity, :view_more_activities, :view_more_network_activities, :report_abuse, :register_report, :leave_comment_on_activity, :send_mail, :follow, :unfollow]
   before_filter :allow_followers?, :only => [:follow, :unfollow]
   before_filter :accept_only_post, :only => [:follow, :unfollow]
+  before_filter :allow_scrap?, :only => [:leave_scrap]
+  before_filter :allow_comment?, :only => [:leave_comment_on_activity]
+  before_filter :load_tags, only: [:index, :about]
 
   helper TagsHelper
   helper ActionTrackerHelper
@@ -18,10 +21,20 @@ class ProfileController < PublicController
   def index
     @offsets = {:wall => 0, :network => 0}
     page = (params[:page] || 1).to_i
-    @network_activities = loop_fetch_activities(@profile.tracked_notifications, :network, page) if !@profile.is_a?(Person) || follow_profile?
-    @activities = loop_fetch_activities(@profile.activities, :wall, page) if follow_profile?
-    @tags = profile.article_tags
+    if logged_in?
+      @activities = loop_fetch_activities(@profile.activities, :wall, page) if AccessLevels.can_access?(@profile.wall_access, user, @profile)
+      @network_activities = loop_fetch_activities(@profile.tracked_notifications, :network, page) if @profile == user
+    end
     allow_access_to_page
+  end
+
+  def about
+  end
+
+  def activities
+    @offsets = {:wall => 0, :network => 0}
+    page = (params[:page] || 1).to_i
+    @activities = loop_fetch_activities(@profile.activities, :wall, page) if AccessLevels.can_access?(@profile.wall_access, user, @profile)
   end
 
   def tags
@@ -65,7 +78,9 @@ class ProfileController < PublicController
   def friends
     return redirect_to profile.url unless profile.person?
     if is_cache_expired?(profile.friends_cache_key(params))
-      @friends = profile.friends.includes(relations_to_include).paginate(:per_page => per_page, :page => params[:npage], :total_entries => profile.friends.count)
+      @friends = profile.friends.order(:name).includes(relations_to_include)
+        .paginate(:per_page => per_page, :page => params[:npage],
+                  :total_entries => profile.friends.count)
     end
   end
 
@@ -544,5 +559,19 @@ class ProfileController < PublicController
 
   def follow_profile?
     logged_in? && current_person.follows?(@profile)
+  end
+
+  def allow_scrap?
+    logged_in? && (current_person == @profile || (current_person.is_member_of?(@profile) || current_person.is_a_friend?(@profile)))
+  end
+  helper_method :allow_scrap?
+
+  def allow_comment?
+    logged_in?
+  end
+  helper_method :allow_comment?
+
+  def load_tags
+    @tags = profile.article_tags
   end
 end

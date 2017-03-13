@@ -33,7 +33,7 @@
     <div id='article-sub-header'>
       <% if version_license.present? %>
         <div id="article-license">
-          <%= _('Licensed under %s') % (version_license.url.present? ? link_to(version_license.name, version_license.url, :target => '_blank') : version_license.name) %>
+          <%= _('Licensed under %s').html_safe % (version_license.url.present? ? link_to(version_license.name, version_license.url, :target => '_blank') : version_license.name) %>
         </div>
       <% end %>
     </div>
@@ -41,7 +41,7 @@
 
   <% cache(@page.cache_key(params, user, language)) do %>
     <div class="<%="article-body article-body-" + @page.css_class_name %>">
-      <%= @versioned_article.body %>
+      <%= @versioned_article.body.html_safe %>
       <br style="clear:both" />
     </div> <!-- end class="article-body" -->
   <% end %>

@@ -180,9 +180,9 @@ class Person < Profile
   end
 
   # Sets the identifier for this person. Raises an exception when called on a
-  # existing person (since peoples' identifiers cannot be changed)
+  # existing person and the environment don't allow identifier changes
   def identifier=(value)
-    unless self.new_record?
+    unless self.new_record? || environment.enabled?(:enable_profile_url_change)
       raise ArgumentError.new(_('An existing person cannot be renamed.'))
     end
     self[:identifier] = value
@@ -225,6 +225,7 @@ class Person < Profile
   end
 
   def unfollow(profile)
+    return if profile.in_social_circle?(self)
     ProfileFollower.with_follower(self).with_profile(profile).destroy_all
   end
 
@@ -379,6 +380,7 @@ class Person < Profile
   end
 
   def default_set_of_blocks
+    return angular_theme_default_set_of_blocks if Theme.angular_theme?(environment.theme)
     links = [
       {:name => _('Profile'), :address => '/profile/{profile}', :icon => 'menu-people'},
       {:name => _('Image gallery'), :address => '/{profile}/gallery', :icon => 'photos'},
@@ -389,6 +391,15 @@ class Person < Profile
       [MainBlock.new],
       [ProfileImageBlock.new(:show_name => true), LinkListBlock.new(:links => links), RecentDocumentsBlock.new],
       [CommunitiesBlock.new]
+    ]
+  end
+
+  def angular_theme_default_set_of_blocks
+    @boxes_limit = 2
+    self.layout_template = 'rightbar'
+    [
+      [MenuBlock.new, MainBlock.new],
+      [FriendsBlock.new, CommunitiesBlock.new, TagsBlock.new]
     ]
   end
 
@@ -515,7 +526,7 @@ class Person < Profile
   end
 
   def is_member_of?(profile)
-    profile.members.include?(self)
+    profile.try(:members).try(:include?, self)
   end
 
   def follows?(profile)

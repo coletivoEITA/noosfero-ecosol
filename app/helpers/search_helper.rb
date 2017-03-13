@@ -27,6 +27,13 @@ module SearchHelper
     :communities
   ]
 
+  def asset_to_human(asset)
+    custom_names = {
+      articles:    _('content')
+    }
+    custom_names[asset] || _(asset.to_s.singularize)
+  end
+
   # FIXME remove it after search_controler refactored
   include EventsHelper
 
@@ -50,9 +57,9 @@ module SearchHelper
   end
 
   def category_context(category, url)
-    content_tag('div', category.full_name + _(', ') +
+    content_tag('div', (category.full_name + _(', ') +
         link_to(_('search in all categories'),
-          url.merge(:category_path => [], :action => (params[:action] == 'category_index' ? 'index' : params[:action]) )),
+          url.merge(:category_path => [], :action => (params[:action] == 'category_index' ? 'index' : params[:action]) ))).html_safe,
       :align => 'center', :class => 'search-category-context') if category
   end
 

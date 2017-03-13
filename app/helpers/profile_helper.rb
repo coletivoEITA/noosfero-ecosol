@@ -17,7 +17,7 @@ module ProfileHelper
   ORGANIZATION_CATEGORIES = {}
   ORGANIZATION_CATEGORIES[:basic_information] = [:display_name, :created_at, :foundation_year, :type, :language, :members_count, :location, :address_reference, :historic_and_current_context, :admins]
   ORGANIZATION_CATEGORIES[:contact] = [:contact_person, :contact_phone, :contact_email, :organization_website, :jabber_id]
-  ORGANIZATION_CATEGORIES[:economic] = [:business_name, :acronym, :economic_activity, :legal_form, :products, :activities_short_description, :management_information]
+  ORGANIZATION_CATEGORIES[:economic] = [:business_name, :acronym, :economic_activity, :legal_form, :activities_short_description, :management_information]
   ORGANIZATION_CATEGORIES.merge!(COMMON_CATEGORIES)
 
   CATEGORY_MAP = {}
@@ -34,17 +34,21 @@ module ProfileHelper
     :organization => [:blogs, :image_galleries, :interests],
   }
 
-  CUSTOM_LABELS = {
-    :zip_code => _('ZIP code'),
-    :email => _('e-Mail'),
-    :jabber_id => _('Jabber'),
-    :birth_date => _('Date of birth'),
-    :created_at => _('Profile created at'),
-    :members_count => _('Members'),
-    :privacy_setting => _('Privacy setting'),
-    :article_tags => _('Tags'),
-    :followed_profiles => _('Following')
-  }
+  def custom_labels
+    {
+      :zip_code => _('ZIP code'),
+      :email => _('e-Mail'),
+      :jabber_id => _('Jabber'),
+      :birth_date => _('Date of birth'),
+      :created_at => _('Profile created at'),
+      :members_count => _('Members'),
+      :privacy_setting => _('Privacy setting'),
+      :article_tags => _('Tags'),
+      :followed_profiles => _('Following'),
+      :basic_information => _('Basic information'),
+      :contact => _('Contact')
+    }
+  end
 
   EXCEPTION = {
     :person => [:image, :preferred_domain, :description, :tag_list],
@@ -66,7 +70,7 @@ module ProfileHelper
 
   def title(field, entry = nil)
     return self.send("#{field}_custom_title", entry) if MULTIPLE[kind].include?(field) && entry.present?
-    CUSTOM_LABELS[field.to_sym] || _(field.to_s.humanize)
+    custom_labels[field.to_sym] || _(field.to_s.humanize)
   end
 
   def display_field(field)
@@ -125,12 +129,6 @@ module ProfileHelper
 
   def treat_members_count(count)
     link_to count, :controller => 'profile', :action => 'members'
-  end
-
-  def treat_products(products)
-    if profile.kind_of?(Enterprise) && profile.environment.enabled?('products_for_enterprises')
-      link_to _('Products/Services'), :controller => 'products_plugin/catalog', :action => 'index'
-    end
   end
 
   def treat_admins(admins)

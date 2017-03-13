@@ -194,6 +194,19 @@ class PersonTest < ActiveSupport::TestCase
     refute p.boxes[2].blocks.empty?, 'person must have blocks in area 3'
   end
 
+  should 'create a default set of blocks for angular theme' do
+    e = Environment.default
+    e.update_attribute(:theme, 'angular-theme')
+    Theme.expects(:angular_theme?).with('angular-theme').returns(true)
+    p = create(User).person
+
+    assert_equal 2, p.boxes_limit
+    assert_equal 'rightbar', p.layout_template
+    refute p.boxes[0].blocks.empty?, 'person must have blocks in area 1'
+    refute p.boxes[1].blocks.empty?, 'person must have blocks in area 2'
+    assert p.boxes[2].blocks.empty?, 'person must not have blocks in area 3'
+  end
+
   should 'link to all articles created by default' do
     p = create(User).person
     blocks = p.blocks.select { |b| b.is_a?(LinkListBlock) }
@@ -628,6 +641,13 @@ class PersonTest < ActiveSupport::TestCase
     end
   end
 
+  should 'be renamed when allowed by environment' do
+    p = create_user('test_user').person
+    p.environment.enable(:enable_profile_url_change)
+    p.identifier = 'other_person_name'
+    assert p.valid?
+  end
+
   should "return none on label if the person hasn't friends" do
     p = fast_create(Person)
     assert_equal 0, p.friends.count
@@ -760,6 +780,13 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal true, p2.follows?(p1)
     assert_equal true, p4.follows?(p1)
     assert_equal false, p3.follows?(p1)
+  end
+
+  should 'return for is_member_of? false when profile is not an Organization' do
+    p1 = fast_create(Person)
+    p2 = fast_create(Person)
+
+    refute p1.is_member_of? p2
   end
 
   should "a person member of a community follows the community" do
@@ -1994,6 +2021,26 @@ class PersonTest < ActiveSupport::TestCase
     person.follow(community, circle)
     person.unfollow(community)
     assert_not_includes person.followed_profiles, community
+  end
+
+  should 'not unfollow a profile if it is a friend' do
+    follower = create_user.person
+    person = create_user.person
+
+    person.add_friend(follower)
+    follower.add_friend(person)
+
+    follower.unfollow(person)
+    assert_includes follower.followed_profiles, person
+  end
+
+  should 'not unfollow a profile if it is a member' do
+    follower = create_user.person
+    community = fast_create(Community)
+
+    community.add_member(follower)
+    follower.unfollow(community)
+    assert_includes follower.followed_profiles, community
   end
 
   should 'a person remove a profile from a circle' do
