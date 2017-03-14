@@ -1,3 +1,5 @@
+require 'cache_counter'
+
 class RoleAssignment
 
   extend CacheCounter

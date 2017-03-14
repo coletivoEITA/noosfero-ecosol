@@ -1,4 +1,5 @@
 class Friendship < ApplicationRecord
+
   track_actions :new_friendship, :after_create, :keep_params => ["friend.name", "friend.url", "friend.profile_custom_icon"], :custom_user => :person
 
   extend CacheCounter

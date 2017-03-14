@@ -1,4 +1,5 @@
 # core
+require 'will_paginate/array'
 require_relative 'extensions/string'
 require_relative 'extensions/integer'
 

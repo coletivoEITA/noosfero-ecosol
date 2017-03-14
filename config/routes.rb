@@ -139,7 +139,8 @@ Noosfero::Application.routes.draw do
   match '*page/versions_diff', controller: 'content_viewer', action: 'versions_diff', via: :all
 
   # match requests for profiles that don't have a custom domain
-  match ':profile(/*page)', controller: 'content_viewer', action: 'view_page', profile: /#{Noosfero.identifier_format_in_url}/i, constraints: environment_domain_constraint, via: :all, as: :page
+  match ':profile(/*page)', controller: 'content_viewer', action: 'view_page', profile: /#{Noosfero.identifier_format_in_url}/i,
+    constraints: environment_domain_constraint, via: :all, as: :page
 
   # match requests for content in domains hosted for profiles
   match '/(*page)', controller: 'content_viewer', action: 'view_page', via: :all

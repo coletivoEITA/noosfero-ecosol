@@ -1,5 +1,5 @@
 class Noosfero::Plugin
-  module Macro
+  class Macro
 
     attr_accessor :context
 

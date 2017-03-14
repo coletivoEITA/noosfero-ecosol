@@ -14,15 +14,13 @@ GC::Profiler.enable if defined? NewRelic
 $: << File.expand_path('../lib', File.dirname(__FILE__))
 
 # init dependencies at vendor, loaded at the Gemfile
+$: << 'vendor/plugins'
 vendor = Dir['vendor/{,plugins/}*'] - ['vendor/plugins']
 vendor.each do |dir|
   init_rb = "#{dir}/init.rb"
   require_relative "../#{init_rb}" if File.file? init_rb
 end
 
-# extensions
-require_dependency 'super_proxy'
-require_dependency 'cache_counter'
 require_dependency 'extensions'
 
 require_dependency 'noosfero'

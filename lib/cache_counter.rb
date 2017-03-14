@@ -1,3 +1,4 @@
+# FIXME: this is placed on lib due to extensions
 module CacheCounter
 
   def update_cache_counter(name, object, value)

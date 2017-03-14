@@ -74,6 +74,7 @@ class Noosfero::Plugin
           path.concat Dir["#{dir}/models{,/concerns}"]
           path.concat Dir["#{dir}/lib"]
           path.concat Dir["#{dir}/serializers"]
+          path.concat Dir["#{dir}/helpers"]
         end
 
         # add view path
