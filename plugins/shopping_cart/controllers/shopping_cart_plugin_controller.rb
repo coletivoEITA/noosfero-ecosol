@@ -5,6 +5,8 @@ class ShoppingCartPluginController < OrdersPluginController
   include ShoppingCartPlugin::CartHelper
   helper ShoppingCartPlugin::CartHelper
 
+  skip_before_action :verify_authenticity_token, only: :send_request
+
   def get
     config =
       if cart.nil?
@@ -131,7 +133,7 @@ class ShoppingCartPluginController < OrdersPluginController
   end
 
   def send_request
-    order = register_order(params[:customer], self.cart[:items])
+    order = register_order
     begin
       ShoppingCartPlugin::Mailer.customer_notification(order, self.cart[:items]).deliver
       ShoppingCartPlugin::Mailer.supplier_notification(order, self.cart[:items]).deliver
@@ -283,8 +285,8 @@ class ShoppingCartPluginController < OrdersPluginController
     true
   end
 
-  def register_order(custumer, items)
-    products_list = {}; items.each do |id, quantity|
+  def register_order
+    products_list = {}; cart[:items].each do |id, quantity|
       product = Product.find(id)
       price = product.price || 0
       products_list[id] = {quantity: quantity, price: price, name: product.name}
