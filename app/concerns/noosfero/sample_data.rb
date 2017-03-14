@@ -1,4 +1,4 @@
-module Noosfero::SampleDataHelper
+module Noosfero::SampleData
   # tourn on autoflush
   STDOUT.sync = true
 

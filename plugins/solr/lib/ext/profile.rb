@@ -138,6 +138,9 @@ class Profile
     end
   end
 
+  extend SolrPlugin::ActsAsSearchable
+  extend SolrPlugin::ActsAsFaceted
+
   acts_as_faceted fields: {
       solr_f_enabled: {
         label: _('Situation'), type_if: -> (klass) { klass.kind_of? Enterprise },

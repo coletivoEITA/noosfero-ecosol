@@ -5,9 +5,9 @@ class FbAppPluginPageTabController < FbAppPluginController
   before_filter :change_theme
   before_filter :disable_cache
 
-  include CatalogHelper
+  include ProductsPlugin::CatalogHelper
 
-  helper ManageProductsHelper
+  helper ProductsPlugin::ProductsHelper
   helper FbAppPlugin::DisplayHelper
 
   def index
@@ -151,11 +151,7 @@ class FbAppPluginPageTabController < FbAppPluginController
   def get_layout
     return nil if request.format == :js or request.xhr?
 
-<<<<<<< HEAD
-    return "#{Rails.root}/public/designs/themes/cirandas-responsive/layouts/cirandas-responsive"
-=======
     return 'application-responsive'
->>>>>>> rails4
   end
 
   def disable_cache

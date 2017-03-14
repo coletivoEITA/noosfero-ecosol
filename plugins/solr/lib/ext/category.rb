@@ -6,6 +6,8 @@ class Category
 
   after_save_reindex [:articles, :profiles], with: :delayed_job
 
+  extend SolrPlugin::ActsAsSearchable
+
   acts_as_searchable fields: [
     {type: :string}, {environment_id: :integer},
     # searched fields

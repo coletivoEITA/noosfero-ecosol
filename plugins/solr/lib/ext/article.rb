@@ -70,6 +70,9 @@ class Article
     name
   end
 
+  extend SolrPlugin::ActsAsSearchable
+  extend SolrPlugin::ActsAsFaceted
+
   acts_as_faceted fields: {
       solr_f_type: {label: c_('Type'), proc: method(:solr_f_type_proc).to_proc},
       solr_f_published_at: {type: :date, label: _('Published date'), queries: {'[* TO NOW-1YEARS/DAY]' => _("Older than one year"),

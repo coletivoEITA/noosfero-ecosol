@@ -2,8 +2,6 @@ if defined? ProductsPlugin
 
 require_dependency 'products_plugin/product'
 
-ActiveSupport.run_load_hooks :solr_product
-
 module ProductsPlugin
   class Product
 
@@ -105,6 +103,9 @@ module ProductsPlugin
       !self.archived
     end
 
+    extend SolrPlugin::ActsAsSearchable
+    extend SolrPlugin::ActsAsFaceted
+
     acts_as_faceted fields: {
         solr_f_category: {label: _('Related products'), context_criteria: -> { !empty_search? } },
         solr_f_region: {label: c_('City'), proc: method(:solr_f_region_proc).to_proc},
@@ -158,5 +159,7 @@ module ProductsPlugin
 
   end
 end
+
+ActiveSupport.run_load_hooks :solr_product
 
 end

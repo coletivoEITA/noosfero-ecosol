@@ -9,6 +9,8 @@ module ProductsPlugin
 
     after_save_reindex [:products], with: :delayed_job
 
+    extend SolrPlugin::ActsAsSearchable
+
     acts_as_searchable fields: SEARCHABLE_FIELDS.map{ |field, options|
       {field => {boost: options[:weight]}}
     }

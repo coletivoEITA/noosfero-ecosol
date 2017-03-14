@@ -1,7 +1,3 @@
-require 'rubygems'
-require 'faster_csv'
-CSV = FasterCSV
-
 #OrdersCyclePlugin::Import.terramater_db Profile['rede-guandu-producao-e-consumo-responsavel'],
 #  'fornecedor.csv', 'produto.csv', 'fornecedor_produto.csv', 'usuario.csv'
 

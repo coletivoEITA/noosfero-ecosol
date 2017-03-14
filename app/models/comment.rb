@@ -144,7 +144,7 @@ class Comment < ApplicationRecord
   include Noosfero::Plugin::HotSpot
 
   include Spammable
-  include CacheCounterHelper
+  include CacheCounter
 
   def after_spam!
     SpammerLogger.log(ip_address, self)

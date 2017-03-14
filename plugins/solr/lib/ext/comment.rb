@@ -11,6 +11,8 @@ class Comment
     article.solr_comments_updated if article.kind_of?(Article)
   end
 
+  extend SolrPlugin::ActsAsSearchable
+
   acts_as_searchable fields: SEARCHABLE_FIELDS.map{ |field, options|
     {field => {boost: options[:weight]}}
   }
