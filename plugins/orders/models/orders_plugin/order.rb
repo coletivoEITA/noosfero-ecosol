@@ -350,8 +350,8 @@ class OrdersPlugin::Order < ApplicationRecord
     self.items.map{ |item| "#{item.name} (#{item.quantity_consumer_ordered_localized})" }.join ', '
   end
 
-  extend CurrencyHelper::ClassMethods
-  instance_exec(&OrdersPlugin::Item::DefineTotals)
+  extend CurrencyFields::ClassMethods
+  instance_exec &OrdersPlugin::Item::DefineTotals
 
   # total_price considering last state
   def total_price actor_name = :consumer, admin = false

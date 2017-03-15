@@ -74,7 +74,7 @@ class OrdersPlugin::Item < ApplicationRecord
   before_create :sync_fields
   after_save :update_order
 
-  extend CurrencyHelper::ClassMethods
+  extend CurrencyFields::ClassMethods
 
   # utility for other classes
   DefineTotals = proc do
