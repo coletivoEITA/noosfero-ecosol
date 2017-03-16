@@ -167,7 +167,7 @@ module OrdersPlugin::Report
           payment_method = payment_method.nil? ? '' : t("payments_plugin.models.payment_methods."+payment_method)
         end
 
-        sheet.add_row [order.suppliers_consumer.hub_name, payment_method, order.supplier_delivery_data[:name], '','',order.created_at, order.updated_at],
+        sheet.add_row [order.suppliers_consumer&.hub_name, payment_method, order.supplier_delivery_data[:name], '','',order.created_at, order.updated_at],
           style: [default, default, default, default, default, date, date]
         sbs += 1
         sheet.add_row [t('lib.report.product_cod'), t('lib.report.supplier'), t('lib.report.product_name'),
