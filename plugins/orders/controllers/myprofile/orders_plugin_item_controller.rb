@@ -42,7 +42,7 @@ class OrdersPluginItemController < MyProfileController
   protected
 
   def set_quantity_consumer_ordered value
-    @quantity_consumer_ordered = HasCurrency.parse_localized_number value
+    @quantity_consumer_ordered = CurrencyFields.parse_localized_number value
 
     # the item quantity ordered can be
     # - less than minimum allowed
