@@ -3,7 +3,7 @@
 div class="order-view #{"editable" if order.may_edit? user, @admin rescue false} #{"admin" if @admin}" id="order-#{order.id}"
 
   = form_for order, as: :order,
-    url: {controller: (if @admin then :orders_plugin_admin else :orders_plugin_order end), action: :edit, id: order.id, actor_name: actor_name},
+    url: {controller: (if @admin then :orders_plugin_admin else :orders_cycle_plugin_order end), action: :edit, id: order.id, actor_name: actor_name},
     html: {onsubmit: 'return orders.order.submit(this)'} do |f|
 
     div class="order-data #{"admin" if @admin}"
@@ -40,7 +40,7 @@ div class="order-view #{"editable" if order.may_edit? user, @admin rescue false}
           = f.submit t('views.order._show.confirm_order'), data: {confirm: t('views.order._show.confirming_this_order')}
           |&emsp;
 
-          = link_to_function t('views.order._show.cancel_order'), "orders.order.reload(this, '#{url_for controller: :orders_plugin_order, action: :cancel, id: order.id}')"
+          = link_to_function t('views.order._show.cancel_order'), "orders.order.reload(this, '#{url_for controller: :orders_cycle_plugin_order, action: :cancel, id: order.id}')"
 
 javascript:
   orders.setOrderMaxHeight()
