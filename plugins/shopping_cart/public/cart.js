@@ -29,6 +29,7 @@ function Cart(config) {
     var me = this;
     this.disabled = true;
     var completeCallback = config.complete;
+    config.xhrFields = { withCredentials: true }
     config.complete = function(){
       me.disabled = false;
       if (completeCallback) completeCallback();
