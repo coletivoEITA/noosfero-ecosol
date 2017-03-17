@@ -1,31 +1,7 @@
 module ProductsPlugin::CatalogHelper
 
-  protected
-
   include DisplayHelper
   include ProductsPlugin::ProductsHelper
-
-  def load_query_and_scope
-    @base_query = params[:base_query].to_s
-    @query = params[:query].to_s
-    @final_query = if @base_query.empty?
-                     @query
-                   elsif @query.blank?
-                     @base_query
-                   else
-                     "(#{@base_query}) AND #{@query}"
-                   end
-
-    @scope = params[:scope].to_s
-    if @scope == 'all'
-      @context = environment
-      @ar_scope = environment.products.enabled.is_public.unarchived
-    else
-      @context = profile
-      @ar_scope = profile.products.unarchived
-    end
-    @show_supplier = @scope == 'all'
-  end
 
   def catalog_load_index options = {}
     options ||= {}
@@ -76,9 +52,33 @@ module ProductsPlugin::CatalogHelper
     render partial: 'products_plugin/catalog/results' if request.xhr?
   end
 
-  def load_search_autocomplete
+  def search_autocomplete
     load_query_and_scope
     @products = autocomplete(:catalog, @ar_scope, @final_query, {per_page: 5}, {})[:results]
+  end
+
+  protected
+
+  def load_query_and_scope
+    @base_query = params[:base_query].to_s
+    @query = params[:query].to_s
+    @final_query = if @base_query.empty?
+                     @query
+                   elsif @query.blank?
+                     @base_query
+                   else
+                     "(#{@base_query}) AND #{@query}"
+                   end
+
+    @scope = params[:scope].to_s
+    if @scope == 'all'
+      @context = environment
+      @ar_scope = environment.products.enabled.is_public.unarchived
+    else
+      @context = profile
+      @ar_scope = profile.products.unarchived
+    end
+    @show_supplier = @scope == 'all'
   end
 
   def link_to_product_from_catalog product, options = {}

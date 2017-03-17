@@ -587,6 +587,13 @@ class Noosfero::Plugin
     {:results => scope.paginate(paginate_options)}
   end
 
+  def autocomplete asset, scope, query, paginate_options={:page => 1}, options={:field => 'name'}
+    {}
+  end
+
+  def catalog_autocomplete_item_extras product
+  end
+
   def search_order asset
     nil
   end
