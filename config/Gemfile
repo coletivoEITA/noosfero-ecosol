@@ -1,5 +1,7 @@
 gem 'geocoder'
 
+gem 'dotenv'
+
 group :development do
   gem 'pry'
   gem 'better_errors'
@@ -9,5 +11,6 @@ end
 group :production do
   gem 'mailgun_rails'
   gem 'rollbar'
+  gem 'puma_worker_killer'
 end
 
