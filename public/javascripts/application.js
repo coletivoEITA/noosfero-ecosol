@@ -22,7 +22,7 @@
 *= require vendor/slick.js
 *= require vendor/autogrow.js
 *= require rails-extended.js
-*= require message-bus.js
+*# require message-bus.js
 *= require vendor/riot-2.5.0
 *= require i18n
 *= require i18n/translations
@@ -55,8 +55,10 @@ _.templateSettings = {
 noosfero = {
 };
 
-MessageBus.start()
-MessageBus.callbackInterval = 500;
+if (window.MessageBus) {
+  MessageBus.start()
+  MessageBus.callbackInterval = 500;
+}
 
 function noosfero_init() {
   // focus_first_field(); it is moving the page view when de form is down.

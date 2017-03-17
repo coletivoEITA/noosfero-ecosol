@@ -5,10 +5,11 @@ noosfero.comments = {
     noosfero.comments.loaded = true
 
     var url = window.location.href
-    MessageBus.subscribe(url+'/new_comment', function (data) {
-      if (data.user_login == noosfero.user_data.login) return
-      noosfero.comments.receiveComment(data)
-    })
+    if (window.MessageBus)
+      MessageBus.subscribe(url+'/new_comment', function (data) {
+        if (data.user_login == noosfero.user_data.login) return
+        noosfero.comments.receiveComment(data)
+      })
 
     $('.display-comment-form').unbind()
     $('.display-comment-form').click(function () {
