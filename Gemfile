@@ -5,6 +5,7 @@ platform :ruby do
   gem 'rmagick',                '~> 2.13'
   gem 'RedCloth',               '~> 4.2'
   gem 'unicorn',                '~> 4.8'
+
 end
 
 platform :jruby do
@@ -34,59 +35,6 @@ gem 'diffy',                    '~> 3.0'
 gem 'slim'
 gem 'activerecord-session_store', ('1.0.0.pre' if RUBY_VERSION >= '2.3.0')
 
-gem 'will-paginate-i18n'
-gem 'utf8-cleaner'
-gem 'premailer-rails'
-gem 'message_bus'
-
-# js
-# while https://github.com/rails-api/active_model_serializers/issues/1143 is not released
-gem 'active_model_serializers', '0.10.0'
-# while https://github.com/fnando/i18n-js/pull/354 is not released
-gem 'i18n-js', github: 'coletivoEITA/i18n-js'
-gem 'js-routes', '= 1.2.6'
-gem 'riot_js-rails'#, path: '../../others/riot_js-rails'
-gem 'sprockets-es6'
-
-#############################################
-
-platform :ruby do
-  gem 'unicode'
-
-  group :performance do
-    # FIXME: stack level too deep
-    #gem 'oj'
-    #gem 'oj_mimic_json'
-    
-    gem 'fast_blank'
-    gem 'gctools' if RUBY_VERSION >= '2.1.0' and RUBY_VERSION < '2.2.0'
-    # DON'T IMPROVE
-    #gem 'escape_utils'
-    
-    #gem 'rack-cache'
-    #gem 'redis-rack-cache'
-  end
-
-  group :production do
-    gem 'unicorn',  '~> 4.9'
-    #gem 'rainbows'
-    gem 'unicorn-worker-killer'
-  end
-end
-
-group :performance do
-  gem 'stackprof', platform: :mri
-  gem 'flamegraph', platform: :mri
-  #gem 'rack-mini-profiler'
-end
-
-group :assets do
-  gem 'assets_live_compile', '>= 0.2.1'
-  gem 'therubyracer' # for fast js template compilations
-end
-
-#############################################
-
 # API dependencies
 gem 'grape',                    '~> 0.12'
 gem 'grape-entity',             '~>0.4.8'
@@ -108,10 +56,7 @@ gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'
 
 group :production do
-  gem 'newrelic_rpm'
-  gem 'redis-rails'
-  # not in active development :(
-  #gem 'rack-cache'
+  gem 'dalli', '~> 2.7.0'
 end
 
 group :development, :test do
@@ -136,13 +81,6 @@ group :cucumber, :test do
   # Selenium WebDriver 3+ depends on geckodriver
   gem 'selenium-webdriver',     '>= 2.53', '< 3.0'
   gem 'chromedriver-helper' if ENV['SELENIUM_DRIVER'] == 'chrome'
-end
-
-group :development do
-  gem 'wirble'
-  #gem 'byebug', platform: :mri
-  gem 'html2haml', require: false
-  gem 'haml2slim', require: false
 end
 
 # Requires custom dependencies
