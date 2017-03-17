@@ -14,6 +14,8 @@ class Profile < ApplicationRecord
     :profile_admin_mail_notification, :allow_followers, :wall_access,
     :profile_kinds
 
+  attr_accessor :old_region_id
+
   # use for internationalizable human type names in search facets
   # reimplement on subclasses
   def self.type_name
@@ -363,6 +365,7 @@ class Profile < ApplicationRecord
 
   has_many :profile_categorizations, -> { where 'categories_profiles.virtual = ?', false }
   has_many :categories, -> { where 'categories.visible_for_profiles = ?', true }, through: :profile_categorizations
+  has_many :regions, -> { where(:type => ['Region', 'State', 'City']) }, :through => :profile_categorizations, :source => :category
 
   has_many :profile_categorizations_including_virtual, :class_name => 'ProfileCategorization'
   has_many :categories_including_virtual, :through => :profile_categorizations_including_virtual, :source => :category
@@ -393,6 +396,11 @@ class Profile < ApplicationRecord
   belongs_to :region
 
   LOCATION_FIELDS = %w[address address_line2 district city state country_name zip_code]
+
+  before_save :save_old_region
+  def save_old_region
+    self.old_region_id = self.region_id_was || self.region_id
+  end
 
   def location(separator = ' - ')
     myregion = self.region
@@ -707,7 +715,6 @@ class Profile < ApplicationRecord
   def url_options
     options = { :host => default_hostname }
     options[:profile] = self.identifier unless self.own_hostname
-    options[:protocol] = self.default_protocol if self.default_protocol and self.default_protocol != 'http'
     options.merge(Noosfero.url_options)
   end
 
@@ -723,10 +730,6 @@ private :generate_url, :url_options
 
   def default_domain
     @default_domain ||= self.domains.sort_by{ |d| d.is_default ? 0 : 1 }.first
-  end
-
-  def default_protocol
-    default_domain.protocol if default_domain
   end
 
   def hostname

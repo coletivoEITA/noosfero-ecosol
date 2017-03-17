@@ -203,7 +203,7 @@ module OrdersPlugin::Report
           sum += formula_value
         end # closes order.items.each
 
-        sum = CurrencyHelper.number_as_currency_number(sum)
+        sum = CurrencyFields.number_as_currency_number(sum)
         sheet.add_row ['','','','',t('lib.report.total_value'),"=SUM(G#{sp}:G#{ep})", ''], style: [default]*4+[bluecell,currency, default],
           formula_values: [nil,nil,nil,nil,nil,sum, nil]
 
@@ -211,7 +211,7 @@ module OrdersPlugin::Report
         sbs = sbe + 2
       end
 
-      selled_sum = CurrencyHelper.number_as_currency_number selled_sum
+      selled_sum = CurrencyFields.number_as_currency_number selled_sum
       sheet.add_row [t('lib.report.selled_total'), "=SUM(G#{productsStart}:G#{productsEnd})", t('lib.report.total_price_without_margin'),"","", total_price_without_margin],
         formula_values: [nil, selled_sum, nil, nil, nil, nil],
         style: [redcell, currency, redcell, redcell, redcell, currency]

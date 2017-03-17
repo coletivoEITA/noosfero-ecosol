@@ -11,7 +11,7 @@ module ProductsPlugin
     scope :from_products_in_stock, -> {where("from_products_products.use_stock is ? or from_products_products.use_stock = ? or (from_products_products.stored > 0)", nil, false)}
     scope :in_stock, -> {where("products.use_stock is ? or products.use_stock = ? or (products.stored > 0)", nil, false)}
 
-    extend CurrencyHelper::ClassMethods
+    extend CurrencyFields::ClassMethods
     has_number_with_locale :stored
 
     def in_stock?

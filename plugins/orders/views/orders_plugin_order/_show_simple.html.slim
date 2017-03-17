@@ -40,10 +40,10 @@
               = t("views.item._index.payment_number", {number: index+1})
               |&nbsp;
             td
-              = CurrencyHelper.number_as_currency(payment.value)
+              = CurrencyFields.number_as_currency(payment.value)
               |&nbsp;
 
-            - method = I18n.t('models.payment_methods.'+payment.payment_method.slug, {scope: "payments_plugin"}) 
+            - method = I18n.t('models.payment_methods.'+payment.payment_method.slug, {scope: "payments_plugin"})
             - if payment.payment_method.slug == 'other' && @order.payment_data["other_method"].present?
               - method += " - " + @order.payment_data["other_method"]
             td

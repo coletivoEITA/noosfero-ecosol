@@ -719,8 +719,9 @@ class Environment < ApplicationRecord
     @default_domain ||= self.domains.find_by(is_default: true) || self.domains.order(:id).first
   end
 
-  def default_protocol
-    default_domain.protocol if default_domain
+  # returns an array with the top level regions for this environment.
+  def top_level_regions
+    Region.top_level_for(self)
   end
 
   # Returns the hostname of the first domain associated to this environment.

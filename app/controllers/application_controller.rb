@@ -196,7 +196,7 @@ class ApplicationController < ActionController::Base
       if @domain.profile and params[:profile].present? and params[:profile] != @domain.profile.identifier
         @profile = @environment.profiles.find_by identifier: params[:profile]
         return render_not_found if @profile.blank?
-        redirect_to url_for(params.merge host: @profile.default_hostname, protocol: @profile.default_protocol)
+        redirect_to url_for(params.merge host: @profile.default_hostname)
       end
     end
   end

@@ -68,7 +68,7 @@ class OrdersPluginAdminItemController < MyProfileController
   end
 
   def set_order_quantity value
-    @quantity = CurrencyHelper.parse_localized_number value
+    @quantity = CurrencyFields.parse_localized_number value
 
     if @quantity > 0
       if defined? StockPlugin and @item.from_product.use_stock

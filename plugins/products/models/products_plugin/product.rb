@@ -55,7 +55,7 @@ module ProductsPlugin
     validates_presence_of :product_category
     validates_associated :product_category
 
-    extend CurrencyHelper::ClassMethods
+    extend CurrencyFields::ClassMethods
     has_currency :price
     has_currency :discount
 
