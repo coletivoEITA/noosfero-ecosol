@@ -56,7 +56,8 @@ module ProductsPlugin
       field = params[:field]
       if request.post?
         begin
-          @product.update! params[:products_plugin_product]
+          product_params = (params[:products_plugin_product] || {}).merge params[:product]
+          @product.update! product_params
           render partial: "display_#{field}", locals: {product: @product}
         rescue
           render partial: "edit_#{field}", locals: {product: @product, errors: true}

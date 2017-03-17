@@ -1,3 +1,4 @@
+require_relative 'profile'
 require_dependency 'enterprise'
 
 class Enterprise
