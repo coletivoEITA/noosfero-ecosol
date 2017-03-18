@@ -39,6 +39,8 @@ workers Workers unless RUBY_ENGINE == 'jruby'
 threads 0,Threads
 
 before_fork do
+  ActiveRecord::Base.clear_all_connections!
+
   begin
     require 'puma_worker_killer'
     PumaWorkerKiller.config do |config|
@@ -56,8 +58,9 @@ end
 after_worker_fork do |worker_nr|
   begin
     ActiveRecord::Base.establish_connection
+    Rails.cache.reconnect
   rescue
-    retry #if this fail it will stop worker killer
+    retry #if this fail it will stop worker init
   end
 
   WorkerDaemons.each do |daemon, opts|
