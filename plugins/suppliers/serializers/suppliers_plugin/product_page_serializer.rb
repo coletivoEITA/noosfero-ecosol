@@ -4,7 +4,7 @@ module SuppliersPlugin
     attribute :default_margin_percentage
     has_one :filter
 
-    has_many :products
+    has_many :products, serializer: ProductSerializer
     has_many :units
     has_many :categories
     has_many :suppliers
