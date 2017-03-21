@@ -338,7 +338,7 @@ module ProductsPlugin
     end
 
     def valid_discount
-      if discount && (price.blank? || discount > price)
+      if discount && (price.blank? || discount.to_f > price.to_f)
         self.errors.add(:discount, _("should not be bigger than the price"))
       end
     end
