@@ -1,7 +1,7 @@
 - if @product.diff.empty?
   = t'suppliers_plugin.views.manage_products.compare_tab.no_diff'
 - else
-  = t'suppliers_plugin.views.manage_products.compare_tab.diff_count', n: @product.diff.size
+  = t('suppliers_plugin.views.manage_products.compare_tab.diff_count', n: @product.diff.size).html_safe
   ul
     - @product.diff.each do |attr|
       li= t"suppliers_plugin.models.base_product.default_attributes.#{attr}"
