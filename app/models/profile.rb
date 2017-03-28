@@ -856,8 +856,8 @@ private :generate_url, :url_options
   # adds a person as administrator os this profile
   def add_admin(person)
     self.affiliate(person, Profile::Roles.admin(environment.id))
-    circle = Circle.find_or_create_by(name: _('memberships'), person: person, profile_type: self.class.name)
-    person.follow(self, circle)
+    circle = Circle.where(name: _('memberships'), profile_type: self.class.name, person: person).first
+    person.follow(self, circle) if circle
   end
 
   def remove_admin(person)
