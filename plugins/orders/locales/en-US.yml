@@ -38,6 +38,7 @@ en-US: &en-US
         order_was_confirmed: "[%{name}] Your order was confirmmed"
         order_was_cancelled: "[%{name}] Your order was cancelled"
         order_was_received: "[%{name}] Your order was declared as received"
+        purchase_was_created: "[%{name}] A new order was created for you"
       date_helper:
         a: "%A"
         b_d_at_hh_m: "%B %d, at %Hh%M"
