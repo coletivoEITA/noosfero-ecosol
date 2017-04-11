@@ -39,6 +39,7 @@ pt-BR: &pt-BR
         order_was_confirmed: "[%{name}] Seu pedido foi confirmado"
         order_was_cancelled: "[%{name}] Seu pedido foi cancelado"
         order_was_received: "[%{name}] Seu pedido foi declarado como recebido"
+        purchase_was_created:  "[%{name}] Um novo pedido foi criado no Cirandas"
       date_helper:
         a: "%A"
         b_d_at_hh_m: "%d/%m/%y às %H:%M"
@@ -271,8 +272,8 @@ pt-BR: &pt-BR
           orders_spreadsheet: "Por consumidor"
           suppliers_spreadsheet: "Por fornecedor"
           consumers_spreadsheet: "Por consumidor"
-          choose_hub: "Escolha um núcleo" 
-          all_hubs: "todos os núcleos" 
+          choose_hub: "Escolha um núcleo"
+          all_hubs: "todos os núcleos"
           close: "Fechar"
         index:
           no_orders_to_show: "Nenhum pedido para visualizar."
@@ -307,7 +308,7 @@ pt-BR: &pt-BR
         new_order:
           add: "Adicionar pedido"
           adding_order: "Adicionando pedido"
-          choose_the_consumer: "Escolha o consumidor abaixo" 
+          choose_the_consumer: "Escolha o consumidor abaixo"
           is_consumer_registered: "O consumidor desse novo pedido é registrado?"
           consumer_registered: "Está registrado - defina quem é o consumidor"
           consumer_not_registered: "Não está registrado - inserir dados do consumidor"
