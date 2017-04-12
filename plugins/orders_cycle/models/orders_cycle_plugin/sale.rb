@@ -82,12 +82,12 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
         next unless supplier_product = item.product.supplier_product
         next unless purchase = supplier_product.orders_cycles_purchases.for_cycle(self.cycle).first
 
-        self.remove_purchases_item item, purchase
+        self.remove_purchases_item item, purchase, supplier_product
       end
     end
   end
 
-  def remove_purchases_item item, purchase
+  def remove_purchases_item item, purchase, supplier_product
     item.quantity_consumer_ordered -= item.status_quantity
     item.price_consumer_ordered -= item.status_quantity * supplier_product.price
     item.save!
