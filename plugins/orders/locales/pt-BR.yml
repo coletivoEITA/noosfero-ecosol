@@ -39,7 +39,7 @@ pt-BR: &pt-BR
         order_was_confirmed: "[%{name}] Seu pedido foi confirmado"
         order_was_cancelled: "[%{name}] Seu pedido foi cancelado"
         order_was_received: "[%{name}] Seu pedido foi declarado como recebido"
-        purchase_was_created:  "[%{name}] Um novo pedido foi criado no Cirandas"
+        purchase_was_created:  "[%{name}] Um novo pedido foi criado para você"
       date_helper:
         a: "%A"
         b_d_at_hh_m: "%d/%m/%y às %H:%M"
