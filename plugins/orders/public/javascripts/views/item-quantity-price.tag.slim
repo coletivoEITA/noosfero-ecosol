@@ -34,18 +34,19 @@ order-item-quantity-price
 
     quantityChange(event) {
       var input = event.target
+
       // avoid recalling save when there's no change
-      if (!input.value && parseInt(this.status.quantity).toFixed(2) == parseInt(input.value).toFixed(2)) {
+      if (!input.value.trim() || parseInt(this.status.quantity).toFixed(2) == parseInt(input.value).toFixed(2)) {
         return
       }
-      this.run_at = new Date()
-      this.event_type = event.type
+      this.run_at = new Date().getTime()
       var self = this
 
-      setTimeout(function(run_at, type) {
-        if (self.run_at == run_at && type == self.event_type)
+      setTimeout(function(run_at) {
+        if (self.run_at == run_at && input.value != "") {
           self.quantityUpdate(input)
-      }, 2000, this.run_at, event.type);
+        }
+      }, 2000, this.run_at);
     }
 
     quantityUpdate(input) {
