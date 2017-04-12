@@ -8,9 +8,9 @@ order-item-quantity-price
       span.value if='{!status.flags.removed}'
         '{quantityNumber}
 
-      span if='{!parent.parent.order.view_only && status.flags.editable}'
+      span if='{parent.parent.order.may_edit && status.flags.editable}'
         input.form-control.inline-input name='quantity_{status.field}' type='number' value='{status.quantity}' min='0' step='any' onkeyup='{quantityChange}' oninput='{quantityChange}' onchange='{quantityChange}'
-      span.unit if='{!status.flags.editable}'
+      span.unit if='{!parent.parent.order.may_edit || !status.flags.editable}'
         '&nbsp;{item.unit_name}
 
     .box-field.price-total

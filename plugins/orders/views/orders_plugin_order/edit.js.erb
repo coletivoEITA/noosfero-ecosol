@@ -1,2 +1,6 @@
 jQuery('#consumer-order-<%=@order.id%>').html(<%= render('orders_cycle_plugin_order/active_order', order: @order, actor_name: @actor_name).to_json %>);
-
+<% if @order.status == 'draft' %>
+    window.onbeforeunload = function(){ return I18n.t('order.are_you_sure_you_want_to_leave'); }
+<% else %>
+    window.onbeforeunload = ""
+<% end %>

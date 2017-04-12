@@ -221,6 +221,7 @@ en-US: &en-US
           total_bought: "Total buyed"
           total_payed: "Total payed"
           remaining_total: "Remaining"
+          are_you_sure_you_want_to_leave: "Confirm the order before leaving for it to be accounted."
 
       message:
         _fields:
