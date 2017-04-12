@@ -17,7 +17,7 @@ class ThemesController < ApplicationController
 
     @current_theme = target.theme
 
-    @layout_templates = LayoutTemplate.all
+    @layout_templates = LayoutTemplate.all.reject{ |lt| lt.id == 'nosidebars' }
     @current_template = target.layout_template
   end
 
