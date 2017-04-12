@@ -13,11 +13,11 @@ class ThemesController < ApplicationController
 
   def index
     @environment = environment
-    @themes = (environment.themes + Theme.approved_themes(target)).uniq.sort_by { |t| t.name }
+    @themes = (environment.themes + Theme.approved_themes(target)).uniq(&:id).sort_by(&:name)
 
     @current_theme = target.theme
 
-    @layout_templates = LayoutTemplate.all
+    @layout_templates = LayoutTemplate.all.reject{ |lt| lt.id == 'nosidebars' }
     @current_template = target.layout_template
   end
 

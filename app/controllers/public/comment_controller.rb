@@ -38,14 +38,7 @@ class CommentController < ApplicationController
     @comment.referrer = request.referrer
     @plugins.dispatch(:filter_comment, @comment)
 
-    if @comment.rejected?
-      respond_to do |format|
-        format.js do
-           render :json => { :msg => _('Comment was rejected')}
-         end
-       end
-      return
-    end
+    return render :json => { :msg => _('Comment was rejected')} if @comment.rejected?
 
     if !@comment.valid? || (not pass_without_comment_captcha? and not captcha_verify(:model => @comment, :message => _('Please type the words correctly')))
       respond_to do |format|
@@ -132,16 +125,16 @@ class CommentController < ApplicationController
         end
       end
     else
-     respond_to do |format|
-       format.js do
-         render :json => {
-           :ok => false,
-           :render_target => 'form',
-           :html => render_to_string(:partial => 'comment_form', :object => @comment, :locals => {:comment => @comment, :display_link => false, :edition_mode => true, :show_form => true})
-         }
-       end
-     end
-   end
+      respond_to do |format|
+        format.js do
+          render :json => {
+            :ok => false,
+            :render_target => 'form',
+            :html => render_to_string(:partial => 'comment_form', :object => @comment, :locals => {:comment => @comment, :display_link => false, :edition_mode => true, :show_form => true})
+          }
+        end
+      end
+    end
   end
 
   def check_actions

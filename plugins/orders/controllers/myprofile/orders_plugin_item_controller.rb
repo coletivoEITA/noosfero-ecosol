@@ -34,7 +34,7 @@ class OrdersPluginItemController < MyProfileController
   end
 
   def destroy
-    item = hmvc_context::Item.find params[:id]
+    item = OrdersPlugin::Item.find params[:id]
     @offered_product = item.offered_product
     item.destroy
   end
