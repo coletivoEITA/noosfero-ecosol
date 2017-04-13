@@ -22,7 +22,7 @@ order-item id='{item.id}'
         a href='#' onclick='{userRemove}' if='{!parent.order.admin}'
           '{t('views.item._edit.remove_from_order')}
 
-      .orders-price-with-unit.price-with-unit.box-field if='{!parent.order.view_only}' title="{priceUnit()}"
+      .orders-price-with-unit.price-with-unit.box-field if='{parent.order.may_edit}' title="{priceUnit()}"
         span.price
           '{I18n.toCurrency(item.price)}
         '/

@@ -1,6 +1,6 @@
 .box-view
   span.box-field.category= nil
-  span.box-field.supplier= p.supplier.abbreviation_or_name
+  span.box-field.supplier= p.supplier&.abbreviation_or_name
   span.box-field.name.box-edit-link= p.name
   span.box-field.price= price_span p.price_as_currency_number
   span.box-field.quantity-available= p.quantity_localized || '∞'

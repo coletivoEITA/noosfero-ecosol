@@ -84,3 +84,10 @@ order-items-table
       this.parent.update()
     }
 
+    this.on('update', function () {
+      if (this.order.may_edit && !this.order.admin) {
+        window.onbeforeunload = function(){ return I18n.t('order.are_you_sure_you_want_to_leave'); }
+      } else {
+        window.onbeforeunload = ""
+      }
+    });

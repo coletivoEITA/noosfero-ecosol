@@ -223,6 +223,7 @@ pt-BR: &pt-BR
           total_bought: "Total comprado"
           total_payed: "Total pago"
           remaining_total: "Faltante"
+          are_you_sure_you_want_to_leave: "Confirme o pedido antes de sair para que ele seja contabilizado."
 
       message:
         _fields:
