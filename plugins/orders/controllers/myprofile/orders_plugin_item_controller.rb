@@ -36,7 +36,7 @@ class OrdersPluginItemController < MyProfileController
 
   def destroy
     item = OrdersPlugin::Item.where(id: params[:id]).first
-    return unless item
+    return render :no_content unless item
     @offered_product = item.offered_product
     item.destroy
   end
