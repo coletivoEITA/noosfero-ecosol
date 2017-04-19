@@ -60,10 +60,10 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
     return unless supplier_product = item.product.supplier_product
     return unless supplier = supplier_product.profile
 
-    if defined? item.quantity_supplier_accepted_was
-      qtt_diff = item.quantity_supplier_accepted - (item.quantity_supplier_accepted_was || 0)
-    elsif defined? item.quantity_consumer_ordered_was
-      qtt_diff = item.quantity_consumer_ordered - (item.quantity_consumer_ordered_was || 0)
+    if item.quantity_supplier_accepted_was != item.quantity_supplier_accepted
+      qtt_diff = (item.quantity_supplier_accepted || 0) - (item.quantity_supplier_accepted_was || 0)
+    elsif item.quantity_consumer_ordered_was != item.quantity_consumer_ordered
+      qtt_diff = (item.quantity_consumer_ordered || 0) - (item.quantity_consumer_ordered_was || 0)
     else
       return
     end

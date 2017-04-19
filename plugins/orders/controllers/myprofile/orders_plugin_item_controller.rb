@@ -9,7 +9,7 @@ class OrdersPluginItemController < MyProfileController
 
   def edit
     @consumer  = user
-    @item      = hmvc_context::Item.where id: params[:id]
+    @item      = OrdersCyclePlugin::Item.where id: params[:id]
     if (@item.empty?)
       render json: {notfound: true}.to_hash
       return
