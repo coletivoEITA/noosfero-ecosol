@@ -7,6 +7,7 @@ class FbAppPluginPageTabController < FbAppPluginController
 
   include ProductsPlugin::CatalogHelper
 
+  helper ProductsPlugin::CatalogHelper
   helper ProductsPlugin::ProductsHelper
   helper FbAppPlugin::DisplayHelper
 
@@ -15,14 +16,14 @@ class FbAppPluginPageTabController < FbAppPluginController
 
     if params[:tabs_added]
       @page_tabs = FbAppPlugin::PageTab.create_from_tabs_added params[:tabs_added]
-      @page_tab = @page_tabs.first
+      @page_tab  = @page_tabs.first
       redirect_to @page_tab.facebook_url
     elsif @signed_request or @page_id
       if @page_tab.present?
         if product_id = params[:product_id]
           @product = environment.products.find product_id
           @profile = @product.profile
-          @inputs = @product.inputs
+          @inputs  = @product.inputs
           @allowed_user = false
           load_catalog
 
@@ -112,7 +113,7 @@ class FbAppPluginPageTabController < FbAppPluginController
     if @signed_requests.present?
       @datas = []
       @page_ids = @signed_requests.map do |signed_request|
-        @data = FbAppPlugin::Auth.parse_signed_request signed_request
+        @data   = FbAppPlugin::Auth.parse_signed_request signed_request
         @datas << @data
         page_id = @data[:page][:id] rescue nil
         if page_id.blank?
@@ -125,18 +126,18 @@ class FbAppPluginPageTabController < FbAppPluginController
       @page_ids = read_param params[:page_id]
     end
 
-    @page_tabs = FbAppPlugin::PageTab.where page_id: @page_ids
-
+    @page_tabs      = FbAppPlugin::PageTab.where page_id: @page_ids
     @signed_request = @signed_requests.first
-    @page_id = @page_ids.first
-    @page_tab = @page_tabs.first
-    @new_request = @page_tab.blank?
+    @page_id        = @page_ids.first
+    @page_tab       = @page_tabs.first
+    @profile        = @page_tab.profile
+    @new_request    = @page_tab.blank?
 
     true
   end
 
   def create_page_tabs
-    @page_tabs = FbAppPlugin::PageTab.create_from_page_ids @page_ids
+    @page_tabs  = FbAppPlugin::PageTab.create_from_page_ids @page_ids
     @page_tab ||= @page_tabs.first
   end
 
