@@ -1,11 +1,14 @@
 gem 'geocoder'
 
 gem 'dotenv'
+gem 'browser'
 
 gem 'will-paginate-i18n'
 gem 'utf8-cleaner'
 gem 'premailer-rails'
 gem 'message_bus'
+
+gem 'rack-timeout'
 
 # js
 # while https://github.com/rails-api/active_model_serializers/issues/1143 is not released
@@ -34,16 +37,14 @@ group :development do
   gem 'haml2slim', require: false
 end
 
-group :production do
-  gem 'redis-rails'
+gem 'redis-rails'
 
-  gem 'mailgun_rails'
+gem 'mailgun_rails'
 
-  gem 'newrelic_rpm'
-  gem 'rollbar'
+gem 'newrelic_rpm'
+gem 'rollbar'
 
-  gem 'puma_worker_killer'
-end
+gem 'puma_worker_killer'
 
 platform :ruby do
   gem 'unicode'
