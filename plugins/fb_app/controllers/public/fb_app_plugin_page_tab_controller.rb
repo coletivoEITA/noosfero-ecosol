@@ -111,16 +111,9 @@ class FbAppPluginPageTabController < FbAppPluginController
   def load_page_tabs
     @signed_requests = read_param params[:signed_request]
     if @signed_requests.present?
-      @datas = []
       @page_ids = @signed_requests.map do |signed_request|
         @data   = FbAppPlugin::Auth.parse_signed_request signed_request
-        @datas << @data
-        page_id = @data[:page][:id] rescue nil
-        if page_id.blank?
-          render_not_found
-          return false
-        end
-        page_id
+        @data[:page][:id] rescue nil
       end
     else
       @page_ids = read_param params[:page_id]
@@ -130,8 +123,14 @@ class FbAppPluginPageTabController < FbAppPluginController
     @signed_request = @signed_requests.first
     @page_id        = @page_ids.first
     @page_tab       = @page_tabs.first
-    @profile        = @page_tab.profile
-    @new_request    = @page_tab.blank?
+    @profile        = @page_tab.profile if @page_tab
+
+    if @page_tab.blank?
+      render_not_found
+      return false
+    end
+
+    response.headers['X-Frame-Options'] = 'ALLOWALL'
 
     true
   end
@@ -170,6 +169,10 @@ class FbAppPluginPageTabController < FbAppPluginController
     else
       Array(param).select{ |p| p.present? }
     end
+  end
+
+  def protect_against_forgery?
+    false
   end
 
 end

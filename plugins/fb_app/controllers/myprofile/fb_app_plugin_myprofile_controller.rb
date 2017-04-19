@@ -44,7 +44,12 @@ class FbAppPluginMyprofileController < OpenGraphPlugin::MyprofileController
   end
 
   def load_auth
-    @auth = FbAppPlugin::Auth.where(profile_id: profile.id, provider_id: @provider.id).first
+    @auth   = FbAppPlugin::Auth.find_by profile_id: profile.id, provider_id: @provider.id
+    @auth.fb_user.picture if @auth
+  rescue FbGraph2::Exception::InvalidToken
+    @auth.destroy
+    @auth   = nil
+  ensure
     @auth ||= new_auth
   end
 
