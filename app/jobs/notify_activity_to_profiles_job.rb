@@ -51,5 +51,8 @@ class NotifyActivityToProfilesJob < Struct.new(:tracked_action_id)
       ActionTrackerNotification.connection.execute("INSERT INTO action_tracker_notifications(profile_id, action_tracker_id) SELECT DISTINCT c.person_id, #{tracked_action.id} FROM profiles_circles AS p JOIN circles as c ON c.id = p.circle_id WHERE p.profile_id = #{target_profile.id} AND (c.person_id NOT IN (SELECT atn.profile_id FROM action_tracker_notifications AS atn WHERE atn.action_tracker_id = #{tracked_action.id}))")
     end
 
+
+    # FIXME: ignore not unique errors
+  rescue ActiveRecord::RecordNotUnique
   end
 end
