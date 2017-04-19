@@ -10,6 +10,17 @@
       text-align: center;
     }
   }
+  order-items-table {
+    .errors {
+      h4 {
+        font-size: 14px;
+        font-weight: bold;
+      }
+      ol { padding-left: 10px; }
+      padding: 10px;
+      background-color: pink;
+    }
+  }
 
   .order-total {
     padding: $half-padding $padding;

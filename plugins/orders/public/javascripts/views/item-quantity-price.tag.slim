@@ -39,14 +39,16 @@ order-item-quantity-price
       if (!input.value.trim() || parseInt(this.status.quantity).toFixed(2) == parseInt(input.value).toFixed(2)) {
         return
       }
-      this.run_at = new Date().getTime()
-      var self = this
 
-      setTimeout(function(run_at) {
-        if (self.run_at == run_at && input.value != "") {
+      this.event_type = event.type
+      this.run_at     = new Date().getTime()
+      var self        = this
+
+      setTimeout(function(run_at, type) {
+        if (self.run_at == run_at && type == self.event_type && input.value != "") {
           self.quantityUpdate(input)
         }
-      }, 2000, this.run_at);
+      }, 2000, this.run_at, event.type);
     }
 
     quantityUpdate(input) {
@@ -74,7 +76,10 @@ order-item-quantity-price
         }
         var orderTag = this.parent.parent
         orderTag.updateOrder(order)
-        display_notice(this.t('views.item._edit.saved'))
+        if (order.errors.length > 0)
+          display_notice(this.t('views.item._edit.error'))
+        else
+          display_notice(this.t('views.item._edit.saved'))
       }.bind(this))
 
       // keep up/down of number input work

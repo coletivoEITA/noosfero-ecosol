@@ -16,20 +16,21 @@ class OrdersPluginItemController < MyProfileController
     else
       @item = @item.first
     end
-    @order     = @item.send(self.order_method)
+    @order  = @item.send(self.order_method)
 
-    unless @order.may_edit? @consumer
-      raise 'Order confirmed or cycle is closed for orders' unless @order.open?
-      raise 'Please login to place an order' if @consumer.blank?
-      raise 'You are not the owner of this order' if @consumer != @order.consumer
+    @errors = []
+    if @order.may_edit? @consumer
+      if params[:item].present? and set_quantity_consumer_ordered params[:item][:quantity_consumer_ordered]
+        params[:item][:quantity_consumer_ordered] = @quantity_consumer_ordered
+        @item.update! params[:item]
+      end
+    else
+      @errors << 'order_confirmed_or_cycle_is_closed' unless @order.open?
+      @errors << 'Please login to place an order' if @consumer.blank?
+      @errors << 'not_the_owner' if @consumer != @order.consumer
     end
 
-    if params[:item].present? and set_quantity_consumer_ordered params[:item][:quantity_consumer_ordered]
-      params[:item][:quantity_consumer_ordered] = @quantity_consumer_ordered
-      @item.update! params[:item]
-    end
-
-    serializer = OrdersPlugin::OrderSerializer.new @item.order.reload, scope: self, actor_name: @actor_name
+    serializer = OrdersPlugin::OrderSerializer.new @item.order.reload, scope: self, actor_name: @actor_name, errors: @errors
     render json: serializer.to_hash
   end
 

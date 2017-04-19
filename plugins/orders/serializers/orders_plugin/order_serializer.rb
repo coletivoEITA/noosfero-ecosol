@@ -5,6 +5,7 @@ module OrdersPlugin
 
     attribute :admin
     attribute :actor_name
+    attribute :errors
     attribute :self_supplier
 
     attribute :may_edit
@@ -27,9 +28,15 @@ module OrdersPlugin
     def admin
       scope.instance_variable_get :@admin
     end
+
     def actor_name
       instance_options[:actor_name]
     end
+
+    def errors
+      instance_options[:errors]
+    end
+
     def self_supplier
       object.self_supplier?
     end
@@ -37,6 +44,7 @@ module OrdersPlugin
     def may_edit
       object.may_edit? user, admin
     end
+
     def view_only
       scope.instance_variable_get :@view
     end

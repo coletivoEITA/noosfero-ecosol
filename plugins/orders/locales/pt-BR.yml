@@ -197,6 +197,11 @@ pt-BR: &pt-BR
           this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
           ordered_more_than_in_stock: "A quantidade do produto %{name} em estoque é menor do que foi pedido. A quantidade no seu pedido foi mudada para o máximo disponível no momento."
           saved: "Salvo.."
+          error: "Oops!! Houve um erro com a sua requisição"
+          errors:
+            title: "Erros encontrados:"
+            order_confirmed_or_cycle_is_closed: "Parece que o tempo de edição deste pedido acabou. Recarregue a página"
+            not_the_owner: "Você não pode editar esse pedido"
 
         _add:
           label: 'Adiciona produto'

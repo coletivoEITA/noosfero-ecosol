@@ -1,5 +1,12 @@
 order-items-table
 
+  .errors if='{order.errors.length > 0}'
+    h4
+      '{t('views.item._edit.errors.title')}
+    ol
+      li each='{error in order.errors}'
+        '{t('views.item._edit.errors.'+error)}
+
   div if='{order.items.length > 0}'
     .order-items class="{'self-supplier': order.self_supplier}"
       .table-header
@@ -41,6 +48,7 @@ order-items-table
 
   javascript:
     this.order = opts.order
+    this.errors = opts.order.errors
 
     this.t = window.orders.t
 
