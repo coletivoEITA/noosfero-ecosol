@@ -1,2 +1,7 @@
-orders_cycle.order.product.load(<%= @offered_product.id.to_json %>, false)
+<% if self.respond_to? :offered_product  %>
+  orders_cycle.order.product.load(<%= @offered_product.id.to_json %>, false)
+<% else %>
+    alert("Aconteceu algum problema. Recarregando..")
+    window.location.reload()
+<% end %>
 
