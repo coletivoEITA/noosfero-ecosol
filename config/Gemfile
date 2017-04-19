@@ -8,6 +8,8 @@ gem 'utf8-cleaner'
 gem 'premailer-rails'
 gem 'message_bus'
 
+gem 'rack-timeout'
+
 # js
 # while https://github.com/rails-api/active_model_serializers/issues/1143 is not released
 gem 'active_model_serializers', '0.10.0'
