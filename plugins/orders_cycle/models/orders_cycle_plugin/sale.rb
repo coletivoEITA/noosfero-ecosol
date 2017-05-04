@@ -79,20 +79,21 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
   def remove_purchases_items
     ApplicationRecord.transaction do
       self.items.each do |item|
-        next unless supplier_product = item.product.supplier_product
-        next unless purchase = supplier_product.orders_cycles_purchases.for_cycle(self.cycle).first
-
-        self.remove_purchases_item item, purchase, supplier_product
+        self.remove_purchase_item item
       end
     end
   end
 
-  def remove_purchases_item item, purchase, supplier_product
-    item.quantity_consumer_ordered -= item.status_quantity
-    item.price_consumer_ordered -= item.status_quantity * supplier_product.price
-    item.save!
+  def remove_purchase_item item
+    return unless supplier_product = item.product.supplier_product
+    return unless purchase = supplier_product.orders_cycles_purchases.for_cycle(self.cycle).first
 
-    item.destroy if item.quantity_consumer_ordered.zero?
+    purchased_item = purchase.items.for_product(supplier_product).first
+    purchased_item.quantity_consumer_ordered -= item.status_quantity
+    purchased_item.price_consumer_ordered -= item.status_quantity * supplier_product.price
+    purchased_item.save!
+
+    purchased_item.destroy if purchased_item.quantity_consumer_ordered.zero?
     purchase.destroy if purchase.items(true).blank?
   end
 
