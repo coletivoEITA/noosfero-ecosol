@@ -1,5 +1,5 @@
 consumer-box.col-xs-12.col-md-6 show='{consumer.selected}' onclick="{detail}" data-toggle="modal" data-target="consumer-view"
-  div.consumer-box
+  div.consumer-box class="{inactive: !consumer.active}"
     .row
       div.col-xs-9
         div.picture-block
@@ -13,6 +13,11 @@ consumer-box.col-xs-12.col-md-6 show='{consumer.selected}' onclick="{detail}" da
           div
             a.email href='mailto:{consumer.email}'
               |{consumer.email}
+          div
+            .state if="{consumer.active}"
+              |{t('views.consumer.index.active')}
+            .state if="{!consumer.active}"
+              |{t('views.consumer.index.inactive')}
       div.col-xs-3
         button 
           |{t('views.consumer.index.detail')}

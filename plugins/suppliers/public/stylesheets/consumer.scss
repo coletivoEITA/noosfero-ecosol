@@ -126,6 +126,12 @@
       .right { float: right; }
 
       .consumer-box {
+        &.inactive {
+          background-color: #e0e0e0;
+          .name-block {
+            .state { color: red; }
+          }
+        }
         background-color: white;
         &:hover {
           background-color: #DBE2E1;
@@ -145,6 +151,7 @@
             font-weight: bold;
           }
           .email { font-size: 13px; }
+          .state { color: green; }
         }
         button {
           background-color: white;
@@ -165,6 +172,7 @@
         display: inline-block;
         cursor: pointer;
         border: 2px solid $cirandas-header-bg;
+        margin-right: 10px;
 
         &:focus,&:hover {
           background-color: white;

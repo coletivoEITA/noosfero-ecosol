@@ -15,6 +15,10 @@ consumer-view.modal.fade tabindex="-1" role="dialog"
                     |  ({consumer.profile_name})
               a.cs-button href="" onclick='{remove}' 
                 |{cs.t("views.consumer.index.remove")}
+              a.cs-button href="" onclick='{toggle}' if="{consumer.active}" 
+                |{cs.t("views.consumer.index.disable")}
+              a.cs-button href="" onclick='{toggle}' if="{!consumer.active}"
+                |{cs.t("views.consumer.index.enable")}
 
           .col-xs-2
             button type="button" class="close left" data-dismiss="modal" aria-label="Close"
@@ -143,12 +147,31 @@ consumer-view.modal.fade tabindex="-1" role="dialog"
     remove(e) {
       if (!confirm(this.cs.t('views.consumer.index.confirm_remove', {consumer: this.consumer.name}))) return
 
-      var unassociateUrl = Routes.myprofile_path({profile: noosfero.profile, controller: 'profile_members', action: 'unassociate/'+this.consumer.consumer_id})
+      var unassociateUrl = Routes.suppliers_plugin_consumer_path({profile: noosfero.profile, action: 'unassociate/'+this.consumer.id})
       var self = this
       $.ajax({url: unassociateUrl, type: 'POST', data: {},
         success: function () {
           var index = self.parent.consumers.indexOf(self.consumer)
           self.parent.consumers.splice(index, 1)
+          self.parent.reset()
+        },
+      })
+    }
+
+    toggle(e) {
+      if (this.consumer.active) {
+        if (!confirm(this.cs.t('views.consumer.index.confirm_disable', {consumer: this.consumer.name}))) return
+      }
+      else
+        if (!confirm(this.cs.t('views.consumer.index.confirm_enable', {consumer: this.consumer.name}))) return
+
+      var unassociateUrl = Routes.suppliers_plugin_consumer_path({profile: noosfero.profile, action: 'toggle_active/'+this.consumer.id})
+      var self = this
+      $.ajax({url: unassociateUrl, type: 'POST', data: { consumer: {active: false} },
+        success: function (data) {
+          console.log(data)
+          var index = self.parent.consumers.indexOf(self.consumer)
+          self.parent.consumers[index] = data
           self.parent.reset()
         },
       })
