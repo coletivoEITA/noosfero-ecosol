@@ -1,3 +1,5 @@
+//= require ./lib/remove_diacritics
+//
 //= require ./views/consumer-page
 //= require ./views/consumer-box
 //= require ./views/pending-consumer-box
@@ -12,6 +14,7 @@ consumers = {
   },
 
 }
+
 riot.tag('raw', '', function(opts) {
   this.root.innerHTML = opts.html;
 });
