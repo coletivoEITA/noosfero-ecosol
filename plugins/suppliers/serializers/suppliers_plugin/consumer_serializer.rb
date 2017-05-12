@@ -15,6 +15,7 @@ module SuppliersPlugin
     attribute :zip
     attribute :profile_icon_thumb
     attribute :identifier
+    attribute :active
 
     has_many :purchases
 

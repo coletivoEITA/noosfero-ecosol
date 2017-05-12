@@ -465,6 +465,10 @@ pt-BR: &pt-BR
           cancelled: Cancelado
           remove: Remover do grupo
           confirm_remove: "Você tem certeza de que quer remover '%{consumer}' do grupo?"
+          disable: Desabilitar consumidor
+          enable: Habilitar consumidor
+          confirm_disable: "Você tem certeza de que quer desabilitar '%{consumer}' de fazer pedidos no grupo?" 
+          confirm_enable: "Você tem certeza de que quer reabilitar '%{consumer}' a fazer pedidos no grupo?" 
           tasks: "<strong>%{people} pessoas</strong> aguardam aprovação para entrar no grupo"
           manage: "Gerenciar"
           saved: "Salvo!"
@@ -477,6 +481,8 @@ pt-BR: &pt-BR
           send: Enviar
           cancel: Cancelar
           rejection_message: "Por favor, explique por que você está rejeitando o pedido de filiação desse membro ao grupo."
+          inactive: inativo
+          active: ativo
 
   orders_cycle_plugin:
     terms:

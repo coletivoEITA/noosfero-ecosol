@@ -99,6 +99,7 @@ pt-BR: &pt-BR
         consumer:
           can_not_confirm_your_: "Não foi possível confirmar. Seu pedido está vazio"
           login_first: "Faça login primeiro"
+          inactive: "Você foi inativado/a e não pode fazer pedidos. Converse com o/as administradore/as do coletivo para ser reabilitado/a."
           order_cancelled: "Pedido cancelado"
           order_confirmed: "Pedido confirmado"
           order_confirmed_with_stock_changes: "Pedido confirmado, mas alguns items tiveram suas quantidades alteradas por falta de disponibilidade em estoque."
@@ -197,6 +198,7 @@ pt-BR: &pt-BR
           this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."
           ordered_more_than_in_stock: "A quantidade do produto %{name} em estoque é menor do que foi pedido. A quantidade no seu pedido foi mudada para o máximo disponível no momento."
           saved: "Salvo.."
+          confirm_remotion: "Você gostaria de remover este produto?"
           error: "Oops!! Houve um erro com a sua requisição"
           errors:
             title: "Erros encontrados:"

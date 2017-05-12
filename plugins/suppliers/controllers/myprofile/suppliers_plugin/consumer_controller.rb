@@ -29,6 +29,21 @@ class SuppliersPlugin::ConsumerController < MyProfileController
     render text: ret.to_s
   end
 
+  def toggle_active
+    @consumer = SuppliersPlugin::Consumer.find params[:id]
+    @consumer.toggle! :active
+    render json: @consumer
+  end
+
+  def unassociate
+    @consumer = SuppliersPlugin::Consumer.find params[:id]
+    associations = @consumer.profile.find_roles(profile)
+    RoleAssignment.transaction do
+      associations.map(&:destroy)
+    end
+    @consumer.destroy
+  end
+
   def add_consumers
     people = [Person.find(params[:consumers].split(','))].flatten
     role = Role.where(key: 'profile_member').first

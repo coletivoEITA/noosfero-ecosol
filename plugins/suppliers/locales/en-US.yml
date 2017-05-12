@@ -441,6 +441,10 @@ en-US: &en-US
           cancelled: Cancelled
           remove: Remove from group
           confirm_remove: "Are you sure you want to remove '%{consumer}' membership?"
+          disable: Disable consumer
+          enable: Enable consumer
+          confirm_disable: "Are you sure you want to disable '%{consumer}' from making orders?"
+          confirm_enable: "Are you sure you want to re-enable '%{consumer}' to make orders?"
           tasks: "%{people} are waiting for approval to enter the group"
           manage: "Manage"
           saved: "Saved!"
@@ -453,6 +457,8 @@ en-US: &en-US
           send: Send
           cancel: Cancel
           rejection_message: "Please, explanain why you are rejecting this membership request"
+          inactive: inactive
+          active: active
 
   orders_cycle_plugin:
     terms:

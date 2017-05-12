@@ -26,6 +26,11 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
       redirect_to action: :index
       return
     end
+    unless profile.consumers.where(consumer_id: user.id).first.active
+      session[:notice] = t('orders_plugin.controllers.profile.consumer.inactive')
+      redirect_to action: :index
+      return
+    end
 
     if not profile.members.include? user
       render_access_denied
@@ -42,6 +47,11 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   end
 
   def repeat
+    unless profile.consumers.where(consumer_id: user.id).first.active
+      session[:notice] = t('orders_plugin.controllers.profile.consumer.inactive')
+      redirect_to action: :index
+      return
+    end
     @consumer = user
     @order = profile.orders_cycles_sales.where(id: params[:order_id], consumer_id: @consumer.id).first
     @cycle = profile.orders_cycles.find params[:cycle_id]
@@ -66,6 +76,11 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   def edit
     return show_more if params[:page].present?
 
+    unless profile.consumers.where(consumer_id: user.id).first.active
+      session[:notice] = t('orders_plugin.controllers.profile.consumer.inactive')
+      redirect_to action: :index
+      return
+    end
     if request.xhr? and params[:order].present?
       status = params[:order][:status]
       if status == 'ordered'

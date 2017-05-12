@@ -98,6 +98,7 @@ en-US: &en-US
         consumer:
           can_not_confirm_your_: "Can not confirm. Your order is empty"
           login_first: "Login first"
+          inactive: "You were inactivated and can't make orders. Talk to group admins for being re-enabled."
           order_cancelled: "Order cancelled"
           order_confirmed: "Order confirmed"
           order_confirmed_with_stock_changes: "Order confirmed, but some items had its quantities changed by missing stock availability."
@@ -196,6 +197,7 @@ en-US: &en-US
           this_product_requires: "This product requires a minimum of %{value}. The minimum was kept."
           ordered_more_than_in_stock: "The quantity of the product %{name} in stock is less than what was asked. The quantity in your order was changed to the maximum of amount available at the moment."
           saved: "Saved.."
+          confirm_remotion: "Would you like to remove the product?"
           error: "Oops! There was an error with your request.."
           errors:
             title: "Errors found:"
