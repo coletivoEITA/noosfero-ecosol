@@ -2,7 +2,46 @@ module OrdersPlugin::Report
 
   protected
 
-  def report_products_by_supplier products_by_suppliers
+  def tab_sales_vs_purchases wb, products_by_suppliers, context
+    products = {}
+
+    products_by_suppliers.each do |supplier, supplier_products|
+      products[supplier] ||= {}
+
+      supplier_products.each do |p|
+        h = products[supplier][p] ||= {}
+        h[:quantity_ordered] = p.quantity_ordered
+      end
+    end
+
+    profile_id = if context.is_a? Profile then context.id else context.profile_id end
+    context.purchases.each do |purchase|
+      supplier = SuppliersPlugin::Supplier.find_by consumer_id: profile_id, profile_id: purchase.profile_id
+      products[supplier] ||= {}
+
+      purchase.items.each do |i|
+        h = products[supplier][i.product] ||= {}
+        h[:quantity_purchased] = i.quantity_consumer_ordered
+      end
+    end
+
+    # create styles
+    defaults   = {fg_color: "000000", sz: 8, alignment: { :horizontal=> :left, vertical: :center, wrap_text: false }, border: 0}
+    bluecell   = wb.styles.add_style(defaults.merge({bg_color: "99CCFF", b: true}))
+    default    = wb.styles.add_style(defaults.merge({border: 0}))
+
+    wb.add_worksheet(name: t('lib.report.sales_vs_purchases')) do |sheet|
+      sheet.add_row [t('lib.report.supplier'),t('lib.report.product_name'),t('lib.report.qty_ordered'),t('lib.report.qty_purchased')], style: bluecell
+      products.each do |supplier, supplier_products|
+        supplier_products.each do |p, data|
+          sheet.add_row [supplier.name,p.name,data[:quantity_ordered],data[:quantity_purchased]], style: default
+        end
+      end
+
+    end
+  end
+
+  def report_products_by_supplier products_by_suppliers, context = nil
     p = Axlsx::Package.new
     p.use_autowidth = true
     wb = p.workbook
@@ -109,6 +148,8 @@ module OrdersPlugin::Report
       sheet.column_widths 11,29,13,10,12,12,12,10,10,14,14
 
     end # closes spreadsheet
+
+    self.tab_sales_vs_purchases wb, products_by_suppliers, context if context
 
     tmp_dir = Dir.mktmpdir "noosfero-"
     report_file = tmp_dir + '/report.xlsx'

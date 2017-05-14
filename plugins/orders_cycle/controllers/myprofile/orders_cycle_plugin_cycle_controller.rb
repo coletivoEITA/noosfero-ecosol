@@ -112,7 +112,7 @@ class OrdersCyclePluginCycleController < OrdersPluginAdminController
 
     # specifics
     if params.include? :supplier
-      report_file = report_products_by_supplier @cycle.supplier_products_by_suppliers(scope)
+      report_file = report_products_by_supplier @cycle.supplier_products_by_suppliers(scope), @cycle
       file_str = 'controllers.myprofile.admin.products_report'
     else
       report_file = report_orders_by_consumer scope
