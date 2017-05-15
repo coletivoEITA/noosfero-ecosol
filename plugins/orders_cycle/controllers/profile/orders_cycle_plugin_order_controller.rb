@@ -26,7 +26,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
       redirect_to action: :index
       return
     end
-    unless profile.consumers.where(consumer_id: user.id).first.active
+    unless profile.consumers.where(consumer_id: user.id).first_or_create.active
       session[:notice] = t('orders_plugin.controllers.profile.consumer.inactive')
       redirect_to action: :index
       return
@@ -47,7 +47,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   end
 
   def repeat
-    unless profile.consumers.where(consumer_id: user.id).first.active
+    unless profile.consumers.where(consumer_id: user.id).first_or_create.active
       session[:notice] = t('orders_plugin.controllers.profile.consumer.inactive')
       redirect_to action: :index
       return
@@ -76,7 +76,7 @@ class OrdersCyclePluginOrderController < OrdersPluginOrderController
   def edit
     return show_more if params[:page].present?
 
-    unless profile.consumers.where(consumer_id: user.id).first.active
+    unless profile.consumers.where(consumer_id: user.id).first_or_create.active
       session[:notice] = t('orders_plugin.controllers.profile.consumer.inactive')
       redirect_to action: :index
       return
