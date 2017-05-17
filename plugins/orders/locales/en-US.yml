@@ -79,6 +79,7 @@ en-US: &en-US
         projected_stock: "stock after"
         qtt_to_be_parcelled: "qtt to be using stock"
         qty_ordered: "qty ordered"
+        qty_purchased: "qty purchased"
         selled_total: "selled total"
         selled_value: "selled value"
         stock_qtt: "stock before"
@@ -93,6 +94,7 @@ en-US: &en-US
         phone: 'Telephone'
         mail: 'Email'
         alert_formulas: "Atention! If you are using LibreOffice (BrOffice) you will need to update the formulas with the command CTRL + SHIFT + F9"
+        sales_vs_purchases: "Sales vs Purchases"
     controllers:
       profile:
         consumer:

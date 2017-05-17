@@ -49,10 +49,12 @@ consumer-page
     var self = this;
 
     search(e) {
-      var needle = $('input[name="search"]').val().toLowerCase();
+      var needle = removeDiacritics($('input[name="search"]').val().toLowerCase())
       for (var i in this.consumers) {
-        c = this.consumers[i];
-        this.consumers[i].selected = (c.name.toLowerCase().indexOf(needle) > -1 || (c.email != null && c.email.indexOf(needle) > -1));
+        var c      = this.consumers[i]
+        var field1 = removeDiacritics(c.name.toLowerCase())
+        var field2 = c.email || ''
+        this.consumers[i].selected = field1.indexOf(needle) > -1 || field2.indexOf(needle) > -1
       }
     }
 
@@ -61,7 +63,7 @@ consumer-page
         pendingConsumersUrl = Routes.suppliers_plugin_consumer_path({profile: noosfero.profile, action: 'pending_consumers'});
         self = this
         $.get(pendingConsumersUrl, {}, function(data) {
-          self.pendingConsumers = data 
+          self.pendingConsumers = data
           self.openApproval()
           self.update()
         })
@@ -74,8 +76,8 @@ consumer-page
       $('.tasks a.cs-button').toggle();
     }
     closeApproval() {
-        $('.pending-consumers').slideUp()
-        $('.tasks a.cs-button').toggle();
+      $('.pending-consumers').slideUp()
+      $('.tasks a.cs-button').toggle();
     }
 
     edit(consumer) {

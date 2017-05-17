@@ -80,6 +80,7 @@ pt-BR: &pt-BR
         projected_stock: "estoque depois"
         qtt_to_be_parcelled: "qtd a ser encomendada"
         qty_ordered: "qtd pedida"
+        qty_purchased: "qtd comprada"
         selled_total: "Total vendido"
         selled_value: "Valor vendido"
         stock_qtt: "estoque antes"
@@ -94,6 +95,7 @@ pt-BR: &pt-BR
         phone: 'Telefone'
         mail: 'Email'
         alert_formulas: "Atenção! Se você estiver utilizando o Libreoffice (BrOffice), será necessário atualizar as fórmulas desta planilha com o comando CTRL + SHIFT + F9"
+        sales_vs_purchases: "Pedidos vs Compras"
     controllers:
       profile:
         consumer:
