@@ -225,6 +225,8 @@ en-US: &en-US
         validation_error_name: "Validation error: Please, fill the field Name"
         validation_error_supplier_price: "Validation error: Please, fill the field Supplier Price"
         validation_error_margin_percentage: "Validation error: Please, fill the field Margin"
+        supplier_product_name: "Product name to the supplier: "
+        name_change_warning: "WARNING: Changing the product name doesn't change the supplier product name. To avoid issues with orders history and name divergences between ordered and delived, prefer to create another product with the right name and disable this."
         import:
           action: "Import spreadsheet"
           help: "Format your spreadsheet to have exactly the fields bellow with header. Then, save it choosing the CSV file type (.csv extension)."

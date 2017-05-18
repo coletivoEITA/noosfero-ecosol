@@ -11,9 +11,8 @@ product-item  class="{edition: product.edition}" show="{product.selected}"
       input.cmn-toggle.cmn-toggle-round type="checkbox" name='available' checked="{product.available}" id="{'available-'+product.id}"
       label for="{'available-'+product.id}"
   .name
-    span show="{!product.edition}"
+    span
       |{product.name}
-    input type="text" value="{product.name}" show="{product.edition}" name='name'
   .supplier
     .overflow
       |{supplier}
