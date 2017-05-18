@@ -78,7 +78,7 @@ module ProductsPlugin
       enterprise.categories_including_virtual_ids << product_category_id
     end
 
-    def solr_public
+    def solr_is_public
       # environment.products only consider enterprises
       self.public? and self.profile.enterprise?
     end
@@ -132,7 +132,7 @@ module ProductsPlugin
         {solr_supplier: {type: :text}},
         {description: :text}, {category_full_name: :text},
         # filtered fields
-        {solr_public: :boolean},
+        {solr_is_public: :boolean},
         {environment_id: :integer}, {profile_id: :integer},
         {enabled: :boolean}, {solr_category_filter: :integer},
         {available: :boolean}, {archived: :boolean}, {highlighted: :boolean},

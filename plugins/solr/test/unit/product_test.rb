@@ -57,8 +57,8 @@ class ProductTest < ActiveSupport::TestCase
     assert_includes Product.find_by_contents('mosquitos')[:results].docs, p
     assert_includes Product.find_by_contents('homemade')[:results].docs, p
     # filters
-    assert_includes Product.find_by_contents('bananas', {}, { :filter_queries => ["solr_public:true"]})[:results].docs, p
-    assert_not_includes Product.find_by_contents('bananas', {}, { :filter_queries => ["solr_public:false"]})[:results].docs, p
+    assert_includes Product.find_by_contents('bananas', {}, { :filter_queries => ["solr_is_public:true"]})[:results].docs, p
+    assert_not_includes Product.find_by_contents('bananas', {}, { :filter_queries => ["solr_is_public:false"]})[:results].docs, p
     assert_includes Product.find_by_contents('bananas', {}, { :filter_queries => ["environment_id:\"#{Environment.default.id}\""]})[:results].docs, p
     # includes
     assert_includes Product.find_by_contents("homemade")[:results].docs, p

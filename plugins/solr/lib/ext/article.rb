@@ -58,7 +58,7 @@ class Article
     self.categories.collect(&:name)
   end
 
-  def solr_public
+  def solr_is_public
     self.public?
   end
 
@@ -89,7 +89,7 @@ class Article
       {slug: :text}, {body: :text},
       {abstract: :text}, {filename: :text},
       # filtered fields
-      {solr_public: :boolean}, {published: :boolean},
+      {solr_is_public: :boolean}, {published: :boolean},
       {environment_id: :integer},
       {profile_id: :integer}, :language,
       {solr_category_filter: :integer},

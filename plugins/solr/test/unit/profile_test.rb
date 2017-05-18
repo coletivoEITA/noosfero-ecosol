@@ -41,8 +41,8 @@ class ProfileTest < ActiveSupport::TestCase
     assert_includes Profile.find_by_contents('Hiro')[:results].docs, p
     assert_includes Profile.find_by_contents('Protagonist')[:results].docs, p
     # filters
-    assert_includes Profile.find_by_contents('Hiro', {}, { :filter_queries => ["solr_public:true"]})[:results].docs, p
-    assert_not_includes Profile.find_by_contents('Hiro', {}, { :filter_queries => ["solr_public:false"]})[:results].docs, p
+    assert_includes Profile.find_by_contents('Hiro', {}, { :filter_queries => ["solr_is_public:true"]})[:results].docs, p
+    assert_not_includes Profile.find_by_contents('Hiro', {}, { :filter_queries => ["solr_is_public:false"]})[:results].docs, p
     assert_includes Profile.find_by_contents('Hiro', {}, { :filter_queries => ["environment_id:\"#{Environment.default.id}\""]})[:results].docs, p
     # includes
     assert_includes Profile.find_by_contents("Inglewood")[:results].docs, p
