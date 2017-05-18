@@ -55,10 +55,6 @@ class OrdersCyclePluginItemController < OrdersPluginItemController
     @item.update params[:item]
   end
 
-  def destroy
-    super
-  end
-
   protected
 
   extend HMVC::ClassMethods
