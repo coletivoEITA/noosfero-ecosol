@@ -4,6 +4,8 @@ ActiveSupport.run_load_hooks :solr_article
 
 class Article
 
+  SEARCH_FILTERS[:order] = []
+
   # use for internationalizable human type names in search facets
   # reimplement on subclasses
   def self.type_name

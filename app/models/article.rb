@@ -35,8 +35,7 @@ class Article < ApplicationRecord
   }
 
   SEARCH_FILTERS = {
-    :order => %w[more_recent more_comments],
-    #:order => %w[more_recent more_popular more_comments],
+    :order => %w[more_recent more_popular more_comments],
     :display => %w[full]
   }
 
@@ -178,7 +177,7 @@ class Article < ApplicationRecord
   RESERVED_SLUGS = %w[
     about
     activities
-  ] 
+  ]
 
   def valid_slug
     errors.add(:title, _('is not available as article name.')) unless Article.is_slug_available?(slug)

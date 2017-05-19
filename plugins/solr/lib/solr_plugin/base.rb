@@ -163,6 +163,7 @@ class SolrPlugin::Base < Noosfero::Plugin
 
     scopes_applied.each do |name|
       #next if name.to_s == options[:filter].to_s
+      next if name.to_s == context.instance_variable_get(:@order)
       # not yet supported as it involves ordering
       next if name.to_s.in? klass::SEARCH_FILTERS[:order]
 
