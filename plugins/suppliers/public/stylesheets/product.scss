@@ -394,6 +394,12 @@
           min-height: 100px;
         }
       }
+      small.title {
+        color: orange;
+      }
+      small.supplier_product_name {
+        color: red;
+      }
       .change_image {
         position: relative;
         top: -30px;

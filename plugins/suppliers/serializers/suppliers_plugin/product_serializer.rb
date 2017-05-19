@@ -10,6 +10,7 @@ module SuppliersPlugin
     attribute :unit_id
     attribute :price
     attribute :supplier_price
+    attribute :supplier_product_name
     attribute :margin_percentage
 
     attribute :stored
@@ -27,11 +28,18 @@ module SuppliersPlugin
     def name
       product[:name] || product[:from_product_name]
     end
+    def description
+      product[:description] || product[:from_product_description]
+    end
     def unit_id
       product[:unit_id] || product[:from_product_unit_id]
     end
     def supplier_price
       product[:from_product_price] || product.supplier_price
+    end
+
+    def supplier_product_name
+      product[:from_product_name] || (product.supplier_product && product.supplier_product.name)
     end
 
     def available

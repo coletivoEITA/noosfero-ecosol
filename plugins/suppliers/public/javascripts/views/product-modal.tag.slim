@@ -29,8 +29,13 @@ product-modal.modal.fade tabindex="-1" role="dialog"
               .form-group
                 label for="p-name"
                   |{t("views.product.product_name")}
+                small.title if="{product.id}"
+                  |{t("views.product.name_change_warning")}
                 input type="text" value="{product.name}" id="p-name"
-
+                small.supplier_product_name show="{product.supplier_product_name != product.name && product.supplier_product_name != undefined}"
+                  strong
+                    |{t("views.product.supplier_product_name")}
+                  |{this.product.supplier_product_name}
               .form-group
                 select name="supplier_id" id="p-supplier_id" if="{!product.id}"
                   option each="{id,name in parent.active_suppliers}" value="{id}"

@@ -15,7 +15,7 @@ class OrdersCyclePlugin::Mailer < Noosfero::Plugin::MailerBase
     @message = message
 
     mail bcc: organization_members(@profile),
-      to: envionment.noreply_email,
+      to: environment.noreply_email,
       from: environment.noreply_email,
       reply_to: profile_recipients(@profile),
       subject: t('lib.mailer.profile_subject') % {profile: profile.name, subject: subject}
