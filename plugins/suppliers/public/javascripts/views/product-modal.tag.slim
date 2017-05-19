@@ -32,7 +32,7 @@ product-modal.modal.fade tabindex="-1" role="dialog"
                 small.title if="{product.id}"
                   |{t("views.product.name_change_warning")}
                 input type="text" value="{product.name}" id="p-name"
-                small.supplier_product_name show="{product.supplier_product_name != product.name}"
+                small.supplier_product_name show="{product.supplier_product_name != product.name && product.supplier_product_name != undefined}"
                   strong
                     |{t("views.product.supplier_product_name")}
                   |{this.product.supplier_product_name}

@@ -28,6 +28,9 @@ module SuppliersPlugin
     def name
       product[:name] || product[:from_product_name]
     end
+    def description
+      product[:description] || product[:from_product_description]
+    end
     def unit_id
       product[:unit_id] || product[:from_product_unit_id]
     end
@@ -36,7 +39,7 @@ module SuppliersPlugin
     end
 
     def supplier_product_name
-      product[:from_product_name] || product.supplier_product_name
+      product[:from_product_name] || (product.supplier_product && product.supplier_product.name)
     end
 
     def available

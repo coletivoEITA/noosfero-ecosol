@@ -251,6 +251,8 @@ product-page
       this.tags['product-modal'].product = product
       this.tags['product-modal'].productItem = productItem
       this.tags['product-modal'].update()
+      // riot is buggy!!
+      $("#p-description").val(this.tags['product-modal'].product.description)
     }
 
     typeaheadCategoryInit (input, selected) {
@@ -288,9 +290,15 @@ product-page
 
     add() {
       var product = {
+        name: " ",
         available: true,
-        margin_percentage: 0,
-        supplier_price: 0
+        margin_percentage: " ",
+        supplier_price: " ",
+        product_category_id: " ",
+        supplier_id: " ",
+        unit_id: " ",
+        category: " ",
+        unit: " "
       }
       this.completeEdition(product, {update: function(){}, product: {}})
     }
