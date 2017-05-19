@@ -151,8 +151,9 @@ class SolrPlugin::Base < Noosfero::Plugin
     scopes_applied = scope.scopes_applied.dup rescue [] #rescue association and class direct filtering
 
     scope.scope_attributes.each do |attr, value|
-      next if attr == 'type'
-      raise "Non-indexed attribute '#{attr}' speficied in scope_attributes" unless solr_fields.include? attr.to_sym
+      next if attr.to_sym == :type
+
+      raise "#{klass.name}: non-indexed attribute '#{attr}' speficied in scope_attributes" unless solr_fields.include? attr.to_sym
 
       # if the filter is present here, then prefer it
       scopes_applied.reject!{ |name| name == attr.to_sym }
@@ -162,6 +163,8 @@ class SolrPlugin::Base < Noosfero::Plugin
 
     scopes_applied.each do |name|
       #next if name.to_s == options[:filter].to_s
+      # not yet supported as it involves ordering
+      next if name.to_s.in? klass::SEARCH_FILTERS[:order]
 
       has_value = name === Hash
       if has_value
@@ -180,7 +183,7 @@ class SolrPlugin::Base < Noosfero::Plugin
           filter_queries << klass.send("solr_filter_#{name}", *args)
         end
       else
-        raise "Undeclared solr field for scope '#{name}'" if related_field.nil?
+        raise "#{klass.name}: undeclared solr field for scope '#{name}'" if related_field.nil?
         if related_field
           filter_queries << "#{related_field}:true"
         end

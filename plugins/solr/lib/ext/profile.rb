@@ -116,7 +116,7 @@ class Profile
     self.enabled
   end
 
-  def solr_public
+  def solr_is_public
     self.public?
   end
 
@@ -167,7 +167,7 @@ class Profile
       {name: {type: :text, boost: 2.0}}, {nickname: :text}, {display_name: :text},
       {identifier: :text}, {contact_email: :text},
       # filtered fields
-      {solr_public: :boolean}, {environment_id: :integer},
+      {solr_is_public: :boolean}, {environment_id: :integer},
       {solr_category_filter: :integer},
       # scopes
       {no_templates: :boolean},

@@ -43,8 +43,8 @@ class ArticleTest < ActiveSupport::TestCase
     assert_includes Article.find_by_contents('beer')[:results].docs, a
     assert_includes Article.find_by_contents('not_a_virus.exe')[:results].docs, a
     # filters
-    assert_includes Article.find_by_contents('bananas', {}, {:filter_queries => ["solr_public:true"]})[:results].docs, a
-    assert_not_includes Article.find_by_contents('bananas', {}, {:filter_queries => ["solr_public:false"]})[:results].docs, a
+    assert_includes Article.find_by_contents('bananas', {}, {:filter_queries => ["solr_is_public:true"]})[:results].docs, a
+    assert_not_includes Article.find_by_contents('bananas', {}, {:filter_queries => ["solr_is_public:false"]})[:results].docs, a
     assert_includes Article.find_by_contents('bananas', {}, {:filter_queries => ["environment_id:\"#{Environment.default.id}\""]})[:results].docs, a
     assert_includes Article.find_by_contents('bananas', {}, {:filter_queries => ["profile_id:\"#{person.id}\""]})[:results].docs, a
     # includes

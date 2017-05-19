@@ -70,13 +70,13 @@ module SolrPlugin::SearchHelper
   def solr_filters_queries asset, environment
     case asset
     when :products
-      ['solr_public:true', 'enabled:true']
+      ['solr_is_public:true', 'enabled:true']
     when :catalog, :events, :categories, :product_categories
       []
     when :profiles, :people, :organizations, :communities, :enterprises
-      ['solr_public:true', 'environment_id:%s' % environment.id]
+      ['solr_is_public:true', 'environment_id:%s' % environment.id]
     else
-      ['solr_public:true']
+      ['solr_is_public:true']
     end
   end
 
