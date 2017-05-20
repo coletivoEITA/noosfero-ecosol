@@ -448,6 +448,7 @@ pt-BR: &pt-BR
           celular: Celular
           email: Email
           hub: Núcleo
+          choose_one_hub: "Escolha um núcleo"
           address: Endereço
           city: Cidade
           state: Estado
