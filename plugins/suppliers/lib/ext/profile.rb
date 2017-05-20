@@ -53,7 +53,7 @@ class Profile
   end
   def remove_consumer consumer_profile
     consumer = self.consumers.of_consumer(consumer_profile).first
-    consumer.destroy if supplier
+    consumer.destroy if consumer
   end
 
   def add_supplier supplier_profile, attrs={}
