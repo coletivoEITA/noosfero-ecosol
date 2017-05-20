@@ -17,9 +17,9 @@ order-item id='{item.id}'
 
     .more
       .actions if='{parent.order.may_edit}'
-        a href='#' onclick='{adminRemove}' if='{parent.order.admin}'
+        a class="action-button" href='#' onclick='{adminRemove}' if='{parent.order.admin}'
           '{t('views.item._edit.remove_from_order')}
-        a href='#' onclick='{userRemove}' if='{!parent.order.admin}'
+        a class="action-button" href='#' onclick='{userRemove}' if='{!parent.order.admin}'
           '{t('views.item._edit.remove_from_order')}
 
       .orders-price-with-unit.price-with-unit.box-field if='{parent.order.may_edit}' title="{priceUnit()}"

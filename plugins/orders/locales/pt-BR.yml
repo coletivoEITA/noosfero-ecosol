@@ -194,7 +194,7 @@ pt-BR: &pt-BR
       item:
         no_stock: "Este produto não está mais em estoque"
         _edit:
-          remove_from_order: "Remover do pedido"
+          remove_from_order: "Remover"
           removed: 'removido'
           submit: 'OK'
           this_product_requires: "Este produto requer um mínimo de %{value}. O mínimo foi mantido."

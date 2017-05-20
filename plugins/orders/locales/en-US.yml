@@ -193,7 +193,7 @@ en-US: &en-US
       item:
         no_stock: "This product is not stock anymore"
         _edit:
-          remove_from_order: "remove from order"
+          remove_from_order: "Remove"
           removed: 'removed'
           submit: 'OK'
           this_product_requires: "This product requires a minimum of %{value}. The minimum was kept."
