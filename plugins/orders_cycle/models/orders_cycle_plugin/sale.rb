@@ -25,8 +25,10 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
 
   def change_purchases
     return unless self.status_was.present?
+    # only on sale confirmation
     if self.ordered_at_was.nil? and self.ordered_at.present?
       self.add_purchases_items
+    # only on sale cancellation/unconfirmation
     elsif self.ordered_at_was.present? and self.ordered_at.nil?
       self.remove_purchases_items
     end
@@ -60,7 +62,8 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
     return unless supplier_product = item.product.supplier_product
     return unless supplier = supplier_product.profile
 
-    if item.quantity_supplier_accepted_was != item.quantity_supplier_accepted
+    previous_value = item.quantity_supplier_accepted_was || item.quantity_consumer_ordered
+    if previous_value != item.quantity_supplier_accepted
       qtt_diff = (item.quantity_supplier_accepted || 0) - (item.quantity_supplier_accepted_was || 0)
     elsif item.quantity_consumer_ordered_was != item.quantity_consumer_ordered
       qtt_diff = (item.quantity_consumer_ordered || 0) - (item.quantity_consumer_ordered_was || 0)

@@ -24,7 +24,7 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
   has_one :supplier, through: :offered_product
 
   after_save :update_order
-  after_save :change_purchases, if: :cycle
+  after_save :change_purchase, if: :cycle
   before_destroy :remove_purchase_item, if: :cycle
 
   def cycle
@@ -54,8 +54,10 @@ class OrdersCyclePlugin::Item < OrdersPlugin::Item
 
   protected
 
-  def change_purchases
-    return unless ["orders", 'purchases'].include? self.cycle.status
+  def change_purchase
+    # if we've already passed through purchases, don't change purchases
+    return unless self.cycle.status == 'orders'
+    # when it's draft, it handled by sale#change_purchases
     return if self.order.status == 'draft'
 
     if id_changed?
