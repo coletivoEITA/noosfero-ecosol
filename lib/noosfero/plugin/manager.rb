@@ -39,7 +39,7 @@ class Noosfero::Plugin::Manager
       next unless method.owner == plugin.class
       return method.call(*args)
     end
-    nil
+    return Noosfero::Plugin.new.send event, *args
   end
 
   def fetch_first_plugin(event, *args)
