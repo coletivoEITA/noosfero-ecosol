@@ -8,8 +8,8 @@ module SearchHelper
   def filters_options_translation
     @filters_options_translation ||= {
       :order => {
-        #'more_popular' => _('More popular'),
-        #'more_active' => _('More active'),
+        'more_popular' => _('More popular'),
+        'more_active' => _('More active'),
         'more_recent' => _('More recent'),
         'more_comments' => _('More comments')
       },

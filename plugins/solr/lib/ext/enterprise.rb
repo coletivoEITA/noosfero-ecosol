@@ -5,6 +5,8 @@ ActiveSupport.run_load_hooks :solr_enterprise
 
 class Enterprise
 
+  SEARCH_FILTERS[:order] = []
+
   after_save_reindex [:products], with: :delayed_job
 
   extend SolrPlugin::ActsAsSearchable
