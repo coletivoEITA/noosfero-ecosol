@@ -424,6 +424,7 @@ en-US: &en-US
           celular: Celular
           email: Email
           hub: Hub
+          choose_one_hub: "Choose one hub"
           address: Address
           city: City
           state: State

@@ -61,7 +61,9 @@ consumer-view.modal.fade tabindex="-1" role="dialog"
                 |{cs.t("views.consumer.index.hub")}
               .col-sm-10
                 select value='{consumer.hub_id}' name='hub_id' class="form-control" id="hub_id"
-                  option each="{hubs}" value="{id}"
+                  option value="" 
+                    |{cs.t("views.consumer.index.choose_one_hub")}
+                  option each="{hubs}" value="{id}" selected="{consumer.hub_id == id}"
                     |{name}
 
             .form-group
