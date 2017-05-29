@@ -60,7 +60,7 @@ product-modal.modal.fade tabindex="-1" role="dialog"
               .form-group
                 label for="p-supplier-price"
                   |{t("views.product.the_supplier_price")}
-                input type="text" value="{product.supplier_price}" id='p-supplier-price' oninput="{updatePrice}"
+                input type="number" value="{product.supplier_price}" id='p-supplier-price' oninput="{updatePrice}"
 
               .form-group
                 p.final_price
