@@ -46,8 +46,9 @@ gem 'rollbar'
 platform :ruby do
   gem 'unicode'
   group :performance do
+
     # FIXME: stack level too deep
-    gem 'oj'
+    gem 'oj', '~> 2.0'
     gem 'oj_mimic_json'
 
     gem 'fast_blank'
