@@ -6,7 +6,7 @@
   = javascript_include_tag '/assets/plugins/orders/javascripts/daterangepicker.js'
 
 javascript:
-  moment.locale(#{I18n.locale.downcase.to_json})
+  moment.locale("#{I18n.locale.downcase.to_s}")
 
   orders.daterangepicker.defaultOptions = {
     autoApply:           true,
