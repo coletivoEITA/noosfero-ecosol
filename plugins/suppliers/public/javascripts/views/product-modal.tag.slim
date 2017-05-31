@@ -227,7 +227,7 @@ product-modal.modal.fade tabindex="-1" role="dialog"
         if (keys[i] == 'supplier_id' && this.product.id)
           continue;
         // to validate category need to see the id instead of the input
-        if (keys[i] == 'product_category_id' && !this.product.product_category_id.trim())
+        if (keys[i] == 'product_category_id' && !this.product.product_category_id)
           input.value = ""
         if (input.value.trim() == "" || input.value == "0") {
           alert(this.t('views.product.validation_error_'+keys[i]))
