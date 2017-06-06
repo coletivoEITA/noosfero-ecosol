@@ -43,11 +43,11 @@ class OrdersPlugin::Sale < OrdersPlugin::Order
     return if (Statuses.index(self.status) <= Statuses.index(self.status_was) rescue false)
 
     if self.status == 'ordered' and not [nil, 'ordered'].include? self.status_was
-      OrdersPlugin::Mailer.sale_confirmation(self).deliver
+      OrdersPlugin::Mailer.sale_confirmation(self).deliver_later
     elsif self.status == 'cancelled' and self.status_was != 'cancelled'
-      OrdersPlugin::Mailer.sale_cancellation(self).deliver
+      OrdersPlugin::Mailer.sale_cancellation(self).deliver_later
     elsif self.status == 'received' and self.status_was != 'received'
-      OrdersPlugin::Mailer.sale_received(self).deliver
+      OrdersPlugin::Mailer.sale_received(self).deliver_later
     end
   end
 end
