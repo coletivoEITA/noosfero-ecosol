@@ -1,0 +1,3 @@
+class MailSchedule < ApplicationRecord
+
+end
