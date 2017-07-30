@@ -89,6 +89,11 @@ module Noosfero
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
+    ##
+    # Configure ActiveJob
+    #
+    config.active_job.queue_adapter = :delayed_job
+
     # Enable escaping HTML in JSON.
     ActiveSupport::JSON::Encoding.escape_html_entities_in_json = true
 
