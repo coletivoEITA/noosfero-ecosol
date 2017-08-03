@@ -16,14 +16,15 @@ module MailQueuer
       delivery_method = ApplicationMailer.delivery_methods.find{ |n, k| k == message.delivery_method.class }.first
       delivery_method_options = message.delivery_method.settings
 
-      set(options).perform_later message.encoded, delivery_method.to_s, delivery_method_options.to_yaml
+      set(options).perform_later message.encoded, message.bcc, delivery_method.to_s, delivery_method_options.to_yaml
     end
 
     ##
     # Mail delivery
     #
-    def perform message, delivery_method, delivery_method_options
+    def perform message, bcc, delivery_method, delivery_method_options
       m = Mail.read_from_string message
+      m.bcc = bcc
       ApplicationMailer.wrap_delivery_behavior m, delivery_method.to_sym, YAML.load(delivery_method_options)
       m.deliver_now
     end
@@ -31,24 +32,38 @@ module MailQueuer
 
   module InstanceMethods
     def deliver
+      message    = nil
       last_sched = MailSchedule.last
       last_sched.with_lock do
         if last_sched != MailSchedule.last
-          deliver_now
+          message = deliver_now
         else
-          deliver_schedule last_sched
+          message = deliver_schedule last_sched
         end
       end
+      message
     end
 
     def deliver_schedule last_sched
       limit   = ENV['MAIL_QUEUER_LIMIT'].to_i - 1
-      to      = self.to  ||= []
       orig_to = to.dup
-      bcc     = self.bcc ||= []
+      orig_cc = cc.dup
+      dests   = {
+        to:  self.to,
+        cc:  self.cc,
+        bcc: self.bcc,
+      }
 
       loop do
-        dest_count = to.size + bcc.size
+        # mailers don't like emails without :to,
+        # so fill one if not present
+        dests[:to] = [orig_to.first] if dests[:to].blank?
+
+        dest_count = dests[:to].size + dests[:cc].size + dests[:bcc].size
+        # dests are changed on email splits, so set it to the remaining values
+        self.to    = dests[:to]
+        self.cc    = dests[:cc]
+        self.bcc   = dests[:bcc]
 
         ##
         # The last schedule is outside the quota period
@@ -62,13 +77,13 @@ module MailQueuer
         if dest_count <= available_limit
           last_sched.update dest_count: last_sched.dest_count + dest_count
           Job.schedule self, wait_until: last_sched.scheduled_to
-          return
+          return self
 
         # avoid breaking mail which respect the mail limit. Schedule it all to the next hour
-        elsif dest_count <= limit
+        elsif dest_count <= limit #&& ENV['AVOID_SPLIT']
           last_sched = MailSchedule.create! dest_count: dest_count, scheduled_to: last_sched.scheduled_to+1.hour
           Job.schedule self, wait_until: last_sched.scheduled_to
-          return
+          return self
 
         else # dest_count > limit
           if available_limit == 0
@@ -79,23 +94,20 @@ module MailQueuer
             last_sched.update dest_count: limit # limit = last.sched.dest_count + available_limit
           end
 
-          ##
-          # Drop `to` until empty and then start dropping from bcc
-          # #to and #bcc are changed destructively
-          # for the next recursion
-          #
-          message = self.dup
+          # needs to preserve replies when spliting the email
+          self.reply_to = orig_to + orig_cc if self.reply_to.blank?
 
-          if to.size > 0
-            message.to  = to.shift available_limit
-            message.bcc = []
-          else
-            message.to  = [orig_to.first]
-            message.bcc = bcc.shift available_limit
-            message.reply_to = orig_to if reply_to.blank?
+          ##
+          # start sending :to, followed by :cc, and so :bcc creating new schedules as needed
+          #
+          [:to, :cc, :bcc].each do |field|
+            next self[field] = [] if available_limit == 0
+
+            self[field] = dests[field].shift(available_limit)
+            available_limit -= self.send(field).size
           end
 
-          Job.schedule message, wait_until: last_sched.scheduled_to
+          Job.schedule self, wait_until: last_sched.scheduled_to
         end
       end
     end
