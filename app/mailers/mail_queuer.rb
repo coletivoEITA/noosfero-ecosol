@@ -46,12 +46,12 @@ module MailQueuer
 
     def deliver_schedule last_sched
       limit   = ENV['MAIL_QUEUER_LIMIT'].to_i - 1
-      orig_to = to.dup
-      orig_cc = cc.dup
+      orig_to = Array(to).dup
+      orig_cc = Array(cc).dup
       dests   = {
-        to:  self.to,
-        cc:  self.cc,
-        bcc: self.bcc,
+        to:  Array(self.to),
+        cc:  Array(self.cc),
+        bcc: Array(self.bcc),
       }
 
       loop do
@@ -69,7 +69,7 @@ module MailQueuer
         # The last schedule is outside the quota period
         #
         if last_sched.scheduled_to < 1.hour.ago
-          last_sched = MailSchedule.create! dest_count: 0, scheduled_to: Time.now
+          last_sched = MailSchedule.create! dest_count: 0, scheduled_to: Time.now.beginning_of_hour
         end
 
         available_limit = limit - last_sched.dest_count
