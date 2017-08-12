@@ -101,5 +101,6 @@ class OrdersCyclePlugin::Sale < OrdersPlugin::Sale
   end
 
   handle_asynchronously :add_purchases_items
+  handle_asynchronously :remove_purchases_items
 
 end
