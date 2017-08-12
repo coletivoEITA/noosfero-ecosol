@@ -31,7 +31,8 @@ product-modal.modal.fade tabindex="-1" role="dialog"
                   |{t("views.product.product_name")}
                 small.title if="{product.id}"
                   |{t("views.product.name_change_warning")}
-                input type="text" value="{product.name}" id="p-name"
+                input type="text" value="{product.name}" id="p-name" name='name'
+
                 small.supplier_product_name show="{product.supplier_product_name != product.name && product.supplier_product_name != undefined}"
                   strong
                     |{t("views.product.supplier_product_name")}
@@ -44,7 +45,7 @@ product-modal.modal.fade tabindex="-1" role="dialog"
               .form-group
                 label for="p-description"
                   |{t("views.product.description")}
-                textarea value="{product.description}" id="p-description"
+                textarea value="{product.description}" id="p-description" name='description'
 
               .form-group
                 label for="p-product_category_id"
@@ -116,6 +117,12 @@ product-modal.modal.fade tabindex="-1" role="dialog"
       this.parent.typeaheadCategoryInit($('#p-product_category_id'), this.setCategory)
       this.parent.typeaheadUnitInit($('#p-unit_id'), this.setUnit)
     })
+
+    updateFormValues() {
+      $(this.root).find('input,textarea').each(function (i,el) {
+        el.value = el.getAttribute('value')
+      })
+    }
 
     setCategory(e, item) {
       this.product.product_category_id             = item.id

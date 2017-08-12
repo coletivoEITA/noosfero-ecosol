@@ -251,8 +251,7 @@ product-page
       this.tags['product-modal'].product = product
       this.tags['product-modal'].productItem = productItem
       this.tags['product-modal'].update()
-      // riot is buggy!!
-      $("#p-description").val(this.tags['product-modal'].product.description)
+      this.tags['product-modal'].updateFormValues()
     }
 
     typeaheadCategoryInit (input, selected) {
@@ -286,6 +285,9 @@ product-page
       )
 
       input.on('typeahead:selected', selected)
+    }
+
+    import() {
     }
 
     add() {
