@@ -13,9 +13,9 @@ consumer-view.modal.fade tabindex="-1" role="dialog"
                   |{consumer.name}
                   span if="{consumer.name != consumer.profile_name}"
                     |  ({consumer.profile_name})
-              a.cs-button href="" onclick='{remove}' 
+              a.cs-button href="" onclick='{remove}'
                 |{cs.t("views.consumer.index.remove")}
-              a.cs-button href="" onclick='{toggle}' if="{consumer.active}" 
+              a.cs-button href="" onclick='{toggle}' if="{consumer.active}"
                 |{cs.t("views.consumer.index.disable")}
               a.cs-button href="" onclick='{toggle}' if="{!consumer.active}"
                 |{cs.t("views.consumer.index.enable")}
@@ -143,6 +143,12 @@ consumer-view.modal.fade tabindex="-1" role="dialog"
       if (this.consumer.purchases == undefined)
         this.consumer.purchases = {}
       this.purchases = this.consumer.purchases
+      $(this.root).find('input,textarea').each(function (i,el) {
+        el.value = el.getAttribute('value')
+      })
+      $(this.root).find('select').each(function (i,el) {
+        $(el).val(this.consumer[$(el).attr("name")])
+      }.bind(this))
     }
     this.setConsumer(opts.consumer)
 
@@ -186,7 +192,7 @@ consumer-view.modal.fade tabindex="-1" role="dialog"
         $.get(purchasesUrl, {}, function(purchases) {
           purchases.forEach(function(p) {
             self.consumer.purchases.push(p);
-          }) 
+          })
           self.update();
         }, 'json');
       }
